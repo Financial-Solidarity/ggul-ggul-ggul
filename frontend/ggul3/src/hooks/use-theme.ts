@@ -1,11 +1,11 @@
 // originally written by @imoaazahmed
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from 'react';
 
 const ThemeProps = {
-  key: "theme",
-  light: "light",
-  dark: "dark",
+  key: 'theme',
+  light: 'light',
+  dark: 'dark',
 } as const;
 
 type Theme = typeof ThemeProps.light | typeof ThemeProps.dark;
