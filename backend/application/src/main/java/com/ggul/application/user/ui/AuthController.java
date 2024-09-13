@@ -1,8 +1,10 @@
 package com.ggul.application.user.ui;
 
 import com.ggul.application.user.application.EmailVerificationService;
+import com.ggul.application.user.application.SignupService;
 import com.ggul.application.user.application.dto.EmailVerificationNumRequest;
 import com.ggul.application.user.application.dto.EmailVerificationRequest;
+import com.ggul.application.user.application.dto.SignupRequest;
 import com.ggul.application.user.query.UserFindService;
 import com.ggul.application.user.query.dto.EmailDuplicateCheckRequest;
 import com.ggul.application.user.query.dto.NicknameDuplicateCheckRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final UserFindService userFindService;
     private final EmailVerificationService emailVerificationService;
+    private final SignupService signupService;
 
     @PostMapping("/users/email/duplicate")
     public ResponseEntity<?> getEmailDuplicateCheck(@RequestBody EmailDuplicateCheckRequest request) {
@@ -44,6 +47,12 @@ public class AuthController {
     public ResponseEntity<?> emailVerification(@RequestBody EmailVerificationRequest request) {
         EmailVerificationView emailVerificationView = emailVerificationService.emailVerify(request);
         return ResponseEntity.ok(emailVerificationView);
+    }
+
+    @PostMapping("/api/auth/users")
+    public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
+        signupService.signup(request);
+        return ResponseEntity.ok().build();
     }
 
 }

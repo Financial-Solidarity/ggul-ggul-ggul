@@ -1,5 +1,7 @@
 package com.ggul.application.user.domain;
 
+import com.ggul.application.common.domain.password.Password;
+import com.ggul.application.common.domain.password.PasswordConverter;
 import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
 import jakarta.persistence.*;
@@ -29,8 +31,9 @@ public class User extends SoftDeleteEntity {
     @Column(name = "user_nickname")
     private String nickname;
 
+    @Convert(converter = PasswordConverter.class)
     @Column(name = "user_password")
-    private String password;
+    private Password password;
 
     @Column(name = "user_profile")
     private String profile;

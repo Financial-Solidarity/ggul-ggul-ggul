@@ -24,7 +24,6 @@ import java.util.Map;
 public class EmailVerificationService {
     private final UserRepository userRepository;
     private static final String EMAIL_VERIFICATION_REQUEST = "EMAIL_VERIFICATION_REQUEST";
-    private static final String EMAIL_VERIFICATION = "EMAIL_VERIFICATION";
     private final HttpSession httpSession;
 
     @Transactional(readOnly = true)
@@ -70,7 +69,7 @@ public class EmailVerificationService {
         UserVerificationEmailDto userVerificationEmailDto = (UserVerificationEmailDto) value;
 
         if(userVerificationEmailDto.verify(request)) {
-            httpSession.setAttribute(EMAIL_VERIFICATION, userVerificationEmailDto);
+            httpSession.setAttribute(EMAIL_VERIFICATION_REQUEST, userVerificationEmailDto);
             return true;
         }
         return false;

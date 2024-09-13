@@ -14,7 +14,7 @@ public class UserLoginContext extends User {
     private final String email;
 
     public UserLoginContext( Collection<? extends GrantedAuthority> authorities, com.ggul.application.user.domain.User user) {
-        super(user.getUsername(), user.getPassword(), authorities);
+        super(user.getUsername(), user.getPassword().getValue(), authorities);
         this.userId = user.getId();
         this.email = user.getUsername();
     }
