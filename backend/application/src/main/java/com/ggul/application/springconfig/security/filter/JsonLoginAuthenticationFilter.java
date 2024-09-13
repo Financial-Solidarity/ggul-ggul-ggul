@@ -2,21 +2,17 @@ package com.ggul.application.springconfig.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ggul.application.springconfig.security.token.JsonLoginAuthenticationToken;
-import com.ggul.application.user.ui.dto.UserLoginRequest;
-import jakarta.servlet.FilterChain;
+import com.ggul.application.user.application.dto.UserLoginRequest;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 

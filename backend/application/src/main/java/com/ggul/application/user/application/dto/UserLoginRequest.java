@@ -1,4 +1,4 @@
-package com.ggul.application.user.ui.dto;
+package com.ggul.application.user.application.dto;
 
 import lombok.*;
 
