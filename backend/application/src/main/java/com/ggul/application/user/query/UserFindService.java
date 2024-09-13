@@ -2,6 +2,7 @@ package com.ggul.application.user.query;
 
 import com.ggul.application.user.domain.UserRepository;
 import com.ggul.application.user.query.dto.EmailDuplicateCheckRequest;
+import com.ggul.application.user.query.dto.NicknameDuplicateCheckRequest;
 import com.ggul.application.user.ui.dto.DuplicateValidationView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,12 @@ public class UserFindService {
     public DuplicateValidationView emailDuplicateCheck(EmailDuplicateCheckRequest request) {
         Boolean isDuplicated = userRepository.existsByUsername(request.getEmail());
         return DuplicateValidationView.builder().isDuplicated(isDuplicated).build();
+    }
+
+
+    @Transactional(readOnly = true)
+    public DuplicateValidationView nicknameDuplicateCheck(NicknameDuplicateCheckRequest request) {
+            Boolean isDuplicated = userRepository.existsByNickname(request.getNickname());
+            return DuplicateValidationView.builder().isDuplicated(isDuplicated).build();
     }
 }

@@ -2,6 +2,7 @@ package com.ggul.application.user.ui;
 
 import com.ggul.application.user.query.UserFindService;
 import com.ggul.application.user.query.dto.EmailDuplicateCheckRequest;
+import com.ggul.application.user.query.dto.NicknameDuplicateCheckRequest;
 import com.ggul.application.user.ui.dto.DuplicateValidationView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,5 +23,10 @@ public class AuthController {
         return ResponseEntity.ok(duplicateValidationView);
     }
 
+    @PostMapping("/users/nickname/duplicate")
+    public ResponseEntity<?> getEmailDuplicateCheck(@RequestBody NicknameDuplicateCheckRequest request) {
+        DuplicateValidationView duplicateValidationView = userFindService.nicknameDuplicateCheck(request);
+        return ResponseEntity.ok(duplicateValidationView);
+    }
 
 }
