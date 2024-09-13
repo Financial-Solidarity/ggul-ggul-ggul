@@ -1,6 +1,7 @@
 package com.ggul.application.springconfig.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ggul.application.springconfig.security.service.UserLoginContext;
 import com.ggul.application.user.domain.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,11 +21,11 @@ public class JsonAuthSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {
 
-        User user = (User) auth.getPrincipal(); //인증 객체로부터 인증 성공 시 저장한 Account 객체 받아오기
+        UserLoginContext user = (UserLoginContext) auth.getPrincipal(); //인증 객체로부터 인증 성공 시 저장한 Account 객체 받아오기
         res.setStatus(HttpStatus.OK.value());
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        req.getSession().setAttribute("USER_ID", user.getId());
+        req.getSession().setAttribute("USER_ID", user.getUser().getId());
     }
 
 }
