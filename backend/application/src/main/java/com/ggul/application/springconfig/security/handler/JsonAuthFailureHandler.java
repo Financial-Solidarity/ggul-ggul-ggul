@@ -1,6 +1,7 @@
 package com.ggul.application.springconfig.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ggul.application.common.exception.ErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,18 +23,20 @@ public class JsonAuthFailureHandler implements AuthenticationFailureHandler {
 
         res.setStatus(HttpStatus.UNAUTHORIZED.value());
         res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
+        res.setCharacterEncoding("utf-8");
         String errMsg = "";
 
         if(exception instanceof UsernameNotFoundException){
-            errMsg = "Invalid Username or Password";
+            errMsg = "아이디 또는 비밀번호가 일치하지 않습니다.";
         } else if(exception instanceof BadCredentialsException){
-            errMsg = "Invalid Username or Password";
+            errMsg = "아이디 또는 비밀번호가 일치하지 않습니다.";
         } else {
             System.out.println(exception.getClass().getName());
-            errMsg = "Unknown Auth Exception";
+            errMsg = "알 수 없는 에러가 발생했습니다.";
         }
 
-        objectMapper.writeValue(res.getWriter(), errMsg);
+        ErrorResponse errorResponse = ErrorResponse.builder().status("A001").message(errMsg).build();
+
+        objectMapper.writeValue(res.getWriter(), errorResponse);
     }
 }
