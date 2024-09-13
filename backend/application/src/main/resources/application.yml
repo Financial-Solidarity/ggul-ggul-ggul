@@ -2,6 +2,11 @@ server:
   servlet:
     encoding:
       charset: UTF-8
+    session:
+      timeout: 1209600
+      cookie:
+        name: SESSIONID
+
 spring:
   profiles:
     include: dev, secret
@@ -22,3 +27,4 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+
