@@ -1,3 +1,6 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import react from 'eslint-plugin-react';
 import unusedImports from 'eslint-plugin-unused-imports';
@@ -7,21 +10,20 @@ import jsxA11Y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 });
 
 export default [
   {
+    files: ['**/*.{js,ts,tsx}'],
     ignores: [
       '.now/*',
       '**/*.css',
@@ -96,6 +98,7 @@ export default [
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
       'react-hooks/exhaustive-deps': 'off',
+      'react/no-unescaped-entities': 'off',
       'jsx-a11y/click-events-have-key-events': 'warn',
       'jsx-a11y/interactive-supports-focus': 'warn',
       'prettier/prettier': 'warn',
@@ -111,9 +114,10 @@ export default [
           argsIgnorePattern: '^_.*?$',
         },
       ],
+      '@typescript-eslint/no-explicit-any': 'error',
 
       'import/order': [
-        'warn',
+        'error',
         {
           groups: [
             'type',

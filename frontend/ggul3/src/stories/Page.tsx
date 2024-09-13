@@ -48,7 +48,7 @@ export const Page: React.FC = () => {
           </li>
         </ul>
         <p>
-          Get a guided tutorial on component-driven development at{' '}
+          Get a guided tutorial on component-driven development at
           <a
             href="https://storybook.js.org/tutorials/"
             rel="noopener noreferrer"
@@ -56,7 +56,7 @@ export const Page: React.FC = () => {
           >
             Storybook tutorials
           </a>
-          . Read more in the{' '}
+          . Read more in the
           <a
             href="https://storybook.js.org/docs"
             rel="noopener noreferrer"
