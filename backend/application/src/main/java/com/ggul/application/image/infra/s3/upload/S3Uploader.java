@@ -1,7 +1,7 @@
 package com.ggul.application.image.infra.s3.upload;
 
 
-import com.shinhan.solsolhigh.common.util.UUIDGenerator;
+import com.ggul.application.common.jpa.domain.UUIDGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

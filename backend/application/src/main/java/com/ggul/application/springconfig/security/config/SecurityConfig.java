@@ -56,7 +56,6 @@ public class SecurityConfig {
         return new CustomAuthEntryPoint();
     }
 
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -95,12 +94,17 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**").permitAll()
                 .anyRequest().authenticated());
+        http.addFilterAfter(jsonLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
-        http.addFilterAt(jsonLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+        http.sessionManagement(httpSecuritySessionManagementConfigurer ->{
+            httpSecuritySessionManagementConfigurer
+                    .sessionAuthenticationStrategy((authentication, request, response) -> {
+                        authentication.
+                                request.getSession().
+                    });
 
-        http.sessionManagement(httpSecuritySessionManagementConfigurer ->
-                httpSecuritySessionManagementConfigurer
-                        .sessionCreationPolicy(SessionCreationPolicy.NEVER));
+            httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER)
+        });
         http.exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
                 httpSecurityExceptionHandlingConfigurer
                         .authenticationEntryPoint(accessAuthEntryPoint()));

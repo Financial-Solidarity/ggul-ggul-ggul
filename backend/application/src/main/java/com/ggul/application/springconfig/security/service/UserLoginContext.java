@@ -1,14 +1,17 @@
 package com.ggul.application.springconfig.security.service;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
 @Getter
-public class UserLoginContext extends User {
+@ToString
+public class UserLoginContext extends User implements Serializable {
 
     private final UUID userId;
     private final String email;
