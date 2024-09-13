@@ -49,7 +49,7 @@ public class AuthController {
         return ResponseEntity.ok(emailVerificationView);
     }
 
-    @PostMapping("/api/auth/users")
+    @PostMapping("/users")
     public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
         signupService.signup(request);
         return ResponseEntity.ok().build();
