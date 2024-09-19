@@ -25,8 +25,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.*;
 
 @Configuration
 @EnableWebSecurity
@@ -36,15 +36,13 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
 
+
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler(){
-        return new JsonAuthSuccessHandler();
-    }
+
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler(){
@@ -61,7 +59,7 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
+
     public AuthenticationProvider jsonAuthenticationProvider(){
         return new JsonLoginAuthenticationProvider(userDetailsService, bCryptPasswordEncoder());
     }
@@ -72,13 +70,24 @@ public class SecurityConfig {
     }
 
 
+    public JsonAuthSuccessHandler jsonAuthSuccessHandler() {
+        return new JsonAuthSuccessHandler(delegatingSecurityContextRepository());
+    }
 
     public JsonLoginAuthenticationFilter jsonLoginAuthenticationFilter(AuthenticationManager authenticationManager) {
         JsonLoginAuthenticationFilter filter = new JsonLoginAuthenticationFilter(objectMapper, authenticationManager);
         filter.setAuthenticationFailureHandler(authenticationFailureHandler());
-        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        filter.setAuthenticationSuccessHandler(jsonAuthSuccessHandler());
 
         return filter;
+    }
+
+    @Bean
+    public DelegatingSecurityContextRepository delegatingSecurityContextRepository() {
+        return new DelegatingSecurityContextRepository(
+                new RequestAttributeSecurityContextRepository(),
+                new HttpSessionSecurityContextRepository()
+        );
     }
 
     @Bean
@@ -92,18 +101,17 @@ public class SecurityConfig {
         ProviderManager p = (ProviderManager) authenticationManager;
         p.getProviders().add(jsonAuthenticationProvider());
 
+        http.securityContext((securityContext) -> {
+            securityContext.securityContextRepository(delegatingSecurityContextRepository());
+            securityContext.requireExplicitSave(true); // true로 주게 되면 SecurityContextHolder의 값이 변경되어도 자동 저장되지 않게 함.
+        });
+
         http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**").permitAll()
                 .anyRequest().authenticated());
-        http.addFilterAfter(jsonLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(jsonLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
         http.sessionManagement(httpSecuritySessionManagementConfigurer ->{
-            httpSecuritySessionManagementConfigurer
-                    .sessionAuthenticationStrategy((authentication, request, response) -> {
-                        authentication.
-                                request.getSession().
-                    });
-
-            httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER)
+            httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
         });
         http.exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
                 httpSecurityExceptionHandlingConfigurer
