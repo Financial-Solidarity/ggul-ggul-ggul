@@ -32,6 +32,7 @@
     "@nextui-org/theme": "2.2.9",
     "@react-aria/visually-hidden": "3.8.12",
     "@tanstack/react-query": "^5.54.1",
+    "axios": "^1.7.7",
     "axios-mock-adapter": "^2.0.0",
     "clsx": "2.1.1",
     "dayjs": "^1.11.13",
