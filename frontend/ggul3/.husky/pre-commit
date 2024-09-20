@@ -1,8 +1,0 @@
-#!/bin/sh
-HUSKY_GIT_DIR=../../.git
-. "$(dirname "$0")/_/husky.sh"
-
-echo "Husky pre-commit hook is running!"
-
-cd ./frontend/ggul3
-npx lint-staged
