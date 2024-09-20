@@ -20,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "user")
 @Entity
+
 public class User extends SoftDeleteEntity {
     @Id
     @GeneratedValue
