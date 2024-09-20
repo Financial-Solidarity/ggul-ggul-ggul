@@ -1,9 +1,12 @@
 import { nextui } from '@nextui-org/theme';
 
+import { myBlue, myMint, myYellow } from './src/styles/colors';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './index.html',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
     './src/layouts/**/*.{js,ts,jsx,tsx,mdx}',
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -13,5 +16,48 @@ module.exports = {
     extend: {},
   },
   darkMode: 'class',
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              ...myBlue,
+              DEFAULT: myBlue[500],
+              foreground: '#ffffff',
+            },
+            secondary: {
+              ...myYellow,
+              DEFAULT: myYellow[500],
+              foreground: '#ffffff',
+            },
+            success: {
+              ...myMint,
+              DEFAULT: myMint[500],
+              foreground: '#ffffff',
+            },
+          },
+        },
+        dark: {
+          colors: {
+            primary: {
+              ...myBlue,
+              DEFAULT: myBlue[500],
+              foreground: '#ffffff',
+            },
+            secondary: {
+              ...myYellow,
+              DEFAULT: myYellow[500],
+              foreground: '#ffffff',
+            },
+            success: {
+              ...myMint,
+              DEFAULT: myMint[500],
+              foreground: '#ffffff',
+            },
+          },
+        },
+      },
+    }),
+  ],
 };
