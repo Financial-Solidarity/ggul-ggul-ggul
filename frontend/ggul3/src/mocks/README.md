@@ -32,7 +32,19 @@ export const handlers = [
 ];
 ```
 
-4. mockRequest 함수에 요청 함수를 전달하면 msw가 실행되며 요청을 가로채어 실행한 뒤, msw를 다시 종료합니다.
+4. browser.ts파일의 setupWorker에 작성한 핸들러를 인자로 전달합니다.
+
+```
+// src/mocks/browser.ts
+
+import { setupWorker } from 'msw/browser';
+
+import { handlers } from './domain1/domain1Handlers';
+
+export const worker = setupWorker(...handlers);
+```
+
+5. mockRequest 함수에 요청 함수를 전달하면 msw가 실행되며 요청을 가로채어 실행한 뒤, msw를 다시 종료합니다.
 
 ```
 import { mockRequest } from './mocks/wrapper';
