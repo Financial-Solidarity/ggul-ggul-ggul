@@ -1,5 +1,7 @@
 import { nextui } from '@nextui-org/theme';
 
+import { myPurple, myMint, myYellow } from './src/styles/colors';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -14,5 +16,48 @@ module.exports = {
     extend: {},
   },
   darkMode: 'class',
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              ...myPurple,
+              DEFAULT: myPurple[500],
+              foreground: '#ffffff',
+            },
+            secondary: {
+              ...myYellow,
+              DEFAULT: myYellow[500],
+              foreground: '#ffffff',
+            },
+            success: {
+              ...myMint,
+              DEFAULT: myMint[500],
+              foreground: '#ffffff',
+            },
+          },
+        },
+        dark: {
+          colors: {
+            primary: {
+              ...myPurple,
+              DEFAULT: myPurple[500],
+              foreground: '#ffffff',
+            },
+            secondary: {
+              ...myYellow,
+              DEFAULT: myYellow[500],
+              foreground: '#ffffff',
+            },
+            success: {
+              ...myMint,
+              DEFAULT: myMint[500],
+              foreground: '#ffffff',
+            },
+          },
+        },
+      },
+    }),
+  ],
 };

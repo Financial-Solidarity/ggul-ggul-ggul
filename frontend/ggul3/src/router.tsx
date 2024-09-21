@@ -3,16 +3,16 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import { GGul } from './modules/ggul';
 
-export interface IPath {
+export interface Path {
   path: string;
   name: string;
 }
 
-export interface IPathNames {
-  [key: string]: IPath;
+export interface PathNames {
+  [key: string]: Path;
 }
 
-export const PathNames: IPathNames = {
+export const PathNames: PathNames = {
   HOME: {
     path: '/',
     name: '홈',
@@ -26,8 +26,16 @@ export const PathNames: IPathNames = {
     name: '챌린지',
   },
   GGULPAY: {
-    path: '/ggulpay',
-    name: '챌린지',
+    path: '/pay',
+    name: '껄페이',
+  },
+  ACCOUNTBOOK: {
+    path: '/accountbook',
+    name: '가계부',
+  },
+  MYPAGE: {
+    path: '/mypage',
+    name: '마이페이지',
   },
 };
 
@@ -39,21 +47,38 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: '/',
+        element: <GGul />,
+      },
+      {
+        path: PathNames.GAME.path,
+        element: <GGul />,
+      },
+      {
+        path: PathNames.CHALLENGE.path,
+        element: <GGul />,
+      },
+      {
+        path: PathNames.GGULPAY.path,
+        element: <GGul />,
+      },
+      {
+        path: PathNames.ACCOUNTBOOK.path,
+        element: <GGul />,
+      },
+      {
+        path: PathNames.MYPAGE.path,
         element: <GGul />,
       },
     ],
   },
   {
-    path: '/Login',
+    path: '/login',
     element: <></>,
     errorElement: <></>,
-    children: [],
   },
   {
-    path: '/ggulpay',
-    element: <></>,
+    path: '/signup',
+    element: <GGul />,
     errorElement: <></>,
-    children: [],
   },
 ]);
