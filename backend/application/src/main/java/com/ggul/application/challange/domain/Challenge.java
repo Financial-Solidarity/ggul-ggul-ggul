@@ -1,5 +1,8 @@
 package com.ggul.application.challange.domain;
 
+import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
+import com.ggul.application.common.domain.password.Password;
+import com.ggul.application.common.domain.password.PasswordConverter;
 import com.ggul.application.common.jpa.domain.BaseEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
 import com.ggul.application.user.domain.User;
@@ -17,8 +20,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-@Entity(name = "challangeroom")
-public class ChallengeRoom extends BaseEntity {
+@Entity(name = "challange")
+public class Challenge extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "challenge_id")
@@ -31,8 +34,9 @@ public class ChallengeRoom extends BaseEntity {
     @Column(name = "challenge_password_exist")
     private Boolean passwordExist;
 
+    @Convert(converter = PasswordConverter.class)
     @Column(name = "challenge_password")
-    private String password;
+    private Password password;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_owner_id")
@@ -62,4 +66,23 @@ public class ChallengeRoom extends BaseEntity {
 
     @Column(name = "challenge_ended_at")
     private LocalDateTime endedAt;
+
+    public static Challenge createChallengeRoom(ChallengeRegisterRequest request, User owner) {
+        return Challenge.builder()
+                .budgeCap(request.getBudgetCap())
+                .title(request.getTitle())
+                .competitionType(CompetitionType.of(request.getCompetitionType()))
+                .isBlindness(request.getIsBlindness())
+                .password(request.getPassword() != null ? Password.of(request.getPassword(), false) : null)
+                .owner(owner)
+                .build();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        passwordExist = password == null;
+        isStarted = false;
+        isEnded = false;
+
+    }
 }
