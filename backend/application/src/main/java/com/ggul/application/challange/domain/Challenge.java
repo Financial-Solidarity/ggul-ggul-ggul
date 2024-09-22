@@ -75,6 +75,8 @@ public class Challenge extends BaseEntity {
                 .isBlindness(request.getIsBlindness())
                 .password(request.getPassword() != null ? Password.of(request.getPassword(), false) : null)
                 .owner(owner)
+                .startedAt(request.getStartDate().atStartOfDay())
+                .endedAt(request.getEndDate().atStartOfDay())
                 .build();
     }
 
@@ -83,6 +85,5 @@ public class Challenge extends BaseEntity {
         passwordExist = password == null;
         isStarted = false;
         isEnded = false;
-
     }
 }
