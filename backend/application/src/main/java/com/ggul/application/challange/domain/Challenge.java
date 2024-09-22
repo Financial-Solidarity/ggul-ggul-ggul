@@ -19,8 +19,8 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
-@Entity(name = "challange")
+@Table(name = "challenge")
+@Entity
 public class Challenge extends BaseEntity {
     @Id
     @GeneratedValue
@@ -52,8 +52,8 @@ public class Challenge extends BaseEntity {
     @Column(name = "challenge_limit_participant")
     private Integer limitParticipant;
 
-    @Column(name = "challenge_budge_cap")
-    private Integer budgeCap;
+    @Column(name = "challenge_budget_cap")
+    private Integer budgetCap;
 
     @Column(name = "challenge_is_started")
     private Boolean isStarted;
@@ -69,7 +69,7 @@ public class Challenge extends BaseEntity {
 
     public static Challenge createChallengeRoom(ChallengeRegisterRequest request, User owner) {
         return Challenge.builder()
-                .budgeCap(request.getBudgetCap())
+                .budgetCap(request.getBudgetCap())
                 .title(request.getTitle())
                 .competitionType(CompetitionType.of(request.getCompetitionType()))
                 .isBlindness(request.getIsBlindness())

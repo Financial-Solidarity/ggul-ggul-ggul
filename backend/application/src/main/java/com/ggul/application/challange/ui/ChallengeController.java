@@ -7,6 +7,8 @@ import com.ggul.application.challange.ui.dto.ChallengeCreateView;
 import com.ggul.application.challange.ui.dto.ChallengeView;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +32,10 @@ public class ChallengeController {
     public ResponseEntity<?> getChallenge(@PathVariable UUID challengeId) {
         ChallengeView challengeDto = challengeFindService.getChallenge(challengeId);
         return ResponseEntity.ok(challengeDto);
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<?> getChallengeSearch(@RequestParam(value = "title", required = false) String title, Pageable pageable) {
+        return ResponseEntity.ok(challengeFindService.getChallenges(title, pageable));
     }
 }

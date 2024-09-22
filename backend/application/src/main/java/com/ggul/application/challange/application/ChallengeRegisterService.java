@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ChallengeRegisterService {
     private final ChallengeRepository challengeRepository;
     private final UserRepository userRepository;
+
     @Transactional
     public UUID createChallenge(ChallengeRegisterRequest request, UUID userId) {
         Challenge createChallenge = Challenge.createChallengeRoom(request, userRepository.getReferenceById(userId));

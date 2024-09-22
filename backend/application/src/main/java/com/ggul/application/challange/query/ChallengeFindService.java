@@ -6,6 +6,8 @@ import com.ggul.application.challange.exception.ChallengeNotFoundException;
 import com.ggul.application.challange.ui.dto.ChallengeView;
 import com.ggul.application.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,4 +27,11 @@ public class ChallengeFindService {
         return ChallengeView.from(challenge);
     }
 
+    @Transactional(readOnly = true)
+    public Slice<ChallengeView> getChallenges(String title, Pageable pageable) {
+        if(title == null || title.isEmpty()) {
+            return challengeRepository.findChallengeView(pageable);
+        }
+        return challengeRepository.findChallengeViewByTitle(pageable, title);
+    }
 }

@@ -23,7 +23,7 @@ import java.util.UUID;
 public class User extends SoftDeleteEntity {
     @Id
     @GeneratedValue
-    @Column(name = "user_id", columnDefinition = "BINARY(16)")
+    @Column(name = "user_id")
     @UUIDv7
     private UUID id;
 
