@@ -1,5 +1,6 @@
 package com.ggul.application.challange.ui;
 
+import com.ggul.application.challange.application.ChallengeJoinService;
 import com.ggul.application.challange.application.ChallengeRegisterService;
 import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
 import com.ggul.application.challange.query.ChallengeFindService;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RestController
 public class ChallengeController {
     private final ChallengeRegisterService challengeRegisterService;
+    private final ChallengeJoinService challengeJoinService;
     private final ChallengeFindService challengeFindService;
 
     @PostMapping()
@@ -31,8 +33,14 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeDto);
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     public ResponseEntity<?> getChallengeSearch(@RequestParam(value = "title", required = false) String title, Pageable pageable) {
         return ResponseEntity.ok(challengeFindService.getChallenges(title, pageable));
+    }
+
+    @PostMapping("/{challengeId}/join")
+    public ResponseEntity<?> joinChallenge(@PathVariable UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
+        challengeJoinService.join(challengeId, context.getUserId());
+        return ResponseEntity.ok().build();
     }
 }
