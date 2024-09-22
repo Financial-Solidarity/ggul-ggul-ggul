@@ -22,6 +22,6 @@ public class ChallengeController {
     @PostMapping()
     public ResponseEntity<?> challengeCreate(@RequestBody ChallengeRegisterRequest request, @AuthenticationPrincipal UserLoginContext context) {
         UUID challengeId = challengeRegisterService.createChallenge(request, context.getUserId());
-        return ResponseEntity.ok(ChallengeCreateView.builder().roomId(challengeId).build());
+        return ResponseEntity.ok(ChallengeCreateView.builder().challengeId(challengeId).build());
     }
 }
