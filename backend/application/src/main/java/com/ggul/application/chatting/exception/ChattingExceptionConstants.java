@@ -13,7 +13,7 @@ public enum ChattingExceptionConstants implements ErrorCodeDefinition {
 
 
     CHATTING_ROOM_PARTICIPANT_NOT_BALANCED("참가자의 비율이 맞지 않습니다", "CP001", HttpStatus.BAD_REQUEST),
-    CHATTING_ROOM_PARTICIPANT_EXIST("이미 참가한 방입니다.", "CP002", HttpStatus.BAD_REQUEST),
+    CHATTING_ROOM_PARTICIPANT_EXIST("이미 참가한 방입니다.", "CRP002", HttpStatus.BAD_REQUEST),
     ;
 
     private final String message;

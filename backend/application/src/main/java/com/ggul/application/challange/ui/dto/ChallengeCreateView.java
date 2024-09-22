@@ -11,4 +11,5 @@ import java.util.UUID;
 @Getter
 public class ChallengeCreateView {
     private UUID challengeId;
+    private UUID lobbyChattingRoomId;
 }

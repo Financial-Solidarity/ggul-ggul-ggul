@@ -6,7 +6,12 @@ import java.util.EnumSet;
 
 @Getter
 public class ChattingRoomType {
-    private Type type;
+    private final Type type;
+
+    public static final ChattingRoomType RED = new ChattingRoomType(Type.RED);
+    public static final ChattingRoomType BLUE = new ChattingRoomType(Type.BLUE);
+    public static final ChattingRoomType TOTAL = new ChattingRoomType(Type.TOTAL);
+    public static final ChattingRoomType LOBBY = new ChattingRoomType(Type.LOBBY);
 
     public enum Type {
         RED('R'), BLUE('B'), TOTAL('T'), LOBBY('L'),
@@ -24,6 +29,14 @@ public class ChattingRoomType {
 
     public ChattingRoomType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChattingRoomType that = (ChattingRoomType) o;
+        return type == that.type;
     }
 
 

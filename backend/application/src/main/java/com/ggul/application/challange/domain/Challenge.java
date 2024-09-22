@@ -87,4 +87,12 @@ public class Challenge extends BaseEntity {
         isStarted = false;
         isEnded = false;
     }
+
+    public ChallengeParticipant join(User user, ChallengeParticipantType participantType) {
+        return ChallengeParticipant.builder()
+                .challenge(this)
+                .type(participantType)
+                .user(user)
+                .build();
+    }
 }

@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS challenge;
 DROP TABLE IF EXISTS chatting_room_participant;
 DROP TABLE IF EXISTS chatting_room;
-
+DROP TABLE IF EXISTS challenge_participant;
+DROP TABLE IF EXISTS challenge;
 DROP TABLE IF EXISTS user;
 
 
@@ -29,6 +29,15 @@ CREATE TABLE challenge (
     challenge_started_at DATETIME,
     challenge_ended_at DATETIME,
     FOREIGN KEY (challenge_owner_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE challenge_participant (
+  challenge_participant_id BINARY(16) NOT NULL PRIMARY KEY,
+  challenge_id BINARY(16) NOT NULL,
+  user_id BINARY(16) NOT NULL,
+  challenge_participant_type CHAR(1)  NOT NULL,
+  FOREIGN KEY (challenge_id) REFERENCES challenge(challenge_id),
+  FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
 CREATE TABLE chatting_room (

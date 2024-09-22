@@ -1,0 +1,40 @@
+package com.ggul.application.challange.application;
+
+import com.ggul.application.challange.domain.Challenge;
+import com.ggul.application.challange.domain.ChallengeParticipant;
+import com.ggul.application.challange.domain.ChallengeParticipantType;
+import com.ggul.application.challange.domain.CompetitionType;
+import com.ggul.application.challange.domain.repository.ChallengeParticipantRepository;
+import com.ggul.application.challange.domain.repository.ChallengeRepository;
+import com.ggul.application.challange.exception.ChallengeNotFoundException;
+import com.ggul.application.challange.exception.ChallengeParticipantExistException;
+import com.ggul.application.challange.query.ChallengeParticipantFindService;
+import com.ggul.application.user.domain.User;
+import com.ggul.application.user.domain.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@RequiredArgsConstructor
+@Service
+public class ChallengeJoinService {
+    private final ChallengeRepository challengeRepository;
+    private final ChallengeParticipantRepository challengeParticipantRepository;
+    private final UserRepository userRepository;
+    private final ChallengeParticipantFindService challengeParticipantFindService;
+
+    @Transactional
+    public UUID join(UUID challengeId, UUID participantId) {
+        if (challengeParticipantRepository.existsByChallenge_IdAndUser_Id(challengeId, participantId)) {
+            throw new ChallengeParticipantExistException();
+        }
+
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(ChallengeNotFoundException::new);
+        User user = userRepository.getReferenceById(participantId);
+        ChallengeParticipant join = challenge.join(user, challenge.getCompetitionType().getType().equals(CompetitionType.Type.SOLO) ? ChallengeParticipantType.PERSONAL : challengeParticipantFindService.allocateParticipantType(challengeId));
+        return challengeParticipantRepository.save(join).getId();
+    }
+
+}

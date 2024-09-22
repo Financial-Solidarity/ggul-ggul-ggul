@@ -35,8 +35,8 @@ public class ChattingRoom extends BaseEntity {
     @Column(name = "chatting_room_type")
     private ChattingRoomType type;
 
-    public static ChattingRoom create(Challenge challenge, ChattingRoomType.Type type) {
-        return ChattingRoom.builder().challenge(challenge).type(new ChattingRoomType(type)).build();
+    public static ChattingRoom create(Challenge challenge, ChattingRoomType type) {
+        return ChattingRoom.builder().challenge(challenge).type(type).build();
     }
 
     public ChattingRoomParticipant join(User user) {

@@ -20,7 +20,7 @@ public class ChattingRoomJoinService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UUID chattingRoomJoin(UUID chattingRoomId, UUID userId) {
+    public UUID join(UUID chattingRoomId, UUID userId) {
         if(chattingRoomParticipantRepository.existsByChattingRoom_IdAndUser_Id(chattingRoomId, userId)) {
             throw new ChattingRoomParticipantExistException();
         }

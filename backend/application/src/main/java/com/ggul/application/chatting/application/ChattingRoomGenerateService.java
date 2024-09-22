@@ -3,9 +3,7 @@ package com.ggul.application.chatting.application;
 import com.ggul.application.challange.domain.Challenge;
 import com.ggul.application.challange.domain.repository.ChallengeRepository;
 import com.ggul.application.chatting.domain.ChattingRoom;
-import com.ggul.application.chatting.domain.ChattingRoomParticipant;
 import com.ggul.application.chatting.domain.ChattingRoomType;
-import com.ggul.application.chatting.domain.repository.ChattingRoomParticipantRepository;
 import com.ggul.application.chatting.domain.repository.ChattingRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,13 +21,13 @@ public class ChattingRoomGenerateService {
     @Transactional
     public UUID generateLobby(UUID challengeId) {
         Challenge challenge = challengeRepository.getReferenceById(challengeId);
-        ChattingRoom generate = generate(challenge, ChattingRoomType.Type.LOBBY);
+        ChattingRoom generate = generate(challenge, ChattingRoomType.LOBBY);
 
-        chattingRoomJoinService.chattingRoomJoin(generate.getId(), challenge.getOwner().getId());
+        chattingRoomJoinService.join(generate.getId(), challenge.getOwner().getId());
         return generate.getId();
     }
 
-    private ChattingRoom generate(Challenge challenge, ChattingRoomType.Type type) {
+    private ChattingRoom generate(Challenge challenge, ChattingRoomType type) {
         return chattingRoomRepository.save(ChattingRoom.create(challenge, type));
     }
 }
