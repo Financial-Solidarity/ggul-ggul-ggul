@@ -1,12 +1,16 @@
-import { Route, Routes } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import Temp from './modules/domain1/pages/Temp';
+import { BottomBar } from './modules/common/components/Layouts/BottomBar';
+import { Provider } from './provider';
 
 function App() {
   return (
-    <Routes>
-      <Route element={<Temp />} path="/" />
-    </Routes>
+    <Provider>
+      <div className="flex h-screen w-full flex-col">
+        <Outlet />
+        <BottomBar />
+      </div>
+    </Provider>
   );
 }
 

@@ -1,4 +1,4 @@
-export const myBlue = {
+export const myPurple = {
   '50': '#FCD4FF',
   '100': '#E2BCFF',
   '200': '#C9A4FF',

@@ -1,6 +1,6 @@
 import { nextui } from '@nextui-org/theme';
 
-import { myBlue, myMint, myYellow } from './src/styles/colors';
+import { myPurple, myMint, myYellow } from './src/styles/colors';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -22,8 +22,8 @@ module.exports = {
         light: {
           colors: {
             primary: {
-              ...myBlue,
-              DEFAULT: myBlue[500],
+              ...myPurple,
+              DEFAULT: myPurple[500],
               foreground: '#ffffff',
             },
             secondary: {
@@ -41,8 +41,8 @@ module.exports = {
         dark: {
           colors: {
             primary: {
-              ...myBlue,
-              DEFAULT: myBlue[500],
+              ...myPurple,
+              DEFAULT: myPurple[500],
               foreground: '#ffffff',
             },
             secondary: {
