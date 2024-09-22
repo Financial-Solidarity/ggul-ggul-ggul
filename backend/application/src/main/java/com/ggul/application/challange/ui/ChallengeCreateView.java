@@ -10,5 +10,5 @@ import java.util.UUID;
 @Setter
 @Getter
 public class ChallengeCreateView {
-    private UUID roomId;
+    private UUID challengeId;
 }
