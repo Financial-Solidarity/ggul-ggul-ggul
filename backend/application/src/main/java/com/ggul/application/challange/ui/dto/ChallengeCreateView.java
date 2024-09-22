@@ -1,4 +1,4 @@
-package com.ggul.application.challange.ui;
+package com.ggul.application.challange.ui.dto;
 
 import lombok.*;
 

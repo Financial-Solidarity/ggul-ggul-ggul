@@ -77,6 +77,7 @@ public class Challenge extends BaseEntity {
                 .owner(owner)
                 .startedAt(request.getStartDate().atStartOfDay())
                 .endedAt(request.getEndDate().atStartOfDay())
+                .limitParticipant(request.getLimitParticipant())
                 .build();
     }
 

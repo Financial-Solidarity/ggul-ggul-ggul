@@ -20,7 +20,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "user")
 @Entity
-
 public class User extends SoftDeleteEntity {
     @Id
     @GeneratedValue
@@ -65,4 +64,9 @@ public class User extends SoftDeleteEntity {
         }
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//
+//    }
 }

@@ -24,6 +24,8 @@ public class ChallengeRegisterRequest {
     private Boolean isBlindness;
     @NotNull
     private Integer budgetCap;
+    @NotNull
+    private Integer limitParticipant;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
