@@ -1,32 +1,55 @@
-import { Input } from '@nextui-org/input';
-import { Link } from '@nextui-org/link';
-import { Button } from '@nextui-org/button';
+import { useState } from 'react';
+
+import UserInput from '../components/UserInput';
+import UserLink from '../components/UserLink';
+import UserButton from '../components/UserButton';
+import UserLogo from '../components/UserLogo';
+import BoldSpan from '../components/UserBoldSpan';
+import BoldParagraph from '../components/UserBoldParagraph';
+import UserVerifyEmail from '../components/UserVerifyEmail';
 
 export default function FindPasswordPage() {
-  return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="text-center text-6xl font-black text-primary-500">
-        GGUL3
-      </h1>
-      <p className="text-medium font-bold text-gray-500">
-        비밀번호를 변경하기 위한
-      </p>
-      <p className="text-medium font-bold text-gray-500">
-        <span className="text-primary-500">이메일</span>을 입력해 주세요
-      </p>
-      <Input
-        label="이메일"
-        labelPlacement="inside"
-        radius="full"
-        size="sm"
-        variant="bordered"
-      />
-      <Button className="w-full" color="primary" radius="full" size="lg">
-        메일 보내기
-      </Button>
-      <Link className="text-medium font-bold text-gray-500" href="#" size="lg">
-        <span className="text-primary-500">껄껄껄</span> 로그인하러 가기
-      </Link>
-    </div>
-  );
+  const [step, setStep] = useState<string>('email');
+
+  if (step === 'email') {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <UserLogo />
+        <BoldParagraph>비밀번호를 변경하기 위한</BoldParagraph>
+        <BoldParagraph>
+          <BoldSpan>이메일</BoldSpan>을 입력해주세요.
+        </BoldParagraph>
+        <UserInput label="이메일" />
+        <UserButton>메일 보내기</UserButton>
+        <UserLink type="bold">
+          <BoldSpan>껄껄껄</BoldSpan>로그인하러 가기
+        </UserLink>
+      </div>
+    );
+  }
+
+  if (step === 'verify') {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <UserVerifyEmail purpose="비밀번호 변경" />;
+      </div>
+    );
+  }
+
+  if (step === 'new password') {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <UserLogo />
+        <BoldParagraph>
+          <BoldSpan>새로운 비밀번호</BoldSpan>를 입력해주세요
+        </BoldParagraph>
+        <UserInput label="새로운 비밀번호" />
+        <UserInput label="새로운 비밀번호 확인" />
+        <UserButton>비밀번호 변경하기</UserButton>
+        <UserLink type="bold">
+          <BoldSpan>껄껄껄</BoldSpan>로그인하러 가기
+        </UserLink>
+      </div>
+    );
+  }
 }
