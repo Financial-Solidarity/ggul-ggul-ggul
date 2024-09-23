@@ -1,6 +1,7 @@
 package com.ggul.application.challange.domain;
 
 import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
+import com.ggul.application.challange.exception.ChallengePasswordNotMatchException;
 import com.ggul.application.common.domain.password.Password;
 import com.ggul.application.common.domain.password.PasswordConverter;
 import com.ggul.application.common.jpa.domain.BaseEntity;
@@ -88,7 +89,12 @@ public class Challenge extends BaseEntity {
         isEnded = false;
     }
 
-    public ChallengeParticipant join(User user, ChallengeParticipantType participantType) {
+    public ChallengeParticipant join(User user, ChallengeParticipantType participantType, Password password) {
+        if(passwordExist) {
+            if (!this.password.equals(password)) {
+                throw new ChallengePasswordNotMatchException();
+            }
+        }
         return ChallengeParticipant.builder()
                 .challenge(this)
                 .type(participantType)

@@ -25,7 +25,7 @@ public class ChallengeRegisterService {
         Challenge createChallenge = Challenge.createChallengeRoom(request, userRepository.getReferenceById(userId));
         challengeRepository.save(createChallenge);
 
-        challengeJoinService.join(createChallenge.getId(), userId);
+        challengeJoinService.join(createChallenge.getId(), userId, createChallenge.getPassword());
         UUID chattingRoomId = chattingRoomGenerateService.generateLobby(createChallenge.getId());
         return ChallengeCreateView.builder().challengeId(createChallenge.getId()).lobbyChattingRoomId(chattingRoomId).build();
     }
