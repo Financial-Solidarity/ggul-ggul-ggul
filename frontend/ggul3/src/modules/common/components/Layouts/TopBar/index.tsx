@@ -13,7 +13,7 @@ export const TopBar = ({
 }: TopBarProps) => {
   return (
     <div className={`TOP-BAR sticky ${bgColor} h-12 w-full`}>
-      <ul className="flex h-12 w-full flex-row justify-between px-4">
+      <ul className="flex h-12 w-full flex-row justify-between px-2">
         <li className="flex h-12 w-max min-w-10 flex-row items-center justify-center">
           {left}
         </li>

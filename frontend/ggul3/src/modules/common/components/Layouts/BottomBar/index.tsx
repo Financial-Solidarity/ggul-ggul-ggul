@@ -20,7 +20,7 @@ export const BottomBar = () => {
   const navigate = useNavigate();
   const currentPathname = location.pathname;
 
-  const isCurrentPath = (path: string) => currentPathname === path;
+  const isCurrentPath = (path: string) => currentPathname.includes(path);
 
   const handleNavigation = (path: string) => {
     navigate(path, { state: { type: 'parent' } });
@@ -48,10 +48,10 @@ export const BottomBar = () => {
           />
           <BottomBarButton
             icon={<RocketLaunchIcon className="mb-[2px] h-7 w-7" />}
-            isActive={isCurrentPath(PathNames.GAME.path)}
+            isActive={isCurrentPath(PathNames.GAME.MAIN.path)}
             isDarkMode={isDarkMode}
             label="껄키우기"
-            onClick={() => handleNavigation(PathNames.GAME.path)}
+            onClick={() => handleNavigation(PathNames.GAME.MAIN.path)}
           />
         </ul>
 

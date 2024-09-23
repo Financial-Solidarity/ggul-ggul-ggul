@@ -1,7 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { GGul } from './modules/ggul';
+import { GameMain } from './modules/game/pages/GameMain';
+import { GameGame } from './modules/game/pages/GameGame';
+import { GameMarket } from './modules/game/pages/GameMarket';
+import { GameInventory } from './modules/game/pages/GameInventory';
+import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
 
 export interface Path {
   path: string;
@@ -9,17 +13,47 @@ export interface Path {
 }
 
 export interface PathNames {
-  [key: string]: Path;
+  HOME: Path;
+  GAME: {
+    MAIN: Path;
+    GAME: Path;
+    MARKET: Path;
+    INVENTORY: Path;
+    LUCKYDRAW: Path;
+  };
+  CHALLENGE: Path;
+  GGULPAY: Path;
+  ACCOUNTBOOK: Path;
+  MYPAGE: Path;
 }
 
+// PathNames 구조화
 export const PathNames: PathNames = {
   HOME: {
     path: '/',
     name: '홈',
   },
   GAME: {
-    path: '/game',
-    name: '껄키우기',
+    MAIN: {
+      path: '/game',
+      name: '껄키우기',
+    },
+    GAME: {
+      path: '/game/game',
+      name: '게임',
+    },
+    MARKET: {
+      path: '/game/market',
+      name: '마켓',
+    },
+    INVENTORY: {
+      path: '/game/inventory',
+      name: '인벤토리',
+    },
+    LUCKYDRAW: {
+      path: '/game/luckydraw',
+      name: '럭키드로우',
+    },
   },
   CHALLENGE: {
     path: '/challenge',
@@ -41,33 +75,47 @@ export const PathNames: PathNames = {
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: PathNames.HOME.path,
     element: <App />,
     errorElement: <></>,
     children: [
       {
-        index: true,
-        element: <GGul />,
-      },
-      {
-        path: PathNames.GAME.path,
-        element: <GGul />,
+        path: PathNames.GAME.MAIN.path,
+        element: <GameMain />,
+        children: [
+          {
+            path: PathNames.GAME.GAME.path,
+            element: <GameGame />,
+          },
+          {
+            path: PathNames.GAME.MARKET.path,
+            element: <GameMarket />,
+          },
+          {
+            path: PathNames.GAME.INVENTORY.path,
+            element: <GameInventory />,
+          },
+          {
+            path: PathNames.GAME.LUCKYDRAW.path,
+            element: <GameLuckyDraw />,
+          },
+        ],
       },
       {
         path: PathNames.CHALLENGE.path,
-        element: <GGul />,
+        element: <></>,
       },
       {
         path: PathNames.GGULPAY.path,
-        element: <GGul />,
+        element: <></>,
       },
       {
         path: PathNames.ACCOUNTBOOK.path,
-        element: <GGul />,
+        element: <></>,
       },
       {
         path: PathNames.MYPAGE.path,
-        element: <GGul />,
+        element: <></>,
       },
     ],
   },
@@ -78,7 +126,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/signup',
-    element: <GGul />,
+    element: <></>,
     errorElement: <></>,
   },
 ]);
