@@ -22,6 +22,7 @@ public class ChallengeRegisterService {
 
     @Transactional
     public ChallengeCreateView createChallenge(ChallengeRegisterRequest request, UUID userId) {
+        //TODO : 현재 챌린지 참여시 참여중인 챌린지가 있는지 검증하는 로직 추가.
         Challenge createChallenge = Challenge.createChallengeRoom(request, userRepository.getReferenceById(userId));
         challengeRepository.save(createChallenge);
 

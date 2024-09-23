@@ -30,6 +30,8 @@ public class ChallengeJoinService {
 
     @Transactional
     public UUID join(UUID challengeId, UUID participantId, Password password) {
+        //TODO : 현재 챌린지 참여시 참여중인 챌린지가 있는지 검증하는 로직 추가.
+
         if (challengeParticipantRepository.existsByChallenge_IdAndUser_Id(challengeId, participantId)) {
             throw new ChallengeParticipantExistException();
         }
