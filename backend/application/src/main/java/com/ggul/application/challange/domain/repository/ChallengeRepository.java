@@ -15,11 +15,11 @@ import java.util.UUID;
 public interface ChallengeRepository extends JpaRepository<Challenge, UUID> {
     @Query("SELECT new com.ggul.application.challange.ui.dto.ChallengeView(c.id, c.title, c.passwordExist, c.competitionType, c.isBlindness, c.limitParticipant, c.budgetCap, c.startedAt, c.endedAt) " +
             "FROM Challenge c " +
-            "WHERE c.isStarted = false AND c.isEnded = false AND c.title like %:title% ORDER BY c.createdAt DESC ")
+            "WHERE c.isStarted = false AND c.isEnded = false AND c.title like %:title% ORDER BY c.startedAt DESC, c.createdAt DESC")
     Slice<ChallengeView> findChallengeViewByTitle(Pageable pageable, @Param("title") String title);
 
     @Query("SELECT new com.ggul.application.challange.ui.dto.ChallengeView(c.id, c.title, c.passwordExist, c.competitionType, c.isBlindness, c.limitParticipant, c.budgetCap, c.startedAt, c.endedAt) " +
             "FROM Challenge c " +
-            "WHERE c.isStarted = false AND c.isEnded = false ORDER BY c.createdAt DESC ")
+            "WHERE c.isStarted = false AND c.isEnded = false ORDER BY c.startedAt DESC, c.createdAt DESC")
     Slice<ChallengeView> findChallengeView(Pageable pageable);
 }
