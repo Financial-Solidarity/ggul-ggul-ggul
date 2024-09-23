@@ -23,13 +23,16 @@ CREATE TABLE challenge (
     challenge_owner_id BINARY(16) NOT NULL,
     challenge_is_blindness BOOL NOT NULL,
     challenge_limit_participant TINYINT NOT NULL,
+    challenge_competition_type CHAR(1) NOT NULL,
     challenge_budget_cap INT NOT NULL,
     challenge_is_started BOOL NOT NULL,
     challenge_is_ended BOOL NOT NULL,
     challenge_started_at DATETIME,
     challenge_ended_at DATETIME,
+    created_at DATETIME NOT NULL,
     FOREIGN KEY (challenge_owner_id) REFERENCES user(user_id)
 );
+
 
 CREATE TABLE challenge_participant (
   challenge_participant_id BINARY(16) NOT NULL PRIMARY KEY,
@@ -58,3 +61,5 @@ CREATE TABLE chatting_room_participant (
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at) VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡', null, now());
 
+INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, challenge_password, challenge_owner_id, challenge_is_blindness, challenge_limit_participant, challenge_budget_cap, challenge_is_started, challenge_is_ended, challenge_started_at, challenge_ended_at, challenge_competition_type, created_at)
+VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3, false, false, NOW() + INTERVAL (30) SECOND , NOW() + INTERVAL (2) MINUTE , 'T', NOW());
