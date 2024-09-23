@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import {
   BottomBarState,
@@ -24,7 +25,13 @@ export const PageContainer = ({
   return (
     <>
       <div
-        className={`PAGE-CONTAINER ${bgColor} ${activePaddingX ? 'px-4' : 'px-0'} ${isBottomBarActivated ? 'pb-14' : 'pb-0'} w-full flex-1 overflow-auto`}
+        className={twMerge([
+          'PAGE-CONTAINER',
+          'flex h-full w-full flex-1 flex-col overflow-auto',
+          bgColor,
+          activePaddingX ? 'px-4' : 'px-0',
+          isBottomBarActivated ? 'pb-14' : 'pb-0',
+        ])}
       >
         <div className="py-2">{titleContent}</div>
 
