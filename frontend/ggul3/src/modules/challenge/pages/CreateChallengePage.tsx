@@ -6,7 +6,7 @@ import { useCreateChallengeStore, LAST_STEP } from '@/modules/challenge/store';
 import {
   CompetitionTypeStep,
   DetailStep,
-  NicknameOptionStep,
+  BlindnessStep,
   LimitParticipantStep,
   RoomTypeStep,
 } from '@/modules/challenge/components/createChallenge';
@@ -17,7 +17,7 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 const STEPS: Record<number, JSX.Element> = {
   1: <CompetitionTypeStep />,
   2: <LimitParticipantStep />,
-  3: <NicknameOptionStep />,
+  3: <BlindnessStep />,
   4: <RoomTypeStep />,
   5: <DetailStep />,
 };

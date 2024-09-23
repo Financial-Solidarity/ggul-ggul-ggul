@@ -5,9 +5,11 @@ interface CreateChallengeState {
   competitionType: 'S' | 'T' | null;
   limitParticipant: number;
   isCustomLimit: boolean; // 참가자수 직접 입력 여부
+  isBlindness: boolean | null;
   setCompetitionType: (type: 'S' | 'T') => void;
   setLimitParticipant: (limit: number) => void;
   setIsCustomLimit: (isCustom: boolean) => void;
+  setIsBlindness: (isBlindness: boolean) => void;
   toNextStep: () => void;
   toPrevStep: () => void;
 }
@@ -20,7 +22,7 @@ export const useCreateChallengeStore = create<CreateChallengeState>(
     competitionType: null,
     limitParticipant: 0,
     isCustomLimit: false,
-
+    isBlindness: null,
     setCompetitionType: (type: 'S' | 'T') => {
       set({ competitionType: type });
     },
@@ -29,6 +31,9 @@ export const useCreateChallengeStore = create<CreateChallengeState>(
     },
     setIsCustomLimit: (isCustom: boolean) => {
       set({ isCustomLimit: isCustom });
+    },
+    setIsBlindness: (isBlindness: boolean) => {
+      set({ isBlindness });
     },
     toNextStep: () => {
       if (get().step >= LAST_STEP) return;
