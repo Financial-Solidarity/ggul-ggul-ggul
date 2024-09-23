@@ -3,7 +3,6 @@ import { BottomSheetExample } from '@/modules/common/components/BottomSheetExamp
 export default function Temp() {
   return (
     <h1>
-      Temp
       <div>
         <BottomSheetExample />
       </div>
