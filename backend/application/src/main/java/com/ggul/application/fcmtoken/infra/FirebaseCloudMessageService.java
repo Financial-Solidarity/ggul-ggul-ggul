@@ -1,39 +1,48 @@
 package com.ggul.application.fcmtoken.infra;
 
 import com.google.firebase.messaging.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class FirebaseCloudMessageService {
 
 
-    public String sendDataMessageTo(Integer notificationId, String targetToken, String title, String body, String type, String target) throws FirebaseMessagingException {
-
-        Message msg = Message.builder()
+    public static MulticastMessage generateMulticastMessage(List<String> targetTokens, String title, String body, String type, Map<String, String> values) {
+        return MulticastMessage.builder()
                 .putData("time", LocalDateTime.now().toString())
-                .putData("notification_id", notificationId != null ? notificationId.toString() : "null")
                 .putData("title", title)
                 .putData("body", body)
                 .putData("type", type)
-                .putData("target", target)
-                .setToken(targetToken)
+                .putAllData(values)
+                .addAllTokens(targetTokens)
                 .setApnsConfig(ApnsConfig.builder().setAps(Aps.builder().setContentAvailable(true).build()).putHeader("apns-priority", "10").build())
-//                .setNotification(Notification.builder()
-//                        .setBody(body).setTitle(title)
-//                        .build())
+                .setNotification(Notification.builder()
+                        .setBody(body).setTitle(title)
+                        .build())
                 .setWebpushConfig(WebpushConfig.builder().setNotification(WebpushNotification.builder().setBody(body).setTitle(title).build()).build())
                 .setAndroidConfig(AndroidConfig.builder().setPriority(AndroidConfig.Priority.HIGH).build())
                 .build();
+    }
 
+    public String sendDataMessageTo(Message msg) throws FirebaseMessagingException {
         return sendMessageTo(msg);
+    }
+
+    public BatchResponse sendDataMessageTo(MulticastMessage multicastMessage) throws FirebaseMessagingException {
+        return FirebaseMessaging.getInstance().sendEachForMulticast(multicastMessage);
     }
 
     public String sendMessageTo(Message message) throws FirebaseMessagingException {
 
         return FirebaseMessaging.getInstance().send(message);
     }
+
 }
