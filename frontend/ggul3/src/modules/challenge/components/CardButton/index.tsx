@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 interface CardButtonProps {
   image: string;
   title: string;
+  titleSize?: 'sm' | 'md' | 'lg';
   description?: string;
   color?: string;
   bgColor?: string;
@@ -14,6 +15,7 @@ interface CardButtonProps {
 export const CardButton = ({
   image,
   title,
+  titleSize = 'md',
   description,
   color = 'white',
   selected = false,
@@ -31,7 +33,16 @@ export const CardButton = ({
     onClick={onClick}
   >
     <CardHeader className="flex-col items-start gap-2 pb-0">
-      <h4 className="text-lg font-semibold text-white">{title}</h4>
+      <h4
+        className={twMerge([
+          'text-lg font-semibold text-white',
+          titleSize === 'sm' && 'text-base',
+          titleSize === 'md' && 'text-xl',
+          titleSize === 'lg' && 'text-2xl',
+        ])}
+      >
+        {title}
+      </h4>
       {description && (
         <p className="text-center text-sm text-white">{description}</p>
       )}
