@@ -6,6 +6,10 @@ import { GameGame } from './modules/game/pages/GameGame';
 import { GameMarket } from './modules/game/pages/GameMarket';
 import { GameInventory } from './modules/game/pages/GameInventory';
 import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
+import LoginPage from './modules/user/pages/LoginPage';
+import SignUpPage from './modules/user/pages/SignUpPage';
+import FindPasswordPage from './modules/user/pages/FindPasswordPage';
+import { PayPage } from './modules/pay/pages/PayPage';
 
 export interface Path {
   path: string;
@@ -25,6 +29,9 @@ export interface PathNames {
   GGULPAY: Path;
   ACCOUNTBOOK: Path;
   MYPAGE: Path;
+  LOGIN: Path;
+  SIGHUP: Path;
+  FIND_PASSWORD: Path;
 }
 
 // PathNames 구조화
@@ -71,6 +78,18 @@ export const PathNames: PathNames = {
     path: '/mypage',
     name: '마이페이지',
   },
+  LOGIN: {
+    path: '/login',
+    name: '로그인',
+  },
+  SIGHUP: {
+    path: '/signup',
+    name: '로그인',
+  },
+  FIND_PASSWORD: {
+    path: '/find-password',
+    name: '로그인',
+  },
 };
 
 export const router = createBrowserRouter([
@@ -107,7 +126,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.GGULPAY.path,
-        element: <></>,
+        element: <PayPage />,
       },
       {
         path: PathNames.ACCOUNTBOOK.path,
@@ -120,13 +139,15 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/login',
-    element: <></>,
-    errorElement: <></>,
+    path: PathNames.LOGIN.path,
+    element: <LoginPage />,
   },
   {
-    path: '/signup',
-    element: <></>,
-    errorElement: <></>,
+    path: PathNames.SIGHUP.path,
+    element: <SignUpPage />,
+  },
+  {
+    path: PathNames.FIND_PASSWORD.path,
+    element: <FindPasswordPage />,
   },
 ]);
