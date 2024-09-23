@@ -8,7 +8,7 @@ import {
   DetailStep,
   BlindnessStep,
   LimitParticipantStep,
-  RoomTypeStep,
+  PasswordStep,
 } from '@/modules/challenge/components/createChallenge';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -18,7 +18,7 @@ const STEPS: Record<number, JSX.Element> = {
   1: <CompetitionTypeStep />,
   2: <LimitParticipantStep />,
   3: <BlindnessStep />,
-  4: <RoomTypeStep />,
+  4: <PasswordStep />,
   5: <DetailStep />,
 };
 
