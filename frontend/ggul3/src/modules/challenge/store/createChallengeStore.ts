@@ -7,11 +7,37 @@ interface CreateChallengeState {
   isCustomLimit: boolean; // 참가자수 직접 입력 여부
   isBlindness: boolean | null;
   password: string | null;
+  title: string;
+  budgetCap: number;
+  startDate: {
+    year: number;
+    month: number;
+    day: number;
+  } | null;
+  startTime: {
+    hour: number;
+    minute: number;
+  } | null;
+  endDate: {
+    year: number;
+    month: number;
+    day: number;
+  } | null;
+  endTime: {
+    hour: number;
+    minute: number;
+  } | null;
   setCompetitionType: (type: 'S' | 'T') => void;
   setLimitParticipant: (limit: number) => void;
   setIsCustomLimit: (isCustom: boolean) => void;
   setIsBlindness: (isBlindness: boolean) => void;
   setPassword: (password: string | null) => void;
+  setTitle: (title: string) => void;
+  setStartDate: (date: { year: number; month: number; day: number }) => void;
+  setStartTime: (time: { hour: number; minute: number }) => void;
+  setEndDate: (date: { year: number; month: number; day: number }) => void;
+  setEndTime: (time: { hour: number; minute: number }) => void;
+  setBudgetCap: (budgetCap: number) => void;
   toNextStep: () => void;
   toPrevStep: () => void;
 }
@@ -26,6 +52,12 @@ export const useCreateChallengeStore = create<CreateChallengeState>(
     isCustomLimit: false,
     isBlindness: null,
     password: null,
+    title: '',
+    budgetCap: 0,
+    startDate: null,
+    startTime: null,
+    endDate: null,
+    endTime: null,
     setCompetitionType: (type: 'S' | 'T') => {
       set({ competitionType: type });
     },
@@ -41,6 +73,25 @@ export const useCreateChallengeStore = create<CreateChallengeState>(
     setPassword: (password: string | null) => {
       set({ password });
     },
+    setTitle: (title: string) => {
+      set({ title });
+    },
+    setBudgetCap: (budgetCap: number) => {
+      set({ budgetCap });
+    },
+    setStartDate: (date) => {
+      set({ startDate: date });
+    },
+    setStartTime: (time) => {
+      set({ startTime: time });
+    },
+    setEndDate: (date) => {
+      set({ endDate: date });
+    },
+    setEndTime: (time) => {
+      set({ endTime: time });
+    },
+
     toNextStep: () => {
       if (get().step >= LAST_STEP) return;
       set((state) => ({ step: state.step + 1 }));
