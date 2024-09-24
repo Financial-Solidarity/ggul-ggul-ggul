@@ -5,7 +5,7 @@ interface CreateChallengeState {
   competitionType: 'S' | 'T' | null;
   limitParticipant: number;
   isCustomLimit: boolean; // 참가자수 직접 입력 여부
-  isBlindness: boolean | null;
+  isBlindness: boolean;
   password: string | null;
   title: string;
   budgetCap: number;
@@ -47,10 +47,10 @@ export const LAST_STEP = 5;
 export const useCreateChallengeStore = create<CreateChallengeState>(
   (set, get) => ({
     step: 1,
-    competitionType: null,
-    limitParticipant: 0,
+    competitionType: 'S',
+    limitParticipant: 2,
     isCustomLimit: false,
-    isBlindness: null,
+    isBlindness: false,
     password: null,
     title: '',
     budgetCap: 0,
