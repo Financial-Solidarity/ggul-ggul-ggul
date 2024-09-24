@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouteObject } from 'react-router-dom';
 
 import App from './App';
 import { GameMain } from './modules/game/pages/GameMain';
@@ -12,6 +12,7 @@ import FindPasswordPage from './modules/user/pages/FindPasswordPage';
 import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
 import { PayPage } from './modules/pay/pages/PayPage';
 import { WalletPage } from './modules/pay/pages/WalletPage';
+import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
 
 export interface Path {
   path: string;
@@ -27,7 +28,10 @@ export interface PathNames {
     INVENTORY: Path;
     LUCKYDRAW: Path;
   };
-  CHALLENGE: Path;
+  CHALLENGE: {
+    MAIN: Path;
+    CREATE: Path;
+  };
   GGULPAY: {
     MAIN: Path;
     WALLET: Path;
@@ -68,8 +72,14 @@ export const PathNames: PathNames = {
     },
   },
   CHALLENGE: {
-    path: '/challenge',
-    name: '챌린지',
+    MAIN: {
+      path: '/challenge',
+      name: '챌린지',
+    },
+    CREATE: {
+      path: '/challenge/create',
+      name: '챌린지만들기',
+    },
   },
   GGULPAY: {
     MAIN: {
@@ -102,6 +112,13 @@ export const PathNames: PathNames = {
     name: '로그인',
   },
 };
+
+const ChallengeRoutes: RouteObject[] = [
+  {
+    path: PathNames.CHALLENGE.CREATE.path,
+    element: <CretaeChallengePage />,
+  },
+];
 
 export const router = createBrowserRouter([
   {
@@ -151,6 +168,7 @@ export const router = createBrowserRouter([
         path: PathNames.MYPAGE.path,
         element: <></>,
       },
+      ...ChallengeRoutes,
     ],
   },
   {

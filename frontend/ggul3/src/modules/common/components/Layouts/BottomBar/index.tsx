@@ -42,10 +42,10 @@ export const BottomBar = () => {
             icon={
               <ChatBubbleOvalLeftEllipsisIcon className="mb-[2px] h-7 w-7" />
             }
-            isActive={isCurrentPath(PathNames.CHALLENGE.path)}
+            isActive={isCurrentPath(PathNames.CHALLENGE.MAIN.path)}
             isDarkMode={isDarkMode}
             label="챌린지"
-            onClick={() => handleNavigation(PathNames.CHALLENGE.path)}
+            onClick={() => handleNavigation(PathNames.CHALLENGE.MAIN.path)}
           />
           <BottomBarButton
             icon={<RocketLaunchIcon className="mb-[2px] h-7 w-7" />}
