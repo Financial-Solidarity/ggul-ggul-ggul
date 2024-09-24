@@ -1,12 +1,17 @@
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Card, Image } from '@nextui-org/react';
+
+import { SubTitle } from '../SubTitle';
 
 import shin from '@/assets/images/shin.png';
 
 const PrizeHistory = () => {
   return (
     <>
-      <SubTitle />
+      <SubTitle
+        count={2}
+        rightLinkButtonUrl="/pay/prize-history"
+        title="응모 내역"
+      />
       <div className="flex flex-nowrap gap-2 overflow-x-scroll rounded-lg bg-primary-400 p-2 text-black">
         <PrizeHistoryItem name="신라면 5봉지" />
         <PrizeHistoryItem name="신라면 5봉지" />
@@ -16,19 +21,6 @@ const PrizeHistory = () => {
         <PrizeHistoryItem name="신라면 5봉지" />
       </div>
     </>
-  );
-};
-
-const SubTitle = () => {
-  return (
-    <div className="flex justify-between">
-      <p className="font-bold">
-        응모 내역 <span className="text-primary-500">2</span>
-      </p>
-      <p className="flex content-center items-end items-center text-xs text-gray-500">
-        전체보기 <ChevronRightIcon className="size-3" />
-      </p>
-    </div>
   );
 };
 

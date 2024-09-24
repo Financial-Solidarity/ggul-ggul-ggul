@@ -11,6 +11,7 @@ import SignUpPage from './modules/user/pages/SignUpPage';
 import FindPasswordPage from './modules/user/pages/FindPasswordPage';
 import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
 import { PayPage } from './modules/pay/pages/PayPage';
+import { WalletPage } from './modules/pay/pages/WalletPage';
 
 export interface Path {
   path: string;
@@ -27,7 +28,10 @@ export interface PathNames {
     LUCKYDRAW: Path;
   };
   CHALLENGE: Path;
-  GGULPAY: Path;
+  GGULPAY: {
+    MAIN: Path;
+    WALLET: Path;
+  };
   ACCOUNTBOOK: Path;
   MYPAGE: Path;
   LOGIN: Path;
@@ -68,8 +72,14 @@ export const PathNames: PathNames = {
     name: '챌린지',
   },
   GGULPAY: {
-    path: '/pay',
-    name: '껄페이',
+    MAIN: {
+      path: '/pay',
+      name: '껄페이',
+    },
+    WALLET: {
+      path: '/pay/wallet',
+      name: '전자지갑',
+    },
   },
   ACCOUNTBOOK: {
     path: '/account-book',
@@ -126,8 +136,12 @@ export const router = createBrowserRouter([
         element: <></>,
       },
       {
-        path: PathNames.GGULPAY.path,
+        path: PathNames.GGULPAY.MAIN.path,
         element: <PayPage />,
+      },
+      {
+        path: PathNames.GGULPAY.WALLET.path,
+        element: <WalletPage />,
       },
       {
         path: PathNames.ACCOUNTBOOK.path,

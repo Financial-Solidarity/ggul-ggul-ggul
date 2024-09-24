@@ -1,7 +1,7 @@
 import { BellIcon } from '@heroicons/react/24/outline';
 
 interface NotificationButtonProps {
-  color?: 'black';
+  color?: 'black' | 'primary';
 }
 
 // 추후 fcm과 연동하여 로직 구현 필요함
