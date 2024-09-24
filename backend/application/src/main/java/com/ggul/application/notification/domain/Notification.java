@@ -2,33 +2,42 @@ package com.ggul.application.notification.domain;
 
 import com.ggul.application.common.jpa.domain.BaseEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
+import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
+import java.util.Map;
 import java.util.UUID;
 
 @SuperBuilder
 @Getter
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "notification_type")
 @Table(name = "notification")
 @Entity
-public abstract class Notification extends BaseEntity {
+public class Notification extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "notification_id")
     @UUIDv7
     private UUID id;
 
-    @Column
+    @Column(name = "notification_title")
     private String title;
 
-    @Column
+    @Column(name = "notification_body")
     private String body;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public abstract String getType();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "notification_type")
+    private NotificationType type;
+
+    @Lob
+    @Column(name = "data")
+    private Map<String, String> data;
+
 }

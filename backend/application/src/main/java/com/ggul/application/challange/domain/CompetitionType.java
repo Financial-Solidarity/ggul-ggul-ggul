@@ -12,6 +12,9 @@ import java.util.Objects;
 public class CompetitionType {
     private Type type;
 
+    public static final CompetitionType TEAM = new CompetitionType(Type.TEAM);
+    public static final CompetitionType SOLO = new CompetitionType(Type.SOLO);
+
     public enum Type {
         TEAM("T"), SOLO("S");
 

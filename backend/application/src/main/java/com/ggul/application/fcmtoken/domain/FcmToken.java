@@ -1,5 +1,6 @@
 package com.ggul.application.fcmtoken.domain;
 
+import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class FcmToken {
     @Column(name = "fcm_token")
     private String token;
 
-    @Column(name = "user_id")
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

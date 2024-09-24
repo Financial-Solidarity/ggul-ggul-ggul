@@ -1,6 +1,7 @@
 package com.ggul.application.challange.domain;
 
 import com.ggul.application.common.jpa.domain.BaseEntity;
+import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
 import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "challenge_participant")
 @Entity
-public class ChallengeParticipant extends BaseEntity {
+public class ChallengeParticipant extends SoftDeleteEntity {
     @Id
     @GeneratedValue
     @Column(name = "challenge_participant_id")

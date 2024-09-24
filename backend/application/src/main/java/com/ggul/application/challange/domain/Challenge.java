@@ -5,6 +5,7 @@ import com.ggul.application.challange.exception.ChallengePasswordNotMatchExcepti
 import com.ggul.application.common.domain.password.Password;
 import com.ggul.application.common.domain.password.PasswordConverter;
 import com.ggul.application.common.jpa.domain.BaseEntity;
+import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
 import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SoftDelete;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,7 +24,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "challenge")
 @Entity
-public class Challenge extends BaseEntity {
+@SoftDelete(columnName = "is_deleted")
+public class Challenge extends SoftDeleteEntity {
     @Id
     @GeneratedValue
     @Column(name = "challenge_id")

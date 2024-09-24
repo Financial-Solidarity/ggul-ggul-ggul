@@ -1,5 +1,6 @@
 package com.ggul.application.fcmtoken.infra;
 
+import com.ggul.application.fcmtoken.domain.FcmToken;
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,14 +16,14 @@ import java.util.Map;
 public class FirebaseCloudMessageService {
 
 
-    public static MulticastMessage generateMulticastMessage(List<String> targetTokens, String title, String body, String type, Map<String, String> values) {
+    public static MulticastMessage generateMulticastMessage(List<FcmToken> targetTokens, String title, String body, String type, Map<String, String> values) {
         return MulticastMessage.builder()
                 .putData("time", LocalDateTime.now().toString())
                 .putData("title", title)
                 .putData("body", body)
                 .putData("type", type)
                 .putAllData(values)
-                .addAllTokens(targetTokens)
+                .addAllTokens(targetTokens.stream().map(FcmToken::getToken).toList())
                 .setApnsConfig(ApnsConfig.builder().setAps(Aps.builder().setContentAvailable(true).build()).putHeader("apns-priority", "10").build())
                 .setNotification(Notification.builder()
                         .setBody(body).setTitle(title)
@@ -38,6 +39,31 @@ public class FirebaseCloudMessageService {
 
     public BatchResponse sendDataMessageTo(MulticastMessage multicastMessage) throws FirebaseMessagingException {
         return FirebaseMessaging.getInstance().sendEachForMulticast(multicastMessage);
+    }
+
+    public List<BatchResponse> sendDataMessageTo(List<MulticastMessage> multicastMessage){
+        return multicastMessage.stream().map(multicastMessage1 -> {
+            try {
+                return sendDataMessageTo(multicastMessage1);
+            } catch (FirebaseMessagingException ignored) {
+                return new BatchResponse() {
+                    @Override
+                    public List<SendResponse> getResponses() {
+                        return null;
+                    }
+
+                    @Override
+                    public int getSuccessCount() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getFailureCount() {
+                        return 0;
+                    }
+                };
+            }
+        }).toList();
     }
 
     public String sendMessageTo(Message message) throws FirebaseMessagingException {
