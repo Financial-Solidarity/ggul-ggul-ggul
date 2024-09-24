@@ -1,4 +1,4 @@
-package com.ggul.application.common.infra.blockchain;
+package com.ggul.application.common.infra.blockchain.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
