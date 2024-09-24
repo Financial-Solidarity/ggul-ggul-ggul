@@ -20,7 +20,7 @@ export default function FindPasswordPage() {
           <BoldSpan>이메일</BoldSpan>을 입력해주세요.
         </BoldParagraph>
         <UserInput label="이메일" />
-        <UserButton>메일 보내기</UserButton>
+        <UserButton>인증번호 보내기</UserButton>
         <UserLink type="bold">
           <BoldSpan>껄껄껄</BoldSpan>로그인하러 가기
         </UserLink>

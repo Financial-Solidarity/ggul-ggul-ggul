@@ -13,6 +13,7 @@ import BottomBarButton from './BottomBarButton';
 import { centerButtonStyles, boxShadowStyle } from './BottomBar.styles';
 
 import { PathNames } from '@/router';
+import { zIndex } from '@/modules/common/constants/zIndex';
 
 export const BottomBar = () => {
   const { active, isDarkMode } = useBottomBarStore();
@@ -32,7 +33,7 @@ export const BottomBar = () => {
     <div
       className={`BOTTOM-BAR fixed rounded-t-2xl border-t-2 ${
         isDarkMode ? 'border-[#494949] bg-zinc-800' : 'border-gray-300 bg-white'
-      } bottom-0 flex h-16 w-full items-center justify-between px-2 transition-colors duration-300`}
+      } bottom-0 ${zIndex.NAVIGATION} flex h-16 w-full items-center justify-between px-2 transition-colors duration-300`}
     >
       <ul className="flex w-full flex-row items-center justify-between px-4">
         {/* 좌측 버튼 */}
@@ -58,14 +59,16 @@ export const BottomBar = () => {
         {/* 중앙 버튼 */}
         <div
           className="absolute bottom-2 left-1/2 -translate-x-1/2 transform cursor-pointer"
-          onClick={() => handleNavigation(PathNames.GGULPAY.path)}
+          onClick={() => handleNavigation(PathNames.GGULPAY.MAIN.path)}
         >
           <div
             className={centerButtonStyles({
-              isActive: isCurrentPath(PathNames.GGULPAY.path),
+              isActive: isCurrentPath(PathNames.GGULPAY.MAIN.path),
             })}
             style={{
-              boxShadow: boxShadowStyle(isCurrentPath(PathNames.GGULPAY.path)),
+              boxShadow: boxShadowStyle(
+                isCurrentPath(PathNames.GGULPAY.MAIN.path),
+              ),
             }}
           >
             <QrCodeIcon className="h-8 w-8 text-white" />

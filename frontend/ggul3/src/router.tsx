@@ -6,6 +6,12 @@ import { GameGame } from './modules/game/pages/GameGame';
 import { GameMarket } from './modules/game/pages/GameMarket';
 import { GameInventory } from './modules/game/pages/GameInventory';
 import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
+import LoginPage from './modules/user/pages/LoginPage';
+import SignUpPage from './modules/user/pages/SignUpPage';
+import FindPasswordPage from './modules/user/pages/FindPasswordPage';
+import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
+import { PayPage } from './modules/pay/pages/PayPage';
+import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
 
 export interface Path {
@@ -26,9 +32,15 @@ export interface PathNames {
     MAIN: Path;
     CREATE: Path;
   };
-  GGULPAY: Path;
+  GGULPAY: {
+    MAIN: Path;
+    WALLET: Path;
+  };
   ACCOUNTBOOK: Path;
   MYPAGE: Path;
+  LOGIN: Path;
+  SIGHUP: Path;
+  FIND_PASSWORD: Path;
 }
 
 // PathNames 구조화
@@ -70,16 +82,34 @@ export const PathNames: PathNames = {
     },
   },
   GGULPAY: {
-    path: '/pay',
-    name: '껄페이',
+    MAIN: {
+      path: '/pay',
+      name: '껄페이',
+    },
+    WALLET: {
+      path: '/pay/wallet',
+      name: '전자지갑',
+    },
   },
   ACCOUNTBOOK: {
-    path: '/accountbook',
+    path: '/account-book',
     name: '가계부',
   },
   MYPAGE: {
     path: '/mypage',
     name: '마이페이지',
+  },
+  LOGIN: {
+    path: '/login',
+    name: '로그인',
+  },
+  SIGHUP: {
+    path: '/signup',
+    name: '로그인',
+  },
+  FIND_PASSWORD: {
+    path: '/find-password',
+    name: '로그인',
   },
 };
 
@@ -119,12 +149,20 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: PathNames.GGULPAY.path,
+        path: PathNames.CHALLENGE.path,
         element: <></>,
       },
       {
+        path: PathNames.GGULPAY.MAIN.path,
+        element: <PayPage />,
+      },
+      {
+        path: PathNames.GGULPAY.WALLET.path,
+        element: <WalletPage />,
+      },
+      {
         path: PathNames.ACCOUNTBOOK.path,
-        element: <></>,
+        element: <AccountBookPage />,
       },
       {
         path: PathNames.MYPAGE.path,
@@ -134,13 +172,15 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/login',
-    element: <></>,
-    errorElement: <></>,
+    path: PathNames.LOGIN.path,
+    element: <LoginPage />,
   },
   {
-    path: '/signup',
-    element: <></>,
-    errorElement: <></>,
+    path: PathNames.SIGHUP.path,
+    element: <SignUpPage />,
+  },
+  {
+    path: PathNames.FIND_PASSWORD.path,
+    element: <FindPasswordPage />,
   },
 ]);

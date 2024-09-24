@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import {
@@ -10,6 +10,7 @@ interface PageContainerProps {
   activePaddingX?: boolean;
   bgColor?: string;
   titleContent?: React.ReactNode;
+  containerRef?: Ref<HTMLDivElement>;
 }
 
 export const PageContainer = ({
@@ -17,6 +18,7 @@ export const PageContainer = ({
   activePaddingX = true,
   bgColor = 'bg-white',
   titleContent,
+  containerRef,
 }: PropsWithChildren<PageContainerProps>) => {
   const isBottomBarActivated = useBottomBarStore(
     (state: BottomBarState) => state.active,
@@ -25,6 +27,7 @@ export const PageContainer = ({
   return (
     <>
       <div
+        ref={containerRef}
         className={twMerge([
           'PAGE-CONTAINER',
           'flex h-full w-full flex-1 flex-col overflow-auto',

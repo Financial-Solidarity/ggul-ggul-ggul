@@ -1,11 +1,18 @@
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
-export const BackButton = () => {
+interface BackButtonProps {
+  color?: 'black' | 'primary';
+}
+
+export const BackButton = ({ color }: BackButtonProps) => {
   const navigate = useNavigate();
 
   return (
-    <button className="w-7 text-white" onClick={() => navigate(-1)}>
+    <button
+      className={`w-7 text-${color ? color : 'white'}`}
+      onClick={() => navigate(-1)}
+    >
       <ChevronLeftIcon />
     </button>
   );
