@@ -7,6 +7,7 @@ import { GameMarket } from './modules/game/pages/GameMarket';
 import { GameInventory } from './modules/game/pages/GameInventory';
 import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
+import { ChallengeListPage } from './modules/challenge/pages/ChallengeListPage';
 
 export interface Path {
   path: string;
@@ -84,6 +85,10 @@ export const PathNames: PathNames = {
 };
 
 const ChallengeRoutes: RouteObject[] = [
+  {
+    path: PathNames.CHALLENGE.MAIN.path,
+    element: <ChallengeListPage />,
+  },
   {
     path: PathNames.CHALLENGE.CREATE.path,
     element: <CretaeChallengePage />,
