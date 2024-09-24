@@ -33,7 +33,7 @@ export const CretaeChallengePage = () => {
       <PageContainer>
         <div className="flex h-full w-full flex-col">
           <Progress value={(step / LAST_STEP) * 100} />
-          <div className="flex flex-1 flex-col items-center justify-center">
+          <div className="flex w-full flex-1 flex-col items-center justify-center py-4">
             {STEPS[step]}
           </div>
           <div className="mt-auto flex flex-col pb-2">

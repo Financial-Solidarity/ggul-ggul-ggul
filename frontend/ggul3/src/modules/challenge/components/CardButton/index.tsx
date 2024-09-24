@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Image } from '@nextui-org/react';
+import { Card, CardHeader, CardBody } from '@nextui-org/react';
 import { twMerge } from 'tailwind-merge';
 
 interface CardButtonProps {
@@ -48,8 +48,8 @@ export const CardButton = ({
       )}
     </CardHeader>
     <CardBody className="flex w-full flex-col items-end justify-end p-2">
-      <div>
-        <Image alt={title} className="object-contain" src={image} />
+      <div className="h-20">
+        <img alt={title} className="h-full object-contain" src={image} />
       </div>
     </CardBody>
   </Card>
