@@ -15,6 +15,7 @@ import java.util.UUID;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@AttributeOverride(name = "createdAt", column = @Column(name = "participated_at"))
 @Table(name = "challenge_participant")
 @Entity
 public class ChallengeParticipant extends SoftDeleteEntity {
@@ -39,6 +40,6 @@ public class ChallengeParticipant extends SoftDeleteEntity {
     private String profile;
 
     @Convert(converter = ChallengeParticipantTypeConverter.class)
-    @Column(name = "challenge_particiapant_type")
+    @Column(name = "challenge_participant_type")
     private ChallengeParticipantType type;
 }

@@ -33,6 +33,23 @@ public class FirebaseCloudMessageService {
                 .build();
     }
 
+    public static Message generateMessage(FcmToken targetToken, String title, String body, String type, Map<String, String> values) {
+        return Message.builder()
+                .putData("time", LocalDateTime.now().toString())
+                .putData("title", title)
+                .putData("body", body)
+                .putData("type", type)
+                .putAllData(values)
+                .setToken(targetToken.getToken())
+                .setApnsConfig(ApnsConfig.builder().setAps(Aps.builder().setContentAvailable(true).build()).putHeader("apns-priority", "10").build())
+                .setNotification(Notification.builder()
+                        .setBody(body).setTitle(title)
+                        .build())
+                .setWebpushConfig(WebpushConfig.builder().setNotification(WebpushNotification.builder().setBody(body).setTitle(title).build()).build())
+                .setAndroidConfig(AndroidConfig.builder().setPriority(AndroidConfig.Priority.HIGH).build())
+                .build();
+    }
+
     public String sendDataMessageTo(Message msg) throws FirebaseMessagingException {
         return sendMessageTo(msg);
     }

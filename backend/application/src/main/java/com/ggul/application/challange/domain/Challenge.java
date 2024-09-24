@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.SoftDelete;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,7 +22,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "challenge")
 @Entity
-@SoftDelete(columnName = "is_deleted")
 public class Challenge extends SoftDeleteEntity {
     @Id
     @GeneratedValue
@@ -100,7 +98,7 @@ public class Challenge extends SoftDeleteEntity {
     }
 
     public ChallengeParticipant join(User user, ChallengeParticipantType participantType, Password password) {
-        if(passwordExist) {
+        if (passwordExist) {
             if (!this.password.equals(password)) {
                 throw new ChallengePasswordNotMatchException();
             }

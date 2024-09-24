@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS chatting_room;
 DROP TABLE IF EXISTS challenge_participant;
 DROP TABLE IF EXISTS challenge;
 DROP TABLE IF EXISTS notification;
+DROP TABLE IF EXISTS fcm_token;
 DROP TABLE IF EXISTS user;
 
 
@@ -14,6 +15,14 @@ CREATE TABLE user (
     user_profile VARCHAR(200),
     created_at DATETIME NOT NULL,
     is_deleted BOOLEAN NOT NULL default false
+);
+
+CREATE TABLE fcm_token(
+    fcm_token_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    fcm_token VARCHAR(255) NOT NULL,
+    user_id BINARY(16) NOT NULL,
+    session_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
 CREATE TABLE challenge (
@@ -43,6 +52,8 @@ CREATE TABLE challenge_participant (
   nickname VARCHAR(20) NOT NULL,
   profile VARCHAR(200),
   challenge_participant_type CHAR(1)  NOT NULL,
+  participated_at DATETIME NOT NULL,
+  is_deleted BOOL NOT NULL,
   FOREIGN KEY (challenge_id) REFERENCES challenge(challenge_id),
   FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
@@ -69,7 +80,7 @@ CREATE TABLE notification (
     notification_body VARCHAR(150) NOT NULL,
     user_id BINARY(16) NOT NULL,
     notification_type VARCHAR(40) NOT NULL,
-    data BLOB,
+    data JSON,
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 

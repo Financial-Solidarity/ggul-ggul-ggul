@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,8 +39,8 @@ public class Notification extends BaseEntity {
     @Column(name = "notification_type")
     private NotificationType type;
 
-    @Lob
-    @Column(name = "data")
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "data", columnDefinition = "JSON")
     private Map<String, String> data;
 
 }
