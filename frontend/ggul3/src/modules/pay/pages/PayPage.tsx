@@ -1,15 +1,24 @@
-import { Balance } from '../components/Balance';
-import { QrButton } from '../components/QrButton';
-import * as StatisticsButton from '../components/StatisticsButton';
+import { useEffect } from 'react';
+
+import GgulPoint from '../components/GgulPoint';
+import Roulette from '../components/Roulette';
+import GgulWallet from '../components/GgulWallet';
+import PrizeHistory from '../components/PrizeHistory';
+import GgulLinks from '../components/GgulLinks';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
-import burnMoney from '@/assets/images/burn-money.png';
-import financeChart from '@/assets/images/finance-chart.png';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const PayPage = () => {
+  const { setIsDarkMode } = useBottomBarStore();
+
+  useEffect(() => {
+    setIsDarkMode(true);
+  }, []);
+
   return (
     <>
       <TopBar
@@ -18,24 +27,20 @@ export const PayPage = () => {
         right={<NotificationButton color="black" />}
       />
       <PageContainer>
-        <Balance />
-        <QrButton />
+        <GgulPoint />
         <div className="flex gap-4">
-          <StatisticsButton.StatisticsButton
-            buttonImageUrl={burnMoney}
-            color="secondary"
-            description="이번 달 지출"
-            displayValue={`224,610 원`}
-          />
-          <StatisticsButton.StatisticsButton
-            buttonImageUrl={financeChart}
-            color="success"
-            description="항목별 소비 통계"
-            displayValue={`커피 28 회`}
-          />
+          <div className="flex-1">
+            <Roulette />
+          </div>
+          <div className="flex-1">
+            <GgulWallet />
+          </div>
         </div>
+        <div className="mb-4">
+          <PrizeHistory />
+        </div>
+        <GgulLinks />
       </PageContainer>
-      ;
     </>
   );
 };

@@ -9,6 +9,7 @@ import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
 import LoginPage from './modules/user/pages/LoginPage';
 import SignUpPage from './modules/user/pages/SignUpPage';
 import FindPasswordPage from './modules/user/pages/FindPasswordPage';
+import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
 import { PayPage } from './modules/pay/pages/PayPage';
 
 export interface Path {
@@ -71,7 +72,7 @@ export const PathNames: PathNames = {
     name: '껄페이',
   },
   ACCOUNTBOOK: {
-    path: '/accountbook',
+    path: '/account-book',
     name: '가계부',
   },
   MYPAGE: {
@@ -130,7 +131,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.ACCOUNTBOOK.path,
-        element: <></>,
+        element: <AccountBookPage />,
       },
       {
         path: PathNames.MYPAGE.path,
