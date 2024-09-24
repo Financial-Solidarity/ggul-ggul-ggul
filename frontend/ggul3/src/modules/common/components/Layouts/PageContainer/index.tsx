@@ -33,8 +33,7 @@ export const PageContainer = ({
           isBottomBarActivated ? 'pb-14' : 'pb-0',
         ])}
       >
-        <div className="py-2">{titleContent}</div>
-
+        {titleContent && <div className="py-2">{titleContent}</div>}
         {children}
       </div>
     </>
