@@ -9,7 +9,6 @@ import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
 import LoginPage from './modules/user/pages/LoginPage';
 import SignUpPage from './modules/user/pages/SignUpPage';
 import FindPasswordPage from './modules/user/pages/FindPasswordPage';
-import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
 import { PayPage } from './modules/pay/pages/PayPage';
 import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
@@ -38,7 +37,11 @@ export interface PathNames {
     WALLET: Path;
     PRIZE_HISTORY: Path;
   };
-  ACCOUNTBOOK: Path;
+  ACCOUNT_BOOK: {
+    MAIN: Path;
+    HISTORY: Path;
+    STATISTICS: Path;
+  };
   MYPAGE: Path;
   LOGIN: Path;
   SIGHUP: Path;
@@ -97,9 +100,19 @@ export const PathNames: PathNames = {
       name: '전자지갑',
     },
   },
-  ACCOUNTBOOK: {
-    path: '/account-book',
-    name: '가계부',
+  ACCOUNT_BOOK: {
+    MAIN: {
+      path: '/account-book',
+      name: '가계부',
+    },
+    HISTORY: {
+      path: '/account-book/history',
+      name: '거래 내역',
+    },
+    STATISTICS: {
+      path: '/account-book/statistics',
+      name: '통계',
+    },
   },
   MYPAGE: {
     path: '/mypage',
@@ -123,6 +136,21 @@ const challengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.CREATE.path,
     element: <CretaeChallengePage />,
+  },
+];
+
+const accountBook: RouteObject[] = [
+  {
+    path: PathNames.ACCOUNT_BOOK.MAIN.path,
+    element: <PayPage />,
+  },
+  {
+    path: PathNames.ACCOUNT_BOOK.STATISTICS.path,
+    element: <PayPage />,
+  },
+  {
+    path: PathNames.ACCOUNT_BOOK.HISTORY.path,
+    element: <PayPage />,
   },
 ];
 
@@ -185,16 +213,13 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: PathNames.ACCOUNTBOOK.path,
-        element: <AccountBookPage />,
-      },
-      {
         path: PathNames.MYPAGE.path,
         element: <></>,
       },
       ...challengeRoutes,
       ...payRoutes,
       ...loginRoutes,
+      ...accountBook,
     ],
   },
 ]);

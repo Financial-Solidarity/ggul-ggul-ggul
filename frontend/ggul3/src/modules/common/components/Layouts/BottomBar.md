@@ -12,7 +12,7 @@ export const PathNames: IPathNames = {
   GAME: { path: '/game', name: '껄키우기' },
   CHALLENGE: { path: '/challenge', name: '챌린지' },
   GGULPAY: { path: '/pay', name: '껄페이' },
-  ACCOUNTBOOK: { path: '/accountbook', name: '가계부' },
+  ACCOUNT_BOOK: { path: '/account-book', name: '가계부' },
   MYPAGE: { path: '/mypage', name: '마이페이지' },
 };
 ```
@@ -75,9 +75,9 @@ return (
         <BottomBarButton
           icon={<CalendarIcon className="h-7 w-7" />}
           label="가계부"
-          isActive={isCurrentPath(PathNames.ACCOUNTBOOK.path)}
+          isActive={isCurrentPath(PathNames.ACCOUNT_BOOK.path)}
           isDarkMode={isDarkMode}
-          onClick={() => handleNavigation(PathNames.ACCOUNTBOOK.path)}
+          onClick={() => handleNavigation(PathNames.ACCOUNT_BOOK.path)}
         />
       </ul>
     </ul>
