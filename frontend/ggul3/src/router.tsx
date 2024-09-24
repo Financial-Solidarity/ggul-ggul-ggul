@@ -13,6 +13,7 @@ import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
 import { PayPage } from './modules/pay/pages/PayPage';
 import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
+import PrizeHistory from './modules/pay/components/PrizeHistory';
 
 export interface Path {
   path: string;
@@ -35,6 +36,7 @@ export interface PathNames {
   GGULPAY: {
     MAIN: Path;
     WALLET: Path;
+    PRIZE_HISTORY: Path;
   };
   ACCOUNTBOOK: Path;
   MYPAGE: Path;
@@ -90,6 +92,10 @@ export const PathNames: PathNames = {
       path: '/pay/wallet',
       name: '전자지갑',
     },
+    PRIZE_HISTORY: {
+      path: '/pay/prize-history',
+      name: '전자지갑',
+    },
   },
   ACCOUNTBOOK: {
     path: '/account-book',
@@ -113,10 +119,40 @@ export const PathNames: PathNames = {
   },
 };
 
-const ChallengeRoutes: RouteObject[] = [
+const challengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.CREATE.path,
     element: <CretaeChallengePage />,
+  },
+];
+
+const payRoutes: RouteObject[] = [
+  {
+    path: PathNames.GGULPAY.MAIN.path,
+    element: <PayPage />,
+  },
+  {
+    path: PathNames.GGULPAY.WALLET.path,
+    element: <WalletPage />,
+  },
+  {
+    path: PathNames.GGULPAY.PRIZE_HISTORY.path,
+    element: <PrizeHistory />,
+  },
+];
+
+const loginRoutes: RouteObject[] = [
+  {
+    path: PathNames.LOGIN.path,
+    element: <LoginPage />,
+  },
+  {
+    path: PathNames.SIGHUP.path,
+    element: <SignUpPage />,
+  },
+  {
+    path: PathNames.FIND_PASSWORD.path,
+    element: <FindPasswordPage />,
   },
 ];
 
@@ -149,18 +185,6 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: PathNames.CHALLENGE.path,
-        element: <></>,
-      },
-      {
-        path: PathNames.GGULPAY.MAIN.path,
-        element: <PayPage />,
-      },
-      {
-        path: PathNames.GGULPAY.WALLET.path,
-        element: <WalletPage />,
-      },
-      {
         path: PathNames.ACCOUNTBOOK.path,
         element: <AccountBookPage />,
       },
@@ -168,19 +192,9 @@ export const router = createBrowserRouter([
         path: PathNames.MYPAGE.path,
         element: <></>,
       },
-      ...ChallengeRoutes,
+      ...challengeRoutes,
+      ...payRoutes,
+      ...loginRoutes,
     ],
-  },
-  {
-    path: PathNames.LOGIN.path,
-    element: <LoginPage />,
-  },
-  {
-    path: PathNames.SIGHUP.path,
-    element: <SignUpPage />,
-  },
-  {
-    path: PathNames.FIND_PASSWORD.path,
-    element: <FindPasswordPage />,
   },
 ]);

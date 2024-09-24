@@ -5,7 +5,7 @@ import { SubTitle } from '../SubTitle';
 
 const TokenPossession = () => {
   return (
-    <div className="mb-4">
+    <div className="mb-4 mt-6">
       <SubTitle title="보유 토큰" />
       <div className="flex flex-col gap-1 py-2">
         <TokenItem />
