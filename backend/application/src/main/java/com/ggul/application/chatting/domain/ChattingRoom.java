@@ -1,17 +1,15 @@
 package com.ggul.application.chatting.domain;
 
 import com.ggul.application.challange.domain.Challenge;
+import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.common.jpa.domain.BaseEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
-import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @SuperBuilder
@@ -39,7 +37,7 @@ public class ChattingRoom extends BaseEntity {
         return ChattingRoom.builder().challenge(challenge).type(type).build();
     }
 
-    public ChattingRoomParticipant join(User user) {
-        return ChattingRoomParticipant.builder().chattingRoom(this).user(user).build();
+    public ChattingRoomParticipant join(ChallengeParticipant user) {
+        return ChattingRoomParticipant.builder().chattingRoom(this).challengeParticipant(user).build();
     }
 }

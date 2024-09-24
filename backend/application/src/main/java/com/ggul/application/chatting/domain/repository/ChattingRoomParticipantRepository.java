@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface ChattingRoomParticipantRepository extends JpaRepository<ChattingRoomParticipant, UUID> {
 
-    Boolean existsByChattingRoom_IdAndUser_Id(UUID chattingRoomId, UUID userId);
+    Boolean existsByChattingRoom_IdAndChallengeParticipant_Id(UUID chattingRoomId, UUID userId);
 }

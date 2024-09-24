@@ -1,8 +1,10 @@
 package com.ggul.application.challange.ui;
 
 import com.ggul.application.challange.application.ChallengeJoinService;
+import com.ggul.application.challange.application.ChallengeReadyService;
 import com.ggul.application.challange.application.ChallengeRegisterService;
 import com.ggul.application.challange.application.dto.ChallengeJoinRequest;
+import com.ggul.application.challange.application.dto.ChallengeReadyRequest;
 import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
 import com.ggul.application.challange.query.ChallengeFindService;
 import com.ggul.application.challange.ui.dto.ChallengeView;
@@ -23,6 +25,7 @@ public class ChallengeController {
     private final ChallengeRegisterService challengeRegisterService;
     private final ChallengeJoinService challengeJoinService;
     private final ChallengeFindService challengeFindService;
+    private final ChallengeReadyService challengeReadyService;
 
     @PostMapping()
     public ResponseEntity<?> challengeCreate(@RequestBody ChallengeRegisterRequest request, @AuthenticationPrincipal UserLoginContext context) {
@@ -45,4 +48,11 @@ public class ChallengeController {
         challengeJoinService.join(request.getChallengeId(), context.getUserId(), Password.of(request.getPassword(), false));
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/ready")
+    public ResponseEntity<?> challengeReady(@RequestBody ChallengeReadyRequest readyRequest, @AuthenticationPrincipal UserLoginContext userLoginContext) {
+        challengeReadyService.ready(readyRequest, userLoginContext.getUserId());
+        return ResponseEntity.ok().build();
+    }
+
 }

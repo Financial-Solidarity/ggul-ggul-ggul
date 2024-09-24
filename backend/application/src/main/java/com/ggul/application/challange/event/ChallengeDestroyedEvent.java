@@ -1,4 +1,4 @@
-package com.ggul.application.challange.query.dto;
+package com.ggul.application.challange.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

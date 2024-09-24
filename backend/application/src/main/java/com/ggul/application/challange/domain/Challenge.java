@@ -4,7 +4,6 @@ import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
 import com.ggul.application.challange.exception.ChallengePasswordNotMatchException;
 import com.ggul.application.common.domain.password.Password;
 import com.ggul.application.common.domain.password.PasswordConverter;
-import com.ggul.application.common.jpa.domain.BaseEntity;
 import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
 import com.ggul.application.user.domain.User;
@@ -59,8 +58,8 @@ public class Challenge extends SoftDeleteEntity {
     @Column(name = "challenge_budget_cap")
     private Integer budgetCap;
 
-    @Column(name = "challenge_is_started")
-    private Boolean isStarted;
+    @Column(name = "challenge_is_ready")
+    private Boolean isReady;
 
     @Column(name = "challenge_is_ended")
     private Boolean isEnded;
@@ -85,10 +84,18 @@ public class Challenge extends SoftDeleteEntity {
                 .build();
     }
 
-    @PrePersist
-    protected void onCreate() {
+    public boolean isOwner(User user) {
+        return owner.equals(user);
+    }
+
+    public void ready() {
+        this.isReady = true;
+    }
+
+    @Override
+    protected void prePersistAction() {
         passwordExist = password == null;
-        isStarted = false;
+        isReady = false;
         isEnded = false;
     }
 

@@ -4,16 +4,15 @@ import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.challange.domain.ChallengeParticipantType;
 import com.ggul.application.challange.domain.CompetitionType;
 import com.ggul.application.challange.domain.repository.ChallengeParticipantRepository;
-import com.ggul.application.challange.query.dto.ChallengeDestroyedEvent;
-import com.ggul.application.challange.query.dto.ChallengeReadiedEvent;
-import com.ggul.application.fcmtoken.infra.FirebaseCloudMessageService;
+import com.ggul.application.challange.event.ChallengeDestroyedEvent;
+import com.ggul.application.challange.event.ChallengeReadiedEvent;
+import com.ggul.application.challange.event.ChallengeStartedEvent;
 import com.ggul.application.notification.application.NotificationBulkSendService;
 import com.ggul.application.notification.domain.Notification;
 import com.ggul.application.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,6 +26,19 @@ import java.util.*;
 public class ChallengeParticipantSendMessageHandler {
     private final NotificationBulkSendService notificationBulkSendService;
     private final ChallengeParticipantRepository challengeParticipantRepository;
+
+
+    @Async
+    @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void sendNotification(ChallengeStartedEvent event) {
+        List<ChallengeParticipant> participants = challengeParticipantRepository.findAllByChallenge_Id(event.getChallengeId());
+        Map<String, String> notificationBody = new HashMap<>();
+        setChallengeId(notificationBody, event.getChallengeId());
+
+        List<Notification> notifications = participants.stream().map(participant -> notificationBuilder(participant.getUser(), NotificationDataSet.CHALLENGE_START, notificationBody)).toList();
+        notificationBulkSendService.sendAll(notifications);
+    }
 
     @Async
     @TransactionalEventListener
@@ -75,11 +87,14 @@ public class ChallengeParticipantSendMessageHandler {
     private enum NotificationDataSet {
         CHALLENGE_READY("챌린지 시작 준비 완료", "챌린지가 시작 준비 되었습니다!", "CHALLENGE_READY"),
         CHALLENGE_DESTROYED("챌린지 팀원 부족", "챌린지가 시작되지 못했습니다.", "CHALLENGE_DESTORYED"),
+        CHALLENGE_START("챌린지 시작", "챌린지가 시작되었습니다!", "CHALLENGE_START"),
         ;
         private final String title;
         private final String body;
         private final String type;
     }
+
+
 
     private Map<String, String> setChallengeId (Map<String, String> data, UUID challengeId) {
         data.put("challengeId", challengeId.toString());
@@ -89,7 +104,7 @@ public class ChallengeParticipantSendMessageHandler {
     private Map<String, String> setMyTeamChattingRoomId (Map<String, String> data, UUID myTeamChattingRoomId) {
         data.put("myTeamChattingRoomId", myTeamChattingRoomId.toString());
         return data;
-    };
+    }
 
     private Map<String, String> setTotalChattingRoomId (Map<String, String> data, UUID totalChattingRoomId) {
         data.put("totalChattingRoomId", totalChattingRoomId.toString());

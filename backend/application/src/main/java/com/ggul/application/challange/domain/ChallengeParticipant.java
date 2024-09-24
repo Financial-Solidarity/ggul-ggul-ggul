@@ -1,6 +1,5 @@
 package com.ggul.application.challange.domain;
 
-import com.ggul.application.common.jpa.domain.BaseEntity;
 import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
 import com.ggul.application.user.domain.User;
@@ -29,10 +28,15 @@ public class ChallengeParticipant extends SoftDeleteEntity {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name = "profile")
+    private String profile;
 
     @Convert(converter = ChallengeParticipantTypeConverter.class)
     @Column(name = "challenge_particiapant_type")

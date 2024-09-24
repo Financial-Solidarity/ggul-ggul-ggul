@@ -26,6 +26,12 @@ public abstract class SoftDeleteEntity extends BaseEntity{
         if(isDeleted == null) {
             this.isDeleted = false;
         }
+        prePersistAction();
+    }
+
+
+    protected void prePersistAction() {
+
     }
 
     public void delete() {
