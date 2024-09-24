@@ -107,6 +107,8 @@ public class Challenge extends SoftDeleteEntity {
                 .challenge(this)
                 .type(participantType)
                 .user(user)
+                .nickname(user.getNickname())
+                .profile(user.getProfile())
                 .build();
     }
 }

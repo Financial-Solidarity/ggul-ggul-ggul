@@ -3,6 +3,7 @@ package com.ggul.application.challange.application;
 import com.ggul.application.challange.domain.Challenge;
 import com.ggul.application.challange.domain.repository.ChallengeRepository;
 import com.ggul.application.challange.event.ChallengeDestroyedEvent;
+import com.ggul.application.challange.event.ChallengeStartedEvent;
 import com.ggul.application.common.event.Events;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,8 @@ public class ChallengeStateUpdateService {
             if(!target.getIsReady()) {
                 target.delete();
                 Events.raise(new ChallengeDestroyedEvent(id));
+            }else {
+                Events.raise(new ChallengeStartedEvent(id));
             }
         }
     }
