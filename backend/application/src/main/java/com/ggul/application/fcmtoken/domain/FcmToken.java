@@ -7,13 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.UUID;
-
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "fcm_token")
 @Entity
 public class FcmToken {
     @Id
@@ -27,4 +25,7 @@ public class FcmToken {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "session_id")
+    private String sessionId;
 }

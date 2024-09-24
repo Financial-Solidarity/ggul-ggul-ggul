@@ -19,12 +19,12 @@ public class FcmTokenRegisterService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void registerFcmToken(FcmTokenRegisterRequest request, UUID userId) {
+    public void registerFcmToken(FcmTokenRegisterRequest request, UUID userId, String sessionId) {
         if(fcmTokenRepository.existsByUserIdAndToken(userId, request.getFcmToken())) {
             return;
         }
         User user = userRepository.getReferenceById(userId);
-        FcmToken build = FcmToken.builder().token(request.getFcmToken()).user(user).build();
+        FcmToken build = FcmToken.builder().token(request.getFcmToken()).user(user).sessionId(sessionId).build();
         fcmTokenRepository.save(build);
     }
 }
