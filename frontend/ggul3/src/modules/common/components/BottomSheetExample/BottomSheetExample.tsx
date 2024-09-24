@@ -1,6 +1,8 @@
 import { Sheet } from 'react-modal-sheet';
 import { useState } from 'react';
 
+import { zIndex } from '../../constants/zIndex';
+
 // [바텀 시트 github](https://github.com/Temzasse/react-modal-sheet)
 export function BottomSheetExample() {
   const [isOpen, setOpen] = useState(false);
@@ -10,6 +12,7 @@ export function BottomSheetExample() {
       <button onClick={() => setOpen(true)}>Open sheet</button>
 
       <Sheet
+        className={`${zIndex.BOTTOM_SHEET}`}
         detent="content-height"
         isOpen={isOpen}
         onClose={() => setOpen(false)}
