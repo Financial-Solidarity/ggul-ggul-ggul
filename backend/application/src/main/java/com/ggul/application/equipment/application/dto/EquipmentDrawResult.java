@@ -1,4 +1,4 @@
-package com.ggul.application.equipment.infra.dto;
+package com.ggul.application.equipment.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,7 @@ import java.math.BigInteger;
 
 @Getter
 @AllArgsConstructor
-public class EquipmentDrawTransactionResult {
-    private String transactionHash;
+public class EquipmentDrawResult {
     private BigInteger power;
     private BigInteger item;
 }
