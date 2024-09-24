@@ -2,7 +2,11 @@ import { Input } from '@nextui-org/react';
 
 import { useCreateChallengeStore } from '@/modules/challenge/store/createChallengeStore';
 import { CardButton } from '@/modules/challenge/components';
-import Hand from '@/assets/images/fist_hand.png';
+import Zero from '@/assets/images/number_lime_0.png';
+import Two from '@/assets/images/number_lime_2.png';
+import Four from '@/assets/images/number_lime_4.png';
+import Eight from '@/assets/images/number_lime_8.png';
+
 export const LimitParticipantStep = () => {
   const {
     limitParticipant,
@@ -35,7 +39,7 @@ export const LimitParticipantStep = () => {
       <div className="grid grid-cols-2 gap-2">
         <CardButton
           bgColor="success"
-          image={Hand}
+          image={Two}
           selected={!isCustomLimit && limitParticipant === 2}
           title="2인"
           titleSize="lg"
@@ -43,7 +47,7 @@ export const LimitParticipantStep = () => {
         />
         <CardButton
           bgColor="primary"
-          image={Hand}
+          image={Four}
           selected={!isCustomLimit && limitParticipant === 4}
           title="4인"
           titleSize="lg"
@@ -51,7 +55,7 @@ export const LimitParticipantStep = () => {
         />
         <CardButton
           bgColor="secondary"
-          image={Hand}
+          image={Eight}
           selected={!isCustomLimit && limitParticipant === 8}
           title="8인"
           titleSize="lg"
@@ -59,7 +63,7 @@ export const LimitParticipantStep = () => {
         />
         <CardButton
           bgColor="danger"
-          image={Hand}
+          image={Zero}
           selected={isCustomLimit}
           title="직접입력"
           titleSize="lg"

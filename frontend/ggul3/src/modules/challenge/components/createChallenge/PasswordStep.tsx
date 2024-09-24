@@ -2,7 +2,8 @@ import { Input } from '@nextui-org/react';
 
 import { CardButton } from '@/modules/challenge/components';
 import { useCreateChallengeStore } from '@/modules/challenge/store';
-import Solo from '@/assets/images/fist_hand.png';
+import Earth from '@/assets/images/earth.png';
+import Lock from '@/assets/images/lock.png';
 
 export const PasswordStep = () => {
   const { password, setPassword } = useCreateChallengeStore();
@@ -11,14 +12,14 @@ export const PasswordStep = () => {
     <div className="flex w-full flex-col gap-4">
       <CardButton
         bgColor="success"
-        image={Solo}
+        image={Earth}
         selected={password === null}
         title="공개방"
         onClick={() => setPassword(null)}
       />
       <CardButton
         bgColor="secondary"
-        image={Solo}
+        image={Lock}
         selected={password !== null}
         title="비밀방"
         onClick={() => setPassword('')}
