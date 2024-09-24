@@ -30,7 +30,7 @@ export const PageContainer = ({
           'flex h-full w-full flex-1 flex-col overflow-auto',
           bgColor,
           activePaddingX ? 'px-4' : 'px-0',
-          isBottomBarActivated ? 'pb-14' : 'pb-0',
+          isBottomBarActivated ? 'pb-16' : 'pb-0',
         ])}
       >
         {titleContent && <div className="py-2">{titleContent}</div>}

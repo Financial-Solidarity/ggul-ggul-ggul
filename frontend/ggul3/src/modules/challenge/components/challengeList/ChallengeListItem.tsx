@@ -3,6 +3,7 @@ import { ChallengeListItem as ChallengeListItemType } from '@types';
 import { twMerge } from 'tailwind-merge';
 import { Image } from '@nextui-org/react';
 
+import { useChallengeListStore } from '@/modules/challenge/store/challengeListStore';
 import Lock from '@/assets/images/lock.png';
 import { toYYMDhm_ko } from '@/modules/common/utils/dateUtils';
 
@@ -11,6 +12,8 @@ interface ChallengeListItemProps {
 }
 
 export const ChallengeListItem = ({ item }: ChallengeListItemProps) => {
+  const { setItem, openSheet } = useChallengeListStore();
+
   const {
     title,
     budgetCap,
@@ -20,12 +23,18 @@ export const ChallengeListItem = ({ item }: ChallengeListItemProps) => {
     endDatetime,
   } = item;
 
+  const handleClick = () => {
+    setItem(item);
+    openSheet();
+  };
+
   return (
     <Card
       isPressable
       className={twMerge([
         competitionType === 'S' ? 'bg-success' : 'bg-secondary',
       ])}
+      onClick={handleClick}
     >
       <CardHeader>
         <h4 className="text-xl font-bold text-white">{title}</h4>
