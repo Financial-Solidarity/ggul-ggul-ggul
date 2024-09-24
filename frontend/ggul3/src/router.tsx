@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet, RouteObject } from 'react-router-dom';
+import { createBrowserRouter, RouteObject } from 'react-router-dom';
 
 import App from './App';
 import { GameMain } from './modules/game/pages/GameMain';
@@ -65,7 +65,7 @@ export const PathNames: PathNames = {
       name: '챌린지',
     },
     CREATE: {
-      path: 'create',
+      path: '/challenge/create',
       name: '챌린지만들기',
     },
   },
@@ -85,18 +85,8 @@ export const PathNames: PathNames = {
 
 const ChallengeRoutes: RouteObject[] = [
   {
-    path: 'challenge',
-    element: (
-      <>
-        <Outlet />
-      </>
-    ),
-    children: [
-      {
-        path: PathNames.CHALLENGE.CREATE.path,
-        element: <CretaeChallengePage />,
-      },
-    ],
+    path: PathNames.CHALLENGE.CREATE.path,
+    element: <CretaeChallengePage />,
   },
 ];
 
