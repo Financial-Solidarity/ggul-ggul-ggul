@@ -3,9 +3,11 @@ package com.ggul.application.challange.ui;
 import com.ggul.application.challange.application.ChallengeJoinService;
 import com.ggul.application.challange.application.ChallengeReadyService;
 import com.ggul.application.challange.application.ChallengeRegisterService;
+import com.ggul.application.challange.application.dto.ChallengeExitRequest;
 import com.ggul.application.challange.application.dto.ChallengeJoinRequest;
 import com.ggul.application.challange.application.dto.ChallengeReadyRequest;
 import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
+import com.ggul.application.challange.application.schedule.ChallengeExitService;
 import com.ggul.application.challange.query.ChallengeFindService;
 import com.ggul.application.challange.ui.dto.ChallengeView;
 import com.ggul.application.common.domain.password.Password;
@@ -26,6 +28,7 @@ public class ChallengeController {
     private final ChallengeJoinService challengeJoinService;
     private final ChallengeFindService challengeFindService;
     private final ChallengeReadyService challengeReadyService;
+    private final ChallengeExitService challengeExitService;
 
     @PostMapping()
     public ResponseEntity<?> challengeCreate(@RequestBody ChallengeRegisterRequest request, @AuthenticationPrincipal UserLoginContext context) {
@@ -54,5 +57,12 @@ public class ChallengeController {
         challengeReadyService.ready(readyRequest, userLoginContext.getUserId());
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/exit")
+    public ResponseEntity<?> challengeExit(@RequestBody ChallengeExitRequest request, @AuthenticationPrincipal UserLoginContext context) {
+        challengeExitService.challengeExit(request, context.getUserId());
+        return ResponseEntity.ok().build();
+    }
+
 
 }

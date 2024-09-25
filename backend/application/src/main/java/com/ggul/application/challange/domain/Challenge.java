@@ -111,4 +111,8 @@ public class Challenge extends SoftDeleteEntity {
                 .profile(user.getProfile())
                 .build();
     }
+
+    public void changeOwner(User newOwner) {
+        this.owner = newOwner;
+    }
 }

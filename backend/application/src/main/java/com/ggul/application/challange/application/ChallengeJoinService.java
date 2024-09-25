@@ -6,11 +6,13 @@ import com.ggul.application.challange.domain.ChallengeParticipantType;
 import com.ggul.application.challange.domain.CompetitionType;
 import com.ggul.application.challange.domain.repository.ChallengeParticipantRepository;
 import com.ggul.application.challange.domain.repository.ChallengeRepository;
+import com.ggul.application.challange.event.ChallengeParticipantChangedEvent;
 import com.ggul.application.challange.exception.ChallengeNotFoundException;
 import com.ggul.application.challange.exception.ChallengeParticipantExistException;
 import com.ggul.application.challange.exception.ChallengeParticipantLimitException;
 import com.ggul.application.challange.query.ChallengeParticipantFindService;
 import com.ggul.application.common.domain.password.Password;
+import com.ggul.application.common.event.Events;
 import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +31,10 @@ public class ChallengeJoinService {
     private final ChallengeParticipantFindService challengeParticipantFindService;
 
     @Transactional
-    public UUID join(UUID challengeId, UUID participantId, Password password) {
+    public UUID join(UUID challengeId, UUID userId, Password password) {
         //TODO : 현재 챌린지 참여시 참여중인 챌린지가 있는지 검증하는 로직 추가.
 
-        if (challengeParticipantRepository.existsByChallenge_IdAndUser_Id(challengeId, participantId)) {
+        if (challengeParticipantRepository.existsByChallenge_IdAndUser_Id(challengeId, userId)) {
             throw new ChallengeParticipantExistException();
         }
 
@@ -43,10 +45,9 @@ public class ChallengeJoinService {
         }
 
 
-        User user = userRepository.getReferenceById(participantId);
+        User user = userRepository.findById(userId).orElseThrow();
         ChallengeParticipant join = challenge.join(user, challenge.getCompetitionType().getType().equals(CompetitionType.Type.SOLO) ? ChallengeParticipantType.PERSONAL : challengeParticipantFindService.allocateParticipantType(challengeId), password);
-
-        //TODO : 참가했거나 변경됐을 때 참여자 변경 감지 조회 되도록 이벤트 발행 기능 추가.
+        Events.raise(new ChallengeParticipantChangedEvent(challengeId, join.getId(), join.getNickname(), join.getProfile(), challenge.isOwner(user), join.getType(), false, true));
         return challengeParticipantRepository.save(join).getId();
     }
 

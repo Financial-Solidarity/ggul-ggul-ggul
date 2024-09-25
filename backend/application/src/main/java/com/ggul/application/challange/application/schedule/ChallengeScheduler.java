@@ -21,10 +21,10 @@ public class ChallengeScheduler {
     private final ChallengeStateUpdateService challengeStateUpdateService;
     private final TaskScheduler taskScheduler;
 
-    public void register(Challenge challenge) {
+    public void startRegister(Challenge challenge) {
         log.info("{}", taskScheduler);
         ScheduledFuture<?> task = taskScheduler.schedule(() -> {
-          challengeStateUpdateService.challengeStateUpdate(challenge.getId());
+          challengeStateUpdateService.challengeStateUpdateToStartOrDestroyed(challenge.getId());
         }, challenge.getStartedAt().atZone(ZoneId.systemDefault()).toInstant());
         log.info("{}", challenge.getStartedAt().atZone(ZoneId.systemDefault()).toInstant());
         scheduledTasks.put(challenge.getId(), task);

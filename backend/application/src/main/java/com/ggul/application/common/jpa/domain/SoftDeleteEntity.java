@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @SuperBuilder
 @Getter
 @EntityListeners(AuditingEntityListener.class)
+@SQLRestriction("is_deleted = false")
 public abstract class SoftDeleteEntity extends BaseEntity{
     @Column(name = "is_deleted")
     private Boolean isDeleted;

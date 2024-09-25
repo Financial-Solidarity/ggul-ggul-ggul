@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +20,6 @@ public class ChallengeDeleteScheduleInitializer implements ApplicationListener<C
     public void onApplicationEvent(ContextRefreshedEvent event) {
         List<Challenge> challenges = challengeRepository.findAllByIsReadyAndIsDeleted(false, false);
         System.out.println(Arrays.toString(challenges.toArray()));
-        challenges.forEach(challengeScheduler::register);
+        challenges.forEach(challengeScheduler::startRegister);
     }
 }
