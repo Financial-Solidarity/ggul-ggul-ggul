@@ -1,12 +1,18 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
+import { useParams } from 'react-router-dom';
 
+import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 
 export const WaitingRoomPage = () => {
+  const { id } = useParams();
+
   useSetBottomBar({ active: false });
+
+  if (!id) return;
 
   return (
     <>
@@ -14,8 +20,10 @@ export const WaitingRoomPage = () => {
         left={<BackButton color="black" />}
         right={<Bars3Icon className="h-6 w-6 text-gray-500" />}
       />
-      <PageContainer>
-        <div className="flex h-full w-full flex-col">asdasd</div>
+      <PageContainer activePaddingX={false}>
+        <div className="flex h-full w-full flex-col">
+          <ChallengeInfoAccordion challengeId={id} />
+        </div>
       </PageContainer>
     </>
   );
