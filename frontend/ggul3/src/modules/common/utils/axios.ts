@@ -1,5 +1,5 @@
-import axios from 'axios';
-export const _axios = axios.create({
+import axios, { AxiosRequestConfig } from 'axios';
+const instance = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
   timeout: 30000,
   headers: {
@@ -7,7 +7,7 @@ export const _axios = axios.create({
   },
 });
 
-_axios.interceptors.request.use(
+instance.interceptors.request.use(
   (config) => {
     return config;
   },
@@ -18,7 +18,7 @@ _axios.interceptors.request.use(
   },
 );
 
-_axios.interceptors.response.use(
+instance.interceptors.response.use(
   (res) => {
     if (import.meta.env.MODE !== 'production') {
       console.groupCollapsed(
@@ -36,7 +36,7 @@ _axios.interceptors.response.use(
       console.groupEnd();
     }
 
-    return res.data;
+    return res;
   },
   async (error) => {
     const { config } = error;
@@ -50,3 +50,9 @@ _axios.interceptors.response.use(
     return Promise.reject(error.response.data);
   },
 );
+
+export const _axios = async <T>(config: AxiosRequestConfig) => {
+  const { data } = await instance<T>(config);
+
+  return data;
+};
