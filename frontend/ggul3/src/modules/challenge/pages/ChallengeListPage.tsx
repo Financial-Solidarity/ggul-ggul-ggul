@@ -11,7 +11,7 @@ export const ChallengeListPage = () => {
     <>
       <TopBar />
       <PageContainer>
-        <div className="flex flex-col gap-2">
+        <div className="mb-20 flex flex-col gap-2">
           {sampleData.map((item) => (
             <ChallengeListItem key={item.challengeId} item={item} />
           ))}

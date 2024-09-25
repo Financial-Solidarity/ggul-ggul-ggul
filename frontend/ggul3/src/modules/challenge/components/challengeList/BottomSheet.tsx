@@ -43,7 +43,7 @@ export const BottomSheet = () => {
           <div className="flex-flex-col w-full p-4">
             <p
               className={twMerge([
-                'flex justify-center gap-1 font-semibold text-default-500',
+                'mb-4 flex justify-center gap-1 font-semibold text-default-500',
                 countdown.days === 0 &&
                   countdown.hours === 0 &&
                   countdown.minutes < 10 &&
