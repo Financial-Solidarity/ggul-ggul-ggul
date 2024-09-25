@@ -154,10 +154,6 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: PathNames.CHALLENGE.path,
-        element: <></>,
-      },
-      {
         path: PathNames.GGULPAY.MAIN.path,
         element: <PayPage />,
       },
