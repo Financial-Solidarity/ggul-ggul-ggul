@@ -15,6 +15,7 @@ import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePa
 import PrizeHistory from './modules/pay/components/PrizeHistory';
 import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
 import { AccountBookHistoryPage } from './modules/accountBook/pages/AccountBookHistoryPage';
+import { AccountBookStatisticsPage } from './modules/accountBook/pages/AccountBookStatisticsPage';
 
 export interface Path {
   path: string;
@@ -148,7 +149,7 @@ const accountBook: RouteObject[] = [
   },
   {
     path: PathNames.ACCOUNT_BOOK.STATISTICS.path,
-    element: <PayPage />,
+    element: <AccountBookStatisticsPage />,
   },
   {
     path: PathNames.ACCOUNT_BOOK.HISTORY.path,
