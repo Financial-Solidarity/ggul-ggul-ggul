@@ -80,9 +80,11 @@ export const router = createBrowserRouter([
     errorElement: <></>,
     children: [
       {
-        path: PathNames.GAME.MAIN.path,
-        element: <GameMain />,
         children: [
+          {
+            path: PathNames.GAME.MAIN.path,
+            element: <GameMain />,
+          },
           {
             path: PathNames.GAME.GAME.path,
             element: <GameGame />,
