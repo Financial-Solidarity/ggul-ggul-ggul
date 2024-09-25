@@ -13,6 +13,8 @@ import { PayPage } from './modules/pay/pages/PayPage';
 import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
 import PrizeHistory from './modules/pay/components/PrizeHistory';
+import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
+import { AccountBookHistoryPage } from './modules/accountBook/pages/AccountBookHistoryPage';
 
 export interface Path {
   path: string;
@@ -142,7 +144,7 @@ const challengeRoutes: RouteObject[] = [
 const accountBook: RouteObject[] = [
   {
     path: PathNames.ACCOUNT_BOOK.MAIN.path,
-    element: <PayPage />,
+    element: <AccountBookPage />,
   },
   {
     path: PathNames.ACCOUNT_BOOK.STATISTICS.path,
@@ -150,7 +152,7 @@ const accountBook: RouteObject[] = [
   },
   {
     path: PathNames.ACCOUNT_BOOK.HISTORY.path,
-    element: <PayPage />,
+    element: <AccountBookHistoryPage />,
   },
 ];
 
