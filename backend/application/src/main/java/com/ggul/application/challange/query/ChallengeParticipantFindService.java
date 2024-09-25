@@ -26,8 +26,8 @@ public class ChallengeParticipantFindService {
     }
 
     @Transactional(readOnly = true)
-    public List<ChallengeParticipantView> findAllByChallengeId(UUID challengeId, UUID participantId) {
-        if(!challengeParticipantRepository.existsByChallenge_IdAndUser_Id(challengeId, participantId)) {
+    public List<ChallengeParticipantView> findAllByChallengeId(UUID challengeId, UUID userId) {
+        if(!challengeParticipantRepository.existsByChallenge_IdAndUser_Id(challengeId, userId)) {
             throw new ChallengeParticipantNotExistException();
         }
         return challengeParticipantRepository.findChallengeParticipantViewByChallenge_Id(challengeId);

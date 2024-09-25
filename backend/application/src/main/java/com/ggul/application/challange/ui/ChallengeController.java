@@ -9,6 +9,9 @@ import com.ggul.application.challange.application.dto.ChallengeReadyRequest;
 import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
 import com.ggul.application.challange.application.schedule.ChallengeExitService;
 import com.ggul.application.challange.query.ChallengeFindService;
+import com.ggul.application.challange.query.ChallengeParticipantFindService;
+import com.ggul.application.challange.ui.dto.ChallengeParticipantListView;
+import com.ggul.application.challange.ui.dto.ChallengeParticipantView;
 import com.ggul.application.challange.ui.dto.ChallengeView;
 import com.ggul.application.common.domain.password.Password;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
@@ -18,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -29,6 +33,7 @@ public class ChallengeController {
     private final ChallengeFindService challengeFindService;
     private final ChallengeReadyService challengeReadyService;
     private final ChallengeExitService challengeExitService;
+    private final ChallengeParticipantFindService challengeParticipantFindService;
 
     @PostMapping()
     public ResponseEntity<?> challengeCreate(@RequestBody ChallengeRegisterRequest request, @AuthenticationPrincipal UserLoginContext context) {
@@ -64,5 +69,9 @@ public class ChallengeController {
         return ResponseEntity.ok().build();
     }
 
-
+    @GetMapping("/{challengeId}/participants")
+    public ResponseEntity<?> challengeParticipantList(@PathVariable UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
+        List<ChallengeParticipantView> challengeParticipantViews = challengeParticipantFindService.findAllByChallengeId(challengeId, context.getUserId());
+        return ResponseEntity.ok(new ChallengeParticipantListView(challengeParticipantViews));
+    }
 }
