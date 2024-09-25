@@ -1,5 +1,6 @@
 import { AccountBookHistoryHeader } from '../components/AccountBookHistoryHeader';
 import { AccountBookStatisticsCategoryList } from '../components/AccountBookStatisticsCategoryList';
+import { AccountBookPieChart } from '../components/AccountBookPieChart';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
@@ -29,6 +30,39 @@ const data = [
   },
 ];
 
+const pieData = [
+  {
+    id: 'javascript',
+    label: 'javascript',
+    value: 430,
+    color: 'hsl(67, 70%, 50%)',
+  },
+  {
+    id: 'rust',
+    label: 'rust',
+    value: 49,
+    color: 'hsl(251, 70%, 50%)',
+  },
+  {
+    id: 'sass',
+    label: 'sass',
+    value: 343,
+    color: 'hsl(344, 70%, 50%)',
+  },
+  {
+    id: 'make',
+    label: 'make',
+    value: 523,
+    color: 'hsl(115, 70%, 50%)',
+  },
+  {
+    id: 'lisp',
+    label: 'lisp',
+    value: 43,
+    color: 'hsl(8, 70%, 50%)',
+  },
+];
+
 export const AccountBookStatisticsPage = () => {
   return (
     <>
@@ -40,6 +74,7 @@ export const AccountBookStatisticsPage = () => {
       />
       <AccountBookHistoryHeader />
       <PageContainer>
+        <AccountBookPieChart data={pieData} />
         <AccountBookStatisticsCategoryList categoryList={data} />
       </PageContainer>
     </>
