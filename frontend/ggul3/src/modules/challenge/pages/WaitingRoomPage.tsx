@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
+import { Chatform } from '../components/waitingRoom/ChatForm';
 
 import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
@@ -36,8 +37,9 @@ export const WaitingRoomPage = () => {
         }
       />
       <PageContainer activePaddingX={false}>
-        <div className="flex h-full w-full flex-col">
+        <div className="relative flex h-full w-full flex-col">
           <ChallengeInfoAccordion challengeId={id} />
+          <Chatform />
         </div>
       </PageContainer>
       {/* <SoloDrawer isOpen={isDrawerOpen} onClose={closeDrawer} /> */}
