@@ -2,8 +2,8 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 
-import { SoloDrawer } from '../components/waitingRoom/SoloDrawer';
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
+import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
 
 import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
@@ -40,7 +40,8 @@ export const WaitingRoomPage = () => {
           <ChallengeInfoAccordion challengeId={id} />
         </div>
       </PageContainer>
-      <SoloDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
+      {/* <SoloDrawer isOpen={isDrawerOpen} onClose={closeDrawer} /> */}
+      <TeamDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
       <ExitConfirmModal />
     </>
   );
