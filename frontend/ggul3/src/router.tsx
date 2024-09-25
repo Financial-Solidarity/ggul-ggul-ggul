@@ -14,6 +14,7 @@ import { PayPage } from './modules/pay/pages/PayPage';
 import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
 import { ChallengeListPage } from './modules/challenge/pages/ChallengeListPage';
+import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 
 export interface Path {
   path: string;
@@ -32,6 +33,7 @@ export interface PathNames {
   CHALLENGE: {
     MAIN: Path;
     CREATE: Path;
+    WAITING_ROOM: Path;
   };
   GGULPAY: {
     MAIN: Path;
@@ -81,6 +83,10 @@ export const PathNames: PathNames = {
       path: '/challenge/create',
       name: '챌린지만들기',
     },
+    WAITING_ROOM: {
+      path: '/challenge/waiting-room/:id',
+      name: '챌린지 대기실',
+    },
   },
   GGULPAY: {
     MAIN: {
@@ -122,6 +128,10 @@ const ChallengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.CREATE.path,
     element: <CretaeChallengePage />,
+  },
+  {
+    path: PathNames.CHALLENGE.WAITING_ROOM.path,
+    element: <WaitingRoomPage />,
   },
 ];
 
