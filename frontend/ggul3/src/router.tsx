@@ -13,6 +13,7 @@ import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
 import { PayPage } from './modules/pay/pages/PayPage';
 import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
+import { ChallengeListPage } from './modules/challenge/pages/ChallengeListPage';
 
 export interface Path {
   path: string;
@@ -114,6 +115,10 @@ export const PathNames: PathNames = {
 };
 
 const ChallengeRoutes: RouteObject[] = [
+  {
+    path: PathNames.CHALLENGE.MAIN.path,
+    element: <ChallengeListPage />,
+  },
   {
     path: PathNames.CHALLENGE.CREATE.path,
     element: <CretaeChallengePage />,
