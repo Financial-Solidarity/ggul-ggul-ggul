@@ -134,7 +134,7 @@ export const RandomNumber = () => {
       const digits = String(status).padStart(3, '0').split('').map(Number);
 
       boxRefs.forEach((ref, index) => {
-        setTimeout(() => stopScroll(ref, digits[index]), index * 500);
+        setTimeout(() => stopScroll(ref, digits[index]), index * 200);
       });
     }
   }, [step, status]);

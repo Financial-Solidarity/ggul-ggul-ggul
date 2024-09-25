@@ -1,9 +1,9 @@
 import { Button, Image } from '@nextui-org/react';
 import { useState } from 'react';
 
-import { RandomNumber } from '../components/common/RandomNumber/RandomNumber.tsx';
-import { CookingLottie } from '../components/common/CookingLottie/CookingLottie.tsx';
-import { ConfettieLottie } from '../components/common/ConfettieLottie/ConfettieLottie.tsx';
+import { RandomNumber } from '../components/GameLuckyDraw/RandomNumber/RandomNumber.tsx';
+import { CookingLottie } from '../components/GameLuckyDraw/CookingLottie/CookingLottie.tsx';
+import { ConfettieLottie } from '../components/GameLuckyDraw/ConfettieLottie/ConfettieLottie.tsx';
 import { useLuckyDrawStore } from '../store/useLuckyDrawStore.ts';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
@@ -54,7 +54,7 @@ export const GameLuckyDraw = () => {
     setTimeout(() => {
       setFood(response);
       stopDrawing(response.status); // 상태 'drawed'와 status 값 변경
-    }, 5000); // 숫자 스크롤 5초 후 멈추기
+    }, 500); // 숫자 스크롤 2초 후 멈추기
   };
 
   return (
@@ -104,14 +104,18 @@ export const GameLuckyDraw = () => {
         </div>
         <div className="flex w-full items-center justify-center">
           <RandomNumber />
-          <Button
-            className="absolute bottom-8 h-12 w-5/6"
-            color="primary"
-            style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
-            onClick={() => onClickLuckyDrawButton()}
-          >
-            음식 뽑기
-          </Button>
+          <div className="absolute bottom-8 h-12 w-5/6">
+            {step === 'init' && (
+              <Button
+                className="w-full"
+                color="primary"
+                style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
+                onClick={() => onClickLuckyDrawButton()}
+              >
+                음식 뽑기
+              </Button>
+            )}
+          </div>
         </div>
       </PageContainer>
     </>
