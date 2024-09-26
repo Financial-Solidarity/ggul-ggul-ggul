@@ -21,6 +21,7 @@ import {
   AccountBookPage,
   AccountBookStatisticsPage,
 } from './modules/accountBook/pages';
+import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 
 export interface Path {
   path: string;
@@ -39,6 +40,7 @@ export interface PathNames {
   CHALLENGE: {
     MAIN: Path;
     CREATE: Path;
+    WAITING_ROOM: Path;
   };
   GGULPAY: {
     MAIN: Path;
@@ -94,6 +96,10 @@ export const PathNames: PathNames = {
     CREATE: {
       path: '/challenge/create',
       name: '챌린지만들기',
+    },
+    WAITING_ROOM: {
+      path: '/challenge/waiting-room/:id',
+      name: '챌린지 대기실',
     },
   },
   GGULPAY: {
@@ -158,6 +164,10 @@ const challengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.CREATE.path,
     element: <CretaeChallengePage />,
+  },
+  {
+    path: PathNames.CHALLENGE.WAITING_ROOM.path,
+    element: <WaitingRoomPage />,
   },
 ];
 
@@ -241,6 +251,18 @@ export const router = createBrowserRouter([
             element: <GameLuckyDraw />,
           },
         ],
+      },
+      {
+        path: PathNames.GGULPAY.MAIN.path,
+        element: <PayPage />,
+      },
+      {
+        path: PathNames.GGULPAY.WALLET.path,
+        element: <WalletPage />,
+      },
+      {
+        path: PathNames.ACCOUNT_BOOK.MAIN.path,
+        element: <AccountBookPage />,
       },
       {
         path: PathNames.MYPAGE.path,

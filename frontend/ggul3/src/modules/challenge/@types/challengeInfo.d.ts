@@ -1,9 +1,5 @@
 declare module '@types' {
-  export interface getChallengeListDTO extends Pagination {
-    content: ChallengeListItem[];
-  }
-
-  export interface ChallengeListItem {
+  export interface ChallengeDTO {
     challengeId: string;
     title: string;
     isEncrypted: boolean;

@@ -14,14 +14,8 @@ interface ChallengeListItemProps {
 export const ChallengeListItem = ({ item }: ChallengeListItemProps) => {
   const { setItem, openSheet } = useChallengeListStore();
 
-  const {
-    title,
-    budgetCap,
-    competitionType,
-    isEncrypted,
-    startDatetime,
-    endDatetime,
-  } = item;
+  const { title, budgetCap, competitionType, isEncrypted, startAt, endAt } =
+    item;
 
   const handleClick = () => {
     setItem(item);
@@ -43,11 +37,11 @@ export const ChallengeListItem = ({ item }: ChallengeListItemProps) => {
         <div className="flex flex-col gap-2 text-white">
           <div>
             <div className="flex items-center">
-              <span>{toYYMDhm_ko(startDatetime)}</span>
+              <span>{toYYMDhm_ko(startAt)}</span>
               <span>부터</span>
             </div>
             <div className="flex items-center">
-              <span>{toYYMDhm_ko(endDatetime)}</span>
+              <span>{toYYMDhm_ko(endAt)}</span>
               <span>까지</span>
             </div>
           </div>
