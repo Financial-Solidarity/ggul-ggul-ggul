@@ -22,8 +22,8 @@ const TokenItem = () => {
   return (
     <Button className="flex w-full justify-between border bg-white">
       <p className="font-medium">GGUL</p>
-      <p className="flex items-center font-light text-gray-500">
-        100 GGUL TOKEN <ChevronRightIcon className="w-4 pl-1" />{' '}
+      <p className="text-gray flex items-center font-light">
+        100 GGUL TOKEN <ChevronRightIcon className="w-4 pl-1" />
       </p>
     </Button>
   );

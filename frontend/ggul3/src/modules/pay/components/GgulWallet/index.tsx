@@ -8,7 +8,7 @@ import { PathNames } from '@/router';
 export const GgulWallet = () => {
   return (
     <Link to={PathNames.GGULPAY.WALLET.path}>
-      <Card className="mb-4 flex bg-primary-500 py-1 text-black">
+      <Card className="mb-4 flex bg-primary py-1 text-black">
         <CardHeader className="flex justify-center">
           <Image height={74} src={wallet} width={65} />
         </CardHeader>

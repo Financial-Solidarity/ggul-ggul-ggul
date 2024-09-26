@@ -6,7 +6,7 @@ export const Balance = () => {
   const [visible, setVisible] = useState<boolean>(false);
 
   return (
-    <Card className="mb-4 flex bg-primary-500 text-center text-white">
+    <Card className="mb-4 flex bg-primary text-center text-white">
       <CardHeader className="flex justify-between">
         <div>
           <SmallText>계좌 잔고</SmallText>
@@ -50,7 +50,7 @@ const ToggleBalanceVisibilityButton = ({
 }: ToggleBalanceVisibilityButtonProps) => {
   return (
     <Button
-      className="ml-1 bg-white px-0 font-bold text-primary-500"
+      className="ml-1 bg-white px-0 font-bold text-primary"
       radius="full"
       size="sm"
       onClick={() => setVisible(!visible)}

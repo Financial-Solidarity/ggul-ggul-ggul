@@ -23,21 +23,21 @@ export const AccountBookTradingHistoryItem = ({
     <div>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <Image sizes={'36'} src={imgUrl} />
+          <Image sizes="36" src={imgUrl} />
           <div className="ml-2">
             <div
-              className={`translate-y-[2px] font-bold text-${isPositive ? 'primary' : ''}-500`}
+              className={`font-bold leading-5 text-${isPositive ? 'primary' : ''}`}
             >
               {transformMoneyUnit(value)}원
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-gray text-xs">
               {transmissionFrom && '내 계좌 이체 | ' + transmissionFrom + '-> '}
               {transmissionTo}
             </div>
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <div className="translate-y-[2px] text-sm text-gray-500">9월 9일</div>
+          <div className="text-gray text-sm">9월 9일</div>
           {ggulDiscount && <CoinIcon discountValue={ggulDiscount} />}
         </div>
       </div>
@@ -48,7 +48,7 @@ export const AccountBookTradingHistoryItem = ({
 const CoinIcon = ({ discountValue }: { discountValue: number }) => {
   return (
     <div className="flex items-center text-sm">
-      <span className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-warning-500 text-xs font-bold">
+      <span className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-warning text-xs font-bold">
         G
       </span>
       -{discountValue}

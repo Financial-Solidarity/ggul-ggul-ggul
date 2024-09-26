@@ -11,7 +11,7 @@ export const UserLink = ({
 }: PropsWithChildren<UserLinkProps>) => {
   if (type === 'gray') {
     return (
-      <Link className="text-gray-500" href="#" size="sm" underline="always">
+      <Link className="text-gray" href="#" size="sm" underline="always">
         {children}
       </Link>
     );

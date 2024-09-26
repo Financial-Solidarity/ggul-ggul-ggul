@@ -15,11 +15,11 @@ export const SubTitle = ({
   return (
     <div className="flex justify-between">
       <p className="font-bold">
-        {title} <span className="text-primary-500">{count && count}</span>
+        {title} <span className="text-primary">{count && count}</span>
       </p>
       {rightLinkButtonUrl && (
         <Link to={rightLinkButtonUrl}>
-          <p className="flex content-center items-end items-center text-xs text-gray-500">
+          <p className="text-gray flex content-center items-end items-center text-xs">
             더보기 <ChevronRightIcon className="size-3" />
           </p>
         </Link>
