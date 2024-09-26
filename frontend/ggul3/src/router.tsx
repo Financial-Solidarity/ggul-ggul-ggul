@@ -22,6 +22,7 @@ import {
   AccountBookStatisticsPage,
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
+import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
 
 export interface Path {
   path: string;
@@ -41,6 +42,7 @@ export interface PathNames {
     MAIN: Path;
     CREATE: Path;
     WAITING_ROOM: Path;
+    CHATTING_ROOMS: Path;
   };
   GGULPAY: {
     MAIN: Path;
@@ -100,6 +102,10 @@ export const PathNames: PathNames = {
     WAITING_ROOM: {
       path: '/challenge/waiting-room/:id',
       name: '챌린지 대기실',
+    },
+    CHATTING_ROOMS: {
+      path: '/challenge/chatting-rooms',
+      name: '채팅방 목록',
     },
   },
   GGULPAY: {
@@ -168,6 +174,10 @@ const challengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.WAITING_ROOM.path,
     element: <WaitingRoomPage />,
+  },
+  {
+    path: PathNames.CHALLENGE.CHATTING_ROOMS.path,
+    element: <ChattingRoomListPage />,
   },
 ];
 
