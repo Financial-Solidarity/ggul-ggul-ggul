@@ -42,4 +42,14 @@ public class ChallengeParticipant extends SoftDeleteEntity {
     @Convert(converter = ChallengeParticipantTypeConverter.class)
     @Column(name = "challenge_participant_type")
     private ChallengeParticipantType type;
+
+
+    public void teamChangeToggle() {
+        if(type.equals(ChallengeParticipantType.BLUE)) {
+            type = ChallengeParticipantType.RED;
+        }
+        else if(type.equals(ChallengeParticipantType.RED)) {
+            type = ChallengeParticipantType.BLUE;
+        }
+    }
 }

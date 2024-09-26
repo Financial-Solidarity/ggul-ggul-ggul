@@ -3,10 +3,7 @@ package com.ggul.application.challange.ui;
 import com.ggul.application.challange.application.ChallengeJoinService;
 import com.ggul.application.challange.application.ChallengeReadyService;
 import com.ggul.application.challange.application.ChallengeRegisterService;
-import com.ggul.application.challange.application.dto.ChallengeExitRequest;
-import com.ggul.application.challange.application.dto.ChallengeJoinRequest;
-import com.ggul.application.challange.application.dto.ChallengeReadyRequest;
-import com.ggul.application.challange.application.dto.ChallengeRegisterRequest;
+import com.ggul.application.challange.application.dto.*;
 import com.ggul.application.challange.application.schedule.ChallengeExitService;
 import com.ggul.application.challange.query.ChallengeFindService;
 import com.ggul.application.challange.query.ChallengeParticipantFindService;
@@ -72,6 +69,11 @@ public class ChallengeController {
     @GetMapping("/{challengeId}/participants")
     public ResponseEntity<?> challengeParticipantList(@PathVariable UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
         List<ChallengeParticipantView> challengeParticipantViews = challengeParticipantFindService.findAllByChallengeId(challengeId, context.getUserId());
-        return ResponseEntity.ok(new ChallengeParticipantListView(challengeParticipantViews));
+        return ResponseEntity.ok(challengeParticipantViews);
+    }
+
+    @PostMapping("/team")
+    public ResponseEntity<?> challengeTeam(@RequestBody ChallengeTeamChangeRequest request, @AuthenticationPrincipal UserLoginContext loginContext) {
+
     }
 }
