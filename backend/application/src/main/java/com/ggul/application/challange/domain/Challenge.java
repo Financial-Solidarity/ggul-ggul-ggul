@@ -80,8 +80,8 @@ public class Challenge extends SoftDeleteEntity {
                 .isBlindness(request.getIsBlindness())
                 .password(request.getPassword() != null ? Password.of(request.getPassword(), false) : null)
                 .owner(owner)
-                .startedAt(request.getStartDate().atStartOfDay())
-                .endedAt(request.getEndDate().atStartOfDay())
+                .startedAt(request.getStartAt())
+                .endedAt(request.getEndAt())
                 .limitParticipant(request.getLimitParticipant())
                 .build();
     }
