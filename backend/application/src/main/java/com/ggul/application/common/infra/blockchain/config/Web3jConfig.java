@@ -13,7 +13,7 @@ import org.web3j.protocol.http.HttpService;
 public class Web3jConfig {
     @Bean
     public Web3j web3j() {
-        return Web3j.build(new HttpService(host));
+        return Web3j.build(new HttpService(String.format("%s:%d", host, port)));
     }
 
     @Value("${blockchain.admin.wallet.address}")
@@ -24,6 +24,9 @@ public class Web3jConfig {
 
     @Value("${blockchain.network.host}")
     private String host;
+
+    @Value("${blockchain.network.port}")
+    private Integer port;
 
     @Bean
     public Credentials adminCredentials() {
