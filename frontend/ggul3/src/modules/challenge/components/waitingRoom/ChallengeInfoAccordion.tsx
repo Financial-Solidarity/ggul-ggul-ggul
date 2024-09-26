@@ -34,7 +34,7 @@ export const ChallengeInfoAccordion = ({
   };
 
   return (
-    <div className="flex flex-col border-b">
+    <div className="fixed z-10 flex w-full flex-col border-b bg-white">
       <div
         className="flex cursor-pointer items-center justify-between px-4 py-4"
         onClick={toggleIsOpen}
