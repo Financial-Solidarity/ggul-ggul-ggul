@@ -1,4 +1,4 @@
-import { NumberWithBox } from '../NumberWithBox.tsx';
+import { NumberWithBox } from './NumberWithBox.tsx';
 
 interface GroupNumberWithBoxProps {
   number: number;
