@@ -6,14 +6,21 @@ import { GameGame } from './modules/game/pages/GameGame';
 import { GameMarket } from './modules/game/pages/GameMarket';
 import { GameInventory } from './modules/game/pages/GameInventory';
 import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
-import LoginPage from './modules/user/pages/LoginPage';
-import SignUpPage from './modules/user/pages/SignUpPage';
-import FindPasswordPage from './modules/user/pages/FindPasswordPage';
-import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
-import { PayPage } from './modules/pay/pages/PayPage';
-import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
 import { ChallengeListPage } from './modules/challenge/pages/ChallengeListPage';
+import {
+  LuckyDrawEntryPage,
+  PayPage,
+  PrizeHistoryPage,
+  QrCodePage,
+  WalletPage,
+} from './modules/pay/pages';
+import { FindPasswordPage, LoginPage, SignUpPage } from './modules/user/pages';
+import {
+  AccountBookHistoryPage,
+  AccountBookPage,
+  AccountBookStatisticsPage,
+} from './modules/accountBook/pages';
 
 export interface Path {
   path: string;
@@ -36,8 +43,15 @@ export interface PathNames {
   GGULPAY: {
     MAIN: Path;
     WALLET: Path;
+    PRIZE_HISTORY: Path;
+    LUCKY_DRAW_ENTRY: Path;
   };
-  ACCOUNTBOOK: Path;
+  ACCOUNT_BOOK: {
+    MAIN: Path;
+    HISTORY: Path;
+    STATISTICS: Path;
+    QR_CODE: Path;
+  };
   MYPAGE: Path;
   LOGIN: Path;
   SIGHUP: Path;
@@ -85,16 +99,38 @@ export const PathNames: PathNames = {
   GGULPAY: {
     MAIN: {
       path: '/pay',
-      name: '껄페이',
+      name: '껄 페이',
     },
     WALLET: {
       path: '/pay/wallet',
       name: '전자지갑',
     },
+    PRIZE_HISTORY: {
+      path: '/pay/prize-history',
+      name: '응모 내역',
+    },
+    LUCKY_DRAW_ENTRY: {
+      path: '/pay/lucky-draw',
+      name: '응모하기',
+    },
   },
-  ACCOUNTBOOK: {
-    path: '/account-book',
-    name: '가계부',
+  ACCOUNT_BOOK: {
+    MAIN: {
+      path: '/account-book',
+      name: '가계부',
+    },
+    HISTORY: {
+      path: '/account-book/history',
+      name: '거래 내역',
+    },
+    STATISTICS: {
+      path: '/account-book/statistics',
+      name: '통계',
+    },
+    QR_CODE: {
+      path: '/account-book/qr-code',
+      name: 'QR코드',
+    },
   },
   MYPAGE: {
     path: '/mypage',
@@ -114,7 +150,7 @@ export const PathNames: PathNames = {
   },
 };
 
-const ChallengeRoutes: RouteObject[] = [
+const challengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.MAIN.path,
     element: <ChallengeListPage />,
@@ -122,6 +158,59 @@ const ChallengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.CREATE.path,
     element: <CretaeChallengePage />,
+  },
+];
+
+const accountBook: RouteObject[] = [
+  {
+    path: PathNames.ACCOUNT_BOOK.MAIN.path,
+    element: <AccountBookPage />,
+  },
+  {
+    path: PathNames.ACCOUNT_BOOK.STATISTICS.path,
+    element: <AccountBookStatisticsPage />,
+  },
+  {
+    path: PathNames.ACCOUNT_BOOK.HISTORY.path,
+    element: <AccountBookHistoryPage />,
+  },
+  {
+    path: PathNames.ACCOUNT_BOOK.QR_CODE.path,
+    element: <QrCodePage />,
+  },
+];
+
+const payRoutes: RouteObject[] = [
+  {
+    path: PathNames.GGULPAY.MAIN.path,
+    element: <PayPage />,
+  },
+  {
+    path: PathNames.GGULPAY.WALLET.path,
+    element: <WalletPage />,
+  },
+  {
+    path: PathNames.GGULPAY.PRIZE_HISTORY.path,
+    element: <PrizeHistoryPage />,
+  },
+  {
+    path: PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path,
+    element: <LuckyDrawEntryPage />,
+  },
+];
+
+const loginRoutes: RouteObject[] = [
+  {
+    path: PathNames.LOGIN.path,
+    element: <LoginPage />,
+  },
+  {
+    path: PathNames.SIGHUP.path,
+    element: <SignUpPage />,
+  },
+  {
+    path: PathNames.FIND_PASSWORD.path,
+    element: <FindPasswordPage />,
   },
 ];
 
@@ -154,38 +243,13 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: PathNames.CHALLENGE.path,
-        element: <></>,
-      },
-      {
-        path: PathNames.GGULPAY.MAIN.path,
-        element: <PayPage />,
-      },
-      {
-        path: PathNames.GGULPAY.WALLET.path,
-        element: <WalletPage />,
-      },
-      {
-        path: PathNames.ACCOUNTBOOK.path,
-        element: <AccountBookPage />,
-      },
-      {
         path: PathNames.MYPAGE.path,
         element: <></>,
       },
-      ...ChallengeRoutes,
+      ...challengeRoutes,
+      ...payRoutes,
+      ...loginRoutes,
+      ...accountBook,
     ],
-  },
-  {
-    path: PathNames.LOGIN.path,
-    element: <LoginPage />,
-  },
-  {
-    path: PathNames.SIGHUP.path,
-    element: <SignUpPage />,
-  },
-  {
-    path: PathNames.FIND_PASSWORD.path,
-    element: <FindPasswordPage />,
   },
 ]);

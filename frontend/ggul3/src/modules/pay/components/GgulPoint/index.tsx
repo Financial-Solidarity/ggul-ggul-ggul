@@ -2,9 +2,9 @@ import { Button } from '@nextui-org/button';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { PropsWithChildren } from 'react';
 
-const GgulPoint = () => {
+export const GgulPoint = () => {
   return (
-    <Card className="mb-4 flex bg-success-500 py-1 text-white">
+    <Card className="mb-4 flex min-h-[160px] bg-success-500 py-1 text-white">
       <CardHeader className="flex justify-between">
         <div>
           <SmallText>나의 껄값</SmallText>
@@ -42,5 +42,3 @@ const ToggleBalanceVisibilityButton =
       </Button>
     );
   };
-
-export default GgulPoint;

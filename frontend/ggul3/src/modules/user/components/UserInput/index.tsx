@@ -4,7 +4,7 @@ interface UserInputProps {
   label: string;
 }
 
-const UserInput = ({ label }: UserInputProps) => {
+export const UserInput = ({ label }: UserInputProps) => {
   return (
     <Input
       label={label}
@@ -15,5 +15,3 @@ const UserInput = ({ label }: UserInputProps) => {
     />
   );
 };
-
-export default UserInput;

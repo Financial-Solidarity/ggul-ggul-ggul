@@ -3,13 +3,14 @@ import { Card, Image } from '@nextui-org/react';
 import { SubTitle } from '../SubTitle';
 
 import shin from '@/assets/images/shin.png';
+import { PathNames } from '@/router';
 
-const PrizeHistory = () => {
+export const PrizeHistory = () => {
   return (
     <>
       <SubTitle
         count={2}
-        rightLinkButtonUrl="/pay/prize-history"
+        rightLinkButtonUrl={PathNames.GGULPAY.PRIZE_HISTORY.path}
         title="응모 내역"
       />
       <div className="flex flex-nowrap gap-2 overflow-x-scroll rounded-lg bg-primary-400 p-2 text-black">
@@ -47,5 +48,3 @@ const PrizeHistoryItem = ({ name }: PrizeHistoryItemProps) => {
     </div>
   );
 };
-
-export default PrizeHistory;

@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 
-import GgulPoint from '../components/GgulPoint';
-import Roulette from '../components/Roulette';
-import GgulWallet from '../components/GgulWallet';
-import PrizeHistory from '../components/PrizeHistory';
-import GgulLinks from '../components/GgulLinks';
+import {
+  GgulLinks,
+  GgulPoint,
+  GgulWallet,
+  PrizeHistory,
+  Roulette,
+} from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';

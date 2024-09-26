@@ -2,7 +2,7 @@ import { Button } from '@nextui-org/react';
 
 import { SubTitle } from '../SubTitle';
 
-const TokenTradingHistory = () => {
+export const TokenTradingHistory = () => {
   return (
     <div className="pb-4">
       <SubTitle title="최근 거래내역" />
@@ -38,5 +38,3 @@ const TradingHistoryItem = ({ ggulValue }: TradingHistoryItemProps) => {
     </Button>
   );
 };
-
-export default TokenTradingHistory;
