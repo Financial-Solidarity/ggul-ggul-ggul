@@ -4,7 +4,7 @@ import confettiAnimation from '@/assets/lotties/lottie_confetti.json';
 
 export const ConfettieLottie = () => {
   return (
-    <div style={{ position: 'absolute', zIndex: 30 }}>
+    <div className="absolute z-30">
       <Lottie
         animationData={confettiAnimation}
         loop={false}
