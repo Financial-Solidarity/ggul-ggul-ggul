@@ -45,13 +45,9 @@ export const RandomNumber = () => {
   useEffect(() => {
     if (step === 'init') {
       resetScroll();
-    }
-
-    if (step === 'drawing') {
+    } else if (step === 'drawing') {
       boxRefs.forEach((ref) => startScroll(ref));
-    }
-
-    if (step === 'drawed' && status !== null) {
+    } else if (step === 'drawed' && status !== null) {
       const digits = String(status).padStart(3, '0').split('').map(Number);
 
       boxRefs.forEach((ref, index) => {
