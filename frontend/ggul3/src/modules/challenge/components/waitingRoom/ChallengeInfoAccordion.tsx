@@ -24,11 +24,11 @@ export const ChallengeInfoAccordion = ({
       currentParticipant,
       limitParticipant,
       budgetCap,
-      startDatetime,
-      endDatetime,
+      startAt,
+      endAt,
     },
   } = useGetChallenge(challengeId);
-  const countdown = useCountdown(startDatetime);
+  const countdown = useCountdown(startAt);
   const toggleIsOpen = () => {
     setIsOpen((prev) => !prev);
   };
@@ -73,11 +73,11 @@ export const ChallengeInfoAccordion = ({
               <h4 className="text-xl font-bold">{title}</h4>
               <div>
                 <div className="flex items-center">
-                  <span>{toYYMDhm_ko(startDatetime)}</span>
+                  <span>{toYYMDhm_ko(startAt)}</span>
                   <span>부터</span>
                 </div>
                 <div className="flex items-center">
-                  <span>{toYYMDhm_ko(endDatetime)}</span>
+                  <span>{toYYMDhm_ko(endAt)}</span>
                   <span>까지</span>
                 </div>
               </div>

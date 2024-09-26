@@ -11,7 +11,7 @@ import { useCountdown } from '@/modules/common/hooks/useCountDown';
 export const BottomSheet = () => {
   const { closeSheet, isSheetOpen, item } = useChallengeListStore();
   const [password, setPassword] = useState('');
-  const countdown = useCountdown(item?.startDatetime || '');
+  const countdown = useCountdown(item?.startAt || '');
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -19,8 +19,8 @@ export const BottomSheet = () => {
 
   const {
     title,
-    startDatetime,
-    endDatetime,
+    startAt,
+    endAt,
     currentParticipant,
     limitParticipant,
     competitionType,
@@ -59,11 +59,11 @@ export const BottomSheet = () => {
                 <h4 className="text-xl font-bold">{title}</h4>
                 <div>
                   <div className="flex items-center">
-                    <span>{toYYMDhm_ko(startDatetime)}</span>
+                    <span>{toYYMDhm_ko(startAt)}</span>
                     <span>부터</span>
                   </div>
                   <div className="flex items-center">
-                    <span>{toYYMDhm_ko(endDatetime)}</span>
+                    <span>{toYYMDhm_ko(endAt)}</span>
                     <span>까지</span>
                   </div>
                 </div>

@@ -8,7 +8,7 @@ declare module '@types' {
     currentParticipant: number;
     limitParticipant: number;
     budgetCap: number;
-    startDatetime: string;
-    endDatetime: string;
+    startAt: string;
+    endAt: string;
   }
 }
