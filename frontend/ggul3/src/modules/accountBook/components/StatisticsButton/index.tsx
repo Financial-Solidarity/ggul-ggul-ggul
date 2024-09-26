@@ -18,14 +18,16 @@ export const StatisticsButton = ({
   link,
 }: StatisticsButtonProps) => {
   return (
-    <Link to={link}>
-      <Card className={`flex flex-1 bg-${color}-500 text-black`}>
-        <CardBody className="flex flex-col items-center text-center">
-          <Image height={84} src={buttonImageUrl} width={84} />
-          <span className="font-bold">{displayValue}</span>
-          <span className="text-sm text-gray-500">{description}</span>
-        </CardBody>
-      </Card>
-    </Link>
+    <div className="flex-1">
+      <Link to={link}>
+        <Card className={`flex flex-1 bg-${color}-500 text-black`}>
+          <CardBody className="flex flex-col items-center text-center">
+            <Image height={84} src={buttonImageUrl} width={84} />
+            <span className="font-bold">{displayValue}</span>
+            <span className="text-sm text-gray-500">{description}</span>
+          </CardBody>
+        </Card>
+      </Link>
+    </div>
   );
 };

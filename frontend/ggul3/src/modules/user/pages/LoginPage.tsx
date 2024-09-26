@@ -1,9 +1,6 @@
-import UserInput from '../components/UserInput';
-import UserLink from '../components/UserLink';
-import UserButton from '../components/UserButton';
-import UserLogo from '../components/UserLogo';
+import { UserButton, UserInput, UserLink, UserLogo } from '../components';
 
-export default function LoginPage() {
+export const LoginPage = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <UserLogo />
@@ -14,4 +11,4 @@ export default function LoginPage() {
       <UserLink type="bold">회원가입</UserLink>
     </div>
   );
-}
+};

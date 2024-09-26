@@ -6,16 +6,20 @@ import { GameGame } from './modules/game/pages/GameGame';
 import { GameMarket } from './modules/game/pages/GameMarket';
 import { GameInventory } from './modules/game/pages/GameInventory';
 import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
-import LoginPage from './modules/user/pages/LoginPage';
-import SignUpPage from './modules/user/pages/SignUpPage';
-import FindPasswordPage from './modules/user/pages/FindPasswordPage';
-import { PayPage } from './modules/pay/pages/PayPage';
-import { WalletPage } from './modules/pay/pages/WalletPage';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
-import PrizeHistory from './modules/pay/components/PrizeHistory';
-import { AccountBookPage } from './modules/accountBook/pages/AccountBookPage';
-import { AccountBookHistoryPage } from './modules/accountBook/pages/AccountBookHistoryPage';
-import { AccountBookStatisticsPage } from './modules/accountBook/pages/AccountBookStatisticsPage';
+import {
+  LuckyDrawEntryPage,
+  PayPage,
+  PrizeHistoryPage,
+  QrCodePage,
+  WalletPage,
+} from './modules/pay/pages';
+import { FindPasswordPage, LoginPage, SignUpPage } from './modules/user/pages';
+import {
+  AccountBookHistoryPage,
+  AccountBookPage,
+  AccountBookStatisticsPage,
+} from './modules/accountBook/pages';
 
 export interface Path {
   path: string;
@@ -39,11 +43,13 @@ export interface PathNames {
     MAIN: Path;
     WALLET: Path;
     PRIZE_HISTORY: Path;
+    LUCKY_DRAW_ENTRY: Path;
   };
   ACCOUNT_BOOK: {
     MAIN: Path;
     HISTORY: Path;
     STATISTICS: Path;
+    QR_CODE: Path;
   };
   MYPAGE: Path;
   LOGIN: Path;
@@ -92,7 +98,7 @@ export const PathNames: PathNames = {
   GGULPAY: {
     MAIN: {
       path: '/pay',
-      name: '껄페이',
+      name: '껄 페이',
     },
     WALLET: {
       path: '/pay/wallet',
@@ -100,7 +106,11 @@ export const PathNames: PathNames = {
     },
     PRIZE_HISTORY: {
       path: '/pay/prize-history',
-      name: '전자지갑',
+      name: '응모 내역',
+    },
+    LUCKY_DRAW_ENTRY: {
+      path: '/pay/lucky-draw',
+      name: '응모하기',
     },
   },
   ACCOUNT_BOOK: {
@@ -115,6 +125,10 @@ export const PathNames: PathNames = {
     STATISTICS: {
       path: '/account-book/statistics',
       name: '통계',
+    },
+    QR_CODE: {
+      path: '/account-book/qr-code',
+      name: 'QR코드',
     },
   },
   MYPAGE: {
@@ -155,6 +169,10 @@ const accountBook: RouteObject[] = [
     path: PathNames.ACCOUNT_BOOK.HISTORY.path,
     element: <AccountBookHistoryPage />,
   },
+  {
+    path: PathNames.ACCOUNT_BOOK.QR_CODE.path,
+    element: <QrCodePage />,
+  },
 ];
 
 const payRoutes: RouteObject[] = [
@@ -168,7 +186,11 @@ const payRoutes: RouteObject[] = [
   },
   {
     path: PathNames.GGULPAY.PRIZE_HISTORY.path,
-    element: <PrizeHistory />,
+    element: <PrizeHistoryPage />,
+  },
+  {
+    path: PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path,
+    element: <LuckyDrawEntryPage />,
   },
 ];
 

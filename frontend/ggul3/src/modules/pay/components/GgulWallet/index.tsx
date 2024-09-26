@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import wallet from '@/assets/images/wallet.png';
 import { PathNames } from '@/router';
 
-const GgulWallet = () => {
+export const GgulWallet = () => {
   return (
     <Link to={PathNames.GGULPAY.WALLET.path}>
       <Card className="mb-4 flex bg-primary-500 py-1 text-black">
@@ -19,5 +19,3 @@ const GgulWallet = () => {
     </Link>
   );
 };
-
-export default GgulWallet;

@@ -1,6 +1,5 @@
-import { Balance } from '../components/Balance';
 import { QrButton } from '../components/QrButton';
-import { StatisticsButton } from '../components/StatisticsButton';
+import { Balance, StatisticsButton } from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';

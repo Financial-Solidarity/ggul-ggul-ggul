@@ -1,5 +1,4 @@
-import AccountBookHistory from '../components/AccountBookHistory';
-import { AccountBookHistoryHeader } from '../components/AccountBookHistoryHeader';
+import { AccountBookHistory, AccountBookHistoryHeader } from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';

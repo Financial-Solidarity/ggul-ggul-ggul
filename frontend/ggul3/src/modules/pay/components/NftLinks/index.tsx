@@ -7,7 +7,7 @@ import { PathNames } from '@/router';
 import inventoryBag from '@/assets/images/inventory-bag.png';
 import inventory from '@/assets/images/inventory.png';
 
-const NftLinks = () => {
+export const NftLinks = () => {
   const navigate = useNavigate();
 
   return (
@@ -32,19 +32,3 @@ const NftLinks = () => {
     </div>
   );
 };
-
-const LinkButton = () => {
-  const navigate = useNavigate();
-
-  return (
-    <CardButton
-      color="bg-secondary"
-      image={inventoryBag}
-      title="NFT 음식 마켓"
-      type="right"
-      onClick={() => navigate(PathNames.GAME.MARKET.path)}
-    />
-  );
-};
-
-export default NftLinks;

@@ -5,7 +5,10 @@ interface UserLinkProps {
   type: string;
 }
 
-const UserLink = ({ children, type }: PropsWithChildren<UserLinkProps>) => {
+export const UserLink = ({
+  children,
+  type,
+}: PropsWithChildren<UserLinkProps>) => {
   if (type === 'gray') {
     return (
       <Link className="text-gray-500" href="#" size="sm" underline="always">
@@ -20,5 +23,3 @@ const UserLink = ({ children, type }: PropsWithChildren<UserLinkProps>) => {
     );
   }
 };
-
-export default UserLink;

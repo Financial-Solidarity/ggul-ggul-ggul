@@ -2,7 +2,7 @@ import { Button } from '@nextui-org/button';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { PropsWithChildren } from 'react';
 
-const GgulPoint = () => {
+export const GgulPoint = () => {
   return (
     <Card className="mb-4 flex min-h-[160px] bg-success-500 py-1 text-white">
       <CardHeader className="flex justify-between">
@@ -42,5 +42,3 @@ const ToggleBalanceVisibilityButton =
       </Button>
     );
   };
-
-export default GgulPoint;

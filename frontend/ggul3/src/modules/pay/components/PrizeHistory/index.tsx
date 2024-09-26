@@ -5,7 +5,7 @@ import { SubTitle } from '../SubTitle';
 import shin from '@/assets/images/shin.png';
 import { PathNames } from '@/router';
 
-const PrizeHistory = () => {
+export const PrizeHistory = () => {
   return (
     <>
       <SubTitle
@@ -48,5 +48,3 @@ const PrizeHistoryItem = ({ name }: PrizeHistoryItemProps) => {
     </div>
   );
 };
-
-export default PrizeHistory;

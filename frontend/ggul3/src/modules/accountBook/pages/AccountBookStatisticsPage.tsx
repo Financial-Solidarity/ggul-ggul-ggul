@@ -1,11 +1,35 @@
-import { AccountBookHistoryHeader } from '../components/AccountBookHistoryHeader';
-import { AccountBookStatisticsCategoryList } from '../components/AccountBookStatisticsCategoryList';
-import { AccountBookPieChart } from '../components/AccountBookPieChart';
+import {
+  AccountBookHistoryHeader,
+  AccountBookPieChart,
+  AccountBookStatisticsCategoryList,
+} from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+
+export const AccountBookStatisticsPage = () => {
+  return (
+    <>
+      <TopBar
+        bgColor="bg-primary"
+        center={<NavTitle />}
+        left={<BackButton />}
+        right={<NotificationButton />}
+      />
+      <AccountBookHistoryHeader />
+      <PageContainer>
+        <AccountBookPieChart data={pieData} />
+        <AccountBookStatisticsCategoryList categoryList={data} />
+      </PageContainer>
+    </>
+  );
+};
+
+function NavTitle() {
+  return <p className="text-lg text-white">거래 내역</p>;
+}
 
 const data = [
   {
@@ -62,25 +86,3 @@ const pieData = [
     color: 'hsl(8, 70%, 50%)',
   },
 ];
-
-export const AccountBookStatisticsPage = () => {
-  return (
-    <>
-      <TopBar
-        bgColor="bg-primary"
-        center={<NavTitle />}
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
-      <AccountBookHistoryHeader />
-      <PageContainer>
-        <AccountBookPieChart data={pieData} />
-        <AccountBookStatisticsCategoryList categoryList={data} />
-      </PageContainer>
-    </>
-  );
-};
-
-function NavTitle() {
-  return <p className="text-lg text-white">거래 내역</p>;
-}

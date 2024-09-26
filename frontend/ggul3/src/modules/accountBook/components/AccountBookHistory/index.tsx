@@ -1,6 +1,6 @@
 import { AccountBookTradingHistoryItem } from '../AccountBookTradingHistoryItem';
 
-const AccountBookHistory = () => {
+export const AccountBookHistory = () => {
   return (
     <div className="bg-red-500-10 flex flex-col gap-4 py-4">
       <AccountBookTradingHistoryItem
@@ -40,5 +40,3 @@ const AccountBookHistory = () => {
     </div>
   );
 };
-
-export default AccountBookHistory;
