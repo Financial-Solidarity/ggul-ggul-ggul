@@ -3,6 +3,7 @@ package com.ggul.application.challange.ui;
 import com.ggul.application.challange.application.ChallengeJoinService;
 import com.ggul.application.challange.application.ChallengeReadyService;
 import com.ggul.application.challange.application.ChallengeRegisterService;
+import com.ggul.application.challange.application.ChallengeTeamChangeService;
 import com.ggul.application.challange.application.dto.*;
 import com.ggul.application.challange.application.schedule.ChallengeExitService;
 import com.ggul.application.challange.query.ChallengeFindService;
@@ -31,6 +32,7 @@ public class ChallengeController {
     private final ChallengeReadyService challengeReadyService;
     private final ChallengeExitService challengeExitService;
     private final ChallengeParticipantFindService challengeParticipantFindService;
+    private final ChallengeTeamChangeService challengeTeamChangeService;
 
     @PostMapping()
     public ResponseEntity<?> challengeCreate(@RequestBody ChallengeRegisterRequest request, @AuthenticationPrincipal UserLoginContext context) {
@@ -74,6 +76,7 @@ public class ChallengeController {
 
     @PostMapping("/team")
     public ResponseEntity<?> challengeTeam(@RequestBody ChallengeTeamChangeRequest request, @AuthenticationPrincipal UserLoginContext loginContext) {
-
+        ChallengeParticipantView challengeParticipantView = challengeTeamChangeService.changeTeam(request, loginContext.getUserId());
+        return ResponseEntity.ok(challengeParticipantView);
     }
 }
