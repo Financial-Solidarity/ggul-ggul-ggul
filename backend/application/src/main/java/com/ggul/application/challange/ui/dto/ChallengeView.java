@@ -20,26 +20,29 @@ public class ChallengeView {
     private String competitionType;
     private Boolean isBlindness;
     private Integer limitParticipant;
+    private Integer currentParticipant;
     private Integer budgetCap;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
+    private Boolean isOwner;
 
     @Builder
-    public ChallengeView(UUID challengeId, String title, Boolean isEncrypted, CompetitionType competitionType, Boolean isBlindness, Integer limitParticipant, Integer budgetCap, LocalDateTime startedAt, LocalDateTime endedAt) {
+    public ChallengeView(UUID challengeId, String title, Boolean isEncrypted, CompetitionType competitionType, Boolean isBlindness, Integer limitParticipant, Integer currentParticipant,Integer budgetCap, LocalDateTime startedAt, LocalDateTime endedAt, Boolean isOwner) {
         this.challengeId = challengeId;
         this.title = title;
         this.isEncrypted = isEncrypted;
         this.competitionType = competitionType.getType().getValue();
         this.isBlindness = isBlindness;
         this.limitParticipant = limitParticipant;
+        this.currentParticipant = currentParticipant;
         this.budgetCap = budgetCap;
-        this.startDate = startedAt.toLocalDate();
-        this.endDate = endedAt.toLocalDate();
+        this.startAt = startedAt;
+        this.endAt = endedAt;
     }
 
 
 
-    public static ChallengeView from(Challenge challenge) {
+    public static ChallengeView from(Challenge challenge, Integer ) {
         return ChallengeView.builder()
                 .challengeId(challenge.getId())
                 .title(challenge.getTitle())
