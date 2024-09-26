@@ -79,4 +79,5 @@ public class ChallengeController {
         ChallengeParticipantView challengeParticipantView = challengeTeamChangeService.changeTeam(request, loginContext.getUserId());
         return ResponseEntity.ok(challengeParticipantView);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.ggul.application.challange.domain;
 
+import com.ggul.application.chatting.domain.ChattingRoomType;
 import lombok.Getter;
 
 import java.util.EnumSet;
@@ -40,5 +41,17 @@ public class ChallengeParticipantType {
         }
 
         throw new IllegalArgumentException("Invalid challenge participant type: " + value);
+    }
+
+    public ChattingRoomType convertType() {
+        if(this.equals(RED)) {
+            return ChattingRoomType.RED;
+        }
+
+        if(this.equals(BLUE)) {
+            return ChattingRoomType.BLUE;
+        }
+
+        return ChattingRoomType.TOTAL;
     }
 }
