@@ -16,23 +16,23 @@ export const checkDuplicatedNickname = (nickname: string) => {
   });
 };
 
-interface verifyEmail {
+interface VerifyEmail {
   email: string;
   number: string;
 }
 
-export const verifyEmail = ({ email, number }: verifyEmail) => {
-  return _axios<{ isValid: boolean }>({
-    method: 'POST',
-    url: `/auth/email/verification`,
-    data: { email, number },
-  });
-};
-
-export const requestEmailVerification = (email: verifyEmail) => {
+export const requestEmailVerification = (email: VerifyEmail) => {
   return _axios<{ isValid: boolean }>({
     method: 'POST',
     url: `/auth/email/verification-request`,
     data: { email },
+  });
+};
+
+export const verifyEmail = ({ email, number }: VerifyEmail) => {
+  return _axios<{ isValid: boolean }>({
+    method: 'POST',
+    url: `/auth/email/verification`,
+    data: { email, number },
   });
 };
