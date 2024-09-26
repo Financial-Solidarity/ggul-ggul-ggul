@@ -9,7 +9,7 @@ interface TextChatBubbleProps {
   content: string;
   sentAt: string;
   isMine: boolean;
-  profile?: string;
+  profileImg?: string;
 }
 
 export const TextChatBubble = ({ isMine, ...props }: TextChatBubbleProps) => {
@@ -35,16 +35,16 @@ const OtherChatBubble = ({
   sentAt,
   nickname,
   content,
-  profile,
+  profileImg,
 }: Omit<TextChatBubbleProps, 'isMine'>) => {
   return (
     <div className="flex items-start justify-start gap-2">
       <div className="h-10 w-10 overflow-hidden rounded-full">
-        {profile ? (
+        {profileImg ? (
           <Image
-            alt="profile"
+            alt="profileImg"
             className="h-full w-full object-cover"
-            src={profile}
+            src={profileImg}
           />
         ) : (
           <div className="h-full w-full bg-primary p-2 text-white">
