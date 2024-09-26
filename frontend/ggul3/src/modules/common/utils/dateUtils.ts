@@ -4,6 +4,10 @@ export const toYYMDhm_ko = (date: string) => {
   return dayjs(date).format('YY년 M월 D일  H시 m분');
 };
 
+export const toYYMDhm = (date: string) => {
+  return dayjs(date).format('YY.M.D H:mm');
+};
+
 export const toAMPM_ko = (date: string) => {
   const d = dayjs(date);
   const ampm = d.hour() < 12 ? '오전' : '오후';
