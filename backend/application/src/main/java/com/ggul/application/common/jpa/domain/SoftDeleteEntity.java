@@ -18,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @SuperBuilder
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@SQLRestriction("is_deleted = false")
 public abstract class SoftDeleteEntity extends BaseEntity{
     @Column(name = "is_deleted")
     private Boolean isDeleted;

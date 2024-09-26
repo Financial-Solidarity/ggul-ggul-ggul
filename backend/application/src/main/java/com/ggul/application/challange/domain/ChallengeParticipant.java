@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 @AttributeOverride(name = "createdAt", column = @Column(name = "participated_at"))
 @Table(name = "challenge_participant")
 @Entity
+@SQLRestriction("is_deleted = false")
 public class ChallengeParticipant extends SoftDeleteEntity {
     @Id
     @GeneratedValue
@@ -53,3 +55,4 @@ public class ChallengeParticipant extends SoftDeleteEntity {
         }
     }
 }
+

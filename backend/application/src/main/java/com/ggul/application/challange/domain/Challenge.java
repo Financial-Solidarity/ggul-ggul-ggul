@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,6 +24,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "challenge")
 @Entity
+@DynamicUpdate
+@SQLRestriction("is_deleted = false")
 public class Challenge extends SoftDeleteEntity {
     @Id
     @GeneratedValue
