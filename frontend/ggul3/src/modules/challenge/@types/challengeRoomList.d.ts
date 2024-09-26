@@ -19,8 +19,8 @@ declare module '@types' {
 
   export interface ChattingRoomDTO {
     chattingRoomId: string;
-    lastChattingContent: string;
-    lastChattingSentAt?: string; // Optional in case it's missing for some rooms
-    badge: number; // Max badge value is 301, representing 300+
+    lastChattingContent: string | null;
+    lastChattingSentAt: string | null;
+    badge: number;
   }
 }
