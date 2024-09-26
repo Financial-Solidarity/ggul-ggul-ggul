@@ -36,12 +36,12 @@ export const ChallengeInfoAccordion = ({
   return (
     <div className="fixed z-10 flex w-full flex-col border-b bg-white">
       <div
-        className="flex cursor-pointer items-center justify-between px-4 py-4"
+        className="flex cursor-pointer items-center justify-between px-4 py-2"
         onClick={toggleIsOpen}
       >
-        <h4 className="font-bold text-default-600">{title}</h4>
+        <h4 className="text-sm font-bold text-default-600">{title}</h4>
         <div className={twMerge([isOpen && 'rotate-90'])}>
-          <ChevronRightIcon className="w-6 text-default-400" />
+          <ChevronRightIcon className="w-5 text-default-400" />
         </div>
       </div>
       <div
@@ -57,7 +57,7 @@ export const ChallengeInfoAccordion = ({
         >
           <p
             className={twMerge([
-              'mb-4 flex justify-center gap-1 font-semibold text-default-500',
+              'mb-4 flex justify-center gap-1 text-sm font-semibold text-default-500',
               countdown.days === 0 &&
                 countdown.hours === 0 &&
                 countdown.minutes < 10 &&
@@ -69,8 +69,7 @@ export const ChallengeInfoAccordion = ({
             <span>남음</span>
           </p>
           <div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-xl font-bold">{title}</h4>
+            <div className="flex flex-col gap-2 text-sm">
               <div>
                 <div className="flex items-center">
                   <span>{toYYMDhm_ko(startAt)}</span>
@@ -100,11 +99,11 @@ export const ChallengeInfoAccordion = ({
               </div>
             </div>
           </div>
-          <div className="py-4">
+          <div className="py-2">
             <hr className="border-dashed border-default-300" />
           </div>
           <div className="mb-2 flex flex-col gap-4">
-            <p className="text-2xl font-black">
+            <p className="text-lg font-black">
               <span>{budgetCap}</span>
               <span>원</span>
             </p>
