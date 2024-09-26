@@ -1,5 +1,6 @@
 package com.ggul.application.challange.query;
 
+import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.challange.domain.ChallengeParticipantType;
 import com.ggul.application.challange.domain.repository.ChallengeParticipantRepository;
 import com.ggul.application.challange.exception.ChallengeParticipantNotExistException;
@@ -27,10 +28,10 @@ public class ChallengeParticipantFindService {
 
     @Transactional(readOnly = true)
     public List<ChallengeParticipantView> findAllByChallengeId(UUID challengeId, UUID userId) {
-        if(!challengeParticipantRepository.existsByChallenge_IdAndUser_Id(challengeId, userId)) {
-            throw new ChallengeParticipantNotExistException();
-        }
-        return challengeParticipantRepository.findChallengeParticipantViewByChallenge_Id(challengeId);
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByChallenge_IdAndUser_Id(challengeId, userId).orElseThrow(ChallengeParticipantNotExistException::new);
+        List<ChallengeParticipantView> challengeParticipantViewByChallengeId = challengeParticipantRepository.findChallengeParticipantViewByChallenge_Id(challengeId);
+        challengeParticipantViewByChallengeId.forEach(challengeParticipantView -> challengeParticipantView.setIsMine(challengeParticipant.getId()));
+        return challengeParticipantViewByChallengeId;
     }
 
     @Transactional(readOnly = true)
