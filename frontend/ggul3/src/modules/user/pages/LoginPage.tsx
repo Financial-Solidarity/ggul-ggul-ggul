@@ -1,14 +1,73 @@
-import { UserButton, UserInput, UserLink, UserLogo } from '../components';
+import { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  UserBoldSpan,
+  UserButton,
+  UserInput,
+  UserLink,
+  UserLogo,
+} from '../components';
+import { useLoginStore } from '../store/loginStore';
+import { login } from '../apis/login';
+
+import { PathNames } from '@/router';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const {
+    email,
+    password,
+    displayErrorMessage,
+    setEmail,
+    setPassword,
+    validateEmail,
+  } = useLoginStore();
+
+  const handleSubmitLogin = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const request = await login({ email, password });
+
+      console.log('login result:', request);
+
+      navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
+    } catch (error) {
+      window.alert('[login] catch error.');
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center">
+    <form
+      className="flex flex-col items-center justify-center"
+      onSubmit={handleSubmitLogin}
+    >
       <UserLogo />
-      <UserInput label="이메일" />
-      <UserInput label="비밀번호" />
-      <UserLink type="gray">비밀번호를 잊으셨나요?</UserLink>
-      <UserButton>로그인</UserButton>
-      <UserLink type="bold">회원가입</UserLink>
-    </div>
+      <UserInput
+        errorMessage={displayErrorMessage.email}
+        label="이메일"
+        setValue={setEmail}
+        type="email"
+        validate={validateEmail}
+        value={email}
+      />
+      <UserInput
+        label="비밀번호"
+        setValue={setPassword}
+        type="password"
+        value={password}
+      />
+      <UserLink to={PathNames.FIND_PASSWORD.path} type="gray">
+        비밀번호를 잊으셨나요?
+      </UserLink>
+      <UserBoldSpan>
+        껄껄껄 <UserButton>로그인</UserButton>
+      </UserBoldSpan>
+      <UserLink to={PathNames.SIGHUP.path} type="bold">
+        회원가입
+      </UserLink>
+    </form>
   );
 };
