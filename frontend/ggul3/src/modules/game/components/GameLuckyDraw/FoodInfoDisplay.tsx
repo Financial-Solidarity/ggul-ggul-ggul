@@ -45,7 +45,7 @@ export const FoodInfoDisplay = ({
               src={'/src/assets/images/food/food_' + food?.typeIndex + '.png'}
               width={130}
             />
-            웹훅 테스트용 추가3
+            웹훅 테스트용 추가4
           </div>
         )}
       </div>
