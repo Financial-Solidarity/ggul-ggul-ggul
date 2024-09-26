@@ -17,6 +17,49 @@ module.exports = {
       fontFamily: {
         pretendard: ['Pretendard', 'sans-serif'],
       },
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        popIn: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeOut: {
+          '100%': { opacity: '1' },
+          '0%': { opacity: '0' },
+        },
+        pulseScale: {
+          '0%, 100%': {
+            transform: 'scale(1)',
+            borderColor: 'theme("colors.dr-coral-50")',
+          },
+          '50%': {
+            transform: 'scale(1.05)',
+            borderColor: 'theme("colors.dr-coral-300")',
+          },
+        },
+        floating: {
+          '0%, 100%': {
+            transform: 'translateY(0px)',
+          },
+          '50%': {
+            transform: 'translateY(-4px)',
+          },
+        },
+      },
+      animation: {
+        shimmer: 'shimmer 2s infinite linear',
+        popIn: 'popIn 0.25s ease-out',
+        fadeIn: 'fadeIn 0.35s ease-out',
+        pulseScale: 'pulseScale 2s infinite ease-in-out',
+        floating: 'floating 2s infinite ease-in-out ',
+      },
     },
   },
   darkMode: 'class',
