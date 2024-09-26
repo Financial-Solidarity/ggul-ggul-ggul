@@ -23,7 +23,7 @@ public class EquipmentBackdoor {
     @PostMapping("/draw")
     public ResponseEntity<?> draw(@RequestBody EquipmentDrawRequestBD request) {
         User user = userRepository.findByUsername(request.getEmail()).orElseThrow(() -> new RuntimeException("사용자 없음"));
-        Wallet wallet = walletRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("지갑 없음"));
+        Wallet wallet = walletRepository.findByUser(user).orElseThrow(() -> new RuntimeException("지갑 없음"));
         try{
             return ResponseEntity.ok().body(equipmentDrawService.drawEquipment(wallet.getAddress()));
         } catch (WalletInsufficientTokenException e) {
@@ -34,7 +34,7 @@ public class EquipmentBackdoor {
     @GetMapping("/users/{email}/drawn")
     public ResponseEntity<?> draw(@PathVariable String email) {
         User user = userRepository.findByUsername(email).orElseThrow(() -> new RuntimeException("사용자 없음"));
-        Wallet wallet = walletRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("지갑 없음"));
+        Wallet wallet = walletRepository.findByUser(user).orElseThrow(() -> new RuntimeException("지갑 없음"));
         return ResponseEntity.ok().body(equipmentDrawService.getDrawnEquipment(wallet.getAddress()));
     }
 }

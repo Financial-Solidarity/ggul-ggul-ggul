@@ -28,14 +28,14 @@ public class WalletBackdoor {
     @GetMapping("/users/{email}/tokens")
     public ResponseEntity<?> getToken(@PathVariable String email){
         User user = userRepository.findByUsername(email).orElseThrow(() -> new RuntimeException("사용자 없음"));
-        Wallet wallet = walletRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("지갑 없음"));
+        Wallet wallet = walletRepository.findByUser(user).orElseThrow(() -> new RuntimeException("지갑 없음"));
         return ResponseEntity.ok().body(tokenService.getBalance(wallet.getAddress()));
     }
 
     @PostMapping("/users/tokens/grant")
     public ResponseEntity<?> grantToken(@RequestBody TokenGrantRequestBD request) throws ContractInsufficientTokenException {
         User user = userRepository.findByUsername(request.getEmail()).orElseThrow(() -> new RuntimeException("사용자 없음"));
-        Wallet wallet = walletRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("지갑 없음"));
+        Wallet wallet = walletRepository.findByUser(user).orElseThrow(() -> new RuntimeException("지갑 없음"));
         try{
             return ResponseEntity.ok().body(tokenService.grantTokens(wallet.getAddress(), BigInteger.valueOf(request.getQuantity())));
         } catch (ContractInsufficientTokenException e) {
