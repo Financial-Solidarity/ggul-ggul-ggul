@@ -8,7 +8,6 @@ import com.ggul.application.challange.application.dto.*;
 import com.ggul.application.challange.application.schedule.ChallengeExitService;
 import com.ggul.application.challange.query.ChallengeFindService;
 import com.ggul.application.challange.query.ChallengeParticipantFindService;
-import com.ggul.application.challange.ui.dto.ChallengeParticipantListView;
 import com.ggul.application.challange.ui.dto.ChallengeParticipantView;
 import com.ggul.application.challange.ui.dto.ChallengeView;
 import com.ggul.application.common.domain.password.Password;
@@ -40,14 +39,14 @@ public class ChallengeController {
     }
 
     @GetMapping("/{challengeId}")
-    public ResponseEntity<?> getChallenge(@PathVariable UUID challengeId) {
-        ChallengeView challengeDto = challengeFindService.getChallenge(challengeId);
+    public ResponseEntity<?> getChallenge(@PathVariable UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
+        ChallengeView challengeDto = challengeFindService.getChallenge(challengeId, context.getUserId());
         return ResponseEntity.ok(challengeDto);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> getChallengeSearch(@RequestParam(value = "title", required = false) String title, Pageable pageable) {
-        return ResponseEntity.ok(challengeFindService.getChallenges(title, pageable));
+    public ResponseEntity<?> getChallengeSearch(@RequestParam(value = "title", required = false) String title, Pageable pageable, @AuthenticationPrincipal UserLoginContext context) {
+        return ResponseEntity.ok(challengeFindService.getChallenges(title, context.getUserId(), pageable));
     }
 
     @PostMapping("/join")
@@ -79,5 +78,4 @@ public class ChallengeController {
         ChallengeParticipantView challengeParticipantView = challengeTeamChangeService.changeTeam(request, loginContext.getUserId());
         return ResponseEntity.ok(challengeParticipantView);
     }
-
 }
