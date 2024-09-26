@@ -20,13 +20,13 @@ export const Balance = () => {
         </div>
       </CardHeader>
       <CardBody className="text-center">
-        <p className="text-2xl">
+        <div className="text-2xl">
           {visible ? (
             '12,345,678,910,111 원'
           ) : (
             <p className="text-gray-300">금액 숨김</p>
           )}
-        </p>
+        </div>
       </CardBody>
       <CardFooter className="justify-center">
         <SmallText>연동 계좌번호 {'123-******-***789'}</SmallText>

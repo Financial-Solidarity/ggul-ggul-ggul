@@ -27,6 +27,7 @@ export const AccountBookHistoryHeader = () => {
       <div className="mb-6 flex gap-2">
         <div className="w-20">
           <Autocomplete
+            aria-label="년도 선택" // 추가된 부분
             classNames={{
               selectorButton: 'hidden',
             }}
@@ -52,6 +53,7 @@ export const AccountBookHistoryHeader = () => {
         </div>
         <div className="w-14">
           <Autocomplete
+            aria-label="월 선택" // 추가된 부분
             classNames={{
               selectorButton: 'hidden',
             }}
