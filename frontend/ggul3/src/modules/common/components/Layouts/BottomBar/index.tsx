@@ -79,10 +79,10 @@ export const BottomBar = () => {
         <ul className="flex flex-row gap-7">
           <BottomBarButton
             icon={<CalendarIcon className="mb-[2px] h-7 w-7" />}
-            isActive={isCurrentPath(PathNames.ACCOUNTBOOK.path)}
+            isActive={isCurrentPath(PathNames.ACCOUNT_BOOK.MAIN.path)}
             isDarkMode={isDarkMode}
             label="가계부"
-            onClick={() => handleNavigation(PathNames.ACCOUNTBOOK.path)}
+            onClick={() => handleNavigation(PathNames.ACCOUNT_BOOK.MAIN.path)}
           />
           <BottomBarButton
             icon={<UserCircleIcon className="mb-[2px] h-7 w-7" />}

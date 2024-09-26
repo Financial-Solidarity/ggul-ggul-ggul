@@ -3,9 +3,9 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 
 import { SubTitle } from '../SubTitle';
 
-const TokenPossession = () => {
+export const TokenPossession = () => {
   return (
-    <div className="mb-4">
+    <div className="mb-4 mt-6">
       <SubTitle title="보유 토큰" />
       <div className="flex flex-col gap-1 py-2">
         <TokenItem />
@@ -28,5 +28,3 @@ const TokenItem = () => {
     </Button>
   );
 };
-
-export default TokenPossession;

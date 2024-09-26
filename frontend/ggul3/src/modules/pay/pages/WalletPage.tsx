@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { WalletHeader } from '../components/WalletHeader';
-import TokenPossession from '../components/TokenPossession';
-import TokenTradingHistory from '../components/TokenTradingHistory';
-import NftLinks from '../components/NftLinks';
+import { NftLinks, TokenPossession, TokenTradingHistory } from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';

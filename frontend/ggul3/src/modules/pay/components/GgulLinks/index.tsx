@@ -4,7 +4,7 @@ import { Image } from '@nextui-org/react';
 import charityGroup from '@/assets/images/charity-group.png';
 import woodenTrainingSword from '@/assets/images/wooden-training-sword.png';
 
-const GgulLinks = () => {
+export const GgulLinks = () => {
   return (
     <div className="mb-20 flex gap-2">
       <GgulLinkItem
@@ -47,5 +47,3 @@ const GgulLinkItem = ({ title, description, imgUrl }: GgulLinkItemProps) => {
     </Card>
   );
 };
-
-export default GgulLinks;

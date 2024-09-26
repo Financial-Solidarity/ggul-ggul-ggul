@@ -1,14 +1,15 @@
 import { useState } from 'react';
 
-import UserInput from '../components/UserInput';
-import UserLink from '../components/UserLink';
-import UserButton from '../components/UserButton';
-import UserLogo from '../components/UserLogo';
-import UserBoldParagraph from '../components/UserBoldParagraph';
-import UserBoldSpan from '../components/UserBoldSpan';
-import UserVerifyEmail from '../components/UserVerifyEmail';
+import {
+  UserBoldParagraph,
+  UserBoldSpan,
+  UserButton,
+  UserInput,
+  UserLink,
+  UserLogo,
+} from '../components';
 
-export default function SignUpPage() {
+export const SignUpPage = () => {
   const [step, setStep] = useState<string>('signUp');
 
   if (step === 'signUp') {
@@ -28,7 +29,16 @@ export default function SignUpPage() {
   if (step === 'verify') {
     return (
       <div className="flex flex-col items-center justify-center">
-        <UserVerifyEmail purpose="회원가입" />;
+        <UserLogo />
+        <UserBoldParagraph>
+          <UserBoldSpan>메일함</UserBoldSpan>으로 인증 번호를 보냈습니다.
+        </UserBoldParagraph>
+        <UserBoldParagraph>회원가입 인증 번호를 입력해주세요</UserBoldParagraph>
+        <UserInput label="인증번호" />
+        <UserButton>인증하고 회원가입 하기</UserButton>
+        <UserLink type="bold">
+          <UserBoldSpan>껄껄껄</UserBoldSpan>로그인하러 가기
+        </UserLink>
       </div>
     );
   }
@@ -49,4 +59,4 @@ export default function SignUpPage() {
       </div>
     );
   }
-}
+};
