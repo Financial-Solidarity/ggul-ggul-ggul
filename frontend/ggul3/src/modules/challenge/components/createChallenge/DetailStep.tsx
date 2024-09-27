@@ -54,6 +54,7 @@ export const DetailStep = () => {
           onChange={handleStartDate}
         />
         <TimeInput
+          hourCycle={24}
           label="시작시간"
           value={startTime && new Time(startTime.hour, startTime.minute)}
           onChange={handleStartTime}
@@ -69,6 +70,7 @@ export const DetailStep = () => {
           onChange={handleEndDate}
         />
         <TimeInput
+          hourCycle={24}
           label="종료시간"
           value={endTime && new Time(endTime.hour, endTime.minute)}
           onChange={handleEndTime}
