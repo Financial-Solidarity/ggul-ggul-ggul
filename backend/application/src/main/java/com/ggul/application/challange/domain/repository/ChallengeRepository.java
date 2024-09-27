@@ -27,4 +27,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, UUID> {
     Slice<ChallengeView> findChallengeView(Pageable pageable, @Param("sessionId") UUID sessionId);
 
     List<Challenge> findAllByIsReadyAndIsDeleted(Boolean isReady, Boolean isDeleted);
+
+    @Query("SELECT c FROM ChallengeParticipant cp JOIN Challenge c ON cp.challenge = c WHERE cp.user.id = :sessionId ")
+    List<Challenge> findAllByUserId(@Param("sessionId")UUID sessionId);
 }
