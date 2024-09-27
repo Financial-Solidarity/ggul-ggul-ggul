@@ -39,14 +39,14 @@ export const verifyEmail = ({ email, number }: VerifyEmail) => {
 
 interface SignUp {
   email: string;
-  number: string;
+  nickname: string;
   password: string;
 }
 
-export const signUp = ({ email, number, password }: SignUp) => {
+export const signUp = ({ email, nickname, password }: SignUp) => {
   return _axios<{ isValid: boolean }>({
     method: 'POST',
     url: `/auth/users`,
-    data: { email, number, password },
+    data: { email, nickname, password },
   });
 };
