@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
-import { Chatform } from '../components/waitingRoom/ChatForm';
+import { Chatform } from '../components/chat/ChatForm';
 import { ChatList } from '../components/waitingRoom/ChatList';
 
 import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
