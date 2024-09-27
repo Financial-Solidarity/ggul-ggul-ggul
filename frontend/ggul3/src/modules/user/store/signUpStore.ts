@@ -30,7 +30,7 @@ interface signUpState extends UserSignUpForm {
 }
 
 export const useSignUpStore = create<signUpState>((set, get) => ({
-  step: 'signUp',
+  step: 'sign up',
   email: 'gentryop00@gmail.com',
   nickname: 'asd',
   password: 'asd',
