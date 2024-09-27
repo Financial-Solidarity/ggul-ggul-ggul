@@ -4,17 +4,21 @@ import { CommonChatDTO } from '@types';
 
 import { toAMPM_ko } from '@/modules/common/utils/dateUtils';
 
-interface TextChatBubbleProps extends CommonChatDTO {}
+interface TextChatBubbleProps {
+  chat: CommonChatDTO;
+}
 
-export const TextChatBubble = ({ ...props }: TextChatBubbleProps) => {
-  return props.profile.isMine ? (
-    <MyChatBubble {...props} />
+export const TextChatBubble = ({ chat }: TextChatBubbleProps) => {
+  return chat.profile.isMine ? (
+    <MyChatBubble chat={chat} />
   ) : (
-    <OtherChatBubble {...props} />
+    <OtherChatBubble chat={chat} />
   );
 };
 
-const MyChatBubble = ({ sentAt, content }: TextChatBubbleProps) => {
+const MyChatBubble = ({ chat }: TextChatBubbleProps) => {
+  const { sentAt, content } = chat;
+
   return (
     <div className="flex w-full items-end justify-end gap-2">
       <p className="text-xs text-default-500">{toAMPM_ko(sentAt)}</p>
@@ -26,8 +30,12 @@ const MyChatBubble = ({ sentAt, content }: TextChatBubbleProps) => {
   );
 };
 
-const OtherChatBubble = ({ sentAt, content, profile }: TextChatBubbleProps) => {
-  const { nickname, profileImg } = profile;
+const OtherChatBubble = ({ chat }: TextChatBubbleProps) => {
+  const {
+    sentAt,
+    content,
+    profile: { nickname, profileImg },
+  } = chat;
 
   return (
     <div className="flex items-start justify-start gap-2">
