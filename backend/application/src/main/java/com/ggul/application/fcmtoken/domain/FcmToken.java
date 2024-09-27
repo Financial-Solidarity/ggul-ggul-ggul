@@ -1,18 +1,17 @@
 package com.ggul.application.fcmtoken.domain;
 
+import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.UUID;
-
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "fcm_token")
 @Entity
 public class FcmToken {
     @Id
@@ -23,6 +22,10 @@ public class FcmToken {
     @Column(name = "fcm_token")
     private String token;
 
-    @Column(name = "user_id")
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(name = "session_id")
+    private String sessionId;
 }

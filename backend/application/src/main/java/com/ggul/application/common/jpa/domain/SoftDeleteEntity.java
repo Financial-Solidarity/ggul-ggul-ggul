@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
@@ -26,6 +27,12 @@ public abstract class SoftDeleteEntity extends BaseEntity{
         if(isDeleted == null) {
             this.isDeleted = false;
         }
+        prePersistAction();
+    }
+
+
+    protected void prePersistAction() {
+
     }
 
     public void delete() {

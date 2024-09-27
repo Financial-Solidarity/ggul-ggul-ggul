@@ -4,6 +4,7 @@ import com.ggul.application.common.domain.password.Password;
 import com.ggul.application.common.domain.password.PasswordConverter;
 import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
+import com.ggul.application.fcmtoken.domain.FcmToken;
 import com.ggul.application.user.application.dto.UserInfoModifyRequest;
 import com.ggul.application.user.exception.PasswordNotMatchException;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @SuperBuilder
@@ -20,11 +22,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "user")
 @Entity
-
 public class User extends SoftDeleteEntity {
     @Id
     @GeneratedValue
-    @Column(name = "user_id", columnDefinition = "BINARY(16)")
+    @Column(name = "user_id")
     @UUIDv7
     private UUID id;
 
@@ -40,6 +41,9 @@ public class User extends SoftDeleteEntity {
 
     @Column(name = "user_profile")
     private String profile;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<FcmToken> fcmTokens;
 
     public void update(UserInfoModifyRequest request, String imageUrl) {
         if(request.getNickname() != null && !request.getNickname().isEmpty()) {
@@ -65,4 +69,9 @@ public class User extends SoftDeleteEntity {
         }
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//
+//    }
 }
