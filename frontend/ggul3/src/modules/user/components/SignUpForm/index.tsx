@@ -1,6 +1,14 @@
 import { FormEvent } from 'react';
 
-import { UserButton, UserInput, UserLink, UserLogo } from '../../components';
+import {
+  UserBoldSpan,
+  UserButton,
+  UserFormStyleBox,
+  UserInput,
+  UserInputBox,
+  UserLink,
+  UserLogo,
+} from '../../components';
 import {
   checkDuplicatedEmail,
   checkDuplicatedNickname,
@@ -8,6 +16,7 @@ import {
 } from '../../apis/signUp';
 
 import { PathNames } from '@/router';
+import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 
 interface SignUpFormProps {
   email: string;
@@ -19,7 +28,6 @@ interface SignUpFormProps {
     PASSWORD_CHECK: string;
     EMAIL_VALIDATION: string;
   };
-  emailValidation: string;
   nickname: string;
   password: string;
   passwordCheck: string;
@@ -41,7 +49,6 @@ export const SignUpForm = ({
   ERRORS,
   displayErrorMessage,
   email,
-  emailValidation,
   nickname,
   password,
   passwordCheck,
@@ -79,7 +86,7 @@ export const SignUpForm = ({
         return;
       }
 
-      await requestEmailVerification({ email, number: emailValidation });
+      await requestEmailVerification({ email });
 
       setStep('verify');
     } catch (error) {
@@ -90,38 +97,39 @@ export const SignUpForm = ({
   };
 
   return (
-    <form
-      className="flex flex-col items-center justify-center"
-      onSubmit={handleSubmitSignUp}
-    >
-      <UserLogo />
-      <UserInput
-        errorMessage={displayErrorMessage.email}
-        label="이메일"
-        setValue={setEmail}
-        type="email"
-        validate={validateEmail}
-        value={email}
-      />
-      <UserInput label="닉네임" setValue={setNickname} value={nickname} />
-      <UserInput
-        errorMessage={displayErrorMessage.passwordCheck}
-        label="비밀번호"
-        setValue={setPassword}
-        type="password"
-        value={password}
-      />
-      <UserInput
-        label="비밀번호 확인"
-        setValue={setPasswordCheck}
-        type="password"
-        validate={validatePasswordCheck}
-        value={passwordCheck}
-      />
-      <UserButton>회원가입</UserButton>
-      <UserLink to={PathNames.LOGIN.path} type="bold">
-        로그인
-      </UserLink>
-    </form>
+    <PageContainer>
+      <UserFormStyleBox submitEvent={handleSubmitSignUp}>
+        <UserLogo />
+        <UserInputBox>
+          <UserInput
+            errorMessage={displayErrorMessage.email}
+            label="이메일"
+            setValue={setEmail}
+            type="email"
+            validate={validateEmail}
+            value={email}
+          />
+          <UserInput label="닉네임" setValue={setNickname} value={nickname} />
+          <UserInput
+            errorMessage={displayErrorMessage.passwordCheck}
+            label="비밀번호"
+            setValue={setPassword}
+            type="password"
+            value={password}
+          />
+          <UserInput
+            label="비밀번호 확인"
+            setValue={setPasswordCheck}
+            type="password"
+            validate={validatePasswordCheck}
+            value={passwordCheck}
+          />
+        </UserInputBox>
+        <UserButton>회원가입</UserButton>
+        <UserLink to={PathNames.LOGIN.path} type="bold">
+          <UserBoldSpan>껄껄껄</UserBoldSpan>로그인
+        </UserLink>
+      </UserFormStyleBox>
+    </PageContainer>
   );
 };

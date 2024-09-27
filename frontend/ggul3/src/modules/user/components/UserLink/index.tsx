@@ -19,7 +19,7 @@ export const UserLink = ({
     );
   } else if (type === 'bold') {
     return (
-      <Link className="font-bold text-black" href={to} size="lg">
+      <Link className="font-medium text-black" href={to} size="lg">
         {children}
       </Link>
     );

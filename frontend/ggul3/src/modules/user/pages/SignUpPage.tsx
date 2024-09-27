@@ -27,7 +27,6 @@ export const SignUpPage = () => {
         ERRORS={ERRORS}
         displayErrorMessage={displayErrorMessage}
         email={email}
-        emailValidation={emailValidation}
         nickname={nickname}
         password={password}
         passwordCheck={passwordCheck}
@@ -47,6 +46,7 @@ export const SignUpPage = () => {
       <SignUpVerifyEmail
         email={email}
         emailValidation={emailValidation}
+        password={password}
         setEmailValidation={setEmailValidation}
         setStep={setStep}
       />

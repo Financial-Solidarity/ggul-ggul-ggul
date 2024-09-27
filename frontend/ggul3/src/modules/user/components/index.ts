@@ -11,3 +11,6 @@ export * from './LoginForm';
 export * from './FindPasswordWithEmail';
 export * from './FindPasswordVerification';
 export * from './SetNewPassword';
+export * from './UserInputBox';
+export * from './UserFormStyleBox';
+export * from './UserBoldParagraphBox';

@@ -21,7 +21,7 @@ interface VerifyEmail {
   number: string;
 }
 
-export const requestEmailVerification = (email: VerifyEmail) => {
+export const requestEmailVerification = ({ email }: { email: string }) => {
   return _axios<{ isValid: boolean }>({
     method: 'POST',
     url: `/auth/email/verification-request`,
@@ -34,5 +34,19 @@ export const verifyEmail = ({ email, number }: VerifyEmail) => {
     method: 'POST',
     url: `/auth/email/verification`,
     data: { email, number },
+  });
+};
+
+interface SignUp {
+  email: string;
+  number: string;
+  password: string;
+}
+
+export const signUp = ({ email, number, password }: SignUp) => {
+  return _axios<{ isValid: boolean }>({
+    method: 'POST',
+    url: `/auth/users`,
+    data: { email, number, password },
   });
 };
