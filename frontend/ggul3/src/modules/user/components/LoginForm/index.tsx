@@ -5,7 +5,9 @@ import { login } from '../../apis/login';
 import {
   UserBoldSpan,
   UserButton,
+  UserFormStyleBox,
   UserInput,
+  UserInputBox,
   UserLink,
   UserLogo,
 } from '../../components';
@@ -48,35 +50,33 @@ export const LoginForm = ({
 
   return (
     <PageContainer>
-      <form
-        className="flex flex-col items-center justify-center"
-        onSubmit={handleSubmitLogin}
-      >
+      <UserFormStyleBox submitEvent={handleSubmitLogin}>
         <UserLogo />
-        <UserInput
-          errorMessage={displayErrorMessage.email}
-          label="이메일"
-          setValue={setEmail}
-          type="email"
-          validate={validateEmail}
-          value={email}
-        />
-        <UserInput
-          label="비밀번호"
-          setValue={setPassword}
-          type="password"
-          value={password}
-        />
+        <UserInputBox>
+          <UserInput
+            errorMessage={displayErrorMessage.email}
+            label="이메일"
+            setValue={setEmail}
+            type="email"
+            validate={validateEmail}
+            value={email}
+          />
+          <UserInput
+            label="비밀번호"
+            setValue={setPassword}
+            type="password"
+            value={password}
+          />
+        </UserInputBox>
         <UserLink to={PathNames.FIND_PASSWORD.path} type="gray">
           비밀번호를 잊으셨나요?
         </UserLink>
-        <UserBoldSpan>
-          껄껄껄 <UserButton>로그인</UserButton>
-        </UserBoldSpan>
+        <UserButton>로그인</UserButton>
         <UserLink to={PathNames.SIGHUP.path} type="bold">
+          <UserBoldSpan>껄껄껄</UserBoldSpan>
           회원가입
         </UserLink>
-      </form>
+      </UserFormStyleBox>
     </PageContainer>
   );
 };

@@ -13,7 +13,7 @@ export const UserLink = ({
 }: PropsWithChildren<UserLinkProps>) => {
   if (type === 'gray') {
     return (
-      <Link className="text-gray" href={to} size="sm" underline="always">
+      <Link className="pb-2 text-end" href={to} size="sm" underline="always">
         {children}
       </Link>
     );

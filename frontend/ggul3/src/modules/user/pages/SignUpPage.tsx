@@ -21,7 +21,7 @@ export const SignUpPage = () => {
     validatePasswordCheck,
   } = useSignUpStore();
 
-  if (step === 'signUp') {
+  if (step === 'sign up') {
     return (
       <SignUpForm
         ERRORS={ERRORS}
