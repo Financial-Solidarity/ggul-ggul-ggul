@@ -23,6 +23,9 @@ import {
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
+import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoomPage';
+import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
+import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
 
 export interface Path {
   path: string;
@@ -43,6 +46,9 @@ export interface PathNames {
     CREATE: Path;
     WAITING_ROOM: Path;
     CHATTING_ROOMS: Path;
+    SOLO_CHATTING: Path;
+    TEAM_CHATTING: Path;
+    TOTAL_CHATTING: Path;
   };
   GGULPAY: {
     MAIN: Path;
@@ -106,6 +112,18 @@ export const PathNames: PathNames = {
     CHATTING_ROOMS: {
       path: '/challenge/chatting-rooms',
       name: '채팅방 목록',
+    },
+    SOLO_CHATTING: {
+      path: '/challenge/solo-chatting/:id',
+      name: '개인전 채팅방',
+    },
+    TEAM_CHATTING: {
+      path: '/challenge/team-chatting/:id',
+      name: '팀전 팀 채팅방',
+    },
+    TOTAL_CHATTING: {
+      path: '/challenge/total-chatting/:id',
+      name: '팀전 전체 채팅방',
     },
   },
   GGULPAY: {
@@ -178,6 +196,18 @@ const challengeRoutes: RouteObject[] = [
   {
     path: PathNames.CHALLENGE.CHATTING_ROOMS.path,
     element: <ChattingRoomListPage />,
+  },
+  {
+    path: PathNames.CHALLENGE.SOLO_CHATTING.path,
+    element: <SoloChattingRoomPage />,
+  },
+  {
+    path: PathNames.CHALLENGE.TEAM_CHATTING.path,
+    element: <TeamChattingRoomPage />,
+  },
+  {
+    path: PathNames.CHALLENGE.TOTAL_CHATTING.path,
+    element: <TotalChattingRoomPage />,
   },
 ];
 

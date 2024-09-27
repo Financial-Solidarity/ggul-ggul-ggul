@@ -1,25 +1,24 @@
 import { UserIcon } from '@heroicons/react/24/outline';
 import { Image } from '@nextui-org/react';
+import { CommonChatDTO } from '@types';
 
 import { toAMPM_ko } from '@/modules/common/utils/dateUtils';
 
 interface TextChatBubbleProps {
-  chattingId: number;
-  nickname: string;
-  content: string;
-  sentAt: string;
-  isMine: boolean;
-  profileImg?: string;
+  chat: CommonChatDTO;
 }
 
-export const TextChatBubble = ({ isMine, ...props }: TextChatBubbleProps) => {
-  return isMine ? <MyChatBubble {...props} /> : <OtherChatBubble {...props} />;
+export const TextChatBubble = ({ chat }: TextChatBubbleProps) => {
+  return chat.profile.isMine ? (
+    <MyChatBubble chat={chat} />
+  ) : (
+    <OtherChatBubble chat={chat} />
+  );
 };
 
-const MyChatBubble = ({
-  sentAt,
-  content,
-}: Omit<TextChatBubbleProps, 'isMine'>) => {
+const MyChatBubble = ({ chat }: TextChatBubbleProps) => {
+  const { sentAt, content } = chat;
+
   return (
     <div className="flex w-full items-end justify-end gap-2">
       <p className="text-xs text-default-500">{toAMPM_ko(sentAt)}</p>
@@ -31,12 +30,13 @@ const MyChatBubble = ({
   );
 };
 
-const OtherChatBubble = ({
-  sentAt,
-  nickname,
-  content,
-  profileImg,
-}: Omit<TextChatBubbleProps, 'isMine'>) => {
+const OtherChatBubble = ({ chat }: TextChatBubbleProps) => {
+  const {
+    sentAt,
+    content,
+    profile: { nickname, profileImg },
+  } = chat;
+
   return (
     <div className="flex items-start justify-start gap-2">
       <div className="h-10 w-10 overflow-hidden rounded-full">
