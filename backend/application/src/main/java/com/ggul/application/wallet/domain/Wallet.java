@@ -24,12 +24,14 @@ public class Wallet {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "user_Id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "wallet_address")
+    @Convert(converter = ByteArrayToStringConverter.class)
     private String address;
 
     @Column(name = "wallet_private_key")
+    @Convert(converter = ByteArrayToStringConverter.class)
     private String privateKey;
 }
