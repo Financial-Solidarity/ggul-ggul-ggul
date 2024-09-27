@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS challenge_participant;
 DROP TABLE IF EXISTS challenge;
 DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS fcm_token;
+DROP TABLE IF EXISTS consumption_log;
+DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
@@ -90,6 +92,22 @@ CREATE TABLE notification (
     notification_type VARCHAR(40) NOT NULL,
     data JSON,
     FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE consumption_log (
+    consumption_log_id BINARY(16) NOT NULL PRIMARY KEY,
+    user_id BINARY(16) NOT NULL ,
+    product_category_id INT NOT NULL,
+    consumption_at DATETIME NOT NULL,
+    consumption_balance INT NOT NULL,
+    product_name VARCHAR(40) NOT NULL,
+    consumption_market VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE category (
+    product_category_id INT NOT NULL,
+    category_name VARCHAR(40) NOT NULL
 );
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at) VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡', null, now());

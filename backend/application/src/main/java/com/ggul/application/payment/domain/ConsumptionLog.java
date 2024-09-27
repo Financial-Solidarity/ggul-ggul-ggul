@@ -2,7 +2,6 @@ package com.ggul.application.payment.domain;
 
 import com.ggul.application.common.jpa.domain.BaseEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
-import com.ggul.application.product.domain.ProductCategory;
 import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,9 +36,9 @@ public class ConsumptionLog extends BaseEntity {
     @Column(name = "consumption_balance")
     private Integer balance;
 
-    @Column(name = "consumption_title")
-    private String title;
+    @Column(name = "product_name")
+    private String productName;
 
-    @Column(name = "consumption_description")
-    private String description;
+    @Column(name = "consumption_market")
+    private String market;
 }
