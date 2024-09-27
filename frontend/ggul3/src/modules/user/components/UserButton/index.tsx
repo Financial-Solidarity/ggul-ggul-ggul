@@ -7,7 +7,13 @@ export const UserButton = ({
   children,
 }: PropsWithChildren<UserButtonProps>) => {
   return (
-    <Button className="w-full" color="primary" radius="full" size="lg">
+    <Button
+      className="mb-3 w-full"
+      color="primary"
+      radius="full"
+      size="lg"
+      type="submit"
+    >
       {children}
     </Button>
   );
