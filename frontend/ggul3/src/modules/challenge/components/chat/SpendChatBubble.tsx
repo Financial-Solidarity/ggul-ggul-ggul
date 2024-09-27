@@ -69,7 +69,7 @@ const OtherSpendChatBubble = ({ chat }: SpendChatBubbleProps) => {
       </div>
       <div className="flex max-w-[50%] flex-col gap-1">
         <p className="text-sm text-default-600">{nickname}</p>
-        <div className="flex min-w-52 flex-col overflow-hidden rounded-lg">
+        <div className="flex min-w-40 flex-col overflow-hidden rounded-lg">
           <div className="relative flex flex-col bg-secondary px-2 py-2 text-default-800">
             <p className="text-sm font-bold">지출발생</p>
             <p className="text-lg font-black">{formatWon(balance)}</p>
