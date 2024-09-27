@@ -19,6 +19,7 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 interface SignUpVerifyEmailProps {
   email: string;
   emailValidation: string;
+  nickname: string;
   password: string;
   setEmailValidation: (emailValidation: string) => void;
   setStep: (step: string) => void;
@@ -27,6 +28,7 @@ interface SignUpVerifyEmailProps {
 export const SignUpVerifyEmail = ({
   email,
   emailValidation,
+  nickname,
   password,
   setStep,
   setEmailValidation,
@@ -35,12 +37,12 @@ export const SignUpVerifyEmail = ({
     e.preventDefault();
 
     try {
-      if ((await verifyEmail({ email, number: emailValidation })).isValid) {
+      if (!(await verifyEmail({ email, number: emailValidation })).isValid) {
         return;
       }
 
       // form 전달하고 회원가입 성공 시 success 페이지로 이동
-      await signUp({ email, number: emailValidation, password });
+      await signUp({ email, nickname, password });
 
       setStep('success');
     } catch (error) {

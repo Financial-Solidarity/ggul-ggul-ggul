@@ -8,3 +8,5 @@ export * from './AccountConnectionItem';
 export * from './Balance';
 export * from './QrButton';
 export * from './StatisticsButton';
+export * from './SmallText';
+export * from './ToggleBalanceVisibilityButton';

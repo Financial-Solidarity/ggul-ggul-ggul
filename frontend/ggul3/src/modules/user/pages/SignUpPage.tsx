@@ -46,6 +46,7 @@ export const SignUpPage = () => {
       <SignUpVerifyEmail
         email={email}
         emailValidation={emailValidation}
+        nickname={nickname}
         password={password}
         setEmailValidation={setEmailValidation}
         setStep={setStep}
