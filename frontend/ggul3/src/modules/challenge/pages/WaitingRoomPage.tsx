@@ -27,6 +27,10 @@ export const WaitingRoomPage = () => {
     setIsDrawerOpen(false);
   };
 
+  const sendChat = (message: string) => {
+    console.log(message);
+  };
+
   if (!id) return;
 
   return (
@@ -43,7 +47,7 @@ export const WaitingRoomPage = () => {
           <div className="z-0 overflow-y-auto px-4 py-16">
             <ChatList />
           </div>
-          <Chatform />
+          <Chatform onSubmit={sendChat} />
         </div>
       </PageContainer>
       {/* <SoloDrawer isOpen={isDrawerOpen} onClose={closeDrawer} /> */}
