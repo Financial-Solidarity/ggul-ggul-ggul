@@ -13,6 +13,7 @@ import {
   PayPage,
   PrizeHistoryPage,
   QrCodePage,
+  QrPayPage,
   WalletPage,
 } from './modules/pay/pages';
 import { FindPasswordPage, LoginPage, SignUpPage } from './modules/user/pages';
@@ -49,6 +50,7 @@ export interface PathNames {
     WALLET: Path;
     PRIZE_HISTORY: Path;
     LUCKY_DRAW_ENTRY: Path;
+    QR_PAY: Path;
   };
   ACCOUNT_BOOK: {
     MAIN: Path;
@@ -124,6 +126,10 @@ export const PathNames: PathNames = {
     LUCKY_DRAW_ENTRY: {
       path: '/pay/lucky-draw',
       name: '응모하기',
+    },
+    QR_PAY: {
+      path: '/pay/qr-pay',
+      name: 'QR코드',
     },
   },
   ACCOUNT_BOOK: {
@@ -216,6 +222,10 @@ const payRoutes: RouteObject[] = [
   {
     path: PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path,
     element: <LuckyDrawEntryPage />,
+  },
+  {
+    path: PathNames.GGULPAY.QR_PAY.path,
+    element: <QrPayPage />,
   },
 ];
 
