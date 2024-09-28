@@ -10,3 +10,5 @@ export * from './QrButton';
 export * from './StatisticsButton';
 export * from './SmallText';
 export * from './ToggleBalanceVisibilityButton';
+export * from './CurrentAccount';
+export * from './ConnecntAccountModal';

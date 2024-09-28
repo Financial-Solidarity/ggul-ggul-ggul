@@ -1,32 +1,25 @@
+import { Account } from '@types';
 import { BsCheckCircle } from 'react-icons/bs';
-
-interface Account {
-  id: number;
-  name: string;
-  accountNo: string;
-}
 
 interface AccountItemProps {
   account: Account;
-  selectedAccountNo?: string;
-  handleClickAccount?: (accountNo: string) => void;
+  selectedAccount?: Account;
+  handleClickAccount?: (account: Account) => void;
 }
 
 export const AccountItem = ({
   account,
-  selectedAccountNo,
+  selectedAccount,
   handleClickAccount,
 }: AccountItemProps) => {
   return (
     <li
       key={account.id}
-      className={`list-none ${handleClickAccount && 'px-3 py-3 hover:bg-gray-200'} rounded transition duration-200`}
+      className={`list-none rounded transition duration-200`}
     >
       <button
-        className="flex w-full cursor-pointer justify-between"
-        onClick={
-          handleClickAccount && (() => handleClickAccount(account.accountNo))
-        }
+        className={`flex w-full cursor-pointer justify-between ${handleClickAccount && 'px-3 py-3 hover:bg-gray-200'}`}
+        onClick={handleClickAccount && (() => handleClickAccount(account))}
       >
         <div className="flex">
           <p className="mr-1 text-xl font-medium">{account.name}</p>
@@ -35,7 +28,7 @@ export const AccountItem = ({
           </p>
         </div>
         {handleClickAccount &&
-          (selectedAccountNo === account.accountNo ? (
+          (selectedAccount?.accountNo === account.accountNo ? (
             <div>
               <BsCheckCircle className="h-6 w-6 text-primary-700" />
             </div>

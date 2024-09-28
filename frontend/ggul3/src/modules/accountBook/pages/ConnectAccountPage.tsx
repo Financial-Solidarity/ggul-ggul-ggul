@@ -1,14 +1,92 @@
-import { Button, Card, CardBody } from '@nextui-org/react';
-import { useState } from 'react';
-import { BsCheck } from 'react-icons/bs';
+import { Button } from '@nextui-org/react';
+import { useEffect } from 'react';
 
 import { AccountItem } from '../components/AccountItem';
+import { useConnectStore } from '../store/useConnectStore';
+import { ConnectAccountModal, CurrentAccount } from '../components';
 
-import { NavTitle } from '@/modules/common/components';
+import * as components from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+
+export const ConnectAccountPage = () => {
+  const {
+    modalStep,
+    isConnectModalOpen,
+    isSelected,
+    selectedAccount,
+    currentAccount,
+    setModalStep,
+    initializeModalStates,
+    setConnectModalOpen,
+    setAccountList,
+    setCurrentAccount,
+    handleClickAccount,
+  } = useConnectStore();
+
+  useEffect(() => {
+    setCurrentAccount({
+      id: 11,
+      name: '농협',
+      accountNo: '110-1851-4567',
+    });
+
+    setAccountList(accountList);
+  }, []);
+
+  return (
+    <>
+      <TopBar
+        center={<components.NavTitle title="계좌 연결하기" />}
+        left={<BackButton color="black" />}
+        right={<NotificationButton color="black" />}
+      />
+      <PageContainer>
+        <div className="relative">
+          <p className="py-4 text-xl font-bold">어떤 자산을 연결할까요?</p>
+          <div className="sticky top-1">
+            <CurrentAccount currentAccount={currentAccount} />
+          </div>
+          <ul className="mb-24">
+            {accountList
+              .filter((item) => item.accountNo !== currentAccount.accountNo)
+              .map((item) => (
+                <AccountItem
+                  key={item.id}
+                  account={item}
+                  handleClickAccount={handleClickAccount}
+                  selectedAccount={selectedAccount}
+                />
+              ))}
+          </ul>
+          {isSelected && (
+            <div className="fixed bottom-24 left-4 right-4">
+              <Button
+                className="w-full"
+                color="primary"
+                size="lg"
+                onClick={() => setConnectModalOpen(true)}
+              >
+                선택한 계좌 연결하기
+              </Button>
+            </div>
+          )}
+        </div>
+        <ConnectAccountModal
+          currentAccount={currentAccount}
+          initializeModalStates={initializeModalStates}
+          isConnectModalOpen={isConnectModalOpen}
+          modalStep={modalStep}
+          selectedAccount={selectedAccount}
+          setConnectModalOpen={setConnectModalOpen}
+          setModalStep={setModalStep}
+        />
+      </PageContainer>
+    </>
+  );
+};
 
 const accountList = [
   {
@@ -102,100 +180,3 @@ const accountList = [
     accountNo: '110-123-4546789',
   },
 ];
-
-export const ConnectAccountPage = () => {
-  const [step, setStep] = useState<string>('list');
-  const [selectedAccountNo, setSelectedAccountNo] =
-    useState<string>('110-123-45689');
-  const [isSelected, setIsSelected] = useState<boolean>(false);
-
-  const currentAccount = accountList.filter(
-    (item) => item.accountNo === '110-123-45689',
-  )[0];
-
-  const otherACcountList = accountList.filter(
-    (item) => item.accountNo !== '110-123-45689',
-  );
-
-  const handleClickAccount = (accountNo: string) => {
-    setSelectedAccountNo(accountNo);
-    setIsSelected(true);
-  };
-
-  if (step === 'list') {
-    return (
-      <>
-        <TopBar
-          center={<NavTitle title="계좌 연결하기" />}
-          left={<BackButton color="black" />}
-          right={<NotificationButton color="black" />}
-        />
-        <PageContainer>
-          <div className="relative">
-            <p className="py-4 text-xl font-bold">어떤 자산을 연결할까요?</p>
-            <div className="sticky top-1">
-              <Card className="mb-2">
-                <CardBody>
-                  <p>현재 연결된 계좌</p>
-                  <AccountItem account={currentAccount} />
-                </CardBody>
-              </Card>
-            </div>
-            <ul className="mb-24">
-              {otherACcountList.map((item) => (
-                <AccountItem
-                  key={item.id}
-                  account={item}
-                  handleClickAccount={handleClickAccount}
-                  selectedAccountNo={selectedAccountNo}
-                />
-              ))}
-            </ul>
-            {isSelected && (
-              <div className="fixed bottom-24 left-4 right-4">
-                <Button
-                  className="w-full"
-                  color="primary"
-                  size="lg"
-                  onClick={() => setStep('success')}
-                >
-                  선택한 계좌 연결하기
-                </Button>
-              </div>
-            )}
-          </div>
-        </PageContainer>
-      </>
-    );
-  }
-
-  if (step === 'success') {
-    return (
-      <>
-        <TopBar
-          center={<div>계좌 연결하기</div>}
-          left={<BackButton color="black" />}
-          right={<NotificationButton color="black" />}
-        />
-        <PageContainer>
-          <div className="flex h-full flex-col items-center justify-center">
-            <div className="flex flex-col items-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-200">
-                <BsCheck className="h-10 w-10 text-white" />
-              </div>
-              <div className="mt-4 text-2xl font-bold text-primary-700">
-                계좌 연동 완료
-              </div>
-              <div className="mt-2 text-sm text-gray-500">
-                계좌 연동이 완료되었습니다.
-              </div>
-            </div>
-            <div className="mt-8">
-              <Button className="w-44">확인</Button>
-            </div>
-          </div>
-        </PageContainer>
-      </>
-    );
-  }
-};
