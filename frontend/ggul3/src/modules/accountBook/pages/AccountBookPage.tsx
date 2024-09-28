@@ -1,4 +1,3 @@
-import { QrButton } from '../components/QrButton';
 import { Balance, StatisticsButton } from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -18,9 +17,11 @@ export const AccountBookPage = () => {
         right={<NotificationButton color="black" />}
       />
       <PageContainer>
-        <Balance />
-        <QrButton />
-        <div className="flex gap-4">
+        <div className="mb-3">
+          <Balance />
+        </div>
+
+        <div className="mb-3 flex gap-3">
           <StatisticsButton
             buttonImageUrl={burnMoney}
             color="secondary"

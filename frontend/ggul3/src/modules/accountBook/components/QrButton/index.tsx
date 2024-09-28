@@ -10,7 +10,7 @@ export const QrButton = () => {
 
   return (
     <div onClick={() => navigate('/account-book/qr-code')}>
-      <Card className="mb-4 flex bg-slate-300 text-black">
+      <Card className="flex bg-slate-300 text-black">
         <CardBody>
           <div className="flex content-center items-center justify-between">
             <p className="flex flex-col text-xl">

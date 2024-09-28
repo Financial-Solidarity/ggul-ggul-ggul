@@ -13,6 +13,7 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
+import { QrButton } from '@/modules/accountBook/components';
 
 export const PayPage = () => {
   const { setIsDarkMode } = useBottomBarStore();
@@ -29,16 +30,21 @@ export const PayPage = () => {
         right={<NotificationButton color="black" />}
       />
       <PageContainer>
-        <GgulPoint />
-        <div className="flex gap-4">
-          <div className="flex-1">
+        <div className="mb-3">
+          <GgulPoint />
+        </div>
+        <div className="mb-3">
+          <QrButton />
+        </div>
+        <div className="flex gap-3">
+          <div className="mb-3 flex-1">
             <Roulette />
           </div>
-          <div className="flex-1">
+          <div className="mb-3 flex-1">
             <GgulWallet />
           </div>
         </div>
-        <div className="mb-4">
+        <div className="mb-3">
           <PrizeHistory />
         </div>
         <GgulLinks />

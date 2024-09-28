@@ -4,7 +4,7 @@ import { PropsWithChildren } from 'react';
 
 export const GgulPoint = () => {
   return (
-    <Card className="mb-4 flex min-h-40 bg-success py-1 text-white">
+    <Card className="flex min-h-40 bg-success py-1 text-white">
       <CardHeader className="flex justify-between">
         <div>
           <SmallText>나의 껄값</SmallText>

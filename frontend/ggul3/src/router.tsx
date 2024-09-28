@@ -24,6 +24,7 @@ import {
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
+import { MyPage } from './modules/myPage/pages/MyPage';
 
 export interface Path {
   path: string;
@@ -288,7 +289,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PathNames.MYPAGE.path,
-        element: <></>,
+        element: <MyPage />,
       },
       ...challengeRoutes,
       ...payRoutes,

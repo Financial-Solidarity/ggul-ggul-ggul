@@ -11,7 +11,7 @@ export const Balance = () => {
 
   if (!hasAccount) {
     return (
-      <Card className="mb-4 flex cursor-pointer bg-primary-200 text-center text-white hover:bg-primary-400">
+      <Card className="flex cursor-pointer bg-primary-200 text-center text-white hover:bg-primary-400">
         <CardBody className="text-center">
           <div className="flex h-28 items-center justify-center">
             <div className="absolute left-[50%] top-[68%] h-20 w-20 translate-x-[-50%] translate-y-[-50%] rounded-full border border-dashed border-primary-700">
@@ -33,7 +33,7 @@ export const Balance = () => {
 
   if (hasAccount) {
     return (
-      <Card className="mb-4 flex bg-primary text-center text-white">
+      <Card className="flex bg-primary text-center text-white">
         <CardHeader className="flex justify-between">
           <div>
             <SmallText>계좌 잔고</SmallText>
