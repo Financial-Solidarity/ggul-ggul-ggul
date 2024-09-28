@@ -11,7 +11,7 @@ export const AccountBookHistoryPage = () => {
     <>
       <TopBar
         bgColor="bg-primary"
-        center={<NavTitle title="거래 내역" />}
+        center={<NavTitle color="white" title="거래 내역" />}
         left={<BackButton />}
         right={<NotificationButton />}
       />

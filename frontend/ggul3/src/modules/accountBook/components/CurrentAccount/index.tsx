@@ -3,11 +3,11 @@ import { Account } from '@types';
 
 import { AccountItem } from '../AccountItem';
 
-interface CurrentAccountProps {
+interface AccountModalProps {
   currentAccount: Account;
 }
 
-export const CurrentAccount = ({ currentAccount }: CurrentAccountProps) => {
+export const CurrentAccount = ({ currentAccount }: AccountModalProps) => {
   return (
     <Card className="mb-2">
       <CardBody>

@@ -15,7 +15,7 @@ export const AccountBookStatisticsPage = () => {
     <>
       <TopBar
         bgColor="bg-primary"
-        center={<NavTitle title="소비 통계" />}
+        center={<NavTitle color="white" title="소비 통계" />}
         left={<BackButton />}
         right={<NotificationButton />}
       />

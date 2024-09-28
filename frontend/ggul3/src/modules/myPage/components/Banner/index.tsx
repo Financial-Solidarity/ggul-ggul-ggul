@@ -19,7 +19,7 @@ export const Banner = ({ nickname }: BannerProps) => {
         </div>
       </CardBody>
       <CardFooter className="flex flex-col items-start">
-        <Button color="primary">당첨 확인하기</Button>
+        <Button color="primary">이벤트 응모하기</Button>
       </CardFooter>
     </Card>
   );
