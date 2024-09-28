@@ -7,12 +7,13 @@ import { NotificationButton } from '@/modules/common/components/NotificationButt
 import burnMoney from '@/assets/images/burn-money.png';
 import financeChart from '@/assets/images/finance-chart.png';
 import { PathNames } from '@/router';
+import { NavTitle } from '@/modules/common/components';
 
 export const AccountBookPage = () => {
   return (
     <>
       <TopBar
-        center={<NavTitle />}
+        center={<NavTitle title="가계부" />}
         left={<BackButton color="black" />}
         right={<NotificationButton color="black" />}
       />
@@ -42,7 +43,3 @@ export const AccountBookPage = () => {
     </>
   );
 };
-
-function NavTitle() {
-  return <p className="text-lg">가계부</p>;
-}

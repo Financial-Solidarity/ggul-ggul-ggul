@@ -1,5 +1,6 @@
 import { AccountBookHistory, AccountBookHistoryHeader } from '../components';
 
+import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -10,7 +11,7 @@ export const AccountBookHistoryPage = () => {
     <>
       <TopBar
         bgColor="bg-primary"
-        center={<NavTitle />}
+        center={<NavTitle title="거래 내역" />}
         left={<BackButton />}
         right={<NotificationButton />}
       />
@@ -21,7 +22,3 @@ export const AccountBookHistoryPage = () => {
     </>
   );
 };
-
-function NavTitle() {
-  return <p className="text-lg text-white">거래 내역</p>;
-}

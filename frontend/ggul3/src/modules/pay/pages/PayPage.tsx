@@ -14,6 +14,7 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 import { QrButton } from '@/modules/accountBook/components';
+import { NavTitle } from '@/modules/common/components';
 
 export const PayPage = () => {
   const { setIsDarkMode } = useBottomBarStore();
@@ -25,7 +26,7 @@ export const PayPage = () => {
   return (
     <>
       <TopBar
-        center={<NavTitle />}
+        center={<NavTitle title="껄 페이" />}
         left={<BackButton color="black" />}
         right={<NotificationButton color="black" />}
       />
@@ -52,7 +53,3 @@ export const PayPage = () => {
     </>
   );
 };
-
-function NavTitle() {
-  return <p className="text-lg">껄 페이</p>;
-}

@@ -4,6 +4,7 @@ import {
   AccountBookStatisticsCategoryList,
 } from '../components';
 
+import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -14,7 +15,7 @@ export const AccountBookStatisticsPage = () => {
     <>
       <TopBar
         bgColor="bg-primary"
-        center={<NavTitle />}
+        center={<NavTitle title="소비 통계" />}
         left={<BackButton />}
         right={<NotificationButton />}
       />
@@ -26,10 +27,6 @@ export const AccountBookStatisticsPage = () => {
     </>
   );
 };
-
-function NavTitle() {
-  return <p className="text-lg text-white">거래 내역</p>;
-}
 
 const data = [
   {

@@ -21,6 +21,7 @@ import {
   AccountBookHistoryPage,
   AccountBookPage,
   AccountBookStatisticsPage,
+  ConnectAccountPage,
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
@@ -58,8 +59,11 @@ export interface PathNames {
     HISTORY: Path;
     STATISTICS: Path;
     QR_CODE: Path;
+    CONNECT_ACCOUNT: Path;
   };
-  MYPAGE: Path;
+  MYPAGE: {
+    MAIN: Path;
+  };
   LOGIN: Path;
   SIGHUP: Path;
   FIND_PASSWORD: Path;
@@ -150,10 +154,16 @@ export const PathNames: PathNames = {
       path: '/account-book/qr-code',
       name: 'QR코드',
     },
+    CONNECT_ACCOUNT: {
+      path: '/account-book/connect-account',
+      name: '계좌 연동',
+    },
   },
   MYPAGE: {
-    path: '/mypage',
-    name: '마이페이지',
+    MAIN: {
+      path: '/mypage',
+      name: '마이페이지',
+    },
   },
   LOGIN: {
     path: '/login',
@@ -205,6 +215,10 @@ const accountBook: RouteObject[] = [
     path: PathNames.ACCOUNT_BOOK.QR_CODE.path,
     element: <QrCodePage />,
   },
+  {
+    path: PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path,
+    element: <ConnectAccountPage />,
+  },
 ];
 
 const payRoutes: RouteObject[] = [
@@ -245,6 +259,13 @@ const loginRoutes: RouteObject[] = [
   },
 ];
 
+const myPageRoutes: RouteObject[] = [
+  {
+    path: PathNames.MYPAGE.MAIN.path,
+    element: <MyPage />,
+  },
+];
+
 export const router = createBrowserRouter([
   {
     path: PathNames.HOME.path,
@@ -275,26 +296,11 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: PathNames.GGULPAY.MAIN.path,
-        element: <PayPage />,
-      },
-      {
-        path: PathNames.GGULPAY.WALLET.path,
-        element: <WalletPage />,
-      },
-      {
-        path: PathNames.ACCOUNT_BOOK.MAIN.path,
-        element: <AccountBookPage />,
-      },
-      {
-        path: PathNames.MYPAGE.path,
-        element: <MyPage />,
-      },
       ...challengeRoutes,
       ...payRoutes,
       ...loginRoutes,
       ...accountBook,
+      ...myPageRoutes,
     ],
   },
 ]);
