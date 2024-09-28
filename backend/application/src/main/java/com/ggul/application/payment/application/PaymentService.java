@@ -8,11 +8,9 @@ import com.ggul.application.payment.domain.repository.ConsumptionLogRepository;
 import com.ggul.application.payment.domain.repository.ProductCategoryRepository;
 import com.ggul.application.payment.event.PaymentCompletedEvent;
 import com.ggul.application.payment.ui.dto.PaymentRequestResponseView;
-import com.ggul.application.springconfig.security.service.UserLoginContext;
 import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +30,9 @@ public class PaymentService {
         Integer newRequiredMoney = paymentRequest.getRequiredMoney() - paymentRequest.getSpendGgulToken();
         User user = userRepository.getReferenceById(sessionId);
         ProductCategory productCategory = productCategoryRepository.getReferenceById(paymentRequest.getCategoryId());
-        ConsumptionLog consumptionLog = ConsumptionLog.create(paymentRequest, newRequiredMoney, user, productCategory);
+
+        // TODO : GGUL Log 생성하는 로직 필요
+        ConsumptionLog consumptionLog = ConsumptionLog.create(paymentRequest, null, newRequiredMoney, user, productCategory);
 
         ConsumptionLog save = consumptionLogRepository.save(consumptionLog);
         Events.raise(new PaymentCompletedEvent(save.getId(), user.getId(), newRequiredMoney, paymentRequest.getProductName(), paymentRequest.getMarket()));
