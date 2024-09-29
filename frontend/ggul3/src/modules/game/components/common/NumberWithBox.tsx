@@ -9,9 +9,9 @@ export const NumberWithBox = ({
 }: NumberWithBoxProps) => {
   return (
     <div
-      className={`p-3 ${withBox ? 'rounded-md bg-primary-300' : 'bg-white'}`}
+      className={`w-8 p-2 ${withBox ? 'rounded-md bg-primary-300' : 'bg-white'}`}
     >
-      <p className="text-2xl font-bold text-white">{number}</p>
+      <p className="text-center text-xl font-bold text-white">{number}</p>
     </div>
   );
 };

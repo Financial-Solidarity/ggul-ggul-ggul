@@ -7,10 +7,11 @@ export const GroupNumberWithBox = ({ number }: GroupNumberWithBoxProps) => {
   const stringNumbers = formatNumberToStringArray(number);
 
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="ml-8 flex items-center justify-center gap-[0.35rem]">
       {stringNumbers.map((char, idx) => (
         <NumberWithBox key={idx} number={char} />
       ))}
+      <div className="ml-2 text-lg font-semibold text-white">맛도리</div>
     </div>
   );
 };
