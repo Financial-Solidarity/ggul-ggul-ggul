@@ -31,4 +31,11 @@ public class PaymentController {
                                          Pageable pageable, @AuthenticationPrincipal UserLoginContext userLoginContext) {
         return ResponseEntity.ok(consumptionLogFindService.findAll(userLoginContext.getUserId(), pageable, startDate, endDate));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> chartValue(@RequestParam(name = "start-date") @DateTimeFormat(pattern = "yyyy-MM") LocalDate startDate,
+                                         @RequestParam(name = "end-date") @DateTimeFormat(pattern = "yyyy-MM") LocalDate endDate,
+                                         @AuthenticationPrincipal UserLoginContext userLoginContext) {
+        return ResponseEntity.ok(consumptionLogFindService.findChartValue(userLoginContext.getUserId(), startDate, endDate));
+    }
 }
