@@ -1,10 +1,8 @@
 package com.ggul.application.springconfig.websocket.config;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.Session;
 import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -25,7 +23,10 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
     public void configureStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .setAllowedOriginPatterns("*").withSockJS();
+                .setAllowedOriginPatterns("*");
+//        registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
+//                .addInterceptors(new HttpSessionHandshakeInterceptor())
+//                .setAllowedOriginPatterns("*").withSockJS();
     }
 
 //    @Override

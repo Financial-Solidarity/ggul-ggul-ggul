@@ -35,7 +35,8 @@ CREATE TABLE fcm_token
     fcm_token_id INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fcm_token    VARCHAR(255) NOT NULL,
     user_id      BINARY(16)   NOT NULL,
-    session_id   VARCHAR(255) NOT NULL,
+    session_id   BINARY(16),
+    web_socket_session_id BINARY(16),
     is_foreground BOOL NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
