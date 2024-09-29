@@ -6,17 +6,28 @@ import { FoodNftDTO } from '@/modules/game/@types/food';
 
 interface FoodNftInfoProps {
   foodNft?: FoodNftDTO;
+  showTitle?: boolean;
+  showNumber?: boolean;
 }
 
-export const FoodNftInfo = ({ foodNft }: FoodNftInfoProps) => {
+export const FoodNftInfo = ({
+  foodNft,
+  showTitle = true,
+  showNumber = true,
+}: FoodNftInfoProps) => {
   return (
-    <div className="flex flex-col">
-      <p
-        className="text-center text-2xl font-semibold"
-        style={{ color: foodNft?.hexCode }}
-      >
-        {foodNft?.name}
-      </p>
+    <div className="flex flex-col items-center">
+      {/* 타이틀 영역 */}
+      {showTitle && (
+        <p
+          className="text-center text-2xl font-semibold"
+          style={{ color: foodNft?.hexCode }}
+        >
+          {foodNft?.name}
+        </p>
+      )}
+
+      {/* 이미지 영역 */}
       <div className="relative flex h-44 w-full items-center justify-center">
         <div
           className="h-28 w-28 animate-popIn rounded-full"
@@ -30,7 +41,9 @@ export const FoodNftInfo = ({ foodNft }: FoodNftInfoProps) => {
           />
         </div>
       </div>
-      <GroupNumberWithBox number={12} />
+
+      {/* 숫자 영역 */}
+      {showNumber && <GroupNumberWithBox number={12} />}
     </div>
   );
 };

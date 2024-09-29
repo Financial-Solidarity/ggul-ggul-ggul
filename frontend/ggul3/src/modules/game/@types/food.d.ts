@@ -1,3 +1,5 @@
+import { Pagination as BasePagination } from '@types';
+
 export interface FoodDTO {
   name: string;
   typeIndex: number;
@@ -10,4 +12,14 @@ export interface FoodDTO {
 export interface FoodNftDTO extends FoodDTO {
   tokenId: string;
   ownerAddress: string;
+}
+
+export interface FoodNftSellDTO extends FoodNftDTO {
+  price: number;
+  createdAt: string;
+}
+
+export interface GamePagination extends BasePagination {
+  totalPages: number; // 전체 페이지 수
+  totalElements: number; // 전체 요소 수
 }
