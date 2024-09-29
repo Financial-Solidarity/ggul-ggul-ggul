@@ -28,4 +28,16 @@ public class FcmToken {
 
     @Column(name = "session_id")
     private String sessionId;
+
+    @Column(name = "is_foreground")
+    private Boolean isForeground;
+
+    @PrePersist
+    protected void onCreate() {
+        isForeground = true;
+    }
+
+    public void onForeground() {
+        isForeground = true;
+    }
 }

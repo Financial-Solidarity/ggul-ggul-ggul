@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -20,11 +21,14 @@ public class FcmTokenRegisterService {
 
     @Transactional
     public void registerFcmToken(FcmTokenRegisterRequest request, UUID userId, String sessionId) {
-        if(fcmTokenRepository.existsByUserIdAndToken(userId, request.getFcmToken())) {
-            return;
+        Optional<FcmToken> byUserIdAndToken = fcmTokenRepository.findByUserIdAndToken(userId, request.getFcmToken());
+        if(byUserIdAndToken.isPresent()) {
+            FcmToken target = byUserIdAndToken.get();
+            target.onForeground();
+        }else {
+            User user = userRepository.getReferenceById(userId);
+            FcmToken build = FcmToken.builder().token(request.getFcmToken()).user(user).sessionId(sessionId).build();
+            fcmTokenRepository.save(build);
         }
-        User user = userRepository.getReferenceById(userId);
-        FcmToken build = FcmToken.builder().token(request.getFcmToken()).user(user).sessionId(sessionId).build();
-        fcmTokenRepository.save(build);
     }
 }

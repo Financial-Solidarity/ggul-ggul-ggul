@@ -36,6 +36,7 @@ CREATE TABLE fcm_token
     fcm_token    VARCHAR(255) NOT NULL,
     user_id      BINARY(16)   NOT NULL,
     session_id   VARCHAR(255) NOT NULL,
+    is_foreground BOOL NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
@@ -113,7 +114,7 @@ CREATE TABLE category
 
 CREATE TABLE ggul_log
 (
-    ggul_log_id BINARY(16) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ggul_log_id BINARY(16) NOT NULL PRIMARY KEY,
     user_id     BINARY(16) NOT NULL,
     ggul_num INTEGER NOT NULL,
     created_at  DATETIME   NOT NULL,
