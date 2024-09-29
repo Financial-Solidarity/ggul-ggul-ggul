@@ -21,13 +21,13 @@ import static com.ggul.application.common.infra.blockchain.EthereumCaller.call;
 @Service
 @RequiredArgsConstructor
 public class EquipmentDrawService {
-    private final TokenContract adminTokenDrawContract;
+    private final TokenContract adminTokenContract;
     private final EquipmentDrawContract adminEquipmentDrawContract;
     private BigInteger DRAW_COST;
 
     @PostConstruct
     private void initialize() {
-        DRAW_COST = handleException(call(adminEquipmentDrawContract.DRAW_COST()));
+        DRAW_COST = handleException(call(adminEquipmentDrawContract.COST()));
     }
 
     /**
@@ -37,7 +37,7 @@ public class EquipmentDrawService {
      * @throws WalletInsufficientTokenException Wallet에서 지급할 Token 부족
      */
     public EquipmentDrawTransactionResult drawEquipment(String address) throws WalletInsufficientTokenException {
-        BigInteger balance = handleException(call(adminTokenDrawContract.balanceOf(address)));
+        BigInteger balance = handleException(call(adminTokenContract.balanceOf(address)));
 
         if(balance.compareTo(DRAW_COST) < 0)
             throw new WalletInsufficientTokenException(null);
