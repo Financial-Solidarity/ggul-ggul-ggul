@@ -39,7 +39,7 @@ export const WalletPage = () => {
     <>
       <TopBar
         bgColor="bg-primary"
-        center={<NavTitle title="전자 지갑" />}
+        center={<NavTitle color="white" title="전자 지갑" />}
         left={<BackButton />}
         right={<NotificationButton />}
       />

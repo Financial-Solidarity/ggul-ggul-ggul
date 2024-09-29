@@ -32,7 +32,7 @@ export const PayPage = () => {
       />
       <PageContainer>
         <div className="mb-3">
-          <GgulPoint />
+          <GgulPoint remainGgulToken={2250} />
         </div>
         <div className="mb-3">
           <QrButton />

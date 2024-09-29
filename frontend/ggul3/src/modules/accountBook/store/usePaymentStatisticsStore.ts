@@ -21,11 +21,11 @@ interface UsePaymentStatisticsState {
 export const usePaymentStatisticsStore = create<UsePaymentStatisticsState>(
   (set, get) => ({
     pieChartColors: [
-      myPurple[500],
-      myYellow[500],
-      myMint[500],
-      '#F5A524',
-      '#F31260',
+      myPurple[500] + '80',
+      myYellow[500] + '80',
+      myMint[500] + '80',
+      '#F5A52480',
+      '#F3126080',
     ],
 
     statisticsList: [],
