@@ -23,7 +23,7 @@ public class FirebaseCloudMessageService {
                 .putData("body", body)
                 .putData("type", type)
                 .putAllData(values)
-                .addAllTokens(targetTokens.stream().map(FcmToken::getToken).toList())
+                .addAllTokens(targetTokens.stream().filter(fcmToken -> !fcmToken.getIsForeground()).map(FcmToken::getToken).toList())
                 .setApnsConfig(ApnsConfig.builder().setAps(Aps.builder().setContentAvailable(true).build()).putHeader("apns-priority", "10").build())
                 .setNotification(Notification.builder()
                         .setBody(body).setTitle(title)

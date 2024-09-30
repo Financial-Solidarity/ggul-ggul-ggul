@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS wallet;
+DROP TABLE IF EXISTS chatting;
 DROP TABLE IF EXISTS chatting_room_participant;
 DROP TABLE IF EXISTS chatting_room;
 DROP TABLE IF EXISTS challenge_participant;
@@ -32,12 +33,12 @@ CREATE TABLE wallet
 
 CREATE TABLE fcm_token
 (
-    fcm_token_id INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    fcm_token    VARCHAR(255) NOT NULL,
-    user_id      BINARY(16)   NOT NULL,
-    session_id   BINARY(16),
+    fcm_token_id          INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    fcm_token             VARCHAR(255) NOT NULL,
+    user_id               BINARY(16)   NOT NULL,
+    session_id            BINARY(16),
     web_socket_session_id BINARY(16),
-    is_foreground BOOL NOT NULL,
+    is_foreground         BOOL         NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
@@ -117,7 +118,7 @@ CREATE TABLE ggul_log
 (
     ggul_log_id BINARY(16) NOT NULL PRIMARY KEY,
     user_id     BINARY(16) NOT NULL,
-    ggul_num INTEGER NOT NULL,
+    ggul_num    INTEGER    NOT NULL,
     created_at  DATETIME   NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
@@ -132,9 +133,22 @@ CREATE TABLE consumption_log
     consumption_balance INT         NOT NULL,
     product_name        VARCHAR(40) NOT NULL,
     consumption_market  VARCHAR(50) NOT NULL,
-    ggul_log_id BINARY(16),
+    ggul_log_id         BINARY(16),
     FOREIGN KEY (user_id) REFERENCES user (user_id),
     FOREIGN KEY (ggul_log_id) REFERENCES ggul_log (ggul_log_id)
+);
+
+CREATE TABLE chatting
+(
+    chatting_id               BINARY(16) PRIMARY KEY NOT NULL,
+    challenge_participant_id  BINARY(16)             NOT NULL,
+    chatting_room_id          BINARY(16)             NOT NULL,
+    type                      CHAR(1)                NOT NULL,
+    chatting_content          TEXT,
+    consumption_category_name VARCHAR(40),
+    consumption_balance       INTEGER,
+    FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant(challenge_participant_id),
+    FOREIGN KEY (chatting_room_id) REFERENCES chatting_room(chatting_room_id)
 );
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)

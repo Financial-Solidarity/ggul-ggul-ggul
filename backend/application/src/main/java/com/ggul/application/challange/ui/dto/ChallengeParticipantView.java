@@ -1,5 +1,6 @@
 package com.ggul.application.challange.ui.dto;
 
+import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.challange.domain.ChallengeParticipantType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,13 @@ public class ChallengeParticipantView {
         this.profileImg = profile;
         this.type = type.getType();
         this.isMine = isMine;
+    }
+
+    public ChallengeParticipantView(ChallengeParticipant challengeParticipant) {
+        this.participantId = challengeParticipant.getId();
+        this.nickname = challengeParticipant.getNickname();
+        this.profileImg = challengeParticipant.getProfile();
+        this.type = challengeParticipant.getType().getType();
     }
 
     public void setIsMine(UUID sessionParticipantId) {

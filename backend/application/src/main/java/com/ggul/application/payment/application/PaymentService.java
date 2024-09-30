@@ -35,7 +35,7 @@ public class PaymentService {
         ConsumptionLog consumptionLog = ConsumptionLog.create(paymentRequest, null, newRequiredMoney, user, productCategory);
 
         ConsumptionLog save = consumptionLogRepository.save(consumptionLog);
-        Events.raise(new PaymentCompletedEvent(save.getId(), user.getId(), newRequiredMoney, paymentRequest.getProductName(), paymentRequest.getMarket()));
+        Events.raise(new PaymentCompletedEvent(save.getId(), user.getId(), newRequiredMoney, paymentRequest.getProductName(), paymentRequest.getMarket(), productCategory.getName()));
 
         return new PaymentRequestResponseView(newRequiredMoney);
     }

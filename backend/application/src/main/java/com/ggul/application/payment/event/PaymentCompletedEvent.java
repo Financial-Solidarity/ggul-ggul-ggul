@@ -15,4 +15,5 @@ public class PaymentCompletedEvent {
     private Integer spendMoney;
     private String productName;
     private String market;
+    private String categoryName;
 }
