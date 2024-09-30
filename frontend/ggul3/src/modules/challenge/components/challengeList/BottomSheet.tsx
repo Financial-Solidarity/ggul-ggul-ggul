@@ -64,23 +64,18 @@ export const BottomSheet = () => {
 
   // 참가하기 버튼 클릭 이벤트
   const handleJoinChallenge = async () => {
-    // socket 통신용 채팅방 ID 저장
-    const { challengeId, lobbyChattingRoomId } =
-      await mockRequest(mockJoinChallenge);
+    // 채팅방 입장 (MSW mock 요청)
+    try {
+      const { challengeId, lobbyChattingRoomId } =
+        await mockRequest(mockJoinChallenge);
 
-    // 만일 대기실이 있는 경우 (code: 200)
-    if (lobbyChattingRoomId) {
-      // socket 통신용 채팅방 ID 저장
-      setLobbyChattingRoomId(lobbyChattingRoomId);
-
-      // 챌린지 대기방으로 이동
       navigate(`/challenge/waiting-room/${challengeId}`);
+    } catch (e) {
+      console.error(e);
+      // 없다면 FCM 알림 해야함 (code: 400)
+      window.alert('참가에 실패했습니다.');
+      closeSheet();
     }
-
-    // 없다면 FCM으로 알림 (code: 400)
-    // 로직 작성
-
-    closeSheet();
   };
   // ------------------------------------------- 09.30 12:52 yyh
 
