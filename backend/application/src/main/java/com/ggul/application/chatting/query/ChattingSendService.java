@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
@@ -28,7 +29,7 @@ public class ChattingSendService {
     private final ChattingRoomParticipantRepository chattingRoomParticipantRepository;
 
     @Async
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public void sendChat(Chatting chatting) {
         List<ChallengeParticipant> participants = chattingRoomParticipantRepository.findAllChallengeParticipantByChattingRoomId(chatting.getChattingRoom().getId());
 

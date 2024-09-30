@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class WebsocketSender {
@@ -22,7 +25,11 @@ public class WebsocketSender {
         Request request = new Request(type, dto);
         HashMap<String, Object> requestBody = converter(request);
 
-        messagingTemplate.convertAndSend("/sub/" + userId, requestBody);
+        try{
+            messagingTemplate.convertAndSend("/sub/" + userId, requestBody);
+        } catch (MessagingException e) {
+            log.info("message send error : {}", e.getMessage());
+        }
     }
 
     @Getter
