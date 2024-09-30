@@ -7,6 +7,7 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import { NavTitle } from '@/modules/common/components';
 
 export const WalletPage = () => {
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -38,7 +39,7 @@ export const WalletPage = () => {
     <>
       <TopBar
         bgColor="bg-primary"
-        center={<NavTitle />}
+        center={<NavTitle color="white" title="전자 지갑" />}
         left={<BackButton />}
         right={<NotificationButton />}
       />
@@ -51,7 +52,3 @@ export const WalletPage = () => {
     </>
   );
 };
-
-function NavTitle() {
-  return <p className="text-lg text-white">전자 지갑</p>;
-}

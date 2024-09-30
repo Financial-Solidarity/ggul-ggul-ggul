@@ -8,3 +8,4 @@ export * from './SubTitle';
 export * from './TokenPossession';
 export * from './TokenTradingHistory';
 export * from './WalletHeader';
+export * from './PrizeHistoryItem';

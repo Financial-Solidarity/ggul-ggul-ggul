@@ -13,6 +13,7 @@ import {
   PayPage,
   PrizeHistoryPage,
   QrCodePage,
+  QrPayPage,
   WalletPage,
 } from './modules/pay/pages';
 import { FindPasswordPage, LoginPage, SignUpPage } from './modules/user/pages';
@@ -20,9 +21,11 @@ import {
   AccountBookHistoryPage,
   AccountBookPage,
   AccountBookStatisticsPage,
+  ConnectAccountPage,
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
+import { MyPage } from './modules/myPage/pages/MyPage';
 import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoomPage';
 import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
 import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
@@ -55,14 +58,18 @@ export interface PathNames {
     WALLET: Path;
     PRIZE_HISTORY: Path;
     LUCKY_DRAW_ENTRY: Path;
+    QR_PAY: Path;
   };
   ACCOUNT_BOOK: {
     MAIN: Path;
     HISTORY: Path;
     STATISTICS: Path;
     QR_CODE: Path;
+    CONNECT_ACCOUNT: Path;
   };
-  MYPAGE: Path;
+  MYPAGE: {
+    MAIN: Path;
+  };
   LOGIN: Path;
   SIGHUP: Path;
   FIND_PASSWORD: Path;
@@ -143,6 +150,10 @@ export const PathNames: PathNames = {
       path: '/pay/lucky-draw',
       name: '응모하기',
     },
+    QR_PAY: {
+      path: '/pay/qr-pay',
+      name: 'QR코드',
+    },
   },
   ACCOUNT_BOOK: {
     MAIN: {
@@ -161,10 +172,16 @@ export const PathNames: PathNames = {
       path: '/account-book/qr-code',
       name: 'QR코드',
     },
+    CONNECT_ACCOUNT: {
+      path: '/account-book/connect-account',
+      name: '계좌 연동',
+    },
   },
   MYPAGE: {
-    path: '/mypage',
-    name: '마이페이지',
+    MAIN: {
+      path: '/mypage',
+      name: '마이페이지',
+    },
   },
   LOGIN: {
     path: '/login',
@@ -228,6 +245,10 @@ const accountBook: RouteObject[] = [
     path: PathNames.ACCOUNT_BOOK.QR_CODE.path,
     element: <QrCodePage />,
   },
+  {
+    path: PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path,
+    element: <ConnectAccountPage />,
+  },
 ];
 
 const payRoutes: RouteObject[] = [
@@ -247,6 +268,10 @@ const payRoutes: RouteObject[] = [
     path: PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path,
     element: <LuckyDrawEntryPage />,
   },
+  {
+    path: PathNames.GGULPAY.QR_PAY.path,
+    element: <QrPayPage />,
+  },
 ];
 
 const loginRoutes: RouteObject[] = [
@@ -261,6 +286,13 @@ const loginRoutes: RouteObject[] = [
   {
     path: PathNames.FIND_PASSWORD.path,
     element: <FindPasswordPage />,
+  },
+];
+
+const myPageRoutes: RouteObject[] = [
+  {
+    path: PathNames.MYPAGE.MAIN.path,
+    element: <MyPage />,
   },
 ];
 
@@ -294,26 +326,11 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: PathNames.GGULPAY.MAIN.path,
-        element: <PayPage />,
-      },
-      {
-        path: PathNames.GGULPAY.WALLET.path,
-        element: <WalletPage />,
-      },
-      {
-        path: PathNames.ACCOUNT_BOOK.MAIN.path,
-        element: <AccountBookPage />,
-      },
-      {
-        path: PathNames.MYPAGE.path,
-        element: <></>,
-      },
       ...challengeRoutes,
       ...payRoutes,
       ...loginRoutes,
       ...accountBook,
+      ...myPageRoutes,
     ],
   },
 ]);

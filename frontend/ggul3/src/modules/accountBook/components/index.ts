@@ -10,3 +10,8 @@ export * from './QrButton';
 export * from './StatisticsButton';
 export * from './SmallText';
 export * from './ToggleBalanceVisibilityButton';
+export * from './CurrentAccount';
+export * from './ConnectAccountModal';
+export * from './ConnectingAccount';
+export * from './ConnectedAccount';
+export * from './FailedAccount';

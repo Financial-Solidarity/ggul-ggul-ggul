@@ -2,12 +2,41 @@ import { Button } from '@nextui-org/button';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { PropsWithChildren } from 'react';
 
-export const GgulPoint = () => {
+interface GgulPointProps {
+  isNarrow?: boolean;
+  remainGgulToken: number;
+}
+
+export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
+  if (isNarrow) {
+    return (
+      <Card
+        className="flex bg-primary py-1 text-white"
+        radius="none"
+        shadow="sm"
+      >
+        <CardBody>
+          <div className="flex items-end justify-between">
+            <div>
+              <div>
+                <SmallText>GGUL TOKEN</SmallText>
+              </div>
+              <p className="text-2xl">{remainGgulToken} P</p>
+            </div>
+            <div className="flex">
+              <ToggleBalanceVisibilityButton />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="mb-4 flex min-h-40 bg-success py-1 text-white">
+    <Card className="flex min-h-40 bg-success py-1 text-white">
       <CardHeader className="flex justify-between">
         <div>
-          <SmallText>나의 껄값</SmallText>
+          <SmallText>GGUL TOKEN</SmallText>
         </div>
         <div className="flex">
           <ToggleBalanceVisibilityButton />
@@ -25,7 +54,7 @@ export const GgulPoint = () => {
 };
 
 const SmallText = ({ children }: PropsWithChildren) => {
-  return <p className="text-xs font-light">{children}</p>;
+  return <p className="text-sm font-light">{children}</p>;
 };
 
 interface ToggleBalanceVisibilityButtonProps {}
