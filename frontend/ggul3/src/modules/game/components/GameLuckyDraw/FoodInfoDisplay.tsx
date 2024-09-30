@@ -10,9 +10,7 @@ interface FoodInfoDisplayProps {
   food?: FoodDTO | FoodNftDTO | null;
 }
 
-// 타입 가드 함수: FoodNftDTO를 판별하는 함수라고 가정
 function isFoodNftDTO(food: FoodDTO | FoodNftDTO): food is FoodNftDTO {
-  // FoodNftDTO만 가지는 고유한 속성 확인 (예: nftId라는 속성이 있다고 가정)
   return (food as FoodNftDTO).tokenId !== undefined;
 }
 
@@ -45,7 +43,6 @@ export const FoodInfoDisplay = ({
               src={'/src/assets/images/food/food_' + food?.typeIndex + '.png'}
               width={130}
             />
-            웹훅 테스트용 추가4
           </div>
         )}
       </div>
