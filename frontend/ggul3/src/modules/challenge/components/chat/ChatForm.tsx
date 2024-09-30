@@ -2,13 +2,23 @@ import { PencilIcon } from '@heroicons/react/24/outline';
 import { Textarea } from '@nextui-org/react';
 import { useState } from 'react';
 
-export const Chatform = () => {
+interface ChatformProps {
+  onSubmit: (message: string) => void;
+}
+
+export const Chatform = ({ onSubmit }: ChatformProps) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const { messageInput } = e.target as typeof e.target & {
+      messageInput: HTMLInputElement;
+    };
+
     if (!message) return;
+    onSubmit(message);
     clearMessage();
+    messageInput.focus();
   };
 
   const clearMessage = () => {
@@ -27,6 +37,7 @@ export const Chatform = () => {
       <Textarea
         maxRows={4}
         minRows={1}
+        name="messageInput"
         type="text"
         value={message}
         onChange={handleInput}
