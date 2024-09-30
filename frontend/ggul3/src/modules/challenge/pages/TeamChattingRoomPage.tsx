@@ -1,19 +1,15 @@
-import { Bars3Icon } from '@heroicons/react/24/outline';
-import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
-import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
-import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
 import { Chatform } from '../components/chat/ChatForm';
-import { ChatList } from '../components/chat/ChatList';
 
-import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
+import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 
-export const WaitingRoomPage = () => {
+export const TeamChattingRoomPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { id } = useParams();
 
@@ -38,21 +34,18 @@ export const WaitingRoomPage = () => {
       <TopBar
         left={<BackButton color="black" />}
         right={
-          <Bars3Icon className="h-6 w-6 text-gray-500" onClick={openDrawer} />
+          <Bars3Icon
+            className="h-6 w-6 cursor-pointer text-gray-500"
+            onClick={openDrawer}
+          />
         }
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
-          <ChallengeInfoAccordion challengeId={id} />
-          <div className="z-0 overflow-y-auto px-4 py-16">
-            <ChatList chats={[]} />
-          </div>
+          <div className="z-0 overflow-y-auto px-4 py-16">asdasd</div>
           <Chatform onSubmit={sendChat} />
         </div>
       </PageContainer>
-      {/* <SoloDrawer isOpen={isDrawerOpen} onClose={closeDrawer} /> */}
-      <TeamDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
-      <ExitConfirmModal />
     </>
   );
 };
