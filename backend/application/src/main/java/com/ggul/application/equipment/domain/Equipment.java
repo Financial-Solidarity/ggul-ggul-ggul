@@ -1,8 +1,8 @@
 package com.ggul.application.equipment.domain;
 
-import com.ggul.application.common.jpa.domain.BaseEntity;
+import com.ggul.application.common.infra.blockchain.converter.ByteArrayToHexStringConverter;
 import com.ggul.application.common.jpa.domain.UUIDv7;
-import com.ggul.application.user.domain.User;
+import com.ggul.application.equipment.exception.EquipmentAlreadyMintedException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,22 +17,42 @@ import java.util.UUID;
 @SuperBuilder
 @Table(name = "equipment")
 @Entity
-@AttributeOverride(name = "createdAt", column = @Column(name = "acquired_at"))
-public class Equipment extends BaseEntity {
+public class Equipment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "equipment_id")
     @UUIDv7
     private UUID id;
 
-    @Column(name = "equipment_name")
-    private String name;
+    @Column(name = "power")
+    private Long power;
 
-    @Column(name = "equipment_status")
-    private Integer status;
+    @JoinColumn(name = "item_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    private EquipmentItem item;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @Column(name = "publisher")
+    @Convert(converter = ByteArrayToHexStringConverter.class)
+    private String publisher;
 
+    @Column(name = "adjective")
+    private String adjective;
+
+    @Column(name = "transaction_hash")
+    @Convert(converter = ByteArrayToHexStringConverter.class)
+    private String transactionHash;
+
+    @Column(name = "minted")
+    private Boolean minted;
+
+    @PrePersist
+    private void prePersist() {
+        minted = false;
+    }
+
+    public void runMint(){
+        if(minted)
+            throw new EquipmentAlreadyMintedException();
+        minted = true;
+    }
 }

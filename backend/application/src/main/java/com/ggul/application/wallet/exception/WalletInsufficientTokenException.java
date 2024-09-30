@@ -1,7 +1,9 @@
 package com.ggul.application.wallet.exception;
 
-public class WalletInsufficientTokenException extends Exception {
-    public WalletInsufficientTokenException(Exception e) {
-        super("Insufficient tokens in wallet", e);
+import com.ggul.application.common.exception.CustomException;
+
+public class WalletInsufficientTokenException extends CustomException {
+    public WalletInsufficientTokenException() {
+        super(WalletExceptionConstants.WALLET_INSUFFICIENT_TOKEN);
     }
 }

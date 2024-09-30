@@ -5,7 +5,7 @@ import com.ggul.application.common.infra.blockchain.config.Web3jConfig;
 import com.ggul.application.wallet.exception.ContractInsufficientTokenException;
 import com.ggul.application.wallet.exception.TokenGrantFailureException;
 import com.ggul.application.wallet.infra.TokenContract;
-import com.ggul.application.wallet.infra.exception.ERC20InsufficientBalanceException;
+import com.ggul.application.common.infra.blockchain.exception.ERC20InsufficientBalanceException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -59,7 +59,7 @@ public class TokenService {
 
         if(ec.getException() instanceof ERC20InsufficientBalanceException)
             throw new ContractInsufficientTokenException(ec.getException());
-        throw new TokenGrantFailureException(ec.getException());
+        throw new TokenGrantFailureException();
     }
 
     private BigInteger getUnusedTokens() {

@@ -1,49 +1,39 @@
 package com.ggul.application.equipment.application;
 
 import com.ggul.application.common.infra.blockchain.EthereumCall;
+import com.ggul.application.common.infra.ipfs.upload.IPFSJsonUploader;
+import com.ggul.application.common.infra.ipfs.upload.IPFSResponse;
 import com.ggul.application.equipment.application.dto.EquipmentMintResult;
-import com.ggul.application.equipment.exception.NFTOwnerAlreadyExistsException;
+import com.ggul.application.equipment.application.vo.EquipmentNFT;
+import com.ggul.application.equipment.domain.Equipment;
+import com.ggul.application.equipment.exception.EquipmentAlreadyMintedException;
 import com.ggul.application.equipment.infra.EquipmentNFTContract;
-import com.ggul.application.equipment.infra.exception.ERC721InvalidSenderException;
+import com.ggul.application.common.infra.blockchain.exception.ERC721InvalidSenderException;
 import com.ggul.application.wallet.exception.WalletInsufficientTokenException;
-import com.ggul.application.wallet.infra.TokenContract;
-import com.ggul.application.wallet.infra.exception.ERC20InsufficientBalanceException;
-import jakarta.annotation.PostConstruct;
+import com.ggul.application.common.infra.blockchain.exception.ERC20InsufficientBalanceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
-import java.math.BigInteger;
-
-import static com.ggul.application.common.infra.blockchain.EthereumCallExceptionHandler.handleException;
 import static com.ggul.application.common.infra.blockchain.EthereumCaller.call;
 
 @Service
 @RequiredArgsConstructor
 public class EquipmentNFTService {
-    private final TokenContract adminTokenContract;
     private final EquipmentNFTContract adminEquipmentNFTContract;
-    private BigInteger ISSUE_COST;
-
-    @PostConstruct
-    public void init() {
-        ISSUE_COST = handleException(call(adminEquipmentNFTContract.COST()));
-    }
+    private final IPFSJsonUploader ipfsJsonUploader;
 
     /**
      * Equipment NFT 발행
      * @param address NFT 발행하는 Wallet 주소
-     * @param ipfsCid IPFS CID
+     * @param equipment NFT로 발행할 equipment
      * @return NFT 발행 결과
-     * @throws WalletInsufficientTokenException Wallet에서 지급할 Token 부족
-     * @throws NFTOwnerAlreadyExistsException NFT의 소유자가 이미 존재
      */
-    public EquipmentMintResult mintNFT(String address, String ipfsCid) throws WalletInsufficientTokenException, NFTOwnerAlreadyExistsException {
-        BigInteger balance = handleException(call(adminTokenContract.balanceOf(address)));
-        if(balance.compareTo(ISSUE_COST) < 0)
-            throw new WalletInsufficientTokenException(null);
+    public EquipmentMintResult mintNFT(String address, Equipment equipment){
 
-        EthereumCall<TransactionReceipt> ec = call(adminEquipmentNFTContract.mint(address, ipfsCid));
+        IPFSResponse ipfsResponse = ipfsJsonUploader.upload("metadata.json", EquipmentNFT.of(equipment));
+
+        EthereumCall<TransactionReceipt> ec = call(adminEquipmentNFTContract.mint(address, ipfsResponse.getHash()));
         if(ec.isSuccess()){
             TransactionReceipt tr = ec.getValue();
             EquipmentNFTContract.MintResultEventResponse event = EquipmentNFTContract.getMintResultEvents(tr).get(0);
@@ -51,9 +41,9 @@ public class EquipmentNFTService {
         }
 
         if(ec.getException() instanceof ERC20InsufficientBalanceException)
-            throw new WalletInsufficientTokenException(ec.getException());
+            throw new WalletInsufficientTokenException();
         else if(ec.getException() instanceof ERC721InvalidSenderException)
-            throw new NFTOwnerAlreadyExistsException(ec.getException());
+            throw new EquipmentAlreadyMintedException();
         throw ec.getException();
     }
 }

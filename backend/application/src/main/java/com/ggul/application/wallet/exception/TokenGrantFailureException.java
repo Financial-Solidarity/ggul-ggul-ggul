@@ -1,7 +1,9 @@
 package com.ggul.application.wallet.exception;
 
-public class TokenGrantFailureException extends RuntimeException {
-    public TokenGrantFailureException(Exception e) {
-        super("Cannot grant token", e);
+import com.ggul.application.common.exception.CustomException;
+
+public class TokenGrantFailureException extends CustomException {
+    public TokenGrantFailureException() {
+        super(WalletExceptionConstants.TOKEN_GRANT_FAILURE);
     }
 }

@@ -1,7 +1,9 @@
 package com.ggul.application.common.infra.blockchain.exception;
 
-public class EthereumCallFailureException extends RuntimeException {
-  public EthereumCallFailureException(Exception e) {
-      super("Ethereum call Failed", e);
-  }
+import com.ggul.application.common.exception.CustomException;
+
+public class EthereumCallFailureException extends CustomException {
+    public EthereumCallFailureException() {
+        super(EthereumExceptionConstants.ETHEREUM_CALL_FAILURE);
+    }
 }
