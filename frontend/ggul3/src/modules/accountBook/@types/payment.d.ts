@@ -8,7 +8,7 @@ declare module '@types' {
     spendGgulToken?: number;
   }
 
-  export interface Pageable {
+  export interface Pageable extends PageableOptions {
     pageNumber: number;
     pageSize: number;
     sort: {
@@ -21,9 +21,7 @@ declare module '@types' {
     unpaged: boolean;
   }
 
-  export interface PaymentHistory {
-    content: Payment[];
-    pageable: Pageable;
+  export interface PageableOptions {
     first: boolean;
     last: boolean;
     size: number;
@@ -35,6 +33,11 @@ declare module '@types' {
     };
     numberOfElements: number;
     empty: boolean;
+  }
+
+  export interface PaymentHistory {
+    content: Payment[];
+    pageable: Pageable;
   }
 
   export interface PaymentStatistics {
