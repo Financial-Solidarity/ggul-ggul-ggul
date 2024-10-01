@@ -2,13 +2,6 @@ import { ChallengeDTO, Pageable } from '@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
-export const getChallengeInfo = (challengeId: string) => {
-  return _axios<ChallengeDTO>({
-    method: 'GET',
-    url: `challenges/${challengeId}`,
-  });
-};
-
 // ------------------------------------------- 09.30 12:21 yyh
 interface ChallengeListRequestBody {
   title?: string;

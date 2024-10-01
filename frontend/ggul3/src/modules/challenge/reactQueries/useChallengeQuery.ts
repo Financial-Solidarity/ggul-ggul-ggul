@@ -1,22 +1,22 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-  ChallengeDTO,
   CreateChallengeRequestBody,
   CreateChallengeResponse,
   ErrorDTO,
+  GetChallengeDetailResponse,
 } from '@types';
 
-import { getChallengeInfo } from '../apis/waitingroom';
 import { createChallenge } from '../apis/createChallenge';
+import { getChallengeDetail } from '../apis/challenge';
 
 import { QUERY_KEYS } from '@/modules/common/constants';
 
-export const useGetChallenge = (challengeId: string) => {
-  return useQuery<ChallengeDTO, ErrorDTO>({
+export const useGetChallengeDetail = (challengeId: string) => {
+  return useQuery<GetChallengeDetailResponse, ErrorDTO>({
     queryKey: [QUERY_KEYS.CHALLENGE, challengeId],
-    queryFn: () => getChallengeInfo(challengeId),
+    queryFn: () => getChallengeDetail(challengeId),
     enabled: !!challengeId,
-    initialData: {} as ChallengeDTO,
+    initialData: {} as GetChallengeDetailResponse,
   });
 };
 
