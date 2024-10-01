@@ -6,6 +6,7 @@ import com.ggul.application.notification.domain.NotificationRepository;
 import com.google.firebase.messaging.MulticastMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class NotificationSendService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
 
+    @Transactional
     public void sendAllAndPersist(List<Notification> lists) {
         List<MulticastMessage> mlists = new ArrayList<>();
         for(Notification noti : lists) {
