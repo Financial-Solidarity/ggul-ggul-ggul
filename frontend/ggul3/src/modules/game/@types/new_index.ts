@@ -76,3 +76,27 @@ export interface DrawEquipmentResponse extends EquipmentDTO {}
 export interface GetTokenBalanceResponse {
   balance: number;
 }
+// =============================마켓 ( 임시 )
+// Sale 타입 정의
+export interface SaleDTO {
+  title: string;
+  description: string;
+  price: number;
+  createdAt: string;
+}
+
+export interface SellNFTDTO {
+  sale: SaleDTO;
+  ipfsCID: string;
+  nftUrl: string;
+  equipment: EquipmentDTO;
+  seller: UserDTO;
+}
+
+// 판매 등록 요청 타입 (가정된 타입)
+export interface RegisterSellNFTRequest {
+  ipfsCID: string;
+  title: string;
+  description: string;
+  price: number;
+}
