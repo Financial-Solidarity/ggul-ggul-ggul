@@ -69,3 +69,10 @@ export interface MintEquipmentResponse extends EquipmentNFTDTO {}
 
 // 장비 뽑기 API 응답 타입 (뽑힌 장비)
 export interface DrawEquipmentResponse extends EquipmentDTO {}
+
+// =================껄지갑============================
+
+// 현재 토큰 개수 조회 응답 타입
+export interface GetTokenBalanceResponse {
+  balance: number;
+}
