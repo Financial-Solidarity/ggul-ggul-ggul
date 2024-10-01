@@ -14,7 +14,7 @@ import {
   getChattingRooomIds,
   getParticipantList,
 } from '../apis/challenge';
-import { startChallenge } from '../apis/waitingroom';
+import { exitChallenge, startChallenge } from '../apis/waitingroom';
 
 import { QUERY_KEYS } from '@/modules/common/constants';
 
@@ -67,5 +67,11 @@ export const useGetChattingroomIds = (challengeId: string) => {
 export const useStartChallenge = () => {
   return useMutation<void, ErrorDTO, string>({
     mutationFn: (challengeId) => startChallenge(challengeId),
+  });
+};
+
+export const useExitChallenge = () => {
+  return useMutation<void, ErrorDTO, string>({
+    mutationFn: (challengeId) => exitChallenge(challengeId),
   });
 };

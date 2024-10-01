@@ -73,7 +73,7 @@ export const WaitingRoomPage = () => {
           onClose={closeDrawer}
         />
       )}
-      <ExitConfirmModal />
+      <ExitConfirmModal challengeId={challengeId!} />
     </>
   );
 };

@@ -65,3 +65,12 @@ export const startChallenge = (challengeId: string) => {
     data: { challengeId },
   });
 };
+
+// 챌린지 나가기
+export const exitChallenge = (challengeId: string) => {
+  return _axios<void>({
+    method: 'patch',
+    url: 'challenges/exit',
+    data: { challengeId },
+  });
+};
