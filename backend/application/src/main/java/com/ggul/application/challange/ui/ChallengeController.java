@@ -83,4 +83,9 @@ public class ChallengeController {
     public ResponseEntity<?> joinedChallengeList(@AuthenticationPrincipal UserLoginContext context) {
         return ResponseEntity.ok(challengeFindService.findAllMyChallengeAndChatting(context.getUserId()));
     }
+
+    @GetMapping("/now")
+    public ResponseEntity<?> getNowChallenge(@AuthenticationPrincipal UserLoginContext context) {
+        return ResponseEntity.ok(challengeFindService.getNowChallenge(context.getUserId()));
+    }
 }

@@ -33,4 +33,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, UUID> {
     List<Challenge> findAllByUserId(@Param("sessionId")UUID sessionId);
 
     Optional<Challenge> findFirstByIsReadyTrueAndIsEndedFalse();
+
+    @Query("SELECT c FROM Challenge c JOIN ChallengeParticipant cp ON cp.challenge = c WHERE cp.user.id = :userId AND c.isEnded = false")
+    Optional<Challenge> findByIsEndedFalse(@Param("userId")UUID user);
 }
