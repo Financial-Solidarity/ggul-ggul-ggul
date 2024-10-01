@@ -9,6 +9,7 @@ import com.ggul.application.challange.event.ChallengeReadiedEvent;
 import com.ggul.application.challange.event.ChallengeStartedEvent;
 import com.ggul.application.notification.application.NotificationSendService;
 import com.ggul.application.notification.domain.Notification;
+import com.ggul.application.notification.domain.NotificationType;
 import com.ggul.application.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -84,13 +85,13 @@ public class ChallengeParticipantSendNotificationHandler {
     @Getter
     @AllArgsConstructor
     private enum NotificationDataSet {
-        CHALLENGE_READY("챌린지 시작 준비 완료", "챌린지가 시작 준비 되었습니다!", "CHALLENGE_READY"),
-        CHALLENGE_DESTROYED("챌린지 팀원 부족", "챌린지가 시작되지 못했습니다.", "CHALLENGE_DESTROYED"),
-        CHALLENGE_START("챌린지 시작", "챌린지가 시작되었습니다!", "CHALLENGE_START"),
+        CHALLENGE_READY("챌린지 시작 준비 완료", "챌린지가 시작 준비 되었습니다!", NotificationType.CHALLENGE_READY),
+        CHALLENGE_DESTROYED("챌린지 팀원 부족", "챌린지가 시작되지 못했습니다.", NotificationType.CHALLENGE_DESTROYED),
+        CHALLENGE_START("챌린지 시작", "챌린지가 시작되었습니다!", NotificationType.CHALLENGE_START),
         ;
         private final String title;
         private final String body;
-        private final String type;
+        private final NotificationType type;
     }
 
 
@@ -116,6 +117,7 @@ public class ChallengeParticipantSendNotificationHandler {
                 .body(dataSet.body)
                 .user(user)
                 .data(data)
+                .type(dataSet.type)
                 .build();
     }
 }
