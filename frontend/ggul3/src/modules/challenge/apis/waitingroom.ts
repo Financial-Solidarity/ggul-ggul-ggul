@@ -22,13 +22,10 @@ interface ChallengeListResponse {
 
 // 챌린지 목록 조회
 export const getChallengeList = ({ title, page }: ChallengeListRequestBody) => {
-  const titleQuery = title ? `&title=${title}` : '';
-  const pageQuery = page ? `&page=${page}` : '';
-  const query = titleQuery + pageQuery;
-
   return _axios<ChallengeListResponse>({
     method: 'GET',
-    url: `challenges/search${query && '?' + query}`,
+    url: `challenges/search`,
+    params: { title, page },
   });
 };
 
