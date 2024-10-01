@@ -33,6 +33,6 @@ public class UserFindService {
     @Transactional(readOnly = true)
     public UserInfoView findById(UUID userId) {
         User user = userRepository.findById(userId).get();
-        return UserInfoView.builder().nickname(user.getNickname()).profileImg(user.getProfile()).username(user.getUsername()).build();
+        return UserInfoView.builder().userId(userId).nickname(user.getNickname()).profileImg(user.getProfile()).username(user.getUsername()).build();
     }
 }
