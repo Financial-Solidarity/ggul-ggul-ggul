@@ -20,7 +20,7 @@ public class WalletGenerateService {
         try {
             keyPair = Keys.createEcKeyPair();
         } catch (Exception e){
-            throw new WalletGenerateFailException(e);
+            throw new WalletGenerateFailException();
         }
         String address = Keys.getAddress(keyPair);
         String privateKey = keyPair.getPrivateKey().toString(16);
