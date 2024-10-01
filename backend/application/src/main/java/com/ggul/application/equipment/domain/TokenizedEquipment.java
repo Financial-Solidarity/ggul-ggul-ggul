@@ -40,4 +40,12 @@ public class TokenizedEquipment {
     @JoinColumn(name = "equipment_id")
     @OneToOne(fetch = FetchType.LAZY)
     private Equipment equipment;
+
+    public void changeOwner(User user){
+        this.owner = user;
+    }
+
+    public void changeStatus(Status status){
+        this.status = status;
+    }
 }

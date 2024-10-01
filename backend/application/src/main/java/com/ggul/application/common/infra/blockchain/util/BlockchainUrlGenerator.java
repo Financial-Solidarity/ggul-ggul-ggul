@@ -1,4 +1,4 @@
-package com.ggul.application.common.infra.blockchain.utils;
+package com.ggul.application.common.infra.blockchain.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

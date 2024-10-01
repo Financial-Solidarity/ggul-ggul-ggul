@@ -1,6 +1,6 @@
 package com.ggul.application.equipment.ui.response;
 
-import com.ggul.application.common.infra.blockchain.utils.BlockchainUrlGenerator;
+import com.ggul.application.common.infra.blockchain.util.BlockchainUrlGenerator;
 import com.ggul.application.equipment.application.dto.EquipmentInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
