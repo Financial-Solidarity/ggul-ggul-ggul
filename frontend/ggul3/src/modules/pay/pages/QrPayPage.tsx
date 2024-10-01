@@ -1,5 +1,5 @@
 import { Input } from '@nextui-org/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ItemInfo } from '../components';
@@ -9,6 +9,9 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { NavTitle } from '@/modules/common/components';
+import { useConnectStore } from '@/modules/accountBook/store/useConnectStore';
+import { CurrentAccount } from '@/modules/accountBook/components';
 
 export const QrPayPage = () => {
   const [slideValue, setSlideValue] = useState<number>(0);
@@ -29,45 +32,69 @@ export const QrPayPage = () => {
     market: market as string,
   };
 
+  const { currentAccount, setCurrentAccount } = useConnectStore();
+
+  useEffect(() => {
+    setCurrentAccount({
+      id: 11,
+      name: '농협',
+      accountNo: '110-1851-4567',
+    });
+  }, []);
+
   return (
     <>
       <TopBar
+        center={<NavTitle title="상품 결제" />}
         left={<BackButton color="black" />}
         right={<NotificationButton color="black" />}
       />
       <PageContainer>
-        <div>
-          <ItemInfo itemInfo={itemInfo} />
-          <SpendGgulInput input={spendGgulToken} setInput={setSpendGgulToken} />
+        <div className="w-full">
+          <div className="mb-20 mt-10">
+            <ItemInfo itemInfo={itemInfo} />
+          </div>
+          <div className="w-full border-t-1 pt-5">
+            <div className="mb-5 flex w-full flex-col gap-2 border-b-1 pb-5">
+              <CurrentAccount currentAccount={currentAccount} />
 
-          <PaymentSlideBar
-            itemInfo={itemInfo}
-            slideValue={slideValue}
-            spendGgulToken={spendGgulToken}
-            // @ts-ignore
-            setSlideValue={setSlideValue}
-          />
+              <Input
+                label="사용할 껄 토큰"
+                placeholder="사용할 껄 토큰"
+                type="number"
+                value={spendGgulToken}
+                onValueChange={setSpendGgulToken}
+              />
+              <p className="flex justify-between text-sm">
+                <span>사용 가능한 껄 토큰</span>
+                <span className="font-bold text-primary">1,723 P</span>
+              </p>
+            </div>
+          </div>
+          <div className="mb-5">
+            <p className="text-xl">최종 결제 금액</p>
+            <p className="text-2xl font-bold">
+              <span className="font-light text-gray-500 line-through">
+                {Number(spendGgulToken) !== 0 && itemInfo.requiredMoney}
+              </span>{' '}
+              {itemInfo.requiredMoney - Number(spendGgulToken)}
+            </p>
+          </div>
+
+          <div className="rounded bg-primary-500/5 p-4">
+            <PaymentSlideBar
+              itemInfo={itemInfo}
+              slideValue={slideValue}
+              spendGgulToken={spendGgulToken}
+              // @ts-ignore
+              setSlideValue={setSlideValue}
+            />
+            <p className="text-sm text-primary">
+              결제하려면 슬라이드를 끝까지 밀어주세요
+            </p>
+          </div>
         </div>
       </PageContainer>
     </>
-  );
-};
-
-interface SpendGgulInputProps {
-  input: string;
-  setInput: (ggulTokenValue: string) => void;
-}
-
-const SpendGgulInput = ({ input, setInput }: SpendGgulInputProps) => {
-  return (
-    <div className="flex w-full max-w-[240px] flex-col gap-2">
-      <Input
-        label="사용할 껄 토큰"
-        placeholder="사용할 껄 토큰"
-        type="number"
-        value={input}
-        onValueChange={setInput}
-      />
-    </div>
   );
 };

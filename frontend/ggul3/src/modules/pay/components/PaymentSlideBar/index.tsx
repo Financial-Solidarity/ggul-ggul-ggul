@@ -55,18 +55,18 @@ export const PaymentSlideBar = ({
   };
 
   return (
-    <div className="flex h-full w-full max-w-md flex-col items-start justify-center gap-2">
-      <div className="relative h-20 w-full">
+    <div className="flex w-full max-w-md flex-col items-start justify-center gap-2">
+      <div className="relative w-full">
         <Slider
           aria-label="Volume"
           className="h-full"
-          color="success"
+          color="primary"
           size="lg"
           value={slideValue}
           onChange={setSlideValue}
           onChangeEnd={handleSlideEnd}
         />
-        <div className="absolute left-[8%] top-0 h-full w-full bg-red-200/50 text-[0]">
+        <div className="absolute left-[8%] top-0 h-full w-full bg-red-200/0 text-[0]">
           차단막
         </div>
       </div>

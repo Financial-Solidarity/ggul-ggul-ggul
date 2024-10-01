@@ -27,3 +27,10 @@ export const getPaymentStatistics = () => {
     url: 'payment/month/chart',
   });
 };
+
+export const getCurrentAccountInfo = () => {
+  return _axios({
+    method: 'GET',
+    url: 'accounts',
+  });
+};
