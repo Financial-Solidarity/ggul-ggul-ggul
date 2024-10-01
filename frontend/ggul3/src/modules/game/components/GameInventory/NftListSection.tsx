@@ -1,7 +1,7 @@
 import { Tabs, Tab } from '@nextui-org/react';
 
 import { SkeletonCards } from './SkeletonCard';
-import { MintedEquipmentCard } from './NftCard';
+import { NftCard } from './NftCard';
 
 import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
 
@@ -27,7 +27,7 @@ export const NftListSection = ({
     className="CONTENT-SECTION-BOTTOM flex w-full flex-col items-center overflow-y-auto rounded-t-2xl bg-default-800"
   >
     <div className="BOTTOM-TITLE sticky top-0 z-20 mb-3 flex w-full flex-col gap-2 bg-default-800 px-3 pb-3 pt-4">
-      <p className="TITLE text-xl font-semibold text-white">NFT 음식 가방</p>
+      <p className="TITLE text-xl font-semibold text-white">NFT 장비 가방</p>
     </div>
     <div className="DESCRIPTION mb-3 w-full px-3 text-sm text-default-300">
       <p>조리한 NFT 장비가 이곳에 저장되어,</p>
@@ -50,10 +50,10 @@ export const NftListSection = ({
         <SkeletonCards count={6} />
       ) : (
         filteredNfts.map((equipmentNft, index) => (
-          <MintedEquipmentCard
+          <NftCard
             key={index}
-            equipment={equipmentNft.equipment} // 적절한 equipment 데이터 전달
-            onCardClick={() => onCardClick(equipmentNft)} // onCardClick 프로퍼티 전달
+            equipmentNft={equipmentNft}
+            onCardClick={onCardClick}
           />
         ))
       )}

@@ -85,6 +85,15 @@ const sizeClasses = {
   xl: { circle: 'h-44 w-44', image: 200 },
 };
 
+// grade별 hexCode 매핑
+const gradeHexCodes = {
+  0: '#FFD700', // 매우 희귀 (금색)
+  1: '#C0C0C0', // 희귀 (은색)
+  2: '#CD7F32', // 보통 (청동색)
+  3: '#4682B4', // 흔함 (파란색)
+  4: '#708090', // 매우 흔함 (회색)
+};
+
 export const EquipmentNftInfo = ({
   equipmentNft,
   showTitle = true,
@@ -93,13 +102,16 @@ export const EquipmentNftInfo = ({
 }: EquipmentNftInfoProps) => {
   const { circle, image } = sizeClasses[size];
 
+  // grade에 따른 hexCode 선택
+  const hexCode = gradeHexCodes[equipmentNft?.equipment.grade || 0];
+
   return (
     <div className="flex flex-col items-center">
       {/* 타이틀 영역 */}
       {showTitle && (
         <p
           className="text-center text-2xl font-semibold"
-          style={{ color: equipmentNft?.equipment.adjective }}
+          style={{ color: hexCode }}
         >
           {equipmentNft?.equipment.name}
         </p>
@@ -111,7 +123,7 @@ export const EquipmentNftInfo = ({
       >
         <div
           className={`animate-popIn rounded-full ${circle}`}
-          style={{ backgroundColor: equipmentNft?.equipment.adjective }}
+          style={{ backgroundColor: hexCode }}
         />
         <div className="IMAGE-WRAPPER absolute flex animate-fadeIn items-center justify-center">
           <Image

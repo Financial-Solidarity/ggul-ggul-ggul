@@ -58,6 +58,15 @@ import { EquipmentDTO, EquipmentNFTDTO } from '../../@types/new_index';
 import { ConfettieLottie } from './ConfettieLottie';
 import { PulseLottie } from './PulseLottie';
 
+// Define hex codes based on grade
+const gradeHexCodes: Record<number, string> = {
+  0: '#FFD700', // Gold for top grade
+  1: '#C0C0C0', // Silver for second grade
+  2: '#CD7F32', // Bronze for third grade
+  3: '#B87333', // Copper for fourth grade
+  4: '#708090', // Slate Gray for lowest grade
+};
+
 interface EquipmentInfoDisplayProps {
   step?: string | null;
   equipment?: EquipmentDTO | EquipmentNFTDTO | null;
@@ -80,12 +89,27 @@ export const EquipmentInfoDisplay = ({
     ? equipment.equipment // Access the nested equipment
     : equipment;
 
+  // Get the hex color based on the grade
+  const hexCode = gradeHexCodes[displayEquipment.grade];
+
   return (
     <>
-      <p className="text-center text-3xl font-semibold">
-        {displayEquipment.name}
+      <p
+        className="text-center text-3xl font-semibold"
+        style={{ color: hexCode }}
+      >
+        {`${displayEquipment.adjective} ${displayEquipment.name}`}
       </p>
       <div className="flex h-48 w-full items-center justify-center">
+        {/* Circular background based on grade */}
+        <div
+          className="CIRCULAR-BACKGROUND"
+          style={{ backgroundColor: hexCode }}
+        />
+        <div
+          className="h-32 w-32 animate-popIn rounded-full"
+          style={{ backgroundColor: hexCode }}
+        />
         {step === 'drawed' && <ConfettieLottie />}
         {step === 'minting' && <PulseLottie />}
         <div className="IMAGE-WRAPPER absolute left-1/2 -translate-x-1/2 animate-fadeIn">
