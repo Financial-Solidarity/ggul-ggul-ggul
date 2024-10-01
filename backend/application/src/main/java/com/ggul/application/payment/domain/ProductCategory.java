@@ -1,4 +1,4 @@
-package com.ggul.application.product.domain;
+package com.ggul.application.payment.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

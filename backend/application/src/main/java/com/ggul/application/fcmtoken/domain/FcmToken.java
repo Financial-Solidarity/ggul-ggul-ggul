@@ -1,5 +1,6 @@
 package com.ggul.application.fcmtoken.domain;
 
+import com.ggul.application.common.jpa.domain.UUIDConverter;
 import com.ggul.application.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,31 @@ public class FcmToken {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Convert(converter = UUIDConverter.class)
     @Column(name = "session_id")
     private String sessionId;
+
+    @Convert(converter = UUIDConverter.class)
+    @Column(name = "web_socket_session_id")
+    private String webSocketSessionId;
+
+    @Column(name = "is_foreground")
+    private Boolean isForeground;
+
+    @PrePersist
+    protected void onCreate() {
+        isForeground = true;
+    }
+
+    public void onForeground() {
+        isForeground = true;
+    }
+
+    public void onBackground() {
+        isForeground = false;
+    }
+
+    public void setWebSocketSessionId(String webSocketSessionId) {
+        this.webSocketSessionId = webSocketSessionId;
+    }
 }

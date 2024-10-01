@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ChallengeRepository extends JpaRepository<Challenge, UUID> {
@@ -30,4 +31,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, UUID> {
 
     @Query("SELECT c FROM ChallengeParticipant cp JOIN Challenge c ON cp.challenge = c WHERE cp.user.id = :sessionId ")
     List<Challenge> findAllByUserId(@Param("sessionId")UUID sessionId);
+
+    Optional<Challenge> findFirstByIsReadyTrueAndIsEndedFalse();
 }

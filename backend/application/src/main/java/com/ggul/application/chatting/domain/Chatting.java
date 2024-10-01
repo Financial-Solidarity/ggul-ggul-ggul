@@ -15,11 +15,9 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type")
-@Table
+@Table(name = "chatting")
 @Entity
-public abstract class Chatting extends BaseEntity {
+public class Chatting extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "chatting_id")
@@ -31,13 +29,27 @@ public abstract class Chatting extends BaseEntity {
     private ChallengeParticipant participant;
 
     @ManyToOne
-    @JoinColumn(name = "chatting_room")
+    @JoinColumn(name = "chatting_room_id")
     private ChattingRoom chattingRoom;
+
+
 
     public enum Type {
         COMMON, SPEND, JUSTIFICATION
     }
 
-    @Transient
-    public abstract Type getType();
+    @Column(name = "type")
+    @Enumerated(EnumType.ORDINAL)
+    private Type type;
+
+    @Column(name = "chatting_content")
+    private String content;
+
+    @Column(name = "consumption_category_name")
+    private String categoryName;
+
+    @Column(name = "consumption_balance")
+    private Integer balance;
+
+
 }

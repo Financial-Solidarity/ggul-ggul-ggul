@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 public enum ChattingExceptionConstants implements ErrorCodeDefinition {
     CHATTING_ROOM_NOT_FOUND("채팅방을 찾을 수 없습니다", "C001", HttpStatus.BAD_REQUEST),
 
+    CHATTING_NOT_FOUND("채팅을 찾을 수 없습니다.", "C001", HttpStatus.BAD_REQUEST),
+    CHATTING_JUSTIFICATION_UNAUTHORIZED("채팅 소명할 권한이 없습니다.", "C002", HttpStatus.BAD_REQUEST),
 
     CHATTING_ROOM_PARTICIPANT_NOT_BALANCED("참가자의 비율이 맞지 않습니다", "CP001", HttpStatus.BAD_REQUEST),
     CHATTING_ROOM_PARTICIPANT_EXIST("이미 참가한 방입니다.", "CRP002", HttpStatus.BAD_REQUEST),
