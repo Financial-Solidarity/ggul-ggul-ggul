@@ -25,4 +25,17 @@ declare module '@types' {
     endAt: string;
     isOwner: boolean;
   }
+
+  export interface ParticipantDTO {
+    participantId: string;
+    nickname: string;
+    profileImg: string;
+    type: string;
+  }
+
+  export interface getChattingRooomIdsResponse {
+    totalChattingRoomId: string;
+    myTeamChattingRoomId: string | null;
+    lobbyChattingRoomId: string | null;
+  }
 }
