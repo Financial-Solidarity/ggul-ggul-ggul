@@ -1,17 +1,8 @@
-import { ChallengeDTO, Pageable } from '@types';
+import { ChallengeListRequestBody, ChallengeListResponse } from '@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
 // ------------------------------------------- 09.30 12:21 yyh
-interface ChallengeListRequestBody {
-  title?: string;
-  page: number;
-}
-
-interface ChallengeListResponse {
-  content: ChallengeDTO[];
-  pageable: Pageable;
-}
 
 // 챌린지 목록 조회
 export const getChallengeList = ({ title, page }: ChallengeListRequestBody) => {

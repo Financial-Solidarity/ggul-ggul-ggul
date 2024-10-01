@@ -15,4 +15,14 @@ declare module '@types' {
     startAt: string;
     endAt: string;
   }
+
+  export interface ChallengeListRequestBody {
+    title?: string;
+    page: number;
+  }
+
+  export interface ChallengeListResponse {
+    content: ChallengeDTO[];
+    pageable: Pageable;
+  }
 }
