@@ -25,7 +25,7 @@ public class NotificationSendService {
             MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(noti.getUser().getFcmTokens(), noti.getTitle(), noti.getBody(), noti.getType().name(), noti.getData());
             mlists.add(multicastMessage);
         }
-        firebaseCloudMessageService.sendDataMessageTo(mlists);
         notificationRepository.saveAll(lists);
+        firebaseCloudMessageService.sendDataMessageTo(mlists);
     }
 }

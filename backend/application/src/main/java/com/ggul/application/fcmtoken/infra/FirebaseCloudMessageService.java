@@ -4,6 +4,7 @@ import com.ggul.application.fcmtoken.domain.FcmToken;
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -58,6 +59,7 @@ public class FirebaseCloudMessageService {
         return FirebaseMessaging.getInstance().sendEachForMulticast(multicastMessage);
     }
 
+    @Async
     public List<BatchResponse> sendDataMessageTo(List<MulticastMessage> multicastMessage){
         return multicastMessage.stream().map(multicastMessage1 -> {
             try {
