@@ -78,4 +78,9 @@ public class ChallengeController {
         ChallengeParticipantView challengeParticipantView = challengeTeamChangeService.changeTeam(request, loginContext.getUserId());
         return ResponseEntity.ok(challengeParticipantView);
     }
+
+    @GetMapping()
+    public ResponseEntity<?> joinedChallengeList(@AuthenticationPrincipal UserLoginContext context) {
+        return ResponseEntity.ok(challengeFindService.findAllMyChallengeAndChatting(context.getUserId()));
+    }
 }
