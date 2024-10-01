@@ -37,6 +37,20 @@ public class ChattingFindService {
         }).toList();
     }
 
+    @Transactional
+    public List<ChattingView> findAllByAfter(UUID userId, UUID chattingRoomId) {
+        ChattingRoomParticipant me = chattingRoomParticipantRepository.findByChattingRoom_IdAndChallengeParticipant_User_Id(chattingRoomId, userId).orElseThrow(ChattingRoomParticipantNotExistException::new);
+        ChallengeParticipant meChallengeInfo = me.getChallengeParticipant();
+        List<Chatting> chattings = chattingRepository.findAllByChattingRoom_IdAndCreatedAtAfterOrderByCreatedAt(chattingRoomId, me.getLastConnectedAt());
+        me.connected();
+        return chattings.stream().map(chatting -> {
+            ChallengeParticipantView participantView = new ChallengeParticipantView(chatting.getParticipant());
+            participantView.setIsMine(meChallengeInfo.getId());
+            return ChattingView.builder().chattingId(chatting.getId()).type(chatting.getType().name()).content(chatting.getContent()).consumption(generateConsumption(chatting)).profile(participantView).sentAt(chatting.getCreatedAt()).build();
+
+        }).toList();
+    }
+
     private ConsumptionView generateConsumption(Chatting chatting) {
         return Chatting.Type.COMMON.equals(chatting.getType()) ? null : ConsumptionView.builder().balance(chatting.getBalance()).category(chatting.getCategoryName()).build();
     }

@@ -29,4 +29,9 @@ public class ChattingController {
     public ResponseEntity<?> chattingBeforeList(@PathVariable UUID chattingRoomId, @AuthenticationPrincipal UserLoginContext userLoginContext) {
         return ResponseEntity.ok(chattingFindService.findAllByBefore(userLoginContext.getUserId(), chattingRoomId));
     }
+
+    @GetMapping("/{chattingRoomId}/after")
+    public ResponseEntity<?> chattingAfterList(@PathVariable UUID chattingRoomId, @AuthenticationPrincipal UserLoginContext userLoginContext) {
+        return ResponseEntity.ok(chattingFindService.findAllByAfter(userLoginContext.getUserId(), chattingRoomId));
+    }
 }
