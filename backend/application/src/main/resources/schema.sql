@@ -95,6 +95,7 @@ CREATE TABLE chatting_room_participant
     chatting_room_id             BINARY(16) NOT NULL,
     challenge_participant_id     BINARY(16) NOT NULL,
     last_connected_at            DATETIME   NOT NULL,
+    created_at                  DATETIME NOT NULL ,
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room (chatting_room_id),
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id)
 );
