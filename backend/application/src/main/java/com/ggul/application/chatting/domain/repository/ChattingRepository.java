@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public interface ChattingRepository extends JpaRepository<Chatting, UUID> {
@@ -23,4 +25,6 @@ public interface ChattingRepository extends JpaRepository<Chatting, UUID> {
     ChattingBadgeCount countByChattingRoomAndParticipantId(@Param("chattingRoomId") UUID chattingRoomId, @Param("sessionId")UUID sessionId);
 
     Chatting findFirstByChattingRoom_IdOrderByCreatedAtDesc(UUID chattingRoomId);
+
+    List<Chatting> findAllByChattingRoom_IdAndCreatedAtBeforeOrderByCreatedAt(UUID chattingRoomId, LocalDateTime createdAt);
 }
