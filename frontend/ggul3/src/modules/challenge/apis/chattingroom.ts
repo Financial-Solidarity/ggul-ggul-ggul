@@ -21,3 +21,13 @@ export const getRecentChattingList = (chattingRoomId: string) => {
     method: 'GET',
   });
 };
+
+/**
+ * 이전 채팅 목록 조회 (읽었던 채팅 조회)
+ */
+export const getPreviousChattingList = (chattingRoomId: string) => {
+  return _axios<Chat[]>({
+    url: `/api/chattingRoom/${chattingRoomId}/chat/log/before`,
+    method: 'GET',
+  });
+};
