@@ -1,5 +1,6 @@
 package com.ggul.application.challange.ui.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ggul.application.challange.domain.Challenge;
 import com.ggul.application.challange.domain.CompetitionType;
 import lombok.Builder;
@@ -25,7 +26,10 @@ public class ChallengeView {
     private Integer limitParticipant;
     private Integer currentParticipant;
     private Integer budgetCap;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime startAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime endAt;
     private Boolean isOwner;
 
