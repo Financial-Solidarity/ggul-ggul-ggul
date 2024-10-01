@@ -1,4 +1,4 @@
-import { FoodDTO, FoodNftDTO } from '../@types/food';
+import { FoodDTO, FoodNftDTO } from '../@types/equipment';
 
 export const mockGetEquippedFoodNft = async (): Promise<FoodNftDTO> => {
   return new Promise<FoodNftDTO>((resolve) => {

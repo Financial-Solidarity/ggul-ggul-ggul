@@ -12,7 +12,7 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
-import { FoodNftDTO } from '@/modules/game/@types/food';
+import { FoodNftDTO } from '@/modules/game/@types/equipment';
 
 export const GameInventory = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });

@@ -1,6 +1,6 @@
 import { Card, CardBody, Image } from '@nextui-org/react';
 
-import { FoodNftDTO } from '@/modules/game/@types/food';
+import { FoodNftDTO } from '@/modules/game/@types/equipment';
 
 interface NftCardProps {
   foodNft: FoodNftDTO;

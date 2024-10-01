@@ -3,7 +3,7 @@ import { Image } from '@nextui-org/react';
 import { ConfettieLottie } from './ConfettieLottie';
 import { PulseLottie } from './PulseLottie';
 
-import { FoodDTO, FoodNftDTO } from '@/modules/game/@types/food';
+import { FoodDTO, FoodNftDTO } from '@/modules/game/@types/equipment';
 
 interface FoodInfoDisplayProps {
   step?: string | null;

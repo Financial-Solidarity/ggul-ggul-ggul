@@ -1,22 +1,19 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { GamePagination, FoodNftSellDTO } from '../@types/food';
+import { GamePagination, FoodNftSellDTO } from '../@types/equipment';
 import { mockGetNftSellList, mockSearchNftSellList } from '../apis/market';
 
-// NFT Sell List Response Type
 interface NftSellListResponse {
   content: FoodNftSellDTO[];
   pagination: GamePagination;
 }
 
-// NFT Sell List Search Response Type
 interface NftSellListSearchResponse {
   content: FoodNftSellDTO[];
   totalElements: number;
   totalPages: number;
 }
 
-// Search Criteria Type
 interface SearchCriteria {
   name?: string;
   minStatus?: number;
@@ -25,7 +22,6 @@ interface SearchCriteria {
   maxPrice?: number;
 }
 
-// Query to Get NFT Sell List
 export const useNftSellListQuery = (
   pageNumber: number,
   pageSize: number,
@@ -33,11 +29,10 @@ export const useNftSellListQuery = (
   return useQuery<NftSellListResponse, Error>({
     queryKey: ['nftSellList', pageNumber, pageSize],
     queryFn: () => mockGetNftSellList(pageNumber, pageSize),
-    staleTime: 5000, // Use staleTime instead of keepPreviousData
+    staleTime: 5000,
   });
 };
 
-// Query to Search NFT Sell List
 export const useNftSellListSearchQuery = (
   keyword: string,
   searchCriteria: SearchCriteria,
@@ -59,6 +54,6 @@ export const useNftSellListSearchQuery = (
       Object.keys(searchCriteria).some(
         (key) => searchCriteria[key as keyof SearchCriteria] !== undefined,
       ),
-    staleTime: 5000, // Use staleTime to control cache freshness
+    staleTime: 5000,
   });
 };

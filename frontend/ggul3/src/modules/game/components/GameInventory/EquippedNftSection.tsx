@@ -2,7 +2,7 @@ import { FoodNftInfo } from '../common/FoodNftInfo';
 
 import { SkeletonGroupNumbers } from './SkeletonGroupNumbers';
 
-import { FoodNftDTO } from '@/modules/game/@types/food';
+import { FoodNftDTO } from '@/modules/game/@types/equipment';
 
 interface EquippedNftSectionProps {
   isLoading: boolean;

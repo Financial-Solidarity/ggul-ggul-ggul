@@ -1,6 +1,5 @@
-import { FoodNftSellDTO, GamePagination } from '../@types/food';
+import { FoodNftSellDTO, GamePagination } from '../@types/equipment';
 
-// Mock search function
 export const mockSearchNftSellList = async (
   keyword: string,
   searchCriteria: {
@@ -19,8 +18,7 @@ export const mockSearchNftSellList = async (
 }> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      // Filter by search criteria
-      let filteredContent = mockFoodNfts;
+      let filteredContent = MOCK_NFT_FOODS;
 
       if (keyword) {
         filteredContent = filteredContent.filter((nft) =>
@@ -55,7 +53,6 @@ export const mockSearchNftSellList = async (
       const totalElements = filteredContent.length;
       const totalPages = Math.ceil(totalElements / pageSize);
 
-      // Pagination
       const start = pageNumber * pageSize;
       const end = start + pageSize;
       const content = filteredContent.slice(start, end);
@@ -65,20 +62,20 @@ export const mockSearchNftSellList = async (
   });
 };
 
-// Mock get function
 export const mockGetNftSellList = async (
   pageNumber: number,
   pageSize: number,
 ): Promise<{ content: FoodNftSellDTO[]; pagination: GamePagination }> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const totalElements = mockFoodNfts.length;
+      const totalElements = MOCK_NFT_FOODS.length;
       const totalPages = Math.ceil(totalElements / pageSize);
 
-      // Pagination
       const start = pageNumber * pageSize;
       const end = start + pageSize;
-      const content = mockFoodNfts.slice(start, end);
+      const content = MOCK_NFT_FOODS.slice(start, end);
+
+      console.log('content:', content);
 
       const pagination: GamePagination = {
         pageable: {
@@ -104,7 +101,7 @@ export const mockGetNftSellList = async (
   });
 };
 
-const mockFoodNfts: FoodNftSellDTO[] = [
+const MOCK_NFT_FOODS: FoodNftSellDTO[] = [
   {
     tokenId: '0x1',
     ownerAddress: '0x1234567890ABCDEF',

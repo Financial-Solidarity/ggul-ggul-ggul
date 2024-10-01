@@ -20,6 +20,6 @@ export interface FoodNftSellDTO extends FoodNftDTO {
 }
 
 export interface GamePagination extends BasePagination {
-  totalPages: number; // 전체 페이지 수
-  totalElements: number; // 전체 요소 수
+  totalPages: number;
+  totalElements: number;
 }

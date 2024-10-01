@@ -2,7 +2,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 import { mockGetEquippedFoodNft, mockGetFoodNftList } from '../apis';
 
-import { FoodNftDTO } from '@/modules/game/@types/food';
+import { FoodNftDTO } from '@/modules/game/@types/equipment';
 
 export const useEquippedFoodNftQuery = (): UseQueryResult<FoodNftDTO> => {
   return useQuery<FoodNftDTO>({

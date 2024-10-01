@@ -1,4 +1,4 @@
-import { FoodNftDTO } from '@/modules/game/@types/food';
+import { FoodNftDTO } from '@/modules/game/@types/equipment';
 
 export const filterNftsByGrade = (
   nfts: FoodNftDTO[],

@@ -1,6 +1,6 @@
 import { Button } from '@nextui-org/react';
 
-import { FoodDTO } from '@/modules/game/@types/food';
+import { FoodDTO } from '@/modules/game/@types/equipment';
 
 interface ActionButtonsProps {
   step: string;

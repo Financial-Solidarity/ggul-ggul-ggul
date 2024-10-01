@@ -6,7 +6,7 @@ import { MintedFoodCard } from './MintedFoodCard';
 import { FoodInfoDisplay } from './FoodInfoDisplay';
 import { RandomNumber } from './RandomNumber';
 
-import { FoodDTO } from '@/modules/game/@types/food';
+import { FoodDTO } from '@/modules/game/@types/equipment';
 
 export interface ContentSectionProps {
   step: string;

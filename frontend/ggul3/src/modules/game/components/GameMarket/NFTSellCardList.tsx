@@ -2,7 +2,7 @@ import { Card, CardBody, Button } from '@nextui-org/react';
 
 import { FoodNftInfo } from '../common/FoodNftInfo';
 
-import { FoodNftSellDTO } from '@/modules/game/@types/food';
+import { FoodNftSellDTO } from '@/modules/game/@types/equipment';
 
 interface NFTSellCardListProps {
   nftList: FoodNftSellDTO[];

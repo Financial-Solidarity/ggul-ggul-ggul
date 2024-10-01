@@ -3,7 +3,7 @@ import { Tabs, Tab } from '@nextui-org/react';
 import { SkeletonCards } from './SkeletonCard';
 import { NftCard } from './NftCard';
 
-import { FoodNftDTO } from '@/modules/game/@types/food';
+import { FoodNftDTO } from '@/modules/game/@types/equipment';
 
 interface NftListSectionProps {
   activeGradeIndex: string;

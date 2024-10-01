@@ -4,7 +4,7 @@ import {
   useNftSellListQuery,
   useNftSellListSearchQuery,
 } from '../queries/market';
-import { FoodNftSellDTO } from '../@types/food';
+import { FoodNftSellDTO } from '../@types/equipment';
 
 export const useGameMarketData = (pageSize: number) => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -29,19 +29,37 @@ export const useGameMarketData = (pageSize: number) => {
     pageSize,
   );
 
+  // useEffect(() => {
+  //   if (data?.content) {
+  //     setFoodNftSellList((prevList) => [...prevList, ...data.content]);
+  //     setTotalContentCount(data.pagination.totalElements);
+  //   }
+  // }, [data]);
+
+  // useEffect(() => {
+  //   if (searchData?.content) {
+  //     setFoodNftSellList(searchData.content);
+  //     setTotalContentCount(searchData.totalElements);
+  //   }
+  // }, [searchData]);
+
   useEffect(() => {
-    if (data?.content) {
+    console.log('useEffect triggered by:', {
+      data,
+      searchData,
+      searchKeyword,
+    });
+
+    if (searchKeyword && searchData?.content) {
+      // 검색 모드에서만 리스트를 검색 데이터로 대체
+      setFoodNftSellList(searchData.content);
+      setTotalContentCount(searchData.totalElements);
+    } else if (data?.content && !searchKeyword) {
+      // 검색 모드가 아닌 경우에만 무한 스크롤 데이터 추가
       setFoodNftSellList((prevList) => [...prevList, ...data.content]);
       setTotalContentCount(data.pagination.totalElements);
     }
-  }, [data]);
-
-  useEffect(() => {
-    if (searchData?.content) {
-      setFoodNftSellList(searchData.content);
-      setTotalContentCount(searchData.totalElements);
-    }
-  }, [searchData]);
+  }, [data, searchData, searchKeyword]);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {

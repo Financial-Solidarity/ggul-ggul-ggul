@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ConfettieLottie } from './ConfettieLottie';
 
-import { FoodDTO } from '@/modules/game/@types/food';
+import { FoodDTO } from '@/modules/game/@types/equipment';
 import { PathNames } from '@/router';
 
 interface MintedFoodCardProps {

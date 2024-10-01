@@ -1,7 +1,7 @@
 import { Sheet } from 'react-modal-sheet';
 import { Button } from '@nextui-org/react';
 
-import { FoodNftDTO } from '../../@types/food';
+import { FoodNftDTO } from '../../@types/equipment';
 import { FoodNftInfo } from '../common/FoodNftInfo';
 
 interface NftDetailSheetProps {

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import { FoodDTO, FoodNftDTO } from '../@types/food';
+import { FoodDTO, FoodNftDTO } from '../@types/equipment';
 import { mockPostFoodLuckyDraw, mockPostFoodMinting } from '../apis';
 
 interface UseLuckyDrawActionsProps {
