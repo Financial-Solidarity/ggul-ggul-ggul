@@ -15,7 +15,7 @@ import { CurrentAccount } from '@/modules/accountBook/components';
 
 export const QrPayPage = () => {
   const [slideValue, setSlideValue] = useState<number>(0);
-  const [spendGgulToken, setSpendGgulToken] = useState<string>('0');
+  const [spendGgulToken, setSpendGgulToken] = useState<string>('1');
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -71,13 +71,14 @@ export const QrPayPage = () => {
               </p>
             </div>
           </div>
-          <div className="mb-5">
+          <div className="mb-5 flex justify-between">
             <p className="text-xl">최종 결제 금액</p>
             <p className="text-2xl font-bold">
-              <span className="font-light text-gray-500 line-through">
+              <span className="text-xl font-light text-gray-500 line-through">
                 {Number(spendGgulToken) !== 0 && itemInfo.requiredMoney}
               </span>{' '}
-              {itemInfo.requiredMoney - Number(spendGgulToken)}
+              {itemInfo.requiredMoney - Number(spendGgulToken)}{' '}
+              <span className="text-lg font-normal text-gray-500">원</span>
             </p>
           </div>
 
@@ -90,7 +91,7 @@ export const QrPayPage = () => {
               setSlideValue={setSlideValue}
             />
             <p className="text-sm text-primary">
-              결제하려면 슬라이드를 끝까지 밀어주세요
+              상품을 결제하려면 슬라이드를 끝까지 밀어주세요.
             </p>
           </div>
         </div>
