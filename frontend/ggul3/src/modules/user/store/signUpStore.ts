@@ -31,10 +31,10 @@ interface signUpState extends UserSignUpForm {
 
 export const useSignUpStore = create<signUpState>((set, get) => ({
   step: 'sign up',
-  email: 'gentryop00@gmail.com',
-  nickname: 'asd',
-  password: 'asd',
-  passwordCheck: 'asd',
+  email: 'khj745700@naver.com',
+  nickname: 'test1test1',
+  password: 'test1test1',
+  passwordCheck: 'test1test1',
   emailValidation: '',
   displayErrorMessage: {
     email: '',

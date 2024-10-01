@@ -17,7 +17,12 @@ export const getPaymentHistory = ({
 }: HistoryRange) => {
   return _axios<PaymentHistory>({
     method: 'GET',
-    url: `payment/search?start-date=${startDate}&end-date=${endDate}&page=${page}`,
+    url: `payment/search`,
+    params: {
+      'start-date': startDate,
+      'end-date': endDate,
+      page,
+    },
   });
 };
 

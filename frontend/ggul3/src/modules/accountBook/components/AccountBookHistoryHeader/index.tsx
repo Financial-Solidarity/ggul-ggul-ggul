@@ -1,24 +1,45 @@
-import { useState } from 'react';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
-const years = Array.from({ length: 125 }, (_, i) => 2024 - i);
-const months = Array.from({ length: 12 }, (_, i) => 12 - i);
-const currentYear = new Date().getFullYear();
-const currentMonth = new Date().getMonth() + 1;
+interface AccountBookHistoryHeaderProps {
+  startDate: string;
+  setSearchParams: (params: string) => void;
+  // year: string;
+  // month: string;
+  // setYear: (year: string) => void;
+  // setMonth: (month: string) => void;
+}
 
-// years의 내용을 {key: number, value: number} 형태로 변환해
-const transformedYears = years.map((year) => ({
-  value: year.toString() + '년',
-  label: year.toString() + '년',
-}));
-const transformedMonths = months.map((month) => ({
-  value: month.toString() + '월',
-  label: month.toString() + '월',
-}));
+export const AccountBookHistoryHeader = ({
+  startDate,
+  setSearchParams,
+  // year,
+  // month,
+  // setYear,
+  // setMonth,
+}: AccountBookHistoryHeaderProps) => {
+  const navigate = useNavigate();
 
-export const AccountBookHistoryHeader = () => {
-  const [year, setYear] = useState<number>(2024);
-  const [month, setMonth] = useState<number>(9);
+  const years = Array.from({ length: 125 }, (_, i) => 2024 - i);
+  const months = Array.from({ length: 12 }, (_, i) =>
+    (12 - i).toString().padStart(2, '0'),
+  );
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+
+  // years의 내용을 {key: number, value: number} 형태로 변환해
+  const transformedYears = years.map((year) => ({
+    value: year.toString() + '년',
+    label: year.toString() + '년',
+  }));
+  const transformedMonths = months.map((month) => ({
+    value: month.toString() + '월',
+    label: month.toString() + '월',
+  }));
+
+  const [year, month] = startDate.split('-');
+
+  console.log(year, month, 'year, month');
 
   return (
     <div
@@ -38,7 +59,26 @@ export const AccountBookHistoryHeader = () => {
             isClearable={false}
             size="lg"
             variant="underlined"
-            onInputChange={(value) => setYear(Number(value))}
+            onInputChange={(value) => {
+              // /api/payment/month/chart/search?start-date=2024-09&end-date=2024-09
+
+              const params = new URLSearchParams({
+                'start-date': `${value.slice(0, 4)}-${month.toString().padStart(2, '0')}`,
+                'end-date': `${value.slice(0, 4)}-${month.toString().padStart(2, '0')}`,
+                page: '0',
+              });
+
+              setSearchParams(params.toString());
+
+              // setSearchParams({
+              //   'start-date': `${value.slice(0, 4)}-${month.toString().slice(0, 2)}`,
+              //   'end-date': `${value.slice(0, 4)}-${month.toString().slice(0, 2)}`,
+              //   page: '0',
+              // });
+              // navigate(
+              //   `/account-book/history?start-date=${value.slice(0, 4)}-${month.toString().slice(0, 2)}&end-date=${value.slice(0, 4)}-${month.toString().slice(0, 2)}`,
+              // );
+            }}
           >
             {transformedYears.map((year) => (
               <AutocompleteItem
@@ -60,11 +100,19 @@ export const AccountBookHistoryHeader = () => {
             // @ts-ignore
             color="white"
             defaultItems={transformedMonths}
-            defaultSelectedKey={currentMonth.toString() + '월'}
+            defaultSelectedKey={currentMonth.toString().padStart(2, '0') + '월'}
             isClearable={false}
             size="lg"
             variant="underlined"
-            onInputChange={(value) => setMonth(Number(value))}
+            onInputChange={(value) => {
+              const params = new URLSearchParams({
+                'start-date': `${year.toString().slice(0, 4)}-${value.slice(0, 2)}`,
+                'end-date': `${year.toString().slice(0, 4)}-${value.slice(0, 2)}`,
+                page: '0',
+              });
+
+              setSearchParams(params.toString());
+            }}
           >
             {transformedMonths.map((month) => (
               <AutocompleteItem
