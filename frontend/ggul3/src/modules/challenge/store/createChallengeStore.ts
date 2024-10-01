@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 interface CreateChallengeState {
   step: number;
-  competitionType: 'S' | 'T' | null;
+  competitionType: 'S' | 'T';
   limitParticipant: number;
   isCustomLimit: boolean; // 참가자수 직접 입력 여부
   isBlindness: boolean;
