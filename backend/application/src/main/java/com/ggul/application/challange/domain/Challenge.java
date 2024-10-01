@@ -96,7 +96,7 @@ public class Challenge extends SoftDeleteEntity {
 
     @Override
     protected void prePersistAction() {
-        passwordExist = password == null;
+        passwordExist = password != null;
         isReady = false;
         isEnded = false;
     }
