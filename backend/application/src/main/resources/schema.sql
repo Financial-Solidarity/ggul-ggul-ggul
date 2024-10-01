@@ -114,7 +114,7 @@ CREATE TABLE notification
 
 CREATE TABLE category
 (
-    product_category_id INT         NOT NULL,
+    product_category_id INT         NOT NULL PRIMARY KEY ,
     category_name       VARCHAR(40) NOT NULL
 );
 
@@ -167,6 +167,7 @@ CREATE TABLE consumption_log
     consumption_market  VARCHAR(50) NOT NULL,
     ggul_log_id         BINARY(16),
     FOREIGN KEY (user_id) REFERENCES user (user_id),
+    FOREIGN KEY (product_category_id) REFERENCES category (product_category_id),
     FOREIGN KEY (ggul_log_id) REFERENCES ggul_log (ggul_log_id)
 );
 
@@ -219,3 +220,6 @@ VALUES (1, "컵케익","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/
        (18, "토스트","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/toast.png"),
        (19, "두부","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/tofu.png"),
        (20, "참치캔","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/tunacan.png");
+
+
+INSERT INTO category (product_category_id, category_name) VALUES (1, '배달 음식');

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "product_category")
+@Table(name = "category")
 @Entity
 public class ProductCategory {
     @Id
