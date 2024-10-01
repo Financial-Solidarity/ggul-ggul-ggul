@@ -56,3 +56,12 @@ export const verifyJoinChallengePassword = ({
   });
 };
 // ------------------------------------------- 09.30 12:21 yyh
+
+// 대기실에서 방장이 챌린지 시작
+export const startChallenge = (challengeId: string) => {
+  return _axios<void>({
+    method: 'POST',
+    url: 'challenges/ready',
+    data: { challengeId },
+  });
+};
