@@ -30,7 +30,7 @@ export const PageContainer = ({
         ref={containerRef}
         className={twMerge([
           'PAGE-CONTAINER',
-          'flex h-full w-full flex-1 flex-col overflow-auto',
+          'relative flex h-full w-full flex-1 flex-col overflow-auto',
           bgColor,
           activePaddingX ? 'px-4' : 'px-0',
           isBottomBarActivated ? 'pb-16' : 'pb-0',

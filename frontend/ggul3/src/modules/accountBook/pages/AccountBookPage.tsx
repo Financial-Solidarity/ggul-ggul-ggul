@@ -1,4 +1,3 @@
-import { QrButton } from '../components/QrButton';
 import { Balance, StatisticsButton } from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -8,19 +7,22 @@ import { NotificationButton } from '@/modules/common/components/NotificationButt
 import burnMoney from '@/assets/images/burn-money.png';
 import financeChart from '@/assets/images/finance-chart.png';
 import { PathNames } from '@/router';
+import { NavTitle } from '@/modules/common/components';
 
 export const AccountBookPage = () => {
   return (
     <>
       <TopBar
-        center={<NavTitle />}
+        center={<NavTitle title="가계부" />}
         left={<BackButton color="black" />}
         right={<NotificationButton color="black" />}
       />
       <PageContainer>
-        <Balance />
-        <QrButton />
-        <div className="flex gap-4">
+        <div className="mb-3">
+          <Balance />
+        </div>
+
+        <div className="mb-3 flex gap-3">
           <StatisticsButton
             buttonImageUrl={burnMoney}
             color="secondary"
@@ -41,7 +43,3 @@ export const AccountBookPage = () => {
     </>
   );
 };
-
-function NavTitle() {
-  return <p className="text-lg">가계부</p>;
-}

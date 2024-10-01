@@ -15,6 +15,7 @@ import {
   PayPage,
   PrizeHistoryPage,
   QrCodePage,
+  QrPayPage,
   WalletPage,
 } from './modules/pay/pages';
 import { FindPasswordPage, LoginPage, SignUpPage } from './modules/user/pages';
@@ -22,8 +23,14 @@ import {
   AccountBookHistoryPage,
   AccountBookPage,
   AccountBookStatisticsPage,
+  ConnectAccountPage,
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
+import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
+import { MyPage } from './modules/myPage/pages/MyPage';
+import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoomPage';
+import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
+import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
 
 export interface Path {
   path: string;
@@ -45,20 +52,28 @@ export interface PathNames {
     MAIN: Path;
     CREATE: Path;
     WAITING_ROOM: Path;
+    CHATTING_ROOMS: Path;
+    SOLO_CHATTING: Path;
+    TEAM_CHATTING: Path;
+    TOTAL_CHATTING: Path;
   };
   GGULPAY: {
     MAIN: Path;
     WALLET: Path;
     PRIZE_HISTORY: Path;
     LUCKY_DRAW_ENTRY: Path;
+    QR_PAY: Path;
   };
   ACCOUNT_BOOK: {
     MAIN: Path;
     HISTORY: Path;
     STATISTICS: Path;
     QR_CODE: Path;
+    CONNECT_ACCOUNT: Path;
   };
-  MYPAGE: Path;
+  MYPAGE: {
+    MAIN: Path;
+  };
   LOGIN: Path;
   SIGHUP: Path;
   FIND_PASSWORD: Path;
@@ -113,6 +128,22 @@ export const PathNames: PathNames = {
       path: '/challenge/waiting-room/:id',
       name: '챌린지 대기실',
     },
+    CHATTING_ROOMS: {
+      path: '/challenge/chatting-rooms',
+      name: '채팅방 목록',
+    },
+    SOLO_CHATTING: {
+      path: '/challenge/solo-chatting/:id',
+      name: '개인전 채팅방',
+    },
+    TEAM_CHATTING: {
+      path: '/challenge/team-chatting/:id',
+      name: '팀전 팀 채팅방',
+    },
+    TOTAL_CHATTING: {
+      path: '/challenge/total-chatting/:id',
+      name: '팀전 전체 채팅방',
+    },
   },
   GGULPAY: {
     MAIN: {
@@ -130,6 +161,10 @@ export const PathNames: PathNames = {
     LUCKY_DRAW_ENTRY: {
       path: '/pay/lucky-draw',
       name: '응모하기',
+    },
+    QR_PAY: {
+      path: '/pay/qr-pay',
+      name: 'QR코드',
     },
   },
   ACCOUNT_BOOK: {
@@ -149,10 +184,16 @@ export const PathNames: PathNames = {
       path: '/account-book/qr-code',
       name: 'QR코드',
     },
+    CONNECT_ACCOUNT: {
+      path: '/account-book/connect-account',
+      name: '계좌 연동',
+    },
   },
   MYPAGE: {
-    path: '/mypage',
-    name: '마이페이지',
+    MAIN: {
+      path: '/mypage',
+      name: '마이페이지',
+    },
   },
   LOGIN: {
     path: '/login',
@@ -181,6 +222,22 @@ const challengeRoutes: RouteObject[] = [
     path: PathNames.CHALLENGE.WAITING_ROOM.path,
     element: <WaitingRoomPage />,
   },
+  {
+    path: PathNames.CHALLENGE.CHATTING_ROOMS.path,
+    element: <ChattingRoomListPage />,
+  },
+  {
+    path: PathNames.CHALLENGE.SOLO_CHATTING.path,
+    element: <SoloChattingRoomPage />,
+  },
+  {
+    path: PathNames.CHALLENGE.TEAM_CHATTING.path,
+    element: <TeamChattingRoomPage />,
+  },
+  {
+    path: PathNames.CHALLENGE.TOTAL_CHATTING.path,
+    element: <TotalChattingRoomPage />,
+  },
 ];
 
 const accountBook: RouteObject[] = [
@@ -199,6 +256,10 @@ const accountBook: RouteObject[] = [
   {
     path: PathNames.ACCOUNT_BOOK.QR_CODE.path,
     element: <QrCodePage />,
+  },
+  {
+    path: PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path,
+    element: <ConnectAccountPage />,
   },
 ];
 
@@ -219,6 +280,10 @@ const payRoutes: RouteObject[] = [
     path: PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path,
     element: <LuckyDrawEntryPage />,
   },
+  {
+    path: PathNames.GGULPAY.QR_PAY.path,
+    element: <QrPayPage />,
+  },
 ];
 
 const loginRoutes: RouteObject[] = [
@@ -233,6 +298,13 @@ const loginRoutes: RouteObject[] = [
   {
     path: PathNames.FIND_PASSWORD.path,
     element: <FindPasswordPage />,
+  },
+];
+
+const myPageRoutes: RouteObject[] = [
+  {
+    path: PathNames.MYPAGE.MAIN.path,
+    element: <MyPage />,
   },
 ];
 
@@ -274,26 +346,11 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: PathNames.GGULPAY.MAIN.path,
-        element: <PayPage />,
-      },
-      {
-        path: PathNames.GGULPAY.WALLET.path,
-        element: <WalletPage />,
-      },
-      {
-        path: PathNames.ACCOUNT_BOOK.MAIN.path,
-        element: <AccountBookPage />,
-      },
-      {
-        path: PathNames.MYPAGE.path,
-        element: <></>,
-      },
       ...challengeRoutes,
       ...payRoutes,
       ...loginRoutes,
       ...accountBook,
+      ...myPageRoutes,
     ],
   },
 ]);

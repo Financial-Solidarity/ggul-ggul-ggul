@@ -10,11 +10,11 @@ interface AccountBookStatisticsCategoryListProps {
 }
 
 const colors = [
-  'text-primary-500',
-  'text-success-500',
-  'text-secondary-500',
-  'text-warning-500',
-  'text-danger-500',
+  'text-primary',
+  'text-success',
+  'text-secondary',
+  'text-warning',
+  'text-danger',
 ];
 
 export const AccountBookStatisticsCategoryList = ({

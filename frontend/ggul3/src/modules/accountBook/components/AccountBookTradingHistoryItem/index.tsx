@@ -1,44 +1,48 @@
 import { Image } from '@nextui-org/react';
+import { Payment } from '@types';
+
+import { getYYMMDD } from '../../utils/getYYMMDD';
 
 import { transformMoneyUnit } from '@/modules/common/utils/transformMoneyUnit';
 
-interface AccountBookTradingHistoryItemProps {
+interface AccountBookTradingHistoryItemProps extends Payment {
   imgUrl: string;
-  value: number;
-  ggulDiscount?: number;
-  transmissionFrom?: string;
-  transmissionTo: string;
 }
 
 export const AccountBookTradingHistoryItem = ({
   imgUrl,
-  value,
-  ggulDiscount,
-  transmissionFrom,
-  transmissionTo,
+  label,
+  market,
+  money,
+  productName,
+  spendGgulToken,
+  spentAt,
 }: AccountBookTradingHistoryItemProps) => {
-  const isPositive = value >= 0;
+  const isPositive = money >= 0;
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <Image sizes={'36'} src={imgUrl} />
+          <Image sizes="36" src={imgUrl} />
           <div className="ml-2">
             <div
-              className={`translate-y-[2px] font-bold text-${isPositive ? 'primary' : ''}-500`}
+              className={`font-bold leading-5 text-${isPositive ? 'black' : 'gray-500'}`}
             >
-              {transformMoneyUnit(value)}원
+              {productName}
             </div>
-            <div className="text-xs text-gray-500">
-              {transmissionFrom && '내 계좌 이체 | ' + transmissionFrom + '-> '}
-              {transmissionTo}
+            <div className="text-gray text-xs">
+              {market} {getYYMMDD(spentAt)}
             </div>
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <div className="translate-y-[2px] text-sm text-gray-500">9월 9일</div>
-          {ggulDiscount && <CoinIcon discountValue={ggulDiscount} />}
+          <div
+            className={`text-gray font-bold text-${isPositive ? 'primary' : ''}`}
+          >
+            {transformMoneyUnit(money)}원
+          </div>
+          {spendGgulToken && <CoinIcon discountValue={spendGgulToken} />}
         </div>
       </div>
     </div>
@@ -47,8 +51,8 @@ export const AccountBookTradingHistoryItem = ({
 
 const CoinIcon = ({ discountValue }: { discountValue: number }) => {
   return (
-    <div className="flex items-center text-sm">
-      <span className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-warning-500 text-xs font-bold">
+    <div className="flex items-center text-sm leading-3">
+      <span className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-warning text-xs font-bold">
         G
       </span>
       -{discountValue}

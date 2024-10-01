@@ -1,266 +1,67 @@
-import { ChallengeListItem as ListItemType } from '@types';
+import { useEffect } from 'react';
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { Button } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 import { ChallengeListItem } from '../components/challengeList/ChallengeListItem';
 import { BottomSheet } from '../components/challengeList/BottomSheet';
+import { getChallengeList } from '../apis/waitingroom';
+import { useChallengeListStore } from '../store/challengeListStore';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
+import { mockRequest } from '@/mocks/wrapper';
+import { PathNames } from '@/router';
+import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const ChallengeListPage = () => {
+  // ------------------------------------------- 09.30 12:21 yyh
+  const { challengeList, setChallengeList } = useChallengeListStore();
+  const navigate = useNavigate();
+
+  useSetBottomBar({ active: true, isDarkMode: false });
+
+  const toCreateChallenge = () => {
+    navigate(PathNames.CHALLENGE.CREATE.path);
+  };
+
+  useEffect(() => {
+    // 챌린지 목록 조회 (MSW mock 요청)
+    const mockGetChallengeList = () => {
+      return getChallengeList({ title: '', page: 1 });
+    };
+
+    // 초기 챌린지 목록 조회
+    const getInitialChallengeList = async () => {
+      const { content } = await mockRequest(mockGetChallengeList);
+
+      setChallengeList(content);
+    };
+
+    getInitialChallengeList();
+  }, []);
+  // ------------------------------------------- 09.30 12:21 yyh
+
   return (
     <>
       <TopBar />
       <PageContainer>
         <div className="mb-20 flex flex-col gap-2">
-          {sampleData.map((item) => (
+          {challengeList.map((item) => (
             <ChallengeListItem key={item.challengeId} item={item} />
           ))}
         </div>
+
+        <Button
+          isIconOnly
+          className="fixed bottom-20 right-3 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-white p-2 text-default-600 shadow"
+          variant="faded"
+          onClick={toCreateChallenge}
+        >
+          <PlusIcon />
+        </Button>
         <BottomSheet />
       </PageContainer>
     </>
   );
 };
-
-const sampleData: ListItemType[] = [
-  {
-    challengeId: 'challenge001',
-    title: '마라톤 대회',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: false,
-    currentParticipant: 50,
-    limitParticipant: 100,
-    budgetCap: 5000,
-    startAt: '2024-01-01T09:00:00Z',
-    endAt: '2024-01-31T17:00:00Z',
-  },
-  {
-    challengeId: 'challenge002',
-    title: '사진 콘테스트',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: true,
-    currentParticipant: 20,
-    limitParticipant: 50,
-    budgetCap: 2000,
-    startAt: '2024-02-10T10:00:00Z',
-    endAt: '2024-03-10T18:00:00Z',
-  },
-  {
-    challengeId: 'challenge003',
-    title: '코딩 해커톤',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: true,
-    currentParticipant: 75,
-    limitParticipant: 150,
-    budgetCap: 10000,
-    startAt: '2024-03-15T08:00:00Z',
-    endAt: '2024-03-16T20:00:00Z',
-  },
-  {
-    challengeId: 'challenge004',
-    title: '미술 전시회',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: false,
-    currentParticipant: 30,
-    limitParticipant: 60,
-    budgetCap: 3000,
-    startAt: '2024-04-05T09:00:00Z',
-    endAt: '2024-04-30T17:00:00Z',
-  },
-  {
-    challengeId: 'challenge005',
-    title: '체스 토너먼트',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: false,
-    currentParticipant: 40,
-    limitParticipant: 80,
-    budgetCap: 4000,
-    startAt: '2024-05-01T10:00:00Z',
-    endAt: '2024-05-02T18:00:00Z',
-  },
-  {
-    challengeId: 'challenge006',
-    title: '요리 대회',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: true,
-    currentParticipant: 25,
-    limitParticipant: 50,
-    budgetCap: 2500,
-    startAt: '2024-06-10T09:00:00Z',
-    endAt: '2024-06-10T17:00:00Z',
-  },
-  {
-    challengeId: 'challenge007',
-    title: '과학 박람회',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: true,
-    currentParticipant: 60,
-    limitParticipant: 120,
-    budgetCap: 6000,
-    startAt: '2024-07-15T08:00:00Z',
-    endAt: '2024-07-15T16:00:00Z',
-  },
-  {
-    challengeId: 'challenge008',
-    title: '수학 올림피아드',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: false,
-    currentParticipant: 80,
-    limitParticipant: 100,
-    budgetCap: 8000,
-    startAt: '2024-08-20T09:00:00Z',
-    endAt: '2024-08-20T18:00:00Z',
-  },
-  {
-    challengeId: 'challenge009',
-    title: '글쓰기 콘테스트',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: true,
-    currentParticipant: 35,
-    limitParticipant: 70,
-    budgetCap: 3500,
-    startAt: '2024-09-05T09:00:00Z',
-    endAt: '2024-09-30T17:00:00Z',
-  },
-  {
-    challengeId: 'challenge010',
-    title: '음악 배틀',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: false,
-    currentParticipant: 45,
-    limitParticipant: 90,
-    budgetCap: 4500,
-    startAt: '2024-10-10T10:00:00Z',
-    endAt: '2024-10-10T22:00:00Z',
-  },
-  {
-    challengeId: 'challenge011',
-    title: '댄스 오프',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: false,
-    currentParticipant: 55,
-    limitParticipant: 110,
-    budgetCap: 5500,
-    startAt: '2024-11-15T09:00:00Z',
-    endAt: '2024-11-15T21:00:00Z',
-  },
-  {
-    challengeId: 'challenge012',
-    title: '로봇 공학 챌린지',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: true,
-    currentParticipant: 70,
-    limitParticipant: 140,
-    budgetCap: 7000,
-    startAt: '2024-12-01T08:00:00Z',
-    endAt: '2024-12-01T18:00:00Z',
-  },
-  {
-    challengeId: 'challenge013',
-    title: '환경 프로젝트',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: true,
-    currentParticipant: 65,
-    limitParticipant: 130,
-    budgetCap: 6500,
-    startAt: '2025-01-10T09:00:00Z',
-    endAt: '2025-01-20T17:00:00Z',
-  },
-  {
-    challengeId: 'challenge014',
-    title: '스타트업 피치',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: false,
-    currentParticipant: 85,
-    limitParticipant: 170,
-    budgetCap: 8500,
-    startAt: '2025-02-15T09:00:00Z',
-    endAt: '2025-02-15T19:00:00Z',
-  },
-  {
-    challengeId: 'challenge015',
-    title: '게이밍 토너먼트',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: false,
-    currentParticipant: 90,
-    limitParticipant: 180,
-    budgetCap: 9000,
-    startAt: '2025-03-20T08:00:00Z',
-    endAt: '2025-03-21T22:00:00Z',
-  },
-  {
-    challengeId: 'challenge016',
-    title: '언어 대회',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: true,
-    currentParticipant: 15,
-    limitParticipant: 30,
-    budgetCap: 1500,
-    startAt: '2025-04-05T09:00:00Z',
-    endAt: '2025-04-05T17:00:00Z',
-  },
-  {
-    challengeId: 'challenge017',
-    title: '디자인 콘테스트',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: true,
-    currentParticipant: 100,
-    limitParticipant: 200,
-    budgetCap: 10000,
-    startAt: '2025-05-10T09:00:00Z',
-    endAt: '2025-05-31T17:00:00Z',
-  },
-  {
-    challengeId: 'challenge018',
-    title: '영화제',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: false,
-    currentParticipant: 120,
-    limitParticipant: 240,
-    budgetCap: 12000,
-    startAt: '2025-06-15T10:00:00Z',
-    endAt: '2025-06-15T22:00:00Z',
-  },
-  {
-    challengeId: 'challenge019',
-    title: '마라톤 릴레이',
-    isEncrypted: false,
-    competitionType: 'S',
-    isBlindness: false,
-    currentParticipant: 130,
-    limitParticipant: 260,
-    budgetCap: 13000,
-    startAt: '2025-07-01T06:00:00Z',
-    endAt: '2025-07-01T18:00:00Z',
-  },
-  {
-    challengeId: 'challenge020',
-    title: '퀴즈 대회',
-    isEncrypted: true,
-    competitionType: 'T',
-    isBlindness: true,
-    currentParticipant: 110,
-    limitParticipant: 220,
-    budgetCap: 11000,
-    startAt: '2025-08-20T09:00:00Z',
-    endAt: '2025-08-20T19:00:00Z',
-  },
-];

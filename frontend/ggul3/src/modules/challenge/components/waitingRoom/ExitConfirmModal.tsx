@@ -6,12 +6,39 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 import { useWaitingRoomStore } from '../../store/waitingRoomStore';
+import { useExitChallenge } from '../../reactQueries/useChallengeQuery';
 
-export const ExitConfirmModal = () => {
+import { PathNames } from '@/router';
+
+interface ExitConfirmModalProps {
+  challengeId: string;
+}
+export const ExitConfirmModal = ({ challengeId }: ExitConfirmModalProps) => {
   const { isExitConfirmModalOpen, setIsExitConfirmModalOpen } =
     useWaitingRoomStore();
+
+  const { mutateAsync: exitChallenge, isPending } = useExitChallenge();
+
+  const navigate = useNavigate();
+
+  const toChallengeList = () => {
+    navigate(PathNames.CHALLENGE.MAIN.path);
+  };
+
+  const exit = (callback: () => void) => {
+    exitChallenge(challengeId)
+      .then(() => {
+        callback(); // close modal
+        toChallengeList(); // 챌린지목록 페이지로 이동
+        //
+      })
+      .catch(() => {
+        callback(); // close modal
+      });
+  };
 
   return (
     <Modal
@@ -31,7 +58,11 @@ export const ExitConfirmModal = () => {
               <Button variant="light" onPress={onClose}>
                 취소
               </Button>
-              <Button color="danger" onPress={onClose}>
+              <Button
+                color="danger"
+                isDisabled={isPending}
+                onPress={() => exit(onClose)}
+              >
                 나가기
               </Button>
             </ModalFooter>

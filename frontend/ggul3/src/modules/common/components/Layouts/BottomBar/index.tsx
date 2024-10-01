@@ -86,10 +86,10 @@ export const BottomBar = () => {
           />
           <BottomBarButton
             icon={<UserCircleIcon className="mb-[2px] h-7 w-7" />}
-            isActive={isCurrentPath(PathNames.MYPAGE.path)}
+            isActive={isCurrentPath(PathNames.MYPAGE.MAIN.path)}
             isDarkMode={isDarkMode}
             label="마이페이지"
-            onClick={() => handleNavigation(PathNames.MYPAGE.path)}
+            onClick={() => handleNavigation(PathNames.MYPAGE.MAIN.path)}
           />
         </ul>
       </ul>

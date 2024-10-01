@@ -8,3 +8,6 @@ export * from './SubTitle';
 export * from './TokenPossession';
 export * from './TokenTradingHistory';
 export * from './WalletHeader';
+export * from './PrizeHistoryItem';
+export * from './ItemInfo';
+export * from './PaymentSlideBar';

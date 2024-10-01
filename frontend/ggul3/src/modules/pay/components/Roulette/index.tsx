@@ -11,7 +11,7 @@ export const Roulette = () => {
 
   return (
     <div onClick={() => navigate(PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path)}>
-      <Card className="mb-4 flex bg-warning-400 py-1 text-black">
+      <Card className="flex bg-warning-400 py-1 text-black">
         <CardHeader className="flex justify-between pb-0">
           <SmallText>이번 주의 응모상품 목록 확인하기</SmallText>
         </CardHeader>

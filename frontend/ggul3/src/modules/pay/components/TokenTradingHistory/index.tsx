@@ -26,12 +26,12 @@ const TradingHistoryItem = ({ ggulValue }: TradingHistoryItemProps) => {
     <Button className="flex w-full justify-between border bg-white py-7">
       <p className="flex flex-col text-start font-medium">
         <span>02월 27일 14:58</span>
-        <span className="text-xs font-light text-gray-500">
+        <span className="text-gray text-xs font-light">
           0x14f78f187f7218...
         </span>
       </p>
       <p
-        className={`flex items-center font-bold text-${isPositive ? 'primary' : 'warning'}-500`}
+        className={`flex items-center font-bold text-${isPositive ? 'primary' : 'warning'}`}
       >
         {isPositive ? '+' : '-'} 100 GGUL
       </p>

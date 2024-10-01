@@ -4,8 +4,13 @@ import { useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
-import { Chatform } from '../components/waitingRoom/ChatForm';
-import { ChatList } from '../components/waitingRoom/ChatList';
+import { Chatform } from '../components/chat/ChatForm';
+import { ChatList } from '../components/chat/ChatList';
+import {
+  useGetChallengeDetail,
+  useGetChattingroomIds,
+} from '../reactQueries/useChallengeQuery';
+import { SoloDrawer } from '../components/waitingRoom/SoloDrawer';
 
 import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
@@ -14,10 +19,16 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 
 export const WaitingRoomPage = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { id } = useParams();
-
   useSetBottomBar({ active: false });
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { id: challengeId } = useParams();
+
+  const {
+    data: { competitionType },
+  } = useGetChallengeDetail(challengeId!);
+  const {
+    data: { lobbyChattingRoomId },
+  } = useGetChattingroomIds(challengeId!);
 
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -27,7 +38,9 @@ export const WaitingRoomPage = () => {
     setIsDrawerOpen(false);
   };
 
-  if (!id) return;
+  const sendChat = (message: string) => {
+    console.log(message);
+  };
 
   return (
     <>
@@ -39,16 +52,28 @@ export const WaitingRoomPage = () => {
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
-          <ChallengeInfoAccordion challengeId={id} />
+          if (!id) return;
+          <ChallengeInfoAccordion challengeId={challengeId!} />
           <div className="z-0 overflow-y-auto px-4 py-16">
-            <ChatList />
+            <ChatList chats={[]} />
           </div>
-          <Chatform />
+          <Chatform onSubmit={sendChat} />
         </div>
       </PageContainer>
-      {/* <SoloDrawer isOpen={isDrawerOpen} onClose={closeDrawer} /> */}
-      <TeamDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
-      <ExitConfirmModal />
+      {competitionType === 'S' ? (
+        <SoloDrawer
+          challengeId={challengeId!}
+          isOpen={isDrawerOpen}
+          onClose={closeDrawer}
+        />
+      ) : (
+        <TeamDrawer
+          challengeId={challengeId!}
+          isOpen={isDrawerOpen}
+          onClose={closeDrawer}
+        />
+      )}
+      <ExitConfirmModal challengeId={challengeId!} />
     </>
   );
 };

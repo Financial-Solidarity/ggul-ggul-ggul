@@ -6,7 +6,7 @@ import woodenTrainingSword from '@/assets/images/wooden-training-sword.png';
 
 export const GgulLinks = () => {
   return (
-    <div className="mb-20 flex gap-2">
+    <div className="mb-20 flex gap-3">
       <GgulLinkItem
         description="거지방을 아시나요?"
         imgUrl={charityGroup}

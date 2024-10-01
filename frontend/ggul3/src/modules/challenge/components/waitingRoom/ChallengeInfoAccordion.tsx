@@ -3,7 +3,10 @@ import { ChevronRightIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
 import react from 'react';
 
-import { useGetChallenge } from '../../reactQueries/useChallengeQuery';
+import {
+  useGetChallengeDetail,
+  useStartChallenge,
+} from '../../reactQueries/useChallengeQuery';
 
 import { useCountdown } from '@/modules/common/hooks/useCountDown';
 import { formatCountdown, toYYMDhm_ko } from '@/modules/common/utils/dateUtils';
@@ -26,11 +29,17 @@ export const ChallengeInfoAccordion = ({
       budgetCap,
       startAt,
       endAt,
+      isOwner,
     },
-  } = useGetChallenge(challengeId);
+  } = useGetChallengeDetail(challengeId);
+  const { mutateAsync: startChallenge, isPending } = useStartChallenge();
   const countdown = useCountdown(startAt);
   const toggleIsOpen = () => {
     setIsOpen((prev) => !prev);
+  };
+
+  const handleStart = () => {
+    startChallenge(challengeId);
   };
 
   return (
@@ -107,14 +116,16 @@ export const ChallengeInfoAccordion = ({
               <span>{budgetCap}</span>
               <span>원</span>
             </p>
-            {
-              // TODO: 방장이면 시작하기 버튼 보이기
-              false && (
-                <Button className="w-full" color="primary">
-                  시작하기
-                </Button>
-              )
-            }
+            {isOwner && (
+              <Button
+                className="w-full"
+                color="primary"
+                isLoading={isPending}
+                onClick={handleStart}
+              >
+                시작하기
+              </Button>
+            )}
           </div>
         </div>
       </div>

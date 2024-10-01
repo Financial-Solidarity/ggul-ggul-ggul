@@ -19,7 +19,7 @@ export const AccountConnectionItem = ({
     <div>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <Image sizes={'32'} src={imgUrl} />
+          <Image sizes="32" src={imgUrl} />
           <div className="h-8 w-8 rounded-full bg-gray-400" />
           <div className="ml-2">{accountName}</div>
         </div>

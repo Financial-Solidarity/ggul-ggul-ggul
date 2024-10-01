@@ -1,6 +1,11 @@
 import { Button } from '@nextui-org/button';
 import { Progress } from '@nextui-org/react';
 import { ArrowLongLeftIcon } from '@heroicons/react/24/outline';
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
+import { ErrorDTO } from '@types';
+
+import { useCreateChallenge } from '../reactQueries/useChallengeQuery';
 
 import { useCreateChallengeStore, LAST_STEP } from '@/modules/challenge/store';
 import {
@@ -23,9 +28,69 @@ const STEPS: Record<number, JSX.Element> = {
 };
 
 export const CretaeChallengePage = () => {
-  const { step, toNextStep, toPrevStep } = useCreateChallengeStore();
+  const {
+    step,
+    toNextStep,
+    toPrevStep,
+    title,
+    competitionType,
+    limitParticipant,
+    isBlindness,
+    password,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    budgetCap,
+  } = useCreateChallengeStore();
+  const { mutateAsync: createChallenge, isPending } = useCreateChallenge();
+  const navigate = useNavigate();
 
   useSetBottomBar({ active: false });
+
+  const isInvalid =
+    title === '' ||
+    startDate === null ||
+    endDate === null ||
+    startTime === null ||
+    endTime === null ||
+    budgetCap <= 0;
+
+  const handleCreateChallenge = () => {
+    if (
+      startDate === null ||
+      endDate === null ||
+      startTime === null ||
+      endTime === null
+    )
+      return;
+    createChallenge({
+      title,
+      competitionType,
+      limitParticipant,
+      isBlindness,
+      password,
+      startAt: dayjs()
+        .year(startDate.year)
+        .month(startDate.month - 1)
+        .date(startDate.day)
+        .hour(startTime.hour)
+        .minute(startTime.minute)
+        .format('YYYY-MM-DD HH:mm:00'),
+      endAt: dayjs()
+        .year(endDate.year)
+        .month(endDate.month - 1)
+        .date(endDate.day)
+        .hour(endTime.hour)
+        .minute(endTime.minute)
+        .format('YYYY-MM-DD HH:mm:00'),
+      budgetCap,
+    })
+      .then((res) => {
+        navigate(`/challenge/waiting-room/${res.challengeId}`);
+      })
+      .catch((err: ErrorDTO) => {});
+  };
 
   return (
     <>
@@ -47,7 +112,13 @@ export const CretaeChallengePage = () => {
               </button>
             )}
             {step === LAST_STEP ? (
-              <Button className="w-full" color="primary">
+              <Button
+                className="w-full"
+                color="primary"
+                isDisabled={isInvalid}
+                isLoading={isPending}
+                onClick={handleCreateChallenge}
+              >
                 챌린지 만들기
               </Button>
             ) : (
