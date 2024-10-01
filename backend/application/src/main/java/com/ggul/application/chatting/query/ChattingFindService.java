@@ -12,10 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ChattingFindService {
-    private final ChattingRepository chattingRepository;
-    private final ChattingRoomParticipantRepository chattingRoomParticipantRepository;
-
-
-    @Transactional(readOnly = true)
-    public List<ChattingView> findAll() {}
+//    private final ChattingRepository chattingRepository;
+//    private final ChattingRoomParticipantRepository chattingRoomParticipantRepository;
+//
+//
+//    @Transactional(readOnly = true)
+//    public List<ChattingView> findAllByBefore() {}
 }

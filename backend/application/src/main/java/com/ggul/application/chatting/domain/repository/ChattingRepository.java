@@ -15,7 +15,7 @@ public interface ChattingRepository extends JpaRepository<Chatting, UUID> {
         Long getCount();
     }
 
-    @Query("SELECT COUNT(c.id) " +
+    @Query("SELECT COUNT(c.id) as count " +
             "FROM Chatting c " +
             "JOIN ChattingRoom cr ON c.chattingRoom.id = cr.id " +
             "WHERE c.id = :chattingRoomId " +
