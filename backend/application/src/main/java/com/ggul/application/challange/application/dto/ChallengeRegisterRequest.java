@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class ChallengeRegisterRequest {
     @NotNull
     private String title;
-    @NotNull
     private String password;
     @NotNull
     private String competitionType;

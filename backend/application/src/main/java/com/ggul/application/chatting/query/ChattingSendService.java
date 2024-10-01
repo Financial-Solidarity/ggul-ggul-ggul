@@ -36,18 +36,20 @@ public class ChattingSendService {
         participants.forEach(participant -> {
             ChallengeParticipantView participantView = new ChallengeParticipantView(chatting.getParticipant());
             participantView.setIsMine(participant.getId());
-            Request request = RequestBuilder.create(chatting, participantView);
+            Request request = RequestBuilder.create(chatting, participantView, chatting.getChattingRoom().getId(), participant.getChallenge().getId());
 
             websocketSender.send(participant.getUser().getId(), chatting.getType().name(), request);
         });
     }
 
     private static class RequestBuilder {
-        static Request create(Chatting chatting, ChallengeParticipantView participant) {
+        static Request create(Chatting chatting, ChallengeParticipantView participant, UUID chattingRoomId, UUID challengeId) {
             if (Chatting.Type.COMMON.equals(chatting.getType())) {
                 return CommonChatRequest.builder()
-                        .content(chatting.getContent())
+                        .challengeId(challengeId)
+                        .chattingRoomId(chattingRoomId)
                         .chattingId(chatting.getId())
+                        .content(chatting.getContent())
                         .profile(participant)
                         .sentAt(DATE_TIME_FORMATTER.format(chatting.getCreatedAt()))
                         .build();
@@ -57,6 +59,8 @@ public class ChattingSendService {
                 return JustificationChatRequest.builder()
                         .content(chatting.getContent())
                         .chattingId(chatting.getId())
+                        .challengeId(challengeId)
+                        .chattingRoomId(chattingRoomId)
                         .profile(participant)
                         .consumption(new ConsumptionView(chatting.getCategoryName(), chatting.getBalance()))
                         .sentAt(DATE_TIME_FORMATTER.format(chatting.getCreatedAt()))
@@ -66,6 +70,8 @@ public class ChattingSendService {
             if (Chatting.Type.SPEND.equals(chatting.getType())) {
                 return SpendChatRequest.builder()
                         .chattingId(chatting.getId())
+                        .challengeId(challengeId)
+                        .chattingRoomId(chattingRoomId)
                         .profile(participant)
                         .consumption(new ConsumptionView(chatting.getCategoryName(), chatting.getBalance()))
                         .sentAt(DATE_TIME_FORMATTER.format(chatting.getCreatedAt()))
@@ -81,6 +87,8 @@ public class ChattingSendService {
     @AllArgsConstructor
     @NoArgsConstructor
     private abstract static class Request {
+        private UUID chattingRoomId;
+        private UUID challengeId;
         private UUID chattingId;
         private String sentAt;
         private ChallengeParticipantView profile;

@@ -50,7 +50,7 @@ CREATE TABLE challenge
     challenge_id                BINARY(16)  NOT NULL PRIMARY KEY,
     challenge_title             VARCHAR(40) NOT NULL,
     challenge_password_exist    BOOL        NOT NULL,
-    challenge_password          BINARY(60)  NOT NULL,
+    challenge_password          BINARY(60),
     challenge_owner_id          BINARY(16)  NOT NULL,
     challenge_is_blindness      BOOL        NOT NULL,
     challenge_limit_participant TINYINT     NOT NULL,
@@ -85,6 +85,7 @@ CREATE TABLE chatting_room
     chatting_room_id   BINARY(16) NOT NULL PRIMARY KEY,
     challenge_id       BINARY(16) NOT NULL,
     chatting_room_type CHAR(1)    NOT NULL,
+    created_at DATETIME NOT NULL,
     FOREIGN KEY (challenge_id) REFERENCES challenge (challenge_id)
 );
 
@@ -94,6 +95,7 @@ CREATE TABLE chatting_room_participant
     chatting_room_id             BINARY(16) NOT NULL,
     challenge_participant_id     BINARY(16) NOT NULL,
     last_connected_at            DATETIME   NOT NULL,
+    created_at                  DATETIME NOT NULL ,
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room (chatting_room_id),
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id)
 );

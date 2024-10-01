@@ -8,7 +8,6 @@ import com.ggul.application.challange.ui.dto.ChallengeChattingView;
 import com.ggul.application.challange.ui.dto.ChallengeView;
 import com.ggul.application.chatting.query.ChattingRoomFindService;
 import com.ggul.application.chatting.ui.dto.ChattingRoomFindView;
-import com.ggul.application.chatting.ui.dto.ChattingRoomInfoView;
 import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -40,8 +38,8 @@ public class ChallengeFindService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<ChallengeView> getChallenges(String title, UUID sessionId,Pageable pageable) {
-        if(title == null || title.isEmpty()) {
+    public Slice<ChallengeView> getChallenges(String title, UUID sessionId, Pageable pageable) {
+        if (title == null || title.isEmpty()) {
             return challengeRepository.findChallengeView(pageable, sessionId);
         }
         return challengeRepository.findChallengeViewByTitle(pageable, title, sessionId);
