@@ -1,12 +1,12 @@
-import { FoodNftInfo } from '../common/FoodNftInfo';
+import { EquipmentNftInfo } from '../common/FoodNftInfo';
 
 import { SkeletonGroupNumbers } from './SkeletonGroupNumbers';
 
-import { FoodNftDTO } from '@/modules/game/@types/equipment';
+import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
 
 interface EquippedNftSectionProps {
   isLoading: boolean;
-  equippedNft?: FoodNftDTO;
+  equippedNft?: EquipmentNFTDTO;
 }
 
 export const EquippedNftSection = ({
@@ -20,7 +20,7 @@ export const EquippedNftSection = ({
     {isLoading ? (
       <SkeletonGroupNumbers />
     ) : (
-      equippedNft && <FoodNftInfo foodNft={equippedNft} />
+      equippedNft && <EquipmentNftInfo equipmentNft={equippedNft} />
     )}
   </div>
 );

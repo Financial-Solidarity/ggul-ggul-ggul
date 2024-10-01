@@ -1,17 +1,18 @@
+// frontend/ggul3/src/modules/game/components/GameLuckyDraw/ActionButtons.tsx
 import { Button } from '@nextui-org/react';
 
-import { FoodDTO } from '@/modules/game/@types/equipment';
+import { EquipmentDTO } from '../../@types/new_index';
 
 interface ActionButtonsProps {
   step: string;
-  food: FoodDTO | null;
+  equipment: EquipmentDTO | null;
   onClickLuckyDrawButton: () => void;
-  onClickMintButton: (food: FoodDTO) => void;
+  onClickMintButton: (equipment: EquipmentDTO) => void;
 }
 
 export const ActionButtons = ({
   step,
-  food,
+  equipment,
   onClickLuckyDrawButton,
   onClickMintButton,
 }: ActionButtonsProps): JSX.Element => (
@@ -24,7 +25,7 @@ export const ActionButtons = ({
           style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
           onClick={onClickLuckyDrawButton}
         >
-          음식 뽑기
+          장비 뽑기
         </Button>
       )}
       {step === 'drawed' && (
@@ -39,9 +40,9 @@ export const ActionButtons = ({
             className="h-12 w-full"
             color="primary"
             style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
-            onClick={() => onClickMintButton(food as FoodDTO)}
+            onClick={() => onClickMintButton(equipment as EquipmentDTO)}
           >
-            NFT 음식 조리하기
+            NFT 장비 조리하기
           </Button>
         </div>
       )}
@@ -51,7 +52,7 @@ export const ActionButtons = ({
           style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
           onClick={onClickLuckyDrawButton}
         >
-          음식 뽑기
+          장비 뽑기
         </Button>
       )}
     </div>

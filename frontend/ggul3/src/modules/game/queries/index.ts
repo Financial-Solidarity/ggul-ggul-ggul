@@ -1,19 +1,22 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { mockGetEquippedFoodNft, mockGetFoodNftList } from '../apis';
+import { EquipmentNFTDTO } from '../@types/new_index';
+import { getEquipmentList, getEquippedEquipment } from '../apis/index_new';
 
-import { FoodNftDTO } from '@/modules/game/@types/equipment';
+export const useEquippedEquipmentNftQuery =
+  (): UseQueryResult<EquipmentNFTDTO> => {
+    return useQuery<EquipmentNFTDTO>({
+      queryKey: ['equippedEquipmentNft'],
+      queryFn: getEquippedEquipment,
+    });
+  };
 
-export const useEquippedFoodNftQuery = (): UseQueryResult<FoodNftDTO> => {
-  return useQuery<FoodNftDTO>({
-    queryKey: ['equippedFoodNft'],
-    queryFn: mockGetEquippedFoodNft,
-  });
-};
-
-export const useFoodNftListQuery = (): UseQueryResult<FoodNftDTO[]> => {
-  return useQuery<FoodNftDTO[]>({
-    queryKey: ['foodNftList'],
-    queryFn: mockGetFoodNftList,
+export const useEquipmentNftListQuery = (
+  minPower: number,
+  maxPower: number,
+): UseQueryResult<EquipmentNFTDTO[]> => {
+  return useQuery<EquipmentNFTDTO[]>({
+    queryKey: ['equipmentNftList', minPower, maxPower],
+    queryFn: () => getEquipmentList(minPower, maxPower),
   });
 };

@@ -1,8 +1,10 @@
-import { FoodNftDTO } from '@/modules/game/@types/equipment';
+import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
 
 export const filterNftsByGrade = (
-  nfts: FoodNftDTO[],
+  nfts: EquipmentNFTDTO[],
   gradeIndex: string,
-): FoodNftDTO[] => {
-  return nfts.filter((foodNft) => foodNft.gradeIndex.toString() === gradeIndex);
+): EquipmentNFTDTO[] => {
+  return nfts.filter(
+    (equipmentNft) => equipmentNft.equipment.grade.toString() === gradeIndex,
+  );
 };

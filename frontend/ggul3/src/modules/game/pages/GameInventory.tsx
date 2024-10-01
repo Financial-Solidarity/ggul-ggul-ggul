@@ -5,50 +5,58 @@ import { filterNftsByGrade } from '../utils/filterNftsByGrade';
 import { EquippedNftSection } from '../components/GameInventory/EquippedNftSection';
 import { NftListSection } from '../components/GameInventory/NftListSection';
 import { NftDetailSheet } from '../components/GameInventory/NftDetailSheet';
-import { useEquippedFoodNftQuery, useFoodNftListQuery } from '../queries';
+import { EquipmentNFTDTO } from '../@types/new_index';
+import {
+  useEquipmentNftListQuery,
+  useEquippedEquipmentNftQuery,
+} from '../queries';
 
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
-import { FoodNftDTO } from '@/modules/game/@types/equipment';
 
 export const GameInventory = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });
 
   const [isOpen, setOpen] = useState<boolean>(false);
-  const [selectedFoodNft, setSelectedFoodNft] = useState<
-    FoodNftDTO | undefined
+  const [selectedEquipmentNft, setSelectedEquipmentNft] = useState<
+    EquipmentNFTDTO | undefined
   >(undefined);
   const [activeGradeIndex, setActiveGradeIndex] = useState<string>('0');
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
 
+  // Default values for minPower and maxPower
+  const minPower = 1;
+  const maxPower = 200;
+
+  // Include the parameters when calling the query
   const { data: equippedNft, isLoading: isEquippedLoading } =
-    useEquippedFoodNftQuery();
-  const { data: foodNfts = [], isLoading: isNftsLoading } =
-    useFoodNftListQuery();
+    useEquippedEquipmentNftQuery();
+  const { data: equipmentNfts = [], isLoading: isNftsLoading } =
+    useEquipmentNftListQuery(minPower, maxPower);
 
   const filteredNfts = useMemo(
-    () => filterNftsByGrade(foodNfts, activeGradeIndex),
-    [foodNfts, activeGradeIndex],
+    () => filterNftsByGrade(equipmentNfts, activeGradeIndex),
+    [equipmentNfts, activeGradeIndex],
   );
 
-  const openSheet = useCallback((foodNft: FoodNftDTO) => {
-    setSelectedFoodNft(foodNft);
+  const openSheet = useCallback((equipmentNft: EquipmentNFTDTO) => {
+    setSelectedEquipmentNft(equipmentNft);
     setOpen(true);
   }, []);
 
   const handleEquip = useCallback(() => {
-    if (!selectedFoodNft) return;
+    if (!selectedEquipmentNft) return;
 
-    queryClient.setQueryData(['equippedFoodNft'], selectedFoodNft);
+    queryClient.setQueryData(['equippedEquipmentNft'], selectedEquipmentNft);
     setOpen(false);
 
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [selectedFoodNft, queryClient]);
+  }, [selectedEquipmentNft, queryClient]);
 
   return (
     <>
@@ -74,7 +82,7 @@ export const GameInventory = (): JSX.Element => {
 
         <NftDetailSheet
           isOpen={isOpen}
-          selectedFoodNft={selectedFoodNft}
+          selectedEquipmentNft={selectedEquipmentNft}
           onClose={() => setOpen(false)}
           onEquip={handleEquip}
         />

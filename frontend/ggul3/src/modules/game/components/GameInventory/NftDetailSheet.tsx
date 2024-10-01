@@ -2,21 +2,21 @@ import { Sheet } from 'react-modal-sheet';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
-import { FoodNftDTO } from '../../@types/equipment';
-import { FoodNftInfo } from '../common/FoodNftInfo';
+import { EquipmentNFTDTO } from '../../@types/new_index';
+import { EquipmentNftInfo } from '../common/FoodNftInfo';
 
 import { PathNames } from '@/router';
 
 interface NftDetailSheetProps {
   isOpen: boolean;
-  selectedFoodNft?: FoodNftDTO;
+  selectedEquipmentNft?: EquipmentNFTDTO;
   onClose: () => void;
   onEquip: () => void;
 }
 
 export const NftDetailSheet = ({
   isOpen,
-  selectedFoodNft,
+  selectedEquipmentNft,
   onClose,
   onEquip,
 }: NftDetailSheetProps) => {
@@ -24,7 +24,7 @@ export const NftDetailSheet = ({
 
   const handleSellNft = () => {
     navigate(PathNames.GAME.SELL_CREATE.path, {
-      state: { nftInfo: selectedFoodNft },
+      state: { nftInfo: selectedEquipmentNft },
     });
   };
 
@@ -40,7 +40,9 @@ export const NftDetailSheet = ({
         <Sheet.Header />
         <Sheet.Content className="mb-8 mt-12">
           <div className="px-4 pb-12">
-            {selectedFoodNft && <FoodNftInfo foodNft={selectedFoodNft} />}
+            {selectedEquipmentNft && (
+              <EquipmentNftInfo equipmentNft={selectedEquipmentNft} />
+            )}
           </div>
           <div className="mt-4 flex w-full flex-row gap-3">
             <Button

@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import { FoodDTO, FoodNftDTO } from '../@types/equipment';
-import { mockPostFoodLuckyDraw, mockPostFoodMinting } from '../apis';
+import { EquipmentDTO, EquipmentNFTDTO } from '../@types/new_index';
+import { drawEquipment, mintEquipment } from '../apis/index_new';
 
 interface UseLuckyDrawActionsProps {
-  setFood: Dispatch<SetStateAction<FoodDTO | null>>;
-  setNft: Dispatch<SetStateAction<FoodNftDTO | null>>;
+  setEquipment: Dispatch<SetStateAction<EquipmentDTO | null>>;
+  setNft: Dispatch<SetStateAction<EquipmentNFTDTO | null>>;
   startDrawing: () => void;
   stopDrawing: (status: number) => void;
   startMinting: () => void;
@@ -13,25 +13,25 @@ interface UseLuckyDrawActionsProps {
 }
 
 export const useGameLuckyDrawState = (): {
-  food: FoodDTO | null;
-  setFood: Dispatch<SetStateAction<FoodDTO | null>>;
-  nft: FoodNftDTO | null;
-  setNft: Dispatch<SetStateAction<FoodNftDTO | null>>;
+  equipment: EquipmentDTO | null;
+  setEquipment: Dispatch<SetStateAction<EquipmentDTO | null>>;
+  nft: EquipmentNFTDTO | null;
+  setNft: Dispatch<SetStateAction<EquipmentNFTDTO | null>>;
   reset: () => void;
 } => {
-  const [food, setFood] = useState<FoodDTO | null>(null);
-  const [nft, setNft] = useState<FoodNftDTO | null>(null);
+  const [equipment, setEquipment] = useState<EquipmentDTO | null>(null);
+  const [nft, setNft] = useState<EquipmentNFTDTO | null>(null);
 
   const reset = () => {
-    setFood(null);
+    setEquipment(null);
     setNft(null);
   };
 
-  return { food, setFood, nft, setNft, reset };
+  return { equipment, setEquipment, nft, setNft, reset };
 };
 
 export const useLuckyDrawActions = ({
-  setFood,
+  setEquipment,
   setNft,
   startDrawing,
   stopDrawing,
@@ -39,23 +39,25 @@ export const useLuckyDrawActions = ({
   stopMinting,
 }: UseLuckyDrawActionsProps): {
   onClickLuckyDrawButton: () => Promise<void>;
-  onClickMintButton: (food: FoodDTO) => Promise<void>;
+  onClickMintButton: (equipment: EquipmentDTO) => Promise<void>;
 } => {
   const onClickLuckyDrawButton = async () => {
     startDrawing();
 
-    const response = await mockPostFoodLuckyDraw();
+    const response = await drawEquipment(); // response is EquipmentDTO
 
     setTimeout(() => {
-      setFood(response);
-      stopDrawing(response.status);
+      setEquipment(response); // Correctly set EquipmentDTO
+      stopDrawing(response.power); // Passes power value
     }, 500);
   };
 
-  const onClickMintButton = async (food: FoodDTO) => {
+  const onClickMintButton = async (equipment: EquipmentDTO) => {
     startMinting();
 
-    const response = await mockPostFoodMinting(food);
+    const response = await mintEquipment({
+      transactionHash: equipment.transactionHash,
+    });
 
     setTimeout(() => {
       setNft(response);

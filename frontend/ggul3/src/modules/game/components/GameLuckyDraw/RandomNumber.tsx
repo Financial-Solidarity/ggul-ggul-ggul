@@ -1,3 +1,4 @@
+// frontend/ggul3/src/modules/game/components/GameLuckyDraw/RandomNumber.tsx
 import React, { useEffect, useRef } from 'react';
 
 import { useLuckyDrawStore } from '@/modules/game/store/useLuckyDrawStore';

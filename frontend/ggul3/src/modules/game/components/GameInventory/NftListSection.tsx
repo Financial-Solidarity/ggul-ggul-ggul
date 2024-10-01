@@ -1,16 +1,16 @@
 import { Tabs, Tab } from '@nextui-org/react';
 
 import { SkeletonCards } from './SkeletonCard';
-import { NftCard } from './NftCard';
+import { MintedEquipmentCard } from './NftCard';
 
-import { FoodNftDTO } from '@/modules/game/@types/equipment';
+import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
 
 interface NftListSectionProps {
   activeGradeIndex: string;
   setActiveGradeIndex: (index: string) => void;
-  filteredNfts: FoodNftDTO[];
+  filteredNfts: EquipmentNFTDTO[];
   isLoading: boolean;
-  onCardClick: (foodNft: FoodNftDTO) => void;
+  onCardClick: (equipmentNft: EquipmentNFTDTO) => void;
   scrollContainerRef: React.RefObject<HTMLDivElement>;
 }
 
@@ -49,8 +49,12 @@ export const NftListSection = ({
       {isLoading ? (
         <SkeletonCards count={6} />
       ) : (
-        filteredNfts.map((foodNft, index) => (
-          <NftCard key={index} foodNft={foodNft} onCardClick={onCardClick} />
+        filteredNfts.map((equipmentNft, index) => (
+          <MintedEquipmentCard
+            key={index}
+            equipment={equipmentNft.equipment} // 적절한 equipment 데이터 전달
+            onCardClick={() => onCardClick(equipmentNft)} // onCardClick 프로퍼티 전달
+          />
         ))
       )}
     </div>
