@@ -8,13 +8,26 @@ interface FoodNftInfoProps {
   foodNft?: FoodNftDTO;
   showTitle?: boolean;
   showNumber?: boolean;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; // size prop 추가
 }
+
+// 각 사이즈별 크기 매핑
+const sizeClasses = {
+  xs: { circle: 'h-16 w-16', image: 60 },
+  sm: { circle: 'h-20 w-20', image: 80 },
+  md: { circle: 'h-28 w-28', image: 135 },
+  lg: { circle: 'h-36 w-36', image: 160 },
+  xl: { circle: 'h-44 w-44', image: 200 },
+};
 
 export const FoodNftInfo = ({
   foodNft,
   showTitle = true,
   showNumber = true,
+  size = 'md', // 디폴트는 md
 }: FoodNftInfoProps) => {
+  const { circle, image } = sizeClasses[size];
+
   return (
     <div className="flex flex-col items-center">
       {/* 타이틀 영역 */}
@@ -28,16 +41,18 @@ export const FoodNftInfo = ({
       )}
 
       {/* 이미지 영역 */}
-      <div className="relative flex h-44 w-full items-center justify-center">
+      <div
+        className={`relative flex h-44 items-center justify-center ${circle}`}
+      >
         <div
-          className="h-28 w-28 animate-popIn rounded-full"
+          className={`animate-popIn rounded-full ${circle}`}
           style={{ backgroundColor: foodNft?.hexCode }}
         />
         <div className="IMAGE-WRAPPER absolute flex animate-fadeIn items-center justify-center">
           <Image
             className="animate-floating"
             src={'/src/assets/images/food/food_' + foodNft?.typeIndex + '.png'}
-            width={135}
+            width={image}
           />
         </div>
       </div>

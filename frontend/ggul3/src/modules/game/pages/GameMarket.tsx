@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
-import { Input, Tabs, Tab, Button } from '@nextui-org/react';
+import { Input, Button } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip';
 import { NFTSellCardList } from '../components/GameMarket/NFTSellCardList';
@@ -14,6 +15,7 @@ import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const GameMarket = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });
+  const navigate = useNavigate(); // navigate 훅 사용
 
   const pageSize = 4;
   const pageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -91,19 +93,6 @@ export const GameMarket = (): JSX.Element => {
           />
         </div>
 
-        <Tabs
-          aria-label="NFT Grade Filter"
-          className="mt-4 flex w-full overflow-x-auto whitespace-nowrap"
-          selectedKey="0"
-        >
-          <Tab key="0" title="전체" />
-          <Tab key="1" title="매우 희귀" />
-          <Tab key="2" title="희귀" />
-          <Tab key="3" title="보통" />
-          <Tab key="4" title="흔함" />
-          <Tab key="5" title="매우 흔함" />
-        </Tabs>
-
         <NFTSellCardList nftList={foodNftSellList} />
 
         <div ref={observerRef} className="mt-4 flex justify-center">
@@ -111,7 +100,7 @@ export const GameMarket = (): JSX.Element => {
         </div>
 
         <Button
-          className="fixed bottom-20 right-10 bg-purple-600 text-white"
+          className="fixed bottom-20 right-8 bg-purple-600 text-white"
           onClick={scrollToTop}
         >
           맨 위로

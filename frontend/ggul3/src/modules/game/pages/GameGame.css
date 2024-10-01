@@ -1,0 +1,15 @@
+.sprite-container {
+  width: 72px;
+  height: 166.67px;
+  background: url('@/assets/images/eating_spritesheet.png') no-repeat;
+  animation: eating-animation 2s steps(6) infinite;
+}
+
+@keyframes eating-animation {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -500px 0;
+  }
+}

@@ -2,12 +2,18 @@ import { NumberWithBox } from './NumberWithBox.tsx';
 
 interface GroupNumberWithBoxProps {
   number: number;
+  withLabel?: boolean;
 }
-export const GroupNumberWithBox = ({ number }: GroupNumberWithBoxProps) => {
+export const GroupNumberWithBox = ({
+  number,
+  withLabel = true,
+}: GroupNumberWithBoxProps) => {
   const stringNumbers = formatNumberToStringArray(number);
 
   return (
-    <div className="ml-8 flex items-center justify-center gap-[0.35rem]">
+    <div
+      className={`${withLabel && 'ml-8 justify-center'} flex items-center gap-[0.35rem]`}
+    >
       {stringNumbers.map((char, idx) => (
         <NumberWithBox key={idx} number={char} />
       ))}

@@ -1,8 +1,6 @@
-// frontend/ggul3/src/modules/game/components/GameMarket/SearchFilterSheet.tsx
-
 import { useState } from 'react';
 import { Sheet } from 'react-modal-sheet';
-import { Input, Button, Slider } from '@nextui-org/react';
+import { Input, Button, Tabs, Tab, Slider } from '@nextui-org/react';
 
 interface SearchFilterSheetProps {
   isOpen: boolean;
@@ -21,19 +19,30 @@ export const SearchFilterSheet = ({
   onClose,
   onSearch,
 }: SearchFilterSheetProps) => {
-  // 검색 필드 상태 관리
   const [name, setName] = useState('');
-  const [minStatus, setMinStatus] = useState(0);
-  const [maxStatus, setMaxStatus] = useState(100);
+  const [grade, setGrade] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
 
-  // 검색 버튼 클릭 시
+  // grade에 따른 minStatus와 maxStatus 설정
+  const gradeStatusRanges = [
+    { min: 0, max: 999 }, // 전체
+    { min: 1, max: 200 }, // 0등급
+    { min: 201, max: 400 }, // 1등급
+    { min: 401, max: 600 }, // 2등급
+    { min: 601, max: 800 }, // 3등급
+    { min: 801, max: 999 }, // 4등급
+  ];
+
   const handleSearch = () => {
+    const selectedGrade = gradeStatusRanges[grade];
+    const minStatus = selectedGrade.min;
+    const maxStatus = selectedGrade.max;
+
     onSearch({
       name: name || undefined,
-      minStatus,
-      maxStatus,
+      minStatus: grade === 0 ? undefined : minStatus,
+      maxStatus: grade === 0 ? undefined : maxStatus,
       minPrice,
       maxPrice,
     });
@@ -59,46 +68,45 @@ export const SearchFilterSheet = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <div className="flex flex-col gap-4">
-              <div>
-                <p className="mb-2 text-white">맛도리력 범위 (status)</p>
-                <Slider
-                  defaultValue={[minStatus, maxStatus]}
-                  maxValue={100}
-                  step={1}
-                  onChange={(value) => {
-                    // 타입 체크를 통해 안전한 배열 처리
-                    if (Array.isArray(value)) {
-                      setMinStatus(value[0]);
-                      setMaxStatus(value[1]);
-                    }
-                  }}
-                />
-                <div className="flex justify-between">
-                  <span className="text-white">최소: {minStatus}</span>
-                  <span className="text-white">최대: {maxStatus}</span>
-                </div>
-              </div>
-              <div>
-                <p className="mb-2 text-white">가격 범위 (ㄲ)</p>
-                <Slider
-                  defaultValue={[minPrice, maxPrice]}
-                  maxValue={1000}
-                  step={10}
-                  onChange={(value) => {
-                    // 타입 체크를 통해 안전한 배열 처리
-                    if (Array.isArray(value)) {
-                      setMinPrice(value[0]);
-                      setMaxPrice(value[1]);
-                    }
-                  }}
-                />
-                <div className="flex justify-between">
-                  <span className="text-white">최소: ㄲ {minPrice}</span>
-                  <span className="text-white">최대: ㄲ {maxPrice}</span>
-                </div>
+            {/* 등급 선택 탭 */}
+            <div className="mt-4">
+              <p className="mb-2 text-white">등급 선택 (Grade)</p>
+              <Tabs
+                aria-label="NFT Grade Filter"
+                className="flex w-full overflow-x-auto whitespace-nowrap"
+                selectedKey={String(grade)}
+                onSelectionChange={(key) => setGrade(Number(key))}
+              >
+                <Tab key="0" title="전체" />
+                <Tab key="1" title="매우 희귀" />
+                <Tab key="2" title="희귀" />
+                <Tab key="3" title="보통" />
+                <Tab key="4" title="흔함" />
+                <Tab key="5" title="매우 흔함" />
+              </Tabs>
+            </div>
+
+            {/* 가격 범위 설정 */}
+            <div>
+              <p className="mb-2 text-white">가격 범위 (ㄲ)</p>
+              <Slider
+                defaultValue={[minPrice, maxPrice]}
+                maxValue={1000}
+                step={50}
+                onChange={(value) => {
+                  // 타입 체크를 통해 안전한 배열 처리
+                  if (Array.isArray(value)) {
+                    setMinPrice(value[0]);
+                    setMaxPrice(value[1]);
+                  }
+                }}
+              />
+              <div className="flex justify-between">
+                <span className="text-white">최소: ㄲ {minPrice}</span>
+                <span className="text-white">최대: ㄲ {maxPrice}</span>
               </div>
             </div>
+
             <Button
               fullWidth
               className="mt-4 bg-purple-600"
