@@ -54,8 +54,9 @@ export const TeamDrawer = ({
           {teamA.map((participant) => (
             <Participant
               key={participant.participantId}
-              {...participant}
               img={participant.profileImg}
+              isMe={participant.isMine}
+              nickname={participant.nickname}
             />
           ))}
           <div className="flex w-full items-center gap-2 px-4">

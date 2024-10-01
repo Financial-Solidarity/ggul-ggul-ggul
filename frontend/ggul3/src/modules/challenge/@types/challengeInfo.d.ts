@@ -31,6 +31,7 @@ declare module '@types' {
     nickname: string;
     profileImg: string;
     type: string;
+    isMine: boolean;
   }
 
   export interface getChattingRooomIdsResponse {
