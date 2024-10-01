@@ -2,13 +2,6 @@ import { ChallengeDTO, Pageable } from '@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
-export const getChallengeInfo = (challengeId: string) => {
-  return _axios<ChallengeDTO>({
-    method: 'GET',
-    url: `challenges/${challengeId}`,
-  });
-};
-
 // ------------------------------------------- 09.30 12:21 yyh
 interface ChallengeListRequestBody {
   title?: string;
@@ -63,3 +56,21 @@ export const verifyJoinChallengePassword = ({
   });
 };
 // ------------------------------------------- 09.30 12:21 yyh
+
+// 대기실에서 방장이 챌린지 시작
+export const startChallenge = (challengeId: string) => {
+  return _axios<void>({
+    method: 'POST',
+    url: 'challenges/ready',
+    data: { challengeId },
+  });
+};
+
+// 챌린지 나가기
+export const exitChallenge = (challengeId: string) => {
+  return _axios<void>({
+    method: 'patch',
+    url: 'challenges/exit',
+    data: { challengeId },
+  });
+};
