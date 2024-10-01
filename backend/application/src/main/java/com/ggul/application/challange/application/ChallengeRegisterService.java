@@ -33,7 +33,7 @@ public class ChallengeRegisterService {
         UUID participantId = challengeJoinService.join(createChallenge.getId(), userId, createChallenge.getPassword());
         UUID chattingRoomId = chattingRoomGenerateService.generateLobby(createChallenge.getId());
 
-        chattingRoomJoinService.join(createChallenge.getId(), participantId);
+        chattingRoomJoinService.join(chattingRoomId, participantId);
         challengeScheduler.startRegister(createChallenge);
 
         return ChallengeCreateView.builder().challengeId(createChallenge.getId()).lobbyChattingRoomId(chattingRoomId).build();

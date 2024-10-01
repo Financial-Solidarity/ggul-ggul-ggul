@@ -15,6 +15,9 @@ public class PasswordConverter implements AttributeConverter<Password, byte[]> {
     }
     @Override
     public byte[] convertToDatabaseColumn(Password password) {
+        if(password == null) {
+            return null;
+        }
         if (password.isEncoded()) {
             return password.getValue().getBytes(StandardCharsets.UTF_8);
         }
@@ -23,6 +26,9 @@ public class PasswordConverter implements AttributeConverter<Password, byte[]> {
 
     @Override
     public Password convertToEntityAttribute(byte[] s) {
+        if(s == null) {
+            return null;
+        }
         return Password.of(new String(s, StandardCharsets.UTF_8), true);
     }
 }

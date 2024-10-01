@@ -50,7 +50,7 @@ CREATE TABLE challenge
     challenge_id                BINARY(16)  NOT NULL PRIMARY KEY,
     challenge_title             VARCHAR(40) NOT NULL,
     challenge_password_exist    BOOL        NOT NULL,
-    challenge_password          BINARY(60)  NOT NULL,
+    challenge_password          BINARY(60),
     challenge_owner_id          BINARY(16)  NOT NULL,
     challenge_is_blindness      BOOL        NOT NULL,
     challenge_limit_participant TINYINT     NOT NULL,
