@@ -23,24 +23,7 @@ export interface EquipmentNFTDTO {
 export interface UserDTO {
   username: string; // 이메일 형식
   nickname: string;
-  profileImage: string;
-}
-
-// Sale 타입 정의
-export interface SaleDTO {
-  title: string;
-  description: string;
-  price: number;
-  createdAt: string; // 날짜 형식 문자열
-}
-
-// SellNFT 타입 정의
-export interface SellNFTDTO {
-  sale: SaleDTO;
-  ipfsCID: string;
-  nftUrl: string;
-  equipment: EquipmentNFTDTO;
-  seller: UserDTO;
+  profileImg: string;
 }
 
 // 보유한 장비 조회 API 응답 타입 (장비 리스트)
@@ -88,8 +71,7 @@ export interface SaleDTO {
 }
 
 export interface SellNFTDTO extends SaleDTO {
-  // @@@ 판매글 ID 따로 줄지 안줄지 유승이가 결정 후 알려줄 예정.
-  ipfsCID: string;
+  ipfsCID: string; //@@@@@@@@@@@@@@ marketId로 대체될 예정
   nftUrl: string;
   equipmentNFT: EquipmentNFTDTO;
   seller: UserDTO;
@@ -114,16 +96,23 @@ export interface GetSellNFTListParams {
   name?: string;
 }
 
+//@@@@@@@@@@@@@@@@@@@@ 수정본 1002 0426
 // 판매 글 리스트 조회 응답 타입
 export interface GetSellNFTListResponse {
-  content: SellNFTDTO[];
+  content: {
+    marketId: string;
+    power: number;
+    price: number;
+    title: string;
+    imageUrl: string;
+    grade: number;
+  };
   pagination: Pagination;
 }
 
 // =============== 껄 키우기 게임 ======================
-
 // 현재 누적 얻을 수 있는 껄 조회
 export interface GetReceivableTokenResponse {
-  lastReceivedAt: string;
   receivableToken: number;
+  lastReceivedTime: string;
 }

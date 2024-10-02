@@ -1,3 +1,4 @@
+// frontend/ggul3/src/mocks/game/gameHandler.ts
 import { http, HttpResponse } from 'msw';
 
 import {
@@ -6,6 +7,7 @@ import {
   SellNFTDTO,
   UserDTO,
   SaleDTO,
+  GetReceivableTokenResponse,
 } from '@/modules/game/@types/new_index';
 
 // 목킹용 예제 데이터 생성
@@ -50,6 +52,16 @@ const sampleEquipments: EquipmentNFTDTO[] = [
 
 let equippedEquipment: EquipmentNFTDTO | null =
   sampleEquipments.find((equipment) => equipment.status === 'EQUIPPED') || null;
+
+// 판매 글 리스트를 저장할 곳
+const sampleSellList: SellNFTDTO[] = [];
+
+// 목킹용 판매자 정보
+const mockSeller: UserDTO = {
+  username: 'test@example.com',
+  nickname: '맛도리',
+  profileImage: '/src/assets/images/profile/default_profile.png',
+};
 
 export const gameHandlers = [
   // 보유한 장비 조회
@@ -160,8 +172,7 @@ export const gameHandlers = [
 
   //====================== 마켓 모킹 ==========================
   // 판매 글 작성
-  // 판매 글 작성
-  http.post('/market/sell', async ({ request }) => {
+  http.post('/markets/sell', async ({ request }) => {
     const { ipfsCID, title, description, price } = (await request.json()) as {
       ipfsCID: string;
       title: string;
@@ -189,10 +200,10 @@ export const gameHandlers = [
     };
 
     const newSellItem: SellNFTDTO = {
-      sale,
+      ...sale,
       ipfsCID,
       nftUrl: equipmentNFT.nftUrl,
-      equipment: equipmentNFT.equipment,
+      equipmentNFT: equipmentNFT,
       seller: mockSeller,
     };
 
@@ -202,7 +213,7 @@ export const gameHandlers = [
   }),
 
   // 판매 글 조회
-  http.get('/market/sell/:ipfsCID', async ({ params }) => {
+  http.get('/markets/:ipfsCID', async ({ params }) => {
     const { ipfsCID } = params as { ipfsCID: string };
 
     const sellNFT = sampleSellList.find((item) => item.ipfsCID === ipfsCID);
@@ -218,39 +229,13 @@ export const gameHandlers = [
   }),
 
   // 판매 글 리스트 조회 (URL 검색자 없이 전체 반환)
-  http.get('/market/sells', async () => {
+  http.get('/markets', async () => {
     return HttpResponse.json(sampleSellList);
   }),
 
-  // 판매 글 수정
-  http.put('/market/sell/:ipfsCID', async ({ params, request }) => {
-    const { ipfsCID } = params as { ipfsCID: string };
-    const { title, description, price } = (await request.json()) as SaleDTO;
-
-    const sellNFTIndex = sampleSellList.findIndex(
-      (item) => item.ipfsCID === ipfsCID,
-    );
-
-    if (sellNFTIndex === -1) {
-      return HttpResponse.json(
-        { success: false, message: 'Sell item not found' },
-        { status: 404 },
-      );
-    }
-
-    sampleSellList[sellNFTIndex].sale = {
-      title,
-      description,
-      price,
-      createdAt: sampleSellList[sellNFTIndex].sale.createdAt, // keep original creation date
-    };
-
-    return HttpResponse.json({ success: true });
-  }),
-
   // 판매 글 삭제
-  http.delete('/market/sell/:ipfsCID', async ({ params }) => {
-    const { ipfsCID } = params as { ipfsCID: string };
+  http.patch('/markets', async ({ request }) => {
+    const { ipfsCID } = (await request.json()) as { ipfsCID: string };
 
     const sellNFTIndex = sampleSellList.findIndex(
       (item) => item.ipfsCID === ipfsCID,
@@ -267,14 +252,28 @@ export const gameHandlers = [
 
     return HttpResponse.json({ success: true });
   }),
+
+  //====================== 껄 키우기 모킹 ==========================
+
+  // 1. 얻을 수 있는 껄 조회
+  http.get('/games/receive', async () => {
+    const response: GetReceivableTokenResponse = {
+      lastReceivedAt,
+      receivableToken,
+    };
+
+    return HttpResponse.json(response);
+  }),
+
+  // 2. 껄 얻기
+  http.post('/games/receive', async () => {
+    // 수령 가능한 껄을 받는 로직
+    receivableToken = 0; // 토큰 수령 후 0으로 초기화
+    lastReceivedAt = new Date().toISOString(); // 수령 시간 업데이트
+
+    return HttpResponse.json({ success: true });
+  }),
 ];
-
-// 판매 글 리스트를 저장할 곳
-const sampleSellList: SellNFTDTO[] = [];
-
-// 목킹용 판매자 정보
-const mockSeller: UserDTO = {
-  username: 'test@example.com',
-  nickname: '맛도리',
-  profileImage: '/src/assets/images/profile/default_profile.png',
-};
+// 게임 관련 변수
+let lastReceivedAt: string = new Date().toISOString(); // 초기 수령 시간
+let receivableToken: number = 100; // 초기 수령 가능한 토큰 수량

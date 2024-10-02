@@ -111,7 +111,7 @@ const MARKET_URL = '/markets';
 export const registerSellNFT = async (
   request: RegisterSellNFTRequest,
 ): Promise<void> => {
-  const url = `${MARKET_URL}/sell`;
+  const url = `${MARKET_URL}`;
 
   await _axios<void>({
     method: 'POST',
@@ -120,11 +120,20 @@ export const registerSellNFT = async (
   });
 };
 
+// +. 구매하기
+export const buyNFT = async (marketId: string) => {
+  const url = `${MARKET_URL}/${marketId}/buy`;
+
+  await _axios<void>({
+    method: 'POST',
+    url,
+  });
+};
 // 2. 판매 글 조회
 export const getSellNFTDetail = async (
-  ipfsCID: string,
+  marketId: string,
 ): Promise<SellNFTDTO> => {
-  const url = `${MARKET_URL}/${ipfsCID}`;
+  const url = `${MARKET_URL}/${marketId}`;
 
   return await _axios<SellNFTDTO>({
     method: 'GET',
@@ -138,9 +147,9 @@ export const getSellNFTList = async (
 ): Promise<GetSellNFTListResponse> => {
   const queryParams = new URLSearchParams();
 
+  // 여러 검색 조건을 쿼리스트링으로 변환
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
-      // offset, limit은 그대로 사용, 나머지는 스네이크 케이스로 변환
       const paramKey = key
         .replace(/^minPrice$/, 'min-price')
         .replace(/^maxPrice$/, 'max-price')
@@ -159,18 +168,16 @@ export const getSellNFTList = async (
     url,
   });
 };
-// 4. 판매 글 삭제
-export const deleteSellNFT = async (ipfsCID: string): Promise<void> => {
-  const url = `${MARKET_URL}`;
+
+// 4. 판매 글 삭제(취소)
+export const deleteSellNFT = async (marketId: string): Promise<void> => {
+  const url = `${MARKET_URL}/${marketId}`;
 
   await _axios<void>({
-    method: 'PATCH',
+    method: 'DELETE',
     url,
-    data: { ipfsCID },
   });
 };
-
-// 5. 구매하기 (API 뽑히면 추가해야함)
 
 //===================== 껄 키우기 ( 10월 2일 임시 합의본 )===============
 
