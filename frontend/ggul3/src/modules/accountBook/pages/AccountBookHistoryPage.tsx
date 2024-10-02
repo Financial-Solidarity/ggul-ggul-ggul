@@ -1,9 +1,10 @@
 import { Payment } from '@types';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { AccountBookHistory, AccountBookHistoryHeader } from '../components';
 import { usePaymentHistoryStore } from '../store/usePaymentHistoryStore';
+import { getPaymentHistory } from '../apis/payment';
 
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -12,30 +13,27 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const AccountBookHistoryPage = () => {
-  const {
-    paymentList,
-    paymentPageable,
-    paymentFirst,
-    paymentLast,
-    paymentSize,
-    paymentNumber,
-    paymentNumberOfElements,
-    paymentEmpty,
-    setPaymentPageable,
-    setPaymentList,
-  } = usePaymentHistoryStore();
+  const { paymentList, setPaymentList } = usePaymentHistoryStore();
 
-  // /api/payment/search?start-date=2024-09&end-date=2024-09&page=1
-  const { startDate, endDate, page } = useParams<{
-    startDate: string;
-    endDate: string;
-    page: string;
-  }>();
+  const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // 쿼리 파라미터 읽기
+  const startDate = searchParams.get('start-date') || currentDate;
+  const endDate = searchParams.get('end-date') || currentDate;
+  const page = searchParams.get('page') || 0;
 
   useEffect(() => {
-    console.log('startDate, endDate, page', startDate, endDate, page);
-    setPaymentList(tempPaymentList);
-  }, []);
+    getPaymentHistory({ startDate, endDate, page: Number(page) })
+      .then((res) => {
+        setPaymentList(res.content);
+      })
+      .catch((err) => {
+        console.error(err);
+        setPaymentList(tempPaymentList);
+      });
+  }, [searchParams]);
 
   return (
     <>
@@ -45,7 +43,10 @@ export const AccountBookHistoryPage = () => {
         left={<BackButton />}
         right={<NotificationButton />}
       />
-      <AccountBookHistoryHeader />
+      <AccountBookHistoryHeader
+        setSearchParams={setSearchParams}
+        startDate={startDate}
+      />
       <PageContainer>
         <AccountBookHistory paymentList={paymentList} />
       </PageContainer>

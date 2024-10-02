@@ -15,8 +15,8 @@
 // }
 
 // export const useLoginStore = create<LoginState>((set, get) => ({
-//   email: 'gentryop00@gmail.com',
-//   password: 'asd',
+//   email: 'khj745700@naver.com',
+//   password: 'test1test1',
 //   displayErrorMessage: {
 //     email: '',
 //   },
