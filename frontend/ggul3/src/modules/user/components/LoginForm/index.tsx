@@ -14,6 +14,8 @@ import {
 
 import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import { useUserStore } from '@/modules/common/store/userStore';
+import { getUserData } from '@/modules/common/apis/userApis';
 
 interface LoginFormProps {
   email: string;
@@ -36,11 +38,19 @@ export const LoginForm = ({
 }: LoginFormProps) => {
   const navigate = useNavigate();
 
+  const { setUser } = useUserStore();
+
   const handleSubmitLogin = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
       await login({ email, password });
+
+      const userData = await getUserData();
+
+      console.log(userData, 'userData');
+
+      setUser(userData);
 
       navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
     } catch (error) {

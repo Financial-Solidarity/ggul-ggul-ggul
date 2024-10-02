@@ -11,7 +11,7 @@ interface AccountBookPieChartProps {
 }
 
 export const AccountBookPieChart = ({
-  data /* see data tab */,
+  data = [],
   pieChartColors,
 }: AccountBookPieChartProps) => {
   return (
