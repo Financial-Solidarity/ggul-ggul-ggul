@@ -39,4 +39,10 @@ declare module '@types' {
     myTeamChattingRoomId: string | null;
     lobbyChattingRoomId: string | null;
   }
+
+  export type GetParticipatingChallengeResponse = ParticipatingChallenge | null;
+  export interface ParticipatingChallenge {
+    state: string;
+    challengeId: string;
+  }
 }

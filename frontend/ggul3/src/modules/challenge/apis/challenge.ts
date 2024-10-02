@@ -1,6 +1,7 @@
 import {
   GetChallengeDetailResponse,
   getChattingRooomIdsResponse,
+  GetParticipatingChallengeResponse,
   ParticipantDTO,
 } from '@types';
 
@@ -23,6 +24,13 @@ export const getParticipantList = (challengeId: string) => {
 export const getChattingRooomIds = (challengeId: string) => {
   return _axios<getChattingRooomIdsResponse>({
     url: `/challenges/${challengeId}/chatting-room`,
+    method: 'get',
+  });
+};
+
+export const getParticipatingChallenge = () => {
+  return _axios<GetParticipatingChallengeResponse>({
+    url: 'challenges/now',
     method: 'get',
   });
 };
