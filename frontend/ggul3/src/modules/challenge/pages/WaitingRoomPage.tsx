@@ -1,6 +1,6 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
@@ -61,10 +61,6 @@ export const WaitingRoomPage = () => {
       content: message,
     });
   };
-
-  useEffect(() => {
-    connect();
-  }, []);
 
   return (
     <>
