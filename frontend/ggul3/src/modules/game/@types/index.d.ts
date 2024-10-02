@@ -114,5 +114,16 @@ export interface GetSellNFTListResponse {
 // 현재 누적 얻을 수 있는 껄 조회
 export interface GetReceivableTokenResponse {
   receivableToken: number;
-  lastReceivedTime: string;
+  lastReceivedAt: string;
 }
+
+// ============
+export const hexCodesByGrade: Record<number, string> = {
+  0: '#FFD700',
+  1: '#BC75FF',
+  2: '#CD7F32',
+  3: '#87CEEB',
+  4: '#D3D3D3',
+};
+
+type HEX_CODES = '#FFD700' | '#BC75FF' | '#CD7F32' | '#87CEEB' | '#D3D3D3';

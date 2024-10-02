@@ -59,8 +59,8 @@
 // };
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { SellNFTDTO } from '../@types/new_index';
-import { getSellNFTDetail } from '../apis/index_new';
+import { SellNFTDTO } from '../@types';
+import { getSellNFTDetail } from '../apis';
 
 // // 판매 글 리스트 조회 쿼리
 // export const useNftSellListQuery = (

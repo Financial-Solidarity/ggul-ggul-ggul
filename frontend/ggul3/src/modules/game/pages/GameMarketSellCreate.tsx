@@ -2,14 +2,14 @@ import { Input, Slider } from '@nextui-org/react';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { FoodNftInfoRow } from '../components/common/FoodNftInfoRow';
+import { EquipmentNftInfoRow } from '../components/common/EquipmentNftInfoRow';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
-import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
+import { EquipmentNFTDTO } from '@/modules/game/@types';
 
 export const GameMarketSellCreate = () => {
   useSetBottomBar({ active: true, isDarkMode: true });
@@ -17,12 +17,11 @@ export const GameMarketSellCreate = () => {
   const location = useLocation();
   const { nftInfo } = location.state || {};
 
-  // Assume nftInfo is of type EquipmentNFTDTO
   const equipmentNft: EquipmentNFTDTO = nftInfo;
 
   const [price, setPrice] = useState(0);
-  const [title, setTitle] = useState(''); // Title for SaleDTO
-  const [description, setDescription] = useState(''); // Description for SaleDTO
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleRegisterSell = () => {
     // 판매 등록을 위한 DTO 생성
@@ -68,7 +67,7 @@ export const GameMarketSellCreate = () => {
             {/* NFT 정보 표시 */}
             {equipmentNft && (
               <div className="my-8">
-                <FoodNftInfoRow equipmentNft={equipmentNft} />
+                <EquipmentNftInfoRow equipmentNft={equipmentNft} />
               </div>
             )}
 

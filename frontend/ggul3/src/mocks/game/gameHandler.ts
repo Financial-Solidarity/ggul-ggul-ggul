@@ -8,7 +8,7 @@ import {
   UserDTO,
   SaleDTO,
   GetReceivableTokenResponse,
-} from '@/modules/game/@types/new_index';
+} from '@/modules/game/@types';
 
 // 목킹용 예제 데이터 생성
 const sampleEquipments: EquipmentNFTDTO[] = [
@@ -60,7 +60,7 @@ const sampleSellList: SellNFTDTO[] = [];
 const mockSeller: UserDTO = {
   username: 'test@example.com',
   nickname: '맛도리',
-  profileImage: '/src/assets/images/profile/default_profile.png',
+  profileImg: '/src/assets/images/profile/default_profile.png',
 };
 
 export const gameHandlers = [

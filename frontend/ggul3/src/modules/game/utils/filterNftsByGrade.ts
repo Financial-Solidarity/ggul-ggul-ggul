@@ -1,4 +1,4 @@
-import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
+import { EquipmentNFTDTO } from '@/modules/game/@types';
 
 export const filterNftsByGrade = (
   nfts: EquipmentNFTDTO[],

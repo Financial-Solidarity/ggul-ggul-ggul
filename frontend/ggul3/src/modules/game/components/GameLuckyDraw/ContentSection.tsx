@@ -3,19 +3,10 @@ import { Image } from '@nextui-org/react';
 
 import { MintedEquipmentCard } from './MintedFoodCard';
 import { CookingLottie } from './CookingLottie';
-import { EquipmentInfoDisplay } from './FoodInfoDisplay';
+import { EquipmentInfoDisplay } from './EquipmentInfoDisplay';
 import { RandomNumber } from './RandomNumber';
 
-import { EquipmentDTO } from '@/modules/game/@types/new_index';
-
-// Define hex codes based on grade
-const gradeHexCodes: Record<number, string> = {
-  0: '#FFD700', // Gold for top grade
-  1: '#C0C0C0', // Silver for second grade
-  2: '#CD7F32', // Bronze for third grade
-  3: '#B87333', // Copper for fourth grade
-  4: '#708090', // Slate Gray for lowest grade
-};
+import { EquipmentDTO, HexCodesByGrade } from '@/modules/game/@types';
 
 export interface ContentSectionProps {
   step: string;
@@ -28,8 +19,7 @@ export const ContentSection = ({
   equipment,
   navigate,
 }: ContentSectionProps) => {
-  // Get the hex color based on the grade
-  const hexCode = equipment ? gradeHexCodes[equipment.grade] : '#FFFFFF';
+  const hexCode = equipment ? HexCodesByGrade[equipment.grade] : '#FFFFFF';
 
   return (
     <div className="CONTENT-SECTION flex h-3/5 w-full flex-col items-center justify-center">

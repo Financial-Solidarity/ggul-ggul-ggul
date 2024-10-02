@@ -2,8 +2,8 @@ import { Sheet } from 'react-modal-sheet';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
-import { EquipmentNFTDTO } from '../../@types/new_index';
-import { EquipmentNftInfo } from '../common/FoodNftInfo';
+import { EquipmentNFTDTO } from '../../@types';
+import { EquipmentNftInfo } from '../common/EquipmentNftInfo';
 
 import { PathNames } from '@/router';
 

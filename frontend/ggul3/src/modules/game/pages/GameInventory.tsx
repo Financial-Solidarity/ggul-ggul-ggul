@@ -5,7 +5,7 @@ import { filterNftsByGrade } from '../utils/filterNftsByGrade';
 import { EquippedNftSection } from '../components/GameInventory/EquippedNftSection';
 import { NftListSection } from '../components/GameInventory/NftListSection';
 import { NftDetailSheet } from '../components/GameInventory/NftDetailSheet';
-import { EquipmentNFTDTO } from '../@types/new_index';
+import { EquipmentNFTDTO } from '../@types';
 import {
   useEquipmentNftListQuery,
   useEquippedEquipmentNftQuery,
@@ -29,11 +29,9 @@ export const GameInventory = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
 
-  // Default values for minPower and maxPower
   const minPower = 1;
   const maxPower = 200;
 
-  // Include the parameters when calling the query
   const { data: equippedNft, isLoading: isEquippedLoading } =
     useEquippedEquipmentNftQuery();
   const { data: equipmentNfts = [], isLoading: isNftsLoading } =

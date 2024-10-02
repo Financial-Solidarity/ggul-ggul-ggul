@@ -1,7 +1,8 @@
 import { Button, Image } from '@nextui-org/react';
 
-import { ConfettieLottie } from '../GameLuckyDraw/ConfettieLottie';
-import { EquipmentDTO } from '../../@types/new_index';
+import { EquipmentDTO, HexCodesByGrade } from '../../@types';
+
+import { ConfettieLottie } from './Lotties/ConfettieLottie';
 
 import { PathNames } from '@/router';
 
@@ -10,21 +11,11 @@ interface MintedEquipmentCardProps {
   onCardClick: (equipment: EquipmentDTO) => void;
 }
 
-// grade별 hexCode 매핑
-const gradeHexCodes = {
-  0: '#FFD700', // 매우 희귀 (금색)
-  1: '#C0C0C0', // 희귀 (은색)
-  2: '#CD7F32', // 보통 (청동색)
-  3: '#4682B4', // 흔함 (파란색)
-  4: '#708090', // 매우 흔함 (회색)
-};
-
 export const MintedEquipmentCard = ({
   equipment,
   onCardClick,
 }: MintedEquipmentCardProps): JSX.Element => {
-  // equipment의 grade에 따라 색상을 결정
-  const hexCode = gradeHexCodes[equipment.grade];
+  const hexCode = HexCodesByGrade[equipment.grade];
 
   return (
     <div
@@ -33,7 +24,6 @@ export const MintedEquipmentCard = ({
     >
       <p className="text-xl font-semibold text-white">{equipment.name}</p>
       <div className="flex h-48 w-full items-center justify-center">
-        {/* Circular Background 적용 */}
         <div
           className="CIRCULAR-BACKGROUND"
           style={{ backgroundColor: hexCode }}

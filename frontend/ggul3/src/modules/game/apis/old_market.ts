@@ -1,4 +1,4 @@
-import { FoodNftSellDTO, GamePagination } from '../@types/equipment';
+import { FoodNftSellDTO, GamePagination } from '../@types/old';
 
 export const mockSearchNftSellList = async (
   keyword: string,

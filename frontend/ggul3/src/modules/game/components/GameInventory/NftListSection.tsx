@@ -1,9 +1,9 @@
 import { Tabs, Tab } from '@nextui-org/react';
 
 import { SkeletonCards } from './SkeletonCard';
-import { NftCard } from './NftCard';
+import { NftMiniCard } from './NftMiniCard';
 
-import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
+import { EquipmentNFTDTO } from '@/modules/game/@types';
 
 interface NftListSectionProps {
   activeGradeIndex: string;
@@ -50,7 +50,7 @@ export const NftListSection = ({
         <SkeletonCards count={6} />
       ) : (
         filteredNfts.map((equipmentNft, index) => (
-          <NftCard
+          <NftMiniCard
             key={index}
             equipmentNft={equipmentNft}
             onCardClick={onCardClick}

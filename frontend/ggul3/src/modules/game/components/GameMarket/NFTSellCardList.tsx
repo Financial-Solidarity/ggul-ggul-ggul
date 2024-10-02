@@ -63,7 +63,7 @@
 import { Card, CardBody, Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
-import { SellNFTDTO } from '@/modules/game/@types/new_index';
+import { SellNFTDTO } from '@/modules/game/@types';
 import { PathNames } from '@/router';
 import { formatToRelativeTime } from '@/modules/common/utils/dateUtils';
 

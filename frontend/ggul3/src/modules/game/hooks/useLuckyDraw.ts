@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import { EquipmentDTO, EquipmentNFTDTO } from '../@types/new_index';
-import { drawEquipment, mintEquipment } from '../apis/index_new';
+import { EquipmentDTO, EquipmentNFTDTO } from '../@types';
+import { drawEquipment, mintEquipment } from '../apis';
 
 interface UseLuckyDrawActionsProps {
   setEquipment: Dispatch<SetStateAction<EquipmentDTO | null>>;
@@ -44,11 +44,11 @@ export const useLuckyDrawActions = ({
   const onClickLuckyDrawButton = async () => {
     startDrawing();
 
-    const response = await drawEquipment(); // response is EquipmentDTO
+    const response = await drawEquipment();
 
     setTimeout(() => {
-      setEquipment(response); // Correctly set EquipmentDTO
-      stopDrawing(response.power); // Passes power value
+      setEquipment(response);
+      stopDrawing(response.power);
     }, 500);
   };
 

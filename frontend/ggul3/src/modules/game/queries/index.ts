@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { EquipmentNFTDTO } from '../@types/new_index';
-import { getEquipmentList, getEquippedEquipment } from '../apis/index_new';
+import { EquipmentNFTDTO } from '../@types';
+import { getEquipmentList, getEquippedEquipment } from '../apis';
 
 export const useEquippedEquipmentNftQuery =
   (): UseQueryResult<EquipmentNFTDTO> => {

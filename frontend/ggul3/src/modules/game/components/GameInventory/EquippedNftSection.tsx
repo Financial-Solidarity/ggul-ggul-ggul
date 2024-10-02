@@ -1,8 +1,8 @@
-import { EquipmentNftInfo } from '../common/FoodNftInfo';
+import { EquipmentNftInfo } from '../common/EquipmentNftInfo';
 
 import { SkeletonGroupNumbers } from './SkeletonGroupNumbers';
 
-import { EquipmentNFTDTO } from '@/modules/game/@types/new_index';
+import { EquipmentNFTDTO } from '@/modules/game/@types';
 
 interface EquippedNftSectionProps {
   isLoading: boolean;

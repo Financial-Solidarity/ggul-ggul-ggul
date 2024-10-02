@@ -1,7 +1,6 @@
-// frontend/ggul3/src/modules/game/components/GameLuckyDraw/ActionButtons.tsx
 import { Button } from '@nextui-org/react';
 
-import { EquipmentDTO } from '../../@types/new_index';
+import { EquipmentDTO } from '../../@types';
 
 interface ActionButtonsProps {
   step: string;
