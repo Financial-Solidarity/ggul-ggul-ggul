@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @Service
@@ -60,8 +61,8 @@ public class FirebaseCloudMessageService {
     }
 
     @Async
-    public List<BatchResponse> sendDataMessageTo(List<MulticastMessage> multicastMessage){
-        return multicastMessage.stream().map(multicastMessage1 -> {
+    public CompletableFuture<List<BatchResponse>> sendDataMessageTo(List<MulticastMessage> multicastMessage){
+        List<BatchResponse> list = multicastMessage.stream().map(multicastMessage1 -> {
             try {
                 return sendDataMessageTo(multicastMessage1);
             } catch (FirebaseMessagingException ignored) {
@@ -83,6 +84,8 @@ public class FirebaseCloudMessageService {
                 };
             }
         }).toList();
+
+        return CompletableFuture.completedFuture(list);
     }
 
     public String sendMessageTo(Message message) throws FirebaseMessagingException {
