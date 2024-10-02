@@ -3,8 +3,8 @@ package com.ggul.application.account.infra;
 import com.ggul.application.account.config.AccountConfig;
 import com.ggul.application.account.exception.GenerationDemandDepositFailureException;
 import com.ggul.application.account.exception.GenerationUserAccountFailureException;
-import com.ggul.application.account.ui.dto.GenerationDemandDepositRequest;
-import com.ggul.application.account.ui.dto.GenerationUserRequest;
+import com.ggul.application.account.ui.dto.GenerationDemandDepositView;
+import com.ggul.application.account.ui.dto.GenerationUserView;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,15 +26,17 @@ public class BankMasterService {
     private final RestClient restClient;
     private final AtomicInteger counter;
 
-    public Map<String, Object> createBankMember(GenerationUserRequest generationUserRequest){
+    public Map<String, Object> createBankMember(String userName){
         Map<String, Object> body = new HashMap<>();
         body.put("apiKey", accountConfig.getApiKey());
-        body.put("userId", generationUserRequest.getUserId());
+        body.put("userId", userName);
 
         try{
-            return postRequest("/member", body);
+            postRequest("/member", body);
         } catch(Exception e){
             throw new GenerationUserAccountFailureException();
+        } finally {
+            return postRequest("/member/search",body);
         }
 
     }
@@ -48,12 +50,12 @@ public class BankMasterService {
 
 
 
-    public Map<String, Object> createDemandDeposit(GenerationDemandDepositRequest generationDemandDepositRequest){
+    public Map<String, Object> createDemandDeposit(GenerationDemandDepositView generationDemandDepositView){
         String url = "/edu/demandDeposit/createDemandDeposit";
         Map<String, Object> body = generatorBodyWithHeader(url, null);
-        body.put("bankCode", generationDemandDepositRequest.getBankCode());
-        body.put("accountName", generationDemandDepositRequest.getAccountName());
-        body.put("accountDescription", generationDemandDepositRequest.getAccountDescription());
+        body.put("bankCode", generationDemandDepositView.getBankCode());
+        body.put("accountName", generationDemandDepositView.getAccountName());
+        body.put("accountDescription", generationDemandDepositView.getAccountDescription());
 
         try{
             return postRequest(url, body);
@@ -71,12 +73,12 @@ public class BankMasterService {
         return postRequest(url, body);
     }
 
-    public Map<String, Object> createDemandDepositAccount(String accountTypeUniqueNo){
+    public Map<String, Object> createDemandDepositAccount(String userKey, String accountTypeUniqueNo){
         String url = "/edu/demandDeposit/createDemandDepositAccount";
-        Map<String, Object> body = generatorBodyWithHeader(url, null);
+        Map<String, Object> body = generatorBodyWithHeader(url, userKey);
         body.put("accountTypeUniqueNo", accountTypeUniqueNo);
 
-        return null;
+        return postRequest(url, body);
     }
 
     public Map<String, Object> getDemandDepositAccountList(String userKey){
@@ -85,6 +87,17 @@ public class BankMasterService {
 
         return postRequest(url, body);
     }
+
+
+    public Map<String, Object> getDemandDepositAccount(String userKey, String accountNo){
+        String url = "/edu/demandDeposit/inquireDemandDepositAccount";
+        Map<String, Object> body = generatorBodyWithHeader(url, userKey);
+        body.put("accountNo", accountNo);
+
+        return postRequest(url, body);
+    }
+
+
 
 
 

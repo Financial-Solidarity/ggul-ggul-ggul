@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-public class GenerationDemandDepositRequest {
+public class GenerationDemandDepositView {
     private String bankCode;
     private String accountName;
     private String accountDescription;

@@ -13,6 +13,8 @@ DROP TABLE IF EXISTS consumption_log;
 DROP TABLE IF EXISTS ggul_log;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS bank_book;
 
 CREATE TABLE user
 (
@@ -183,6 +185,21 @@ CREATE TABLE chatting
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room(chatting_room_id)
 );
 
+CREATE TABLE account
+(
+    account_id            BINARY(16) PRIMARY KEY NOT NULL,
+    user_id               BINARY(16)             NOT NULL,
+    account_user_key      VARCHAR(40)            NOT NULL
+);
+
+CREATE TABLE bank_book
+(
+    bank_book_id          BINARY(16) PRIMARY KEY NOT NULL,
+    user_id               BINARY(16)             NOT NULL,
+    account_number        VARCHAR(40)            NOT NULL
+);
+
+
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
 VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡', null, now());
 
@@ -197,6 +214,10 @@ INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, 
                        created_at)
 VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3,
         false, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (2) MINUTE, 'T', NOW());
+
+insert into user(user_id, username, user_password, user_nickname, created_at, is_deleted)
+values("2", "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 'asdf', now(), 0);
+
 
 INSERT INTO equipment_item (equipment_item_id, name, url)
 VALUES (1, "컵케익","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/cupcake.png"),

@@ -1,11 +1,13 @@
 package com.ggul.application.account.ui;
 
-import com.ggul.application.account.application.DemandDepositAccountList;
-import com.ggul.application.account.application.GenerationDemandDepositAccount;
+import com.ggul.application.account.query.DemandDepositAccountListService;
+import com.ggul.application.account.application.GenerationDemandDepositAccountService;
 import com.ggul.application.account.application.GenerationUserService;
 import com.ggul.application.account.infra.BankMasterService;
-import com.ggul.application.account.ui.dto.GenerationDemandDepositRequest;
-import com.ggul.application.account.ui.dto.GenerationUserRequest;
+import com.ggul.application.account.query.DemandDepositAccountService;
+import com.ggul.application.account.ui.dto.GenerationDemandDepositView;
+import com.ggul.application.account.ui.dto.GenerationUserView;
+import com.ggul.application.account.ui.dto.InquireDemandDepositAccountView;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
 import com.ggul.application.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,29 +26,35 @@ public class AccountController {
     private final GenerationUserService generationUserService;
     private final UserRepository userRepository;
     private final BankMasterService bankMasterService;
-    private final GenerationDemandDepositAccount generationDemandDepositAccount;
-    private final DemandDepositAccountList demandDepositAccountList;
+    private final GenerationDemandDepositAccountService generationDemandDepositAccountService;
+    private final DemandDepositAccountListService demandDepositAccountListService;
+    private final DemandDepositAccountService demandDepositAccountService;
 
+    //유저 계정 만들기
     @PostMapping("/users")
-    public ResponseEntity<?> createUsers(@RequestBody GenerationUserRequest generationUserRequest, @AuthenticationPrincipal UserLoginContext userLoginContext){
-        generationUserService.createUser(generationUserRequest, userLoginContext.getUserId());
+    public ResponseEntity<?> createUsers(@AuthenticationPrincipal UserLoginContext userLoginContext){
+        generationUserService.createUser(userLoginContext.getUserId());
 
         return ResponseEntity.ok(null);
     }
 
+    //은행코드보기
     @GetMapping("/inquireBankCodes")
     public ResponseEntity<?> getBankCodes(){
         Map<String, Object> response = bankMasterService.getBankCodes();
         return ResponseEntity.ok(response.get("REC"));
     }
 
+
+    //은행 상품 등록
     @PostMapping("/createDemandDeposit")
-    public ResponseEntity<?> createDemandDeposit(@RequestBody GenerationDemandDepositRequest generationDemandDepositRequest){
-        Map<String, Object> response = bankMasterService.createDemandDeposit(generationDemandDepositRequest);
+    public ResponseEntity<?> createDemandDeposit(@RequestBody GenerationDemandDepositView generationDemandDepositView){
+        Map<String, Object> response = bankMasterService.createDemandDeposit(generationDemandDepositView);
 
         return ResponseEntity.ok(response.get("REC"));
     }
 
+    //은행 상품 조회(위에서 만든거 조회하는거)
     @GetMapping("/inquireDemandDepositList")
     public ResponseEntity<?> getDemandDepositList(){
         Map<String, Object> response = bankMasterService.getDemandDepositList();
@@ -54,6 +62,7 @@ public class AccountController {
         return ResponseEntity.ok(response.get("REC"));
     }
 
+    // 계좌 생성(단건)
     @PostMapping("/createDemandDepositAccount")
     public ResponseEntity<?> createDemandDepositAccount(){
 
@@ -61,16 +70,29 @@ public class AccountController {
         return ResponseEntity.ok(null);
     }
 
+    // 지금 있는 상품들 싹다 등록 (모두 불러오기 딸깎) 누적해서 저장되니까 조심
     @PostMapping("/createDemandDepositAccounts")
-    public ResponseEntity<?> createDemandDepositAccounts(){
-        generationDemandDepositAccount.createDepositAccount();
+    public ResponseEntity<?> createDemandDepositAccounts(@AuthenticationPrincipal UserLoginContext userLoginContext){
+        generationDemandDepositAccountService.createDepositAccount(userLoginContext.getUserId());
+
         return ResponseEntity.ok(null);
     }
 
+    // 내가 등록한 계좌들 조회
     @GetMapping("/inquireDemandDepositAccountList")
-    public ResponseEntity<?> getDemandDepositAccountList(@AuthenticationPrincipal UserLoginContext userLoginContext){
-        demandDepositAccountList.getMyDemandDepositAccountList(userLoginContext.getUserId());
+    public ResponseEntity<?> getDemandDepositAccountListService(@AuthenticationPrincipal UserLoginContext userLoginContext){
+        Map<String, Object> result = demandDepositAccountListService.getMyDemandDepositAccountList(userLoginContext.getUserId());
+
+        return ResponseEntity.ok(result);
+    }
+
+    // 내가 등록한 계좌 조회(단건)
+    @GetMapping("/inquireDemandDepositAccount")
+    public ResponseEntity<?> getDemandDepositAccount(@RequestBody InquireDemandDepositAccountView inquireDemandDepositAccountView, @AuthenticationPrincipal UserLoginContext userLoginContext){
+        demandDepositAccountService.getMyDemandDepositAccount(userLoginContext.getUserId(), inquireDemandDepositAccountView);
+
         return ResponseEntity.ok(null);
     }
+
 
 }

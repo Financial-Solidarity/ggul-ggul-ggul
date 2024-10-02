@@ -1,32 +1,30 @@
-package com.ggul.application.account.application;
+package com.ggul.application.account.query;
 
 import com.ggul.application.account.domain.Account;
 import com.ggul.application.account.domain.AccountRepository;
 import com.ggul.application.account.infra.BankMasterService;
-import com.ggul.application.user.domain.User;
-import com.ggul.application.user.domain.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
-public class DemandDepositAccountList {
+public class DemandDepositAccountListService {
     private final BankMasterService bankMasterService;
     private final AccountRepository accountRepository;
 
-    public void getMyDemandDepositAccountList(UUID userId){
-        Account userAccount = accountRepository.getReferenceById(userId);
+    @Transactional(readOnly = true)
+    public Map<String, Object> getMyDemandDepositAccountList(UUID userId){
+        String userKey = accountRepository.findUserKeyByUserId(userId);
 
-        Map<String, Object> userAccountList = bankMasterService.getDemandDepositAccountList(userAccount.getUserKey());
+        Map<String, Object> userAccountList = bankMasterService.getDemandDepositAccountList(userKey);
         log.info("userAccountList = {}", userAccountList);
-
+        return userAccountList;
     }
 
 }

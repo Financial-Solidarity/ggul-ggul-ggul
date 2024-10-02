@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
@@ -15,19 +14,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "account")
+@Table(name = "bank_book")
 @Builder
-public class Account {
+public class BankBook {
     @Id
     @GeneratedValue
-    @Column(name = "account_id")
+    @Column(name = "bank_book_id")
     @UUIDv7
     private UUID id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "account_user_key")
-    private String userKey;
+    @Column(name = "account_number")
+    private String accountNumber;
 }
