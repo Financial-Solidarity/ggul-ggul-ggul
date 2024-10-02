@@ -17,7 +17,7 @@ export const getChattingRooomList = () => {
  */
 export const getRecentChattingList = (chattingRoomId: string) => {
   return _axios<Chat[]>({
-    url: `chattingRoom/${chattingRoomId}/chat/log/after`,
+    url: `chat/${chattingRoomId}/after`,
     method: 'GET',
   });
 };
@@ -27,7 +27,7 @@ export const getRecentChattingList = (chattingRoomId: string) => {
  */
 export const getPreviousChattingList = (chattingRoomId: string) => {
   return _axios<Chat[]>({
-    url: `/api/chattingRoom/${chattingRoomId}/chat/log/before`,
+    url: `chat/${chattingRoomId}/before`,
     method: 'GET',
   });
 };
