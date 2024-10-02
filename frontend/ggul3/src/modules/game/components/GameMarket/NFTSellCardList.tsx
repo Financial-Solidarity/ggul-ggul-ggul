@@ -59,3 +59,64 @@
 //     </div>
 //   );
 // };
+
+import { Card, CardBody, Button } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
+
+import { SellNFTDTO } from '@/modules/game/@types/new_index';
+import { PathNames } from '@/router';
+import { formatToRelativeTime } from '@/modules/common/utils/dateUtils';
+
+interface NFTSellCardListProps {
+  nftList: SellNFTDTO[];
+}
+
+export const NFTSellCardList: React.FC<NFTSellCardListProps> = ({
+  nftList,
+}) => {
+  const navigate = useNavigate();
+
+  // 상세 판매 글 클릭 시 이동 핸들러
+  const handleDetailClick = (sellNft: SellNFTDTO) => {
+    navigate(
+      `${PathNames.GAME.MARKET_DETAIL.path.replace(':id', sellNft.ipfsCID)}`,
+      { state: { sellNft } }, // 글 정보를 state로 전달
+    );
+  };
+
+  return (
+    <div className="mt-6 grid grid-cols-1 gap-4">
+      {nftList.length === 0 ? (
+        <p className="text-center text-white">텅</p>
+      ) : (
+        nftList.map((sellNft) => (
+          <Card
+            key={sellNft.ipfsCID}
+            isHoverable
+            className="relative bg-gradient-to-tr from-primary-500 to-primary-900 py-2 text-white"
+          >
+            <CardBody>
+              <p className="font-semibold">{sellNft.sale.title}</p>
+              <div className="mt-2 flex items-center justify-between">
+                <span>껄 {sellNft.sale.price}</span>
+                <span>{formatToRelativeTime(sellNft.sale.createdAt)}</span>
+              </div>
+              {/* <EquipmentNftInfo
+                equipmentNft={sellNft}
+                showNumber={false}
+                showTitle={false}
+                size="xl"
+              /> */}
+              <Button
+                className="absolute bottom-1 right-4 z-20 mt-4 h-12 w-44 rounded-full bg-default-500/20 font-semibold text-white shadow-lg backdrop-blur-md backdrop-saturate-150"
+                onClick={() => handleDetailClick(sellNft)}
+              >
+                NFT 판매글 보기
+              </Button>
+            </CardBody>
+          </Card>
+        ))
+      )}
+    </div>
+  );
+};

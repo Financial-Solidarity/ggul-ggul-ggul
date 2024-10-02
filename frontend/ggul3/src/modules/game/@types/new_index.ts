@@ -1,3 +1,5 @@
+import { Pagination } from '@types';
+
 // Equipment 타입 정의
 export interface EquipmentDTO {
   adjective: string;
@@ -37,7 +39,7 @@ export interface SellNFTDTO {
   sale: SaleDTO;
   ipfsCID: string;
   nftUrl: string;
-  equipment: EquipmentDTO;
+  equipment: EquipmentNFTDTO;
   seller: UserDTO;
 }
 
@@ -89,7 +91,7 @@ export interface SellNFTDTO {
   sale: SaleDTO;
   ipfsCID: string;
   nftUrl: string;
-  equipment: EquipmentDTO;
+  equipment: EquipmentNFTDTO;
   seller: UserDTO;
 }
 
@@ -99,4 +101,22 @@ export interface RegisterSellNFTRequest {
   title: string;
   description: string;
   price: number;
+}
+
+// 판매 글 리스트 조회 요청 파라미터 타입
+export interface GetSellNFTListParams {
+  pageNumber?: number;
+  pageSize?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  minPower?: number;
+  maxPower?: number;
+  keyword?: string;
+  grade?: 0 | 1 | 2 | 3 | 4;
+}
+
+// 판매 글 리스트 조회 응답 타입
+export interface GetSellNFTListResponse extends Pagination {
+  // pagination: any;
+  content: SellNFTDTO[];
 }
