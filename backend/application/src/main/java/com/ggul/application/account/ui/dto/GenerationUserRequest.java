@@ -7,6 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-public class CreateUserRequest {
+public class GenerationUserRequest {
     private String userId;
 }

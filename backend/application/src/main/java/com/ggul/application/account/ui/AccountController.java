@@ -1,11 +1,12 @@
 package com.ggul.application.account.ui;
 
-import com.ggul.application.account.application.CreateUserService;
+import com.ggul.application.account.application.DemandDepositAccountList;
+import com.ggul.application.account.application.GenerationDemandDepositAccount;
+import com.ggul.application.account.application.GenerationUserService;
 import com.ggul.application.account.infra.BankMasterService;
-import com.ggul.application.account.ui.dto.CreateDemandDepositRequest;
-import com.ggul.application.account.ui.dto.CreateUserRequest;
+import com.ggul.application.account.ui.dto.GenerationDemandDepositRequest;
+import com.ggul.application.account.ui.dto.GenerationUserRequest;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
-import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +21,15 @@ import java.util.Map;
 @RequestMapping("/account")
 @Slf4j
 public class AccountController {
-    private final CreateUserService createUserService;
+    private final GenerationUserService generationUserService;
     private final UserRepository userRepository;
     private final BankMasterService bankMasterService;
+    private final GenerationDemandDepositAccount generationDemandDepositAccount;
+    private final DemandDepositAccountList demandDepositAccountList;
 
     @PostMapping("/users")
-    public ResponseEntity<?> createUsers(@RequestBody CreateUserRequest createUserRequest, @AuthenticationPrincipal UserLoginContext userLoginContext){
-        createUserService.createUser(createUserRequest, userLoginContext.getUserId());
+    public ResponseEntity<?> createUsers(@RequestBody GenerationUserRequest generationUserRequest, @AuthenticationPrincipal UserLoginContext userLoginContext){
+        generationUserService.createUser(generationUserRequest, userLoginContext.getUserId());
 
         return ResponseEntity.ok(null);
     }
@@ -38,8 +41,8 @@ public class AccountController {
     }
 
     @PostMapping("/createDemandDeposit")
-    public ResponseEntity<?> createDemandDeposit(@RequestBody CreateDemandDepositRequest createDemandDepositRequest){
-        Map<String, Object> response = bankMasterService.createDemandDeposit(createDemandDepositRequest);
+    public ResponseEntity<?> createDemandDeposit(@RequestBody GenerationDemandDepositRequest generationDemandDepositRequest){
+        Map<String, Object> response = bankMasterService.createDemandDeposit(generationDemandDepositRequest);
 
         return ResponseEntity.ok(response.get("REC"));
     }
@@ -51,5 +54,23 @@ public class AccountController {
         return ResponseEntity.ok(response.get("REC"));
     }
 
+    @PostMapping("/createDemandDepositAccount")
+    public ResponseEntity<?> createDemandDepositAccount(){
+
+
+        return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/createDemandDepositAccounts")
+    public ResponseEntity<?> createDemandDepositAccounts(){
+        generationDemandDepositAccount.createDepositAccount();
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/inquireDemandDepositAccountList")
+    public ResponseEntity<?> getDemandDepositAccountList(@AuthenticationPrincipal UserLoginContext userLoginContext){
+        demandDepositAccountList.getMyDemandDepositAccountList(userLoginContext.getUserId());
+        return ResponseEntity.ok(null);
+    }
 
 }
