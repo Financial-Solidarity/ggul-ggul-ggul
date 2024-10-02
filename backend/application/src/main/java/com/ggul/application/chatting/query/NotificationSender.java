@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class NotificationSender {
         List<MulticastMessage> messages = new ArrayList<>();
         participants.forEach(participant -> {
             MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(participant.getUser().getFcmTokens(), chatting.getParticipant().getNickname(), content,
-                    type, null);
+                    type, Map.of());
             messages.add(multicastMessage);
         });
         firebaseCloudMessageService.sendDataMessageTo(messages);

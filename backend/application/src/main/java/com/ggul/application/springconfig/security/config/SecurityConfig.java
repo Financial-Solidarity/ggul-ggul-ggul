@@ -97,6 +97,7 @@ public class SecurityConfig {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.anonymous(AbstractHttpConfigurer::disable);
+        http.cors(cors -> cors.configurationSource(CorsConfig.corsConfigurationSource()));
 
         AuthenticationManager authenticationManager = authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
         ProviderManager p = (ProviderManager) authenticationManager;

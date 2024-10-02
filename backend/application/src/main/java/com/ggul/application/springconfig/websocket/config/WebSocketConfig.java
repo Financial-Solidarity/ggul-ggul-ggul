@@ -24,9 +24,9 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
                 .setAllowedOriginPatterns("*");
-//        registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
-//                .addInterceptors(new HttpSessionHandshakeInterceptor())
-//                .setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
+                .addInterceptors(new HttpSessionHandshakeInterceptor())
+                .setAllowedOriginPatterns("*").withSockJS();
     }
 
 //    @Override
