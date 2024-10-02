@@ -102,6 +102,16 @@ export const getEquippedEquipment = async (): Promise<EquipmentNFTDTO> => {
   });
 };
 
+// 전체 장비 이름 조회
+export const getEquipmentNames = async (): Promise<string[]> => {
+  const url = `${BASE_URL}/names`;
+
+  return await _axios<string[]>({
+    method: 'GET',
+    url,
+  });
+};
+
 // ======================== 마켓 ( 10월 2일 합의본 ) ===========
 
 // API 엔드포인트 베이스 URL
