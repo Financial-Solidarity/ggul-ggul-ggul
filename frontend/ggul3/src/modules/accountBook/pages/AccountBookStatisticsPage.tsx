@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import {
   AccountBookHistoryHeader,
@@ -6,6 +7,7 @@ import {
   AccountBookStatisticsCategoryList,
 } from '../components';
 import { usePaymentStatisticsStore } from '../store/usePaymentStatisticsStore';
+import { getPaymentStatistics } from '../apis/payment';
 
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -22,10 +24,29 @@ export const AccountBookStatisticsPage = () => {
     setFormedStatisticsList,
   } = usePaymentStatisticsStore();
 
+  const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // 쿼리 파라미터 읽기
+  const startDate = searchParams.get('start-date') || currentDate;
+  const endDate = searchParams.get('end-date') || currentDate;
+  const page = searchParams.get('page') || 0;
+
   useEffect(() => {
-    setStatisticsList(data);
-    setFormedStatisticsList(data);
-  }, []);
+    // setStatisticsList(data);
+    // setFormedStatisticsList(data);
+    getPaymentStatistics({ startDate, endDate, page: Number(page) })
+      .then((res) => {
+        setStatisticsList(res);
+        setFormedStatisticsList(res);
+      })
+      .catch((err) => {
+        console.error(err);
+        setStatisticsList(data);
+        setFormedStatisticsList(data);
+      });
+  }, [searchParams]);
 
   return (
     <>
@@ -35,12 +56,17 @@ export const AccountBookStatisticsPage = () => {
         left={<BackButton />}
         right={<NotificationButton />}
       />
-      <AccountBookHistoryHeader />
-      <PageContainer>
+      <AccountBookHistoryHeader
+        setSearchParams={setSearchParams}
+        startDate={startDate}
+      />
+      <div className="h-[40%] w-full">
         <AccountBookPieChart
           data={formedStatisticsList}
           pieChartColors={pieChartColors}
         />
+      </div>
+      <PageContainer>
         <AccountBookStatisticsCategoryList categoryList={statisticsList} />
       </PageContainer>
     </>

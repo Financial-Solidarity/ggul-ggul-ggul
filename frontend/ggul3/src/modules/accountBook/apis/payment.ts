@@ -26,10 +26,25 @@ export const getPaymentHistory = ({
   });
 };
 
-export const getPaymentStatistics = () => {
-  return _axios<PaymentStatistics>({
+interface StatisticsRange {
+  startDate: string;
+  endDate: string;
+  page: number;
+}
+
+export const getPaymentStatistics = ({
+  startDate,
+  endDate,
+  page,
+}: StatisticsRange) => {
+  return _axios<PaymentStatistics[]>({
     method: 'GET',
-    url: 'payment/month/chart',
+    url: 'payment/month/chart/search',
+    params: {
+      'start-date': startDate,
+      'end-date': endDate,
+      page,
+    },
   });
 };
 

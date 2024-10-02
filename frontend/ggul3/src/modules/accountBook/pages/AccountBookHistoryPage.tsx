@@ -25,11 +25,14 @@ export const AccountBookHistoryPage = () => {
   const page = searchParams.get('page') || 0;
 
   useEffect(() => {
-    getPaymentHistory({ startDate, endDate, page: Number(page) }).then(
-      (res) => {
+    getPaymentHistory({ startDate, endDate, page: Number(page) })
+      .then((res) => {
         setPaymentList(res.content);
-      },
-    );
+      })
+      .catch((err) => {
+        console.error(err);
+        setPaymentList(tempPaymentList);
+      });
   }, [searchParams]);
 
   return (
@@ -43,10 +46,6 @@ export const AccountBookHistoryPage = () => {
       <AccountBookHistoryHeader
         setSearchParams={setSearchParams}
         startDate={startDate}
-        // month={month}
-        // setMonth={setMonth}
-        // setYear={setYear}
-        // year={year}
       />
       <PageContainer>
         <AccountBookHistory paymentList={paymentList} />
