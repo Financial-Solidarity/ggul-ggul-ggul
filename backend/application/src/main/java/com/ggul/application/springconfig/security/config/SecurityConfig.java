@@ -107,7 +107,7 @@ public class SecurityConfig {
             securityContext.requireExplicitSave(true); // true로 주게 되면 SecurityContextHolder의 값이 변경되어도 자동 저장되지 않게 함.
         });
 
-        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**", "/backdoor/**").permitAll()
+        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**", "/backdoor/**", "/account/**").permitAll()
                 .anyRequest().authenticated());
         http.addFilterAt(jsonLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 

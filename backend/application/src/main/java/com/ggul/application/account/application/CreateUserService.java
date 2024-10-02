@@ -21,18 +21,23 @@ public class CreateUserService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    @Transactional
     public void createUser(CreateUserRequest createUserRequest, UUID userId){
-        Map<String, String> map = bankMasterService.createBankMember(createUserRequest);
+        Map<String, Object> map = bankMasterService.createBankMember(createUserRequest);
 
         User loginUser = userRepository.getReferenceById(userId);
 
         Account account = Account.builder()
                 .user(loginUser)
-                .userKey(map.get("userKey"))
+                .userKey((String)map.get("userKey"))
                 .build();
 
         accountRepository.save(account);
+    }
+
+    private void createAccount(UUID userId){
+        Account account = accountRepository.getReferenceById(userId);
+
+
     }
 
 
