@@ -21,11 +21,11 @@ public class ConsumptionLogFindService {
 
     @Transactional(readOnly = true)
     public Slice<ConsumptionLogView> findAll(UUID userId, Pageable pageable, LocalDate startedAt, LocalDate endedAt) {
-        return consumptionLogRepository.findByUserAndCreatedAtBetween(userId, startedAt.atStartOfDay(), endedAt.plusMonths(1).minusDays(1).atStartOfDay().with(LocalTime.MAX), pageable);
+        return consumptionLogRepository.findByUserAndCreatedAtBetween(userId, startedAt.atStartOfDay(), endedAt.atStartOfDay().with(LocalTime.MAX), pageable);
     }
 
     @Transactional(readOnly = true)
     public List<ConsumptionChartView> findChartValue(UUID userId, LocalDate startedAt, LocalDate endedAt) {
-        return consumptionLogRepository.findByUserAndCreatedAtBetweenGroupByProductCategoryName(userId, startedAt.atStartOfDay(), endedAt.plusMonths(1).minusDays(1).atStartOfDay().with(LocalTime.MAX));
+        return consumptionLogRepository.findByUserAndCreatedAtBetweenGroupByProductCategoryName(userId, startedAt.atStartOfDay(), endedAt.atStartOfDay().with(LocalTime.MAX));
     }
 }

@@ -30,9 +30,11 @@ public class NotificationSender {
         List<ChallengeParticipant> participants = chattingRoomParticipantRepository.findAllChallengeParticipantByChattingRoomId(chatting.getChattingRoom().getId());
         List<MulticastMessage> messages = new ArrayList<>();
         participants.forEach(participant -> {
-            MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(participant.getUser().getFcmTokens(), chatting.getParticipant().getNickname(), content,
-                    type, Map.of());
-            messages.add(multicastMessage);
+            if(participant.getUser().getFcmTokens().size() != 0) {
+                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(participant.getUser().getFcmTokens(), chatting.getParticipant().getNickname(), content,
+                        type, Map.of());
+                messages.add(multicastMessage);
+            }
         });
         firebaseCloudMessageService.sendDataMessageTo(messages);
     }
