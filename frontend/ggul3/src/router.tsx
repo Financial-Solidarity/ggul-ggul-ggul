@@ -29,6 +29,7 @@ import { MyPage } from './modules/myPage/pages/MyPage';
 import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoomPage';
 import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
 import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
+import { ChangeUserInfo } from './modules/myPage/pages';
 
 export interface Path {
   path: string;
@@ -69,6 +70,7 @@ export interface PathNames {
   };
   MYPAGE: {
     MAIN: Path;
+    CHANGE_USER_INFO: Path;
   };
   LOGIN: Path;
   SIGHUP: Path;
@@ -182,6 +184,10 @@ export const PathNames: PathNames = {
       path: '/mypage',
       name: '마이페이지',
     },
+    CHANGE_USER_INFO: {
+      path: '/mypage/user/edit',
+      name: '회원 정보 수정',
+    },
   },
   LOGIN: {
     path: '/login',
@@ -293,6 +299,10 @@ const myPageRoutes: RouteObject[] = [
   {
     path: PathNames.MYPAGE.MAIN.path,
     element: <MyPage />,
+  },
+  {
+    path: PathNames.MYPAGE.CHANGE_USER_INFO.path,
+    element: <ChangeUserInfo />,
   },
 ];
 

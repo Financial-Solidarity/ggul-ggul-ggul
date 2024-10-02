@@ -1,1 +1,1 @@
-// export * from './FindPasswordPage';
+export * from './EditUserInfo';
