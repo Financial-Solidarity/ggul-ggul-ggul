@@ -1,9 +1,10 @@
-import { Pagination } from '@types';
-
 import {
   EquipEquipmentRequest,
   EquipmentDTO,
   EquipmentNFTDTO,
+  GetReceivableTokenResponse,
+  GetSellNFTListParams,
+  GetSellNFTListResponse,
   MintEquipmentRequest,
   RegisterSellNFTRequest,
   RemoveEquipmentRequest,
@@ -55,7 +56,7 @@ export const getEquipmentList = async (
   });
 };
 
-// 장비 삭제
+// 장비 삭제 (할거면 구현)
 export const removeEquipment = async (
   request: RemoveEquipmentRequest,
 ): Promise<void> => {
@@ -101,10 +102,10 @@ export const getEquippedEquipment = async (): Promise<EquipmentNFTDTO> => {
   });
 };
 
-// ======================== 마켓 임시 ===========
+// ======================== 마켓 ( 10월 2일 합의본 ) ===========
 
 // API 엔드포인트 베이스 URL
-const MARKET_URL = '/market';
+const MARKET_URL = '/markets';
 
 // 1. 판매 글 작성
 export const registerSellNFT = async (
@@ -123,7 +124,7 @@ export const registerSellNFT = async (
 export const getSellNFTDetail = async (
   ipfsCID: string,
 ): Promise<SellNFTDTO> => {
-  const url = `${MARKET_URL}/sell/${ipfsCID}`;
+  const url = `${MARKET_URL}/${ipfsCID}`;
 
   return await _axios<SellNFTDTO>({
     method: 'GET',
@@ -132,62 +133,67 @@ export const getSellNFTDetail = async (
 };
 
 // 3. 판매 글 리스트 조회
-interface GetSellNFTListParams {
-  pageNumber?: number;
-  pageSize?: number;
-  minPrice?: number;
-  maxPrice?: number;
-  minPower?: number;
-  maxPower?: number;
-  keyword?: string;
-  grade?: 0 | 1 | 2 | 3 | 4;
-}
-
-// 응답 타입 정의
-interface GetSellNFTListResponse extends Pagination {
-  content: SellNFTDTO[];
-}
-
 export const getSellNFTList = async (
   params: GetSellNFTListParams,
 ): Promise<GetSellNFTListResponse> => {
-  // 파라미터를 query string으로 변환
   const queryParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
-      queryParams.append(key, value.toString());
+      // offset, limit은 그대로 사용, 나머지는 스네이크 케이스로 변환
+      const paramKey = key
+        .replace(/^minPrice$/, 'min-price')
+        .replace(/^maxPrice$/, 'max-price')
+        .replace(/^minPower$/, 'min-power')
+        .replace(/^maxPower$/, 'max-power')
+        .replace(/^name$/, 'name');
+
+      queryParams.append(paramKey, value.toString());
     }
   });
 
-  const url = `${MARKET_URL}/sells?${queryParams.toString()}`;
+  const url = `${MARKET_URL}?${queryParams.toString()}`;
 
   return await _axios<GetSellNFTListResponse>({
     method: 'GET',
     url,
   });
 };
-
-// 4. 판매 글 수정
-export const updateSellNFT = async (
-  ipfsCID: string,
-  updatedData: RegisterSellNFTRequest,
-): Promise<void> => {
-  const url = `${MARKET_URL}/sell/${ipfsCID}`;
+// 4. 판매 글 삭제
+export const deleteSellNFT = async (ipfsCID: string): Promise<void> => {
+  const url = `${MARKET_URL}`;
 
   await _axios<void>({
-    method: 'PUT',
+    method: 'PATCH',
     url,
-    data: updatedData,
+    data: { ipfsCID },
   });
 };
 
-// 5. 판매 글 삭제
-export const deleteSellNFT = async (ipfsCID: string): Promise<void> => {
-  const url = `${MARKET_URL}/sell/${ipfsCID}`;
+// 5. 구매하기 (API 뽑히면 추가해야함)
+
+//===================== 껄 키우기 ( 10월 2일 임시 합의본 )===============
+
+const GAME_URL = '/games';
+
+// 1. 얻을 수 있는 껄 조회
+export const getReceivableTokenAmount =
+  async (): Promise<GetReceivableTokenResponse> => {
+    const url = `${GAME_URL}/receive`;
+
+    return await _axios<GetReceivableTokenResponse>({
+      method: 'GET',
+      url,
+    });
+  };
+
+// 2. 껄 얻기
+//   => getReceiveableTokenAmount 연쇄수행해서 갱신해줘야함.
+export const receiveToken = async (): Promise<void> => {
+  const url = `${GAME_URL}/receive`;
 
   await _axios<void>({
-    method: 'DELETE',
+    method: 'POST',
     url,
   });
 };

@@ -78,7 +78,7 @@ export interface DrawEquipmentResponse extends EquipmentDTO {}
 export interface GetTokenBalanceResponse {
   balance: number;
 }
-// =============================마켓 ( 임시 )
+// =============================마켓 ( 임시 ) ======================
 // Sale 타입 정의
 export interface SaleDTO {
   title: string;
@@ -87,15 +87,15 @@ export interface SaleDTO {
   createdAt: string;
 }
 
-export interface SellNFTDTO {
-  sale: SaleDTO;
+export interface SellNFTDTO extends SaleDTO {
+  // @@@ 판매글 ID 따로 줄지 안줄지 유승이가 결정 후 알려줄 예정.
   ipfsCID: string;
   nftUrl: string;
-  equipment: EquipmentNFTDTO;
+  equipmentNFT: EquipmentNFTDTO;
   seller: UserDTO;
 }
 
-// 판매 등록 요청 타입 (가정된 타입)
+// 판매 글 작성 요청 타입
 export interface RegisterSellNFTRequest {
   ipfsCID: string;
   title: string;
@@ -105,18 +105,25 @@ export interface RegisterSellNFTRequest {
 
 // 판매 글 리스트 조회 요청 파라미터 타입
 export interface GetSellNFTListParams {
-  pageNumber?: number;
-  pageSize?: number;
+  limit: number;
+  offset: number;
   minPrice?: number;
   maxPrice?: number;
   minPower?: number;
   maxPower?: number;
-  keyword?: string;
-  grade?: 0 | 1 | 2 | 3 | 4;
+  name?: string;
 }
 
 // 판매 글 리스트 조회 응답 타입
-export interface GetSellNFTListResponse extends Pagination {
-  // pagination: any;
+export interface GetSellNFTListResponse {
   content: SellNFTDTO[];
+  pagination: Pagination;
+}
+
+// =============== 껄 키우기 게임 ======================
+
+// 현재 누적 얻을 수 있는 껄 조회
+export interface GetReceivableTokenResponse {
+  lastReceivedAt: string;
+  receivableToken: number;
 }
