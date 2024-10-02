@@ -27,7 +27,12 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.*;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -91,13 +96,56 @@ public class SecurityConfig {
         );
     }
 
+    CorsConfigurationSource apiConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // 특정 도메인을 명시 (와일드카드가 아닌 실제 도메인 사용)
+        config.setAllowedOrigins(List.of("http://localhost:5173", "https://d947-118-219-5-35.ngrok-free.app"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+
+        // 특정 헤더를 노출
+        config.setExposedHeaders(List.of("*"));
+
+        // 자격 증명 허용
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
+    }
+
+    CorsConfigurationSource webSocketConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // 특정 도메인을 명시 (와일드카드가 아닌 실제 도메인 사용)
+        config.setAllowedOrigins(List.of("http://localhost:5173", "https://d947-118-219-5-35.ngrok-free.app"));
+        config.setAllowedMethods(List.of("OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+
+        // 특정 헤더를 노출
+        config.setExposedHeaders(List.of("Authorization", "Accept", "Content-Type", "Origin", "Upgrade", "Connection"));
+
+        // 자격 증명 허용
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.anonymous(AbstractHttpConfigurer::disable);
-        http.cors(cors -> cors.configurationSource(CorsConfig.corsConfigurationSource()));
+        http.cors(cors -> cors.configurationSource(apiConfigurationSource()));
+
+        http.securityMatcher("/stomp/connection/**")
+                .cors(cors -> cors.configurationSource(webSocketConfigurationSource()));
 
         AuthenticationManager authenticationManager = authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
         ProviderManager p = (ProviderManager) authenticationManager;
