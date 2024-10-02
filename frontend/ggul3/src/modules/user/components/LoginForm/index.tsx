@@ -46,10 +46,12 @@ export const LoginForm = ({
     try {
       await login({ email, password });
 
+      // 유저 데이터 가져오기
       const userData = await getUserData();
 
       console.log(userData, 'userData');
 
+      // 유저 데이터 상태에 저장
       setUser(userData);
 
       navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
