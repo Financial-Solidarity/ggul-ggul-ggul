@@ -19,7 +19,7 @@ export const Banner = ({ nickname }: BannerProps) => {
     <Card className="flex min-h-40 py-1 hover:bg-gray-200">
       <CardBody className="relative flex overflow-y-hidden">
         <p className="w-2/3 font-medium">
-          이번 주 1억원을 가져갈 분은{' '}
+          이번 주 1억원을 가져갈 분은
           <span className="font-bold">{nickname}</span>님이 아닐까요?
         </p>
         <div className="absolute right-0 w-1/4 translate-x-[-25%]">

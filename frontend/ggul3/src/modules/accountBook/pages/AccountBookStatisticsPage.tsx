@@ -31,12 +31,11 @@ export const AccountBookStatisticsPage = () => {
   // 쿼리 파라미터 읽기
   const startDate = searchParams.get('start-date') || currentDate;
   const endDate = searchParams.get('end-date') || currentDate;
-  const page = searchParams.get('page') || 0;
 
   useEffect(() => {
     // setStatisticsList(data);
     // setFormedStatisticsList(data);
-    getPaymentStatistics({ startDate, endDate, page: Number(page) })
+    getPaymentStatistics({ startDate, endDate })
       .then((res) => {
         setStatisticsList(res);
         setFormedStatisticsList(res);
