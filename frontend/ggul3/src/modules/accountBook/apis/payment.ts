@@ -2,26 +2,18 @@ import { PaymentHistory, PaymentStatistics } from '@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
-// /api/payment/search?start-date=2024-09&end-date=2024-09&page=1
-
 interface HistoryRange {
   startDate: string;
   endDate: string;
-  page: number;
 }
 
-export const getPaymentHistory = ({
-  startDate,
-  endDate,
-  page,
-}: HistoryRange) => {
+export const getPaymentHistory = ({ startDate, endDate }: HistoryRange) => {
   return _axios<PaymentHistory>({
     method: 'GET',
     url: `payment/search`,
     params: {
       'start-date': startDate,
       'end-date': endDate,
-      page,
     },
   });
 };
@@ -29,13 +21,11 @@ export const getPaymentHistory = ({
 interface StatisticsRange {
   startDate: string;
   endDate: string;
-  page: number;
 }
 
 export const getPaymentStatistics = ({
   startDate,
   endDate,
-  page,
 }: StatisticsRange) => {
   return _axios<PaymentStatistics[]>({
     method: 'GET',
@@ -43,7 +33,6 @@ export const getPaymentStatistics = ({
     params: {
       'start-date': startDate,
       'end-date': endDate,
-      page,
     },
   });
 };

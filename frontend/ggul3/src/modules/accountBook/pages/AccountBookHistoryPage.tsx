@@ -22,10 +22,9 @@ export const AccountBookHistoryPage = () => {
   // 쿼리 파라미터 읽기
   const startDate = searchParams.get('start-date') || currentDate;
   const endDate = searchParams.get('end-date') || currentDate;
-  const page = searchParams.get('page') || 0;
 
   useEffect(() => {
-    getPaymentHistory({ startDate, endDate, page: Number(page) })
+    getPaymentHistory({ startDate, endDate })
       .then((res) => {
         setPaymentList(res.content);
       })

@@ -49,7 +49,6 @@ export const AccountBookHistoryHeader = ({
               const params = new URLSearchParams({
                 'start-date': `${value.slice(0, 4)}-${month.toString().padStart(2, '0')}`,
                 'end-date': `${value.slice(0, 4)}-${month.toString().padStart(2, '0')}`,
-                page: '0',
               });
 
               setSearchParams(params.toString());
@@ -83,7 +82,6 @@ export const AccountBookHistoryHeader = ({
               const params = new URLSearchParams({
                 'start-date': `${year.toString().slice(0, 4)}-${value.slice(0, 2)}`,
                 'end-date': `${year.toString().slice(0, 4)}-${value.slice(0, 2)}`,
-                page: '0',
               });
 
               setSearchParams(params.toString());

@@ -1,5 +1,6 @@
 import { Card, CardFooter } from '@nextui-org/card';
 import { Image } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
 
 import charityGroup from '@/assets/images/charity-group.png';
 import woodenTrainingSword from '@/assets/images/wooden-training-sword.png';
@@ -7,16 +8,20 @@ import woodenTrainingSword from '@/assets/images/wooden-training-sword.png';
 export const GgulLinks = () => {
   return (
     <div className="mb-20 flex gap-3">
-      <GgulLinkItem
-        description="거지방을 아시나요?"
-        imgUrl={charityGroup}
-        title="껄 챌린지"
-      />
-      <GgulLinkItem
-        description="게임을 통해 껄 모으기"
-        imgUrl={woodenTrainingSword}
-        title="껄 키우기"
-      />
+      <Link className="flex-1" to="/challenge">
+        <GgulLinkItem
+          description="거지방을 아시나요?"
+          imgUrl={charityGroup}
+          title="껄 챌린지"
+        />
+      </Link>
+      <Link className="flex-1" to="/game">
+        <GgulLinkItem
+          description="게임을 통해 껄 모으기"
+          imgUrl={woodenTrainingSword}
+          title="껄 키우기"
+        />
+      </Link>
     </div>
   );
 };
@@ -30,7 +35,7 @@ interface GgulLinkItemProps {
 const GgulLinkItem = ({ title, description, imgUrl }: GgulLinkItemProps) => {
   return (
     <Card
-      className="flex flex-1 content-center items-center justify-center pt-4 ease-linear hover:bg-slate-200"
+      className="items-center pt-4 ease-linear hover:bg-slate-200"
       shadow="md"
     >
       <Image

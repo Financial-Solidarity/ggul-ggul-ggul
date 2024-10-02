@@ -33,7 +33,10 @@ export const MyPage = () => {
           <MyProfile
             email={user.username}
             nickname={user.nickname}
-            profileImg={user.profileImg}
+            profileImg={
+              user.profileImg ||
+              'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/user%2Fprofile%2F01920d13-21f2-7f43-aa95-d8addad2c1bejpg'
+            }
           />
         </div>
         <div className="mb-3">
