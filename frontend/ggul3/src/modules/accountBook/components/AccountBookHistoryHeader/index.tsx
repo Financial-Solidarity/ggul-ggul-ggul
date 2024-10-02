@@ -4,19 +4,11 @@ import { useNavigate } from 'react-router-dom';
 interface AccountBookHistoryHeaderProps {
   startDate: string;
   setSearchParams: (params: string) => void;
-  // year: string;
-  // month: string;
-  // setYear: (year: string) => void;
-  // setMonth: (month: string) => void;
 }
 
 export const AccountBookHistoryHeader = ({
   startDate,
   setSearchParams,
-  // year,
-  // month,
-  // setYear,
-  // setMonth,
 }: AccountBookHistoryHeaderProps) => {
   const navigate = useNavigate();
 
@@ -27,7 +19,6 @@ export const AccountBookHistoryHeader = ({
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
-  // years의 내용을 {key: number, value: number} 형태로 변환해
   const transformedYears = years.map((year) => ({
     value: year.toString() + '년',
     label: year.toString() + '년',
@@ -48,7 +39,7 @@ export const AccountBookHistoryHeader = ({
       <div className="mb-6 flex gap-2">
         <div className="w-20">
           <Autocomplete
-            aria-label="년도 선택" // 추가된 부분
+            aria-label="년도 선택"
             classNames={{
               selectorButton: 'hidden',
             }}
@@ -60,8 +51,6 @@ export const AccountBookHistoryHeader = ({
             size="lg"
             variant="underlined"
             onInputChange={(value) => {
-              // /api/payment/month/chart/search?start-date=2024-09&end-date=2024-09
-
               const params = new URLSearchParams({
                 'start-date': `${value.slice(0, 4)}-${month.toString().padStart(2, '0')}`,
                 'end-date': `${value.slice(0, 4)}-${month.toString().padStart(2, '0')}`,
@@ -69,15 +58,6 @@ export const AccountBookHistoryHeader = ({
               });
 
               setSearchParams(params.toString());
-
-              // setSearchParams({
-              //   'start-date': `${value.slice(0, 4)}-${month.toString().slice(0, 2)}`,
-              //   'end-date': `${value.slice(0, 4)}-${month.toString().slice(0, 2)}`,
-              //   page: '0',
-              // });
-              // navigate(
-              //   `/account-book/history?start-date=${value.slice(0, 4)}-${month.toString().slice(0, 2)}&end-date=${value.slice(0, 4)}-${month.toString().slice(0, 2)}`,
-              // );
             }}
           >
             {transformedYears.map((year) => (
@@ -93,7 +73,7 @@ export const AccountBookHistoryHeader = ({
         </div>
         <div className="w-14">
           <Autocomplete
-            aria-label="월 선택" // 추가된 부분
+            aria-label="월 선택"
             classNames={{
               selectorButton: 'hidden',
             }}
