@@ -48,6 +48,8 @@ export const LoginForm = ({
 
       const userData = await getUserData();
 
+      console.log(userData, 'userData');
+
       setUser(userData);
 
       navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
