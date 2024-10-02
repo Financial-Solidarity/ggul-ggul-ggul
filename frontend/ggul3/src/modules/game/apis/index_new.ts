@@ -14,7 +14,7 @@ import {
 import { _axios } from '@/modules/common/utils/axios';
 
 // API 엔드포인트 베이스 URL
-const BASE_URL = '/api/equipments';
+const BASE_URL = '/equipments';
 
 // 장비 장착 (변경)
 export const equipEquipment = async (

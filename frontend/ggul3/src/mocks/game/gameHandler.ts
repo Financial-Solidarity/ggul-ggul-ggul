@@ -53,7 +53,7 @@ let equippedEquipment: EquipmentNFTDTO | null =
 
 export const gameHandlers = [
   // 보유한 장비 조회
-  http.get('/api/equipments', async () => {
+  http.get('/equipments', async () => {
     const filteredEquipments = sampleEquipments.filter(
       (equipment) => equipment,
     );
@@ -62,12 +62,12 @@ export const gameHandlers = [
   }),
 
   // 장착한 장비 조회
-  http.get('/api/equipments/equipped', async () => {
+  http.get('/equipments/equipped', async () => {
     return HttpResponse.json(equippedEquipment);
   }),
 
   // 장비 장착
-  http.put('/api/equipments/equip', async ({ request }) => {
+  http.put('/equipments/equip', async ({ request }) => {
     const { ipfsCID } = (await request.json()) as { ipfsCID: string };
 
     const equipmentToEquip = sampleEquipments.find(
@@ -84,7 +84,7 @@ export const gameHandlers = [
   }),
 
   // 장비 해제
-  http.put('/api/equipments/unequip', async ({ request }) => {
+  http.put('/equipments/unequip', async ({ request }) => {
     const { ipfsCID } = (await request.json()) as { ipfsCID: string };
 
     if (equippedEquipment && equippedEquipment.ipfsCID === ipfsCID) {
@@ -97,7 +97,7 @@ export const gameHandlers = [
   }),
 
   // 장비 삭제
-  http.post('/api/equipments/remove', async ({ request }) => {
+  http.post('/equipments/remove', async ({ request }) => {
     const { ipfsCID } = (await request.json()) as { ipfsCID: string };
 
     const indexToRemove = sampleEquipments.findIndex(
@@ -114,7 +114,7 @@ export const gameHandlers = [
   }),
 
   // 장비 뽑기
-  http.post('/api/equipments/draw', async () => {
+  http.post('/equipments/draw', async () => {
     const newEquipment: EquipmentDTO = {
       adjective: '빛나는',
       name: '초콜릿바',
@@ -132,7 +132,7 @@ export const gameHandlers = [
   }),
 
   // 장비 NFT 발행
-  http.post('/api/equipments/mint', async ({ request }) => {
+  http.post('/equipments/mint', async ({ request }) => {
     const { transactionHash } = (await request.json()) as {
       transactionHash: string;
     };
@@ -161,7 +161,7 @@ export const gameHandlers = [
   //====================== 마켓 모킹 ==========================
   // 판매 글 작성
   // 판매 글 작성
-  http.post('/api/market/sell', async ({ request }) => {
+  http.post('/market/sell', async ({ request }) => {
     const { ipfsCID, title, description, price } = (await request.json()) as {
       ipfsCID: string;
       title: string;
@@ -202,7 +202,7 @@ export const gameHandlers = [
   }),
 
   // 판매 글 조회
-  http.get('/api/market/sell/:ipfsCID', async ({ params }) => {
+  http.get('/market/sell/:ipfsCID', async ({ params }) => {
     const { ipfsCID } = params as { ipfsCID: string };
 
     const sellNFT = sampleSellList.find((item) => item.ipfsCID === ipfsCID);
@@ -218,12 +218,12 @@ export const gameHandlers = [
   }),
 
   // 판매 글 리스트 조회 (URL 검색자 없이 전체 반환)
-  http.get('/api/market/sells', async () => {
+  http.get('/market/sells', async () => {
     return HttpResponse.json(sampleSellList);
   }),
 
   // 판매 글 수정
-  http.put('/api/market/sell/:ipfsCID', async ({ params, request }) => {
+  http.put('/market/sell/:ipfsCID', async ({ params, request }) => {
     const { ipfsCID } = params as { ipfsCID: string };
     const { title, description, price } = (await request.json()) as SaleDTO;
 
@@ -249,7 +249,7 @@ export const gameHandlers = [
   }),
 
   // 판매 글 삭제
-  http.delete('/api/market/sell/:ipfsCID', async ({ params }) => {
+  http.delete('/market/sell/:ipfsCID', async ({ params }) => {
     const { ipfsCID } = params as { ipfsCID: string };
 
     const sellNFTIndex = sampleSellList.findIndex(
