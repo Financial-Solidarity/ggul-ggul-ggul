@@ -5,7 +5,7 @@ import { NftMiniCard } from './NftMiniCard';
 
 import { EquipmentNFTDTO } from '@/modules/game/@types';
 
-interface NftListSectionProps {
+interface NftCardListSectionProps {
   activeGradeIndex: string;
   setActiveGradeIndex: (index: string) => void;
   filteredNfts: EquipmentNFTDTO[];
@@ -14,14 +14,14 @@ interface NftListSectionProps {
   scrollContainerRef: React.RefObject<HTMLDivElement>;
 }
 
-export const NftListSection = ({
+export const NftCardListSection = ({
   activeGradeIndex,
   setActiveGradeIndex,
   filteredNfts,
   isLoading,
   onCardClick,
   scrollContainerRef,
-}: NftListSectionProps) => (
+}: NftCardListSectionProps) => (
   <div
     ref={scrollContainerRef}
     className="CONTENT-SECTION-BOTTOM flex w-full flex-col items-center overflow-y-auto rounded-t-2xl bg-default-800"
@@ -45,7 +45,7 @@ export const NftListSection = ({
       <Tab key="3" title="흔함" />
       <Tab key="4" title="매우 흔함" />
     </Tabs>
-    <div className="CARD-LIST mt-4 grid grid-cols-3 gap-4 px-3 py-4">
+    <div className="CARD-LIST mt-4 grid min-h-36 grid-cols-3 gap-4 px-3 py-4">
       {isLoading ? (
         <SkeletonCards count={6} />
       ) : (

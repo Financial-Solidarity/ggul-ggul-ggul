@@ -2,26 +2,29 @@ import {
   EquipEquipmentRequest,
   EquipmentDTO,
   EquipmentNFTDTO,
+  GetEquippedEquipmentResponse,
   GetReceivableTokenResponse,
   GetSellNFTListParams,
   GetSellNFTListResponse,
   MintEquipmentRequest,
+  MintEquipmentResponse,
   RegisterSellNFTRequest,
+  RegisterSellNFTResponse,
   RemoveEquipmentRequest,
-  SellNFTDTO,
+  MarketItemDTO,
   UnequipEquipmentRequest,
 } from '../@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
 // API 엔드포인트 베이스 URL
-const BASE_URL = '/equipments';
+const EQUIPMENT_BASE_URL = '/equipments';
 
 // 장비 장착 (변경)
 export const equipEquipment = async (
   request: EquipEquipmentRequest,
 ): Promise<void> => {
-  const url = `${BASE_URL}/equip`;
+  const url = `${EQUIPMENT_BASE_URL}/equip`;
 
   await _axios<void>({
     method: 'PUT',
@@ -34,7 +37,7 @@ export const equipEquipment = async (
 export const unequipEquipment = async (
   request: UnequipEquipmentRequest,
 ): Promise<void> => {
-  const url = `${BASE_URL}/unequip`;
+  const url = `${EQUIPMENT_BASE_URL}/unequip`;
 
   await _axios<void>({
     method: 'PUT',
@@ -48,7 +51,7 @@ export const getEquipmentList = async (
   minPower: number,
   maxPower: number,
 ): Promise<EquipmentNFTDTO[]> => {
-  const url = `${BASE_URL}?min-power=${minPower}&max-power=${maxPower}`;
+  const url = `${EQUIPMENT_BASE_URL}?min-power=${minPower}&max-power=${maxPower}`;
 
   return await _axios<EquipmentNFTDTO[]>({
     method: 'GET',
@@ -56,11 +59,11 @@ export const getEquipmentList = async (
   });
 };
 
-// 장비 삭제 (할거면 구현)
+// 장비 삭제
 export const removeEquipment = async (
   request: RemoveEquipmentRequest,
 ): Promise<void> => {
-  const url = `${BASE_URL}/remove`;
+  const url = `${EQUIPMENT_BASE_URL}/remove`;
 
   await _axios<void>({
     method: 'POST',
@@ -72,10 +75,10 @@ export const removeEquipment = async (
 // 장비 NFT 발행
 export const mintEquipment = async (
   request: MintEquipmentRequest,
-): Promise<EquipmentNFTDTO> => {
-  const url = `${BASE_URL}/mint`;
+): Promise<MintEquipmentResponse> => {
+  const url = `${EQUIPMENT_BASE_URL}/mint`;
 
-  return await _axios<EquipmentNFTDTO>({
+  return await _axios<MintEquipmentResponse>({
     method: 'POST',
     url,
     data: request,
@@ -84,7 +87,7 @@ export const mintEquipment = async (
 
 // 장비 뽑기
 export const drawEquipment = async (): Promise<EquipmentDTO> => {
-  const url = `${BASE_URL}/draw`;
+  const url = `${EQUIPMENT_BASE_URL}/draw`;
 
   return await _axios<EquipmentDTO>({
     method: 'POST',
@@ -93,18 +96,19 @@ export const drawEquipment = async (): Promise<EquipmentDTO> => {
 };
 
 // 장착한 장비 조회
-export const getEquippedEquipment = async (): Promise<EquipmentNFTDTO> => {
-  const url = `${BASE_URL}/equipped`;
+export const getEquippedEquipment =
+  async (): Promise<GetEquippedEquipmentResponse> => {
+    const url = `${EQUIPMENT_BASE_URL}/equipped`;
 
-  return await _axios<EquipmentNFTDTO>({
-    method: 'GET',
-    url,
-  });
-};
+    return await _axios<GetEquippedEquipmentResponse>({
+      method: 'GET',
+      url,
+    });
+  };
 
 // 전체 장비 이름 조회
 export const getEquipmentNames = async (): Promise<string[]> => {
-  const url = `${BASE_URL}/names`;
+  const url = `${EQUIPMENT_BASE_URL}/names`;
 
   return await _axios<string[]>({
     method: 'GET',
@@ -112,26 +116,25 @@ export const getEquipmentNames = async (): Promise<string[]> => {
   });
 };
 
-// ======================== 마켓 ( 10월 2일 합의본 ) ===========
+// ======================== 마켓 관련 API ===========
 
-// API 엔드포인트 베이스 URL
 const MARKET_URL = '/markets';
 
-// 1. 판매 글 작성
+// 판매 글 작성
 export const registerSellNFT = async (
   request: RegisterSellNFTRequest,
-): Promise<void> => {
+): Promise<RegisterSellNFTResponse> => {
   const url = `${MARKET_URL}`;
 
-  await _axios<void>({
+  return await _axios<RegisterSellNFTResponse>({
     method: 'POST',
     url,
     data: request,
   });
 };
 
-// +. 구매하기
-export const buyNFT = async (marketId: string) => {
+// 구매하기
+export const buyEquipment = async (marketId: string): Promise<void> => {
   const url = `${MARKET_URL}/${marketId}/buy`;
 
   await _axios<void>({
@@ -139,19 +142,20 @@ export const buyNFT = async (marketId: string) => {
     url,
   });
 };
-// 2. 판매 글 조회
-export const getSellNFTDetail = async (
+
+// 판매 글 상세 조회
+export const getMarketItemDetail = async (
   marketId: string,
-): Promise<SellNFTDTO> => {
+): Promise<MarketItemDTO> => {
   const url = `${MARKET_URL}/${marketId}`;
 
-  return await _axios<SellNFTDTO>({
+  return await _axios<MarketItemDTO>({
     method: 'GET',
     url,
   });
 };
 
-// 3. 판매 글 리스트 조회
+// 판매 글 리스트 조회
 export const getSellNFTList = async (
   params: GetSellNFTListParams,
 ): Promise<GetSellNFTListResponse> => {
@@ -179,8 +183,8 @@ export const getSellNFTList = async (
   });
 };
 
-// 4. 판매 글 삭제(취소)
-export const deleteSellNFT = async (marketId: string): Promise<void> => {
+// 판매 글 삭제(취소)
+export const cancelMarketSale = async (marketId: string): Promise<void> => {
   const url = `${MARKET_URL}/${marketId}`;
 
   await _axios<void>({
@@ -189,11 +193,11 @@ export const deleteSellNFT = async (marketId: string): Promise<void> => {
   });
 };
 
-//===================== 껄 키우기 ( 10월 2일 임시 합의본 )===============
+//===================== 껄 키우기 관련 API ================
 
 const GAME_URL = '/games';
 
-// 1. 얻을 수 있는 껄 조회
+// 현재 얻을 수 있는 껄 조회
 export const getReceivableTokenAmount =
   async (): Promise<GetReceivableTokenResponse> => {
     const url = `${GAME_URL}/receive`;
@@ -204,8 +208,7 @@ export const getReceivableTokenAmount =
     });
   };
 
-// 2. 껄 얻기
-//   => getReceiveableTokenAmount 연쇄수행해서 갱신해줘야함.
+// 껄 얻기
 export const receiveToken = async (): Promise<void> => {
   const url = `${GAME_URL}/receive`;
 

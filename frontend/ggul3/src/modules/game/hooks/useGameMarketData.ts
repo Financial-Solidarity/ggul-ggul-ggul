@@ -1,61 +1,62 @@
-// import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-// import { useNftSellListQuery } from '../queries/market';
-// import { SellNFTDTO } from '../@types/new_index';
+import { useSellNFTListQuery } from '../queries';
+import { GetSellNFTListResponse } from '../@types';
 
-// export const useGameMarketData = (pageSize: number) => {
-//   const [pageNumber, setPageNumber] = useState(0);
-//   const [sellNftList, setSellNftList] = useState<SellNFTDTO[]>([]);
-//   const [searchCriteria, setSearchCriteria] = useState<{
-//     name?: string;
-//     minPrice?: number;
-//     maxPrice?: number;
-//   }>({});
-//   const [totalContentCount, setTotalContentCount] = useState<number | null>(
-//     null,
-//   );
+export const useGameMarketData = (pageSize: number) => {
+  const [pageNumber, setPageNumber] = useState(0);
+  const [sellNftList, setSellNftList] = useState<
+    GetSellNFTListResponse['content']
+  >([]);
+  const [searchCriteria, setSearchCriteria] = useState<{
+    name?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    minPower?: number;
+    maxPower?: number;
+    own?: 'x' | 'true' | 'false';
+  }>({});
+  const [isLastPage, setIsLastPage] = useState(false);
 
-//   // 판매 리스트 가져오기 쿼리
-//   const { data, isFetching } = useNftSellListQuery(
-//     pageNumber,
-//     pageSize,
-//     searchCriteria,
-//   );
+  // 판매 리스트 가져오기 쿼리
+  const { data, isFetching } = useSellNFTListQuery({
+    page: pageNumber,
+    size: pageSize,
+    ...searchCriteria,
+  });
 
-//   useEffect(() => {
-//     if (data?.content) {
-//       // 검색 조건이 있을 경우 초기화 후 데이터 교체
-//       if (pageNumber === 0) {
-//         setSellNftList(data.content);
-//       } else {
-//         setSellNftList((prevList) => [...prevList, ...data.content]);
-//       }
-//       setTotalContentCount(data.pagination.totalElements);
-//     }
-//   }, [data, pageNumber]);
+  useEffect(() => {
+    if (data?.content) {
+      // 검색 조건이 있을 경우 초기화 후 데이터 교체
+      if (pageNumber === 0) {
+        setSellNftList(data.content);
+      } else {
+        setSellNftList((prevList) => [...prevList, ...data.content]);
+      }
 
-//   const handleObserver = useCallback(
-//     (entries: IntersectionObserverEntry[]) => {
-//       const target = entries[0];
+      // 마지막 페이지 여부를 확인하여 페칭 중단
+      setIsLastPage(data.pagination.last);
+    }
+  }, [data, pageNumber]);
 
-//       if (
-//         target.isIntersecting &&
-//         !isFetching &&
-//         (totalContentCount === null ||
-//           sellNftList.length < totalContentCount)
-//       ) {
-//         setPageNumber((prevPageNumber) => prevPageNumber + 1);
-//       }
-//     },
-//     [isFetching, totalContentCount, sellNftList.length],
-//   );
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
 
-//   return {
-//     sellNftList,
-//     isFetching,
-//     handleObserver,
-//     setSearchCriteria,
-//     setSellNftList,
-//     setPageNumber,
-//   };
-// };
+      // last가 false이고 더 가져올 데이터가 있다면 페칭
+      if (target.isIntersecting && !isFetching && !isLastPage) {
+        setPageNumber((prevPageNumber) => prevPageNumber + 1);
+      }
+    },
+    [isFetching, isLastPage],
+  );
+
+  return {
+    sellNftList,
+    isFetching,
+    handleObserver,
+    setSearchCriteria,
+    setSellNftList,
+    setPageNumber,
+  };
+};

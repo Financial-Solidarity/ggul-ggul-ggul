@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Image } from '@nextui-org/react';
 
 import { MintedEquipmentCard } from './MintedFoodCard';
-import { CookingLottie } from './CookingLottie';
+import { CookingLottie } from './Lotties/CookingLottie';
 import { EquipmentInfoDisplay } from './EquipmentInfoDisplay';
 import { RandomNumber } from './RandomNumber';
 

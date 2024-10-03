@@ -3,7 +3,7 @@ import { Image } from '@nextui-org/react';
 import { EquipmentDTO, EquipmentNFTDTO, HexCodesByGrade } from '../../@types';
 
 import { ConfettieLottie } from './Lotties/ConfettieLottie';
-import { PulseLottie } from './PulseLottie';
+import { PulseLottie } from './Lotties/PulseLottie';
 
 interface EquipmentInfoDisplayProps {
   step?: string | null;

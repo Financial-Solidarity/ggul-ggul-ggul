@@ -57,10 +57,10 @@
 //     staleTime: 5000,
 //   });
 // };
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+// import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { SellNFTDTO } from '../@types';
-import { getSellNFTDetail } from '../apis';
+// import { SellNFTDTO } from '../@types';
+// import { getSellNFTDetail } from '../apis';
 
 // // 판매 글 리스트 조회 쿼리
 // export const useNftSellListQuery = (
@@ -76,12 +76,12 @@ import { getSellNFTDetail } from '../apis';
 // };
 
 // 판매 글 상세 조회 쿼리
-export const useNftSellDetailQuery = (
-  ipfsCID: string,
-): UseQueryResult<SellNFTDTO, Error> => {
-  return useQuery<SellNFTDTO, Error>({
-    queryKey: ['nftSellDetail', ipfsCID],
-    queryFn: () => getSellNFTDetail(ipfsCID),
-    staleTime: 5000,
-  });
-};
+// export const useNftSellDetailQuery = (
+//   ipfsCID: string,
+// ): UseQueryResult<SellNFTDTO, Error> => {
+//   return useQuery<SellNFTDTO, Error>({
+//     queryKey: ['nftSellDetail', ipfsCID],
+//     queryFn: () => getSellNFTDetail(ipfsCID),
+//     staleTime: 5000,
+//   });
+// };

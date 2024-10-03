@@ -65,15 +65,15 @@
 
 import { Image } from '@nextui-org/react';
 
-import { GroupNumberWithBox } from './GroupNumberWithBox';
+import { EquipmentNFTDTO, HexCodesByGrade } from '../../@types';
 
-import { EquipmentNFTDTO, HexCodesByGrade } from '@/modules/game/@types';
+import { GroupNumberWithBox } from './GroupNumberWithBox';
 
 interface EquipmentNftInfoProps {
   equipmentNft?: EquipmentNFTDTO;
   showTitle?: boolean;
   showNumber?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; // size prop 추가
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
 // 각 사이즈별 크기 매핑
@@ -126,7 +126,9 @@ export const EquipmentNftInfo = ({
       </div>
 
       {/* 숫자 영역 */}
-      {showNumber && <GroupNumberWithBox number={12} />}
+      {showNumber && (
+        <GroupNumberWithBox number={equipmentNft?.equipment.power} />
+      )}
     </div>
   );
 };

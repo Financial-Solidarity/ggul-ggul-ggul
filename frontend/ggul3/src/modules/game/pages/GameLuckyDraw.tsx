@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import { useGameLuckyDrawState, useLuckyDrawActions } from '../hooks/luckyDraw';
+import {
+  useGameLuckyDrawState,
+  useLuckyDrawActions,
+} from '../hooks/useLuckyDraw';
 import { ContentSection } from '../components/GameLuckyDraw/ContentSection';
 import { ActionButtons } from '../components/GameLuckyDraw/ActionButtons';
 import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip';
