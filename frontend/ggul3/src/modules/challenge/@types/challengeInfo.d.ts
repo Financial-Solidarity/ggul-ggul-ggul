@@ -31,11 +31,18 @@ declare module '@types' {
     nickname: string;
     profileImg: string;
     type: string;
+    isMine: boolean;
   }
 
   export interface getChattingRooomIdsResponse {
     totalChattingRoomId: string;
     myTeamChattingRoomId: string | null;
     lobbyChattingRoomId: string | null;
+  }
+
+  export type GetParticipatingChallengeResponse = ParticipatingChallenge | null;
+  export interface ParticipatingChallenge {
+    state: string;
+    challengeId: string;
   }
 }

@@ -2,7 +2,10 @@ import { Button, Divider } from '@nextui-org/react';
 import { ArrowsRightLeftIcon } from '@heroicons/react/24/outline';
 
 import { useWaitingRoomStore } from '../../store/waitingRoomStore';
-import { useGetParticipantList } from '../../reactQueries/useChallengeQuery';
+import {
+  useChangeTeam,
+  useGetParticipantList,
+} from '../../reactQueries/useChallengeQuery';
 
 import { Participant } from './Participant';
 
@@ -19,7 +22,12 @@ export const TeamDrawer = ({
   onClose,
 }: TeamDrawerProps) => {
   const { setIsExitConfirmModalOpen } = useWaitingRoomStore();
-  const { data: participantList } = useGetParticipantList(challengeId!);
+  const { data: participantList } = useGetParticipantList(challengeId);
+  const participantId = participantList.find(
+    (participant) => participant.isMine,
+  )?.participantId;
+  const { mutate: changeTeam, isPending: isChangeTeamLoading } =
+    useChangeTeam();
 
   const openExitConfirmModal = () => {
     setIsExitConfirmModalOpen(true);
@@ -32,15 +40,24 @@ export const TeamDrawer = ({
     (participant) => participant.type === 'BLUE',
   );
 
+  const handleChangeTeam = () => {
+    if (!participantId) return;
+    changeTeam(participantId);
+  };
+
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
       <div className="relative flex h-full flex-col">
         <div className="flex items-center justify-between px-4 py-4">
           <h5 className="text-lg font-bold">참가자</h5>
-          <div className="flex items-center gap-1 text-default-600">
+          <button
+            className="flex items-center gap-1 rounded px-2 py-1 text-default-600 transition-colors hover:bg-default-100 disabled:opacity-50"
+            disabled={isChangeTeamLoading}
+            onClick={handleChangeTeam}
+          >
             <ArrowsRightLeftIcon className="w-4" />
             <span className="font-bold">팀변경</span>
-          </div>
+          </button>
         </div>
         <div className="flex w-full flex-col items-start overflow-y-auto">
           <div>
@@ -54,8 +71,9 @@ export const TeamDrawer = ({
           {teamA.map((participant) => (
             <Participant
               key={participant.participantId}
-              {...participant}
               img={participant.profileImg}
+              isMe={participant.isMine}
+              nickname={participant.nickname}
             />
           ))}
           <div className="flex w-full items-center gap-2 px-4">
