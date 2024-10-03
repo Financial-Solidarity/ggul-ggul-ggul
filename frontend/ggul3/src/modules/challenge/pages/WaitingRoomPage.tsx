@@ -1,6 +1,6 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
@@ -11,17 +11,29 @@ import {
   useGetChattingroomIds,
 } from '../reactQueries/useChallengeQuery';
 import { SoloDrawer } from '../components/waitingRoom/SoloDrawer';
+import {
+  usePreviousChattingList,
+  useRecentChattingList,
+} from '../reactQueries/useChattingRoomQuery';
+import { useSocketChattingStore } from '../store/socketChattingStore';
 
 import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
+import { useSocket } from '@/modules/common/hooks/useSocket';
 
 export const WaitingRoomPage = () => {
   useSetBottomBar({ active: false });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { id: challengeId } = useParams();
+  const socketChattingList = useSocketChattingStore((state) => state.chatList);
+  const clearSocketChattingList = useSocketChattingStore(
+    (state) => state.clearChatList,
+  );
+
+  const { sendChat, connect } = useSocket();
 
   const {
     data: { competitionType },
@@ -29,6 +41,13 @@ export const WaitingRoomPage = () => {
   const {
     data: { lobbyChattingRoomId },
   } = useGetChattingroomIds(challengeId!);
+
+  const { data: previousChattingList } = usePreviousChattingList(
+    lobbyChattingRoomId!,
+  );
+  const { data: recentChattingList } = useRecentChattingList(
+    lobbyChattingRoomId!,
+  );
 
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -38,9 +57,18 @@ export const WaitingRoomPage = () => {
     setIsDrawerOpen(false);
   };
 
-  const sendChat = (message: string) => {
-    console.log(message);
+  const handleSubmit = (message: string) => {
+    if (!lobbyChattingRoomId) return;
+    console.log('lobbyChattingRoomId', lobbyChattingRoomId);
+    sendChat({
+      chattingRoomId: lobbyChattingRoomId,
+      content: message,
+    });
   };
+
+  useEffect(() => {
+    clearSocketChattingList();
+  }, [previousChattingList, recentChattingList]);
 
   return (
     <>
@@ -55,9 +83,15 @@ export const WaitingRoomPage = () => {
           if (!id) return;
           <ChallengeInfoAccordion challengeId={challengeId!} />
           <div className="z-0 overflow-y-auto px-4 py-16">
-            <ChatList chats={[]} />
+            <ChatList
+              chats={[
+                ...previousChattingList,
+                ...recentChattingList,
+                ...socketChattingList,
+              ]}
+            />
           </div>
-          <Chatform onSubmit={sendChat} />
+          <Chatform onSubmit={handleSubmit} />
         </div>
       </PageContainer>
       {competitionType === 'S' ? (

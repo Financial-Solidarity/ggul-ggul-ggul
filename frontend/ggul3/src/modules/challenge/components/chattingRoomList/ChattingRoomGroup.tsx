@@ -9,31 +9,31 @@ import Solo from '@/assets/images/fist_hand.png';
 import Team from '@/assets/images/charity_group.png';
 
 interface ChattingRoomGroupProps {
-  challengeId: string;
-  title: string;
-  isEncrypted: boolean;
-  competitionType: 'T' | 'S';
-  isBlindness: boolean;
-  limitParticipant: number;
-  currentParticipant: number;
-  budgetCap: string;
-  startAt: string;
-  endAt: string;
-  isOwner: boolean;
-  isEnd: boolean;
+  challenge: {
+    challengeId: string;
+    title: string;
+    isEncrypted: boolean;
+    competitionType: 'T' | 'S';
+    isBlindness: boolean;
+    limitParticipant: number;
+    currentParticipant: number;
+    budgetCap: string;
+    startAt: string;
+    endAt: string;
+    isOwner: boolean;
+    isEnd: boolean;
+  };
   totalChattingRoom: ChattingRoomDTO;
   myTeamChattingRoom: ChattingRoomDTO | null;
 }
 
 export const ChattingRoomGroup = ({
-  title,
-  competitionType,
-  startAt,
-  endAt,
-  isEnd,
+  challenge,
   totalChattingRoom,
   myTeamChattingRoom,
 }: ChattingRoomGroupProps) => {
+  const { title, competitionType, startAt, endAt, isEnd } = challenge;
+
   return (
     <Card shadow="sm">
       <CardHeader>
