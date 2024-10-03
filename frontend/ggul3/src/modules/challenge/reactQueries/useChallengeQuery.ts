@@ -1,10 +1,13 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  ChallengeListResponse,
+  ChangeTeamResponse,
   CreateChallengeRequestBody,
   CreateChallengeResponse,
   ErrorDTO,
   GetChallengeDetailResponse,
   getChattingRooomIdsResponse,
+  Pageable,
   ParticipantDTO,
 } from '@types';
 
@@ -14,7 +17,12 @@ import {
   getChattingRooomIds,
   getParticipantList,
 } from '../apis/challenge';
-import { exitChallenge, startChallenge } from '../apis/waitingroom';
+import {
+  changeTeam,
+  exitChallenge,
+  getChallengeList,
+  startChallenge,
+} from '../apis/waitingroom';
 
 import { QUERY_KEYS } from '@/modules/common/constants';
 
@@ -27,6 +35,27 @@ export const useGetChallengeDetail = (challengeId: string) => {
     queryFn: () => getChallengeDetail(challengeId),
     enabled: !!challengeId,
     initialData: {} as GetChallengeDetailResponse,
+  });
+};
+
+/**
+ * 챌린지 목록 조회 query
+ */
+// TODO:  infiniteQuery로 변경하기
+export const useGetChallengeList = ({
+  title,
+  page = 0,
+}: {
+  title?: string;
+  page: number;
+}) => {
+  return useQuery<ChallengeListResponse, ErrorDTO>({
+    queryKey: [QUERY_KEYS.CHALLENGE, page, title],
+    queryFn: () => getChallengeList({ title, page }),
+    initialData: {
+      content: [],
+      pageable: {} as Pageable,
+    },
   });
 };
 
@@ -73,5 +102,18 @@ export const useStartChallenge = () => {
 export const useExitChallenge = () => {
   return useMutation<void, ErrorDTO, string>({
     mutationFn: (challengeId) => exitChallenge(challengeId),
+  });
+};
+
+export const useChangeTeam = () => {
+  const client = useQueryClient();
+
+  return useMutation<ChangeTeamResponse, ErrorDTO, string>({
+    mutationFn: (participantId) => changeTeam(participantId),
+    onSuccess: () => {
+      client.invalidateQueries({
+        queryKey: [QUERY_KEYS.PARTICIPANT],
+      });
+    },
   });
 };

@@ -22,10 +22,13 @@ export const EquipmentNftInfoRow = ({
           className="text-left text-3xl font-semibold"
           style={{ color: hexCode }}
         >
-          {equipmentNft?.equipment.name}
+          {`${equipmentNft?.equipment.adjective} ${equipmentNft?.equipment.name}`}
         </p>
         {/* 숫자 영역 */}
-        <GroupNumberWithBox number={12} withLabel={false} />
+        <GroupNumberWithBox
+          number={equipmentNft?.equipment.power}
+          withLabel={false}
+        />
       </div>
       {/* 이미지 영역 */}
       <div className="relative flex h-20 w-1/3 items-center justify-center">

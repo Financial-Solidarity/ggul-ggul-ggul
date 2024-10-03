@@ -19,7 +19,7 @@ export const NftLinks = () => {
           image={inventoryBag}
           title="껄 장비 인벤토리"
           type="right"
-          onClick={() => navigate(PathNames.GAME.MARKET.path)}
+          onClick={() => navigate(PathNames.GAME.INVENTORY.path)}
         />
         <CardButton
           color="bg-primary"

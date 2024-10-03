@@ -51,7 +51,9 @@ const MyJustificationChatBubble = ({ chat }: JustificationChatBubbleProps) => {
               />
             </div>
           )}
-          <p className="text-sm text-default-800">{content}</p>
+          <p className="whitespace-pre-wrap text-sm text-default-800">
+            {content}
+          </p>
         </div>
       </div>
     </div>
@@ -105,7 +107,9 @@ const OtherJustificationChatBubble = ({
                 />
               </div>
             )}
-            <p className="text-sm text-default-800">{content}</p>
+            <p className="whitespace-pre-wrap text-sm text-default-800">
+              {content}
+            </p>
           </div>
         </div>
       </div>

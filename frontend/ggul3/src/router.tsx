@@ -73,6 +73,7 @@ export interface PathNames {
   };
   MYPAGE: {
     MAIN: Path;
+    CHANGE_USER_INFO: Path;
   };
   LOGIN: Path;
   SIGHUP: Path;
@@ -193,6 +194,10 @@ export const PathNames: PathNames = {
     MAIN: {
       path: '/mypage',
       name: '마이페이지',
+    },
+    CHANGE_USER_INFO: {
+      path: '/mypage/user/edit',
+      name: '회원 정보 수정',
     },
   },
   LOGIN: {
@@ -351,6 +356,10 @@ export const router = createBrowserRouter([
       ...loginRoutes,
       ...accountBook,
       ...myPageRoutes,
+      {
+        path: PathNames.HOME.path,
+        element: <MyPage />,
+      },
     ],
   },
 ]);

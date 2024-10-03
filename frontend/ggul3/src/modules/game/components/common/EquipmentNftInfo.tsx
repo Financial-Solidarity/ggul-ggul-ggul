@@ -104,7 +104,7 @@ export const EquipmentNftInfo = ({
           className="text-center text-2xl font-semibold"
           style={{ color: hexCode }}
         >
-          {equipmentNft?.equipment.name}
+          {`${equipmentNft?.equipment.adjective} ${equipmentNft?.equipment.name}`}
         </p>
       )}
 

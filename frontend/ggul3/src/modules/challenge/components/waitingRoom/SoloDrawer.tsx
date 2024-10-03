@@ -39,12 +39,13 @@ export const SoloDrawer = ({
           {participantList.map((participant) => (
             <Participant
               key={participant.participantId}
-              {...participant}
               img={participant.profileImg}
+              isMe={participant.isMine}
+              nickname={participant.nickname}
             />
           ))}
         </div>
-        <div className="w-full px-4 py-4">
+        <div className="mt-auto w-full px-4 py-4">
           <Button
             className="w-full"
             color="danger"

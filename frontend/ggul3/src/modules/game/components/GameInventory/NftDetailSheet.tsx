@@ -10,15 +10,19 @@ import { PathNames } from '@/router';
 interface NftDetailSheetProps {
   isOpen: boolean;
   selectedEquipmentNft?: EquipmentNFTDTO;
+  equippedNft?: EquipmentNFTDTO;
   onClose: () => void;
   onEquip: () => void;
+  onUnequip: () => void;
 }
 
 export const NftDetailSheet = ({
   isOpen,
   selectedEquipmentNft,
+  equippedNft,
   onClose,
   onEquip,
+  onUnequip,
 }: NftDetailSheetProps) => {
   const navigate = useNavigate();
 
@@ -27,6 +31,8 @@ export const NftDetailSheet = ({
       state: { nftInfo: selectedEquipmentNft },
     });
   };
+
+  const isEquipped = equippedNft?.ipfsCID === selectedEquipmentNft?.ipfsCID;
 
   return (
     <Sheet
@@ -45,21 +51,33 @@ export const NftDetailSheet = ({
             )}
           </div>
           <div className="mt-4 flex w-full flex-row gap-3">
-            <Button
-              fullWidth
-              className="h-12 bg-default-500 text-white"
-              onPress={handleSellNft}
-            >
-              NFT 판매하기
-            </Button>
-            <Button
-              fullWidth
-              className="h-12"
-              color="primary"
-              onPress={onEquip}
-            >
-              NFT 장착하기
-            </Button>
+            {isEquipped ? (
+              <Button
+                fullWidth
+                className="h-12 bg-red-500 text-white"
+                onPress={onUnequip}
+              >
+                장착 해제하기
+              </Button>
+            ) : (
+              <>
+                <Button
+                  fullWidth
+                  className="h-12 bg-default-500 text-white"
+                  onPress={handleSellNft}
+                >
+                  NFT 판매하기
+                </Button>
+                <Button
+                  fullWidth
+                  className="h-12"
+                  color="primary"
+                  onPress={onEquip}
+                >
+                  NFT 장착하기
+                </Button>
+              </>
+            )}
           </div>
         </Sheet.Content>
       </Sheet.Container>

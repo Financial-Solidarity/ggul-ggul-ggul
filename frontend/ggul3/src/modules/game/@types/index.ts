@@ -2,6 +2,7 @@ import { Pagination } from '@types';
 
 export type Grades = 0 | 1 | 2 | 3 | 4;
 export type EquipmentStatus = 'EQUIPPED' | 'SELLING' | 'NONE';
+export type MarketStatus = 'PENDING' | 'COMPLETED' | 'CANCELED';
 
 // Equipment 타입 정의
 export interface EquipmentDTO {
@@ -105,6 +106,7 @@ export interface GetMarketListResponse {
 export interface GetMarketItemRequest {
   marketId: string;
 }
+
 export interface GetMarketItemResponse {
   equipmentNFT: EquipmentNFTDTO;
   seller: UserDTO;
@@ -141,12 +143,7 @@ export interface UnequipEquipmentResponse {
 }
 
 // 장착한 장비 조회 API 응답 타입
-export interface GetEquippedEquipmentResponse {
-  ipfsCID: string;
-  nftUrl: string;
-  status: EquipmentStatus;
-  equipment: EquipmentDTO;
-}
+export interface GetEquippedEquipmentResponse extends EquipmentNFTDTO {}
 
 // =================껄지갑============================
 // 현재 토큰 개수 조회 응답 타입

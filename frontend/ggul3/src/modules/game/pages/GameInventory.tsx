@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useGameInventory } from '../hooks/useGameInventory';
 import { EquippedNftSection } from '../components/GameInventory/EquippedNftSection';
 import { NftCardListSection } from '../components/GameInventory/NftCardListSection';
@@ -21,11 +23,17 @@ export const GameInventory = (): JSX.Element => {
     scrollContainerRef,
     equippedNft,
     isEquippedLoading,
-    filteredNfts,
+    equipmentList,
     isNftsLoading,
     openSheet,
     handleEquip,
+    handleUnequip,
   } = useGameInventory();
+
+  useEffect(() => {
+    console.log('Updated equippedNft:', equippedNft);
+    console.log('Updated equipmentList:', equipmentList);
+  }, [equippedNft, equipmentList]);
 
   return (
     <>
@@ -42,7 +50,8 @@ export const GameInventory = (): JSX.Element => {
 
         <NftCardListSection
           activeGradeIndex={activeGradeIndex}
-          filteredNfts={filteredNfts}
+          equipmentList={equipmentList}
+          equippedNft={equippedNft}
           isLoading={isNftsLoading}
           scrollContainerRef={scrollContainerRef}
           setActiveGradeIndex={setActiveGradeIndex}
@@ -50,10 +59,12 @@ export const GameInventory = (): JSX.Element => {
         />
 
         <NftDetailSheet
+          equippedNft={equippedNft}
           isOpen={isOpen}
           selectedEquipmentNft={selectedEquipmentNft}
           onClose={() => setOpen(false)}
           onEquip={handleEquip}
+          onUnequip={handleUnequip}
         />
       </PageContainer>
     </>

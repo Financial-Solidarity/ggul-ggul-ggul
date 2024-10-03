@@ -7,8 +7,8 @@ interface SearchFilterSheetProps {
   onClose: () => void;
   onSearch: (searchCriteria: {
     name?: string;
-    minStatus?: number;
-    maxStatus?: number;
+    minPower?: number;
+    maxPower?: number;
     minPrice?: number;
     maxPrice?: number;
   }) => void;
@@ -24,8 +24,8 @@ export const SearchFilterSheet = ({
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
 
-  // grade에 따른 minStatus와 maxStatus 설정
-  const gradeStatusRanges = [
+  // grade에 따른 power 범위 설정
+  const gradePowerRanges = [
     { min: 0, max: 999 }, // 전체
     { min: 1, max: 200 }, // 0등급
     { min: 201, max: 400 }, // 1등급
@@ -35,14 +35,14 @@ export const SearchFilterSheet = ({
   ];
 
   const handleSearch = () => {
-    const selectedGrade = gradeStatusRanges[grade];
-    const minStatus = selectedGrade.min;
-    const maxStatus = selectedGrade.max;
+    const selectedGrade = gradePowerRanges[grade];
+    const minPower = grade === 0 ? undefined : selectedGrade.min;
+    const maxPower = grade === 0 ? undefined : selectedGrade.max;
 
     onSearch({
       name: name || undefined,
-      minStatus: grade === 0 ? undefined : minStatus,
-      maxStatus: grade === 0 ? undefined : maxStatus,
+      minPower,
+      maxPower,
       minPrice,
       maxPrice,
     });
@@ -94,7 +94,6 @@ export const SearchFilterSheet = ({
                 maxValue={1000}
                 step={50}
                 onChange={(value) => {
-                  // 타입 체크를 통해 안전한 배열 처리
                   if (Array.isArray(value)) {
                     setMinPrice(value[0]);
                     setMaxPrice(value[1]);

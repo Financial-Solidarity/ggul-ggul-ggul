@@ -17,7 +17,7 @@ import {
   RemoveEquipmentRequest,
   GetEquippedEquipmentResponse,
   GetEquipmentListResponse,
-  MarketItemDTO,
+  GetMarketItemResponse,
 } from '../@types';
 import {
   getEquipmentList,
@@ -141,7 +141,7 @@ export const useBuyEquipmentMutation = (): UseMutationResult<
 // 판매 글 상세 조회 쿼리 훅
 export const useMarketItemDetailQuery = (
   marketId: string,
-): UseQueryResult<MarketItemDTO> => {
+): UseQueryResult<GetMarketItemResponse> => {
   return useQuery({
     queryKey: ['marketItemDetail', marketId],
     queryFn: () => getMarketItemDetail(marketId),

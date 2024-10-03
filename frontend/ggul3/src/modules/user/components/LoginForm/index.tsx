@@ -14,6 +14,8 @@ import {
 
 import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import { useUserStore } from '@/modules/common/store/userStore';
+import { getUserData } from '@/modules/common/apis/userApis';
 
 interface LoginFormProps {
   email: string;
@@ -36,11 +38,21 @@ export const LoginForm = ({
 }: LoginFormProps) => {
   const navigate = useNavigate();
 
+  const { setUser } = useUserStore();
+
   const handleSubmitLogin = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
       await login({ email, password });
+
+      // 유저 데이터 가져오기
+      const userData = await getUserData();
+
+      console.log(userData, 'userData');
+
+      // 유저 데이터 상태에 저장
+      setUser(userData);
 
       navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
     } catch (error) {

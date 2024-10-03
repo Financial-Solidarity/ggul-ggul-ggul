@@ -17,38 +17,50 @@ export const useGameMarketData = (pageSize: number) => {
     own?: 'x' | 'true' | 'false';
   }>({});
   const [isLastPage, setIsLastPage] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  // 판매 리스트 가져오기 쿼리
-  const { data, isFetching } = useSellNFTListQuery({
+  const { data, isFetching, isError } = useSellNFTListQuery({
     page: pageNumber,
     size: pageSize,
     ...searchCriteria,
   });
 
   useEffect(() => {
+    // 에러가 발생한 경우
+    if (isError) {
+      setHasError(true);
+
+      return;
+    }
+
+    // 데이터를 정상적으로 가져온 경우
     if (data?.content) {
-      // 검색 조건이 있을 경우 초기화 후 데이터 교체
+      setHasError(false);
       if (pageNumber === 0) {
         setSellNftList(data.content);
       } else {
         setSellNftList((prevList) => [...prevList, ...data.content]);
       }
-
-      // 마지막 페이지 여부를 확인하여 페칭 중단
       setIsLastPage(data.pagination.last);
     }
-  }, [data, pageNumber]);
+  }, [data, pageNumber, isError]);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
 
-      // last가 false이고 더 가져올 데이터가 있다면 페칭
-      if (target.isIntersecting && !isFetching && !isLastPage) {
+      // 페이지네이션: 검색 결과가 있고, 에러가 없으며, 더 가져올 데이터가 있을 때만
+      if (
+        target.isIntersecting &&
+        !isFetching &&
+        !isLastPage &&
+        !hasError &&
+        sellNftList.length > 0
+      ) {
         setPageNumber((prevPageNumber) => prevPageNumber + 1);
       }
     },
-    [isFetching, isLastPage],
+    [isFetching, isLastPage, hasError, sellNftList.length],
   );
 
   return {
@@ -58,5 +70,6 @@ export const useGameMarketData = (pageSize: number) => {
     setSearchCriteria,
     setSellNftList,
     setPageNumber,
+    hasError,
   };
 };
