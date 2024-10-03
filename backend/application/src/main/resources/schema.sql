@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS market_deal;
+DROP TABLE IF EXISTS market;
 DROP TABLE IF EXISTS tokenized_equipment;
 DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS equipment_item;
@@ -155,6 +157,32 @@ CREATE TABLE tokenized_equipment (
     FOREIGN KEY (owner_id) REFERENCES user(user_id),
     FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
 );
+
+CREATE TABLE market (
+    market_id BINARY(16) NOT NULL PRIMARY KEY,
+    tokenized_equipment_id BINARY(16) NOT NULL,
+    seller_id BINARY(16) NOT NULL,
+    buyer_id BINARY(16) NULL,
+    title VARCHAR(40) NOT NULL,
+    description VARCHAR(200) NULL,
+    price BIGINT NOT NULL,
+    created_at DATETIME NOT NULL,
+    completed_at DATETIME NULL,
+    status VARCHAR(16) NOT NULL,
+
+    FOREIGN KEY (tokenized_equipment_id) REFERENCES tokenized_equipment(tokenized_equipment_id),
+    FOREIGN KEY (seller_id) REFERENCES user(user_id),
+    FOREIGN KEY (buyer_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE market_deal (
+    market_deal_id BINARY(16) NOT NULL PRIMARY KEY,
+    market_id BINARY(16) NOT NULL,
+    deal_no BIGINT NOT NULL,
+
+    FOREIGN KEY (market_id) REFERENCES market(market_id)
+);
+
 
 CREATE TABLE consumption_log
 (

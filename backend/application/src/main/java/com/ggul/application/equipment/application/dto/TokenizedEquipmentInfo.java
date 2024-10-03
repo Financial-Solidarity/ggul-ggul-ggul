@@ -15,14 +15,14 @@ public class TokenizedEquipmentInfo {
     private String ipfsCID;
     private String nftUrl;
     private Status status;
-    private EquipmentInfo equipmentInfo;
+    private EquipmentInfo equipment;
 
     public static TokenizedEquipmentInfo from(TokenizedEquipment tokenizedEquipment){
         return TokenizedEquipmentInfo.builder()
                 .ipfsCID(tokenizedEquipment.getIpfsCID())
                 .nftUrl(tokenizedEquipment.getNftUrl())
                 .status(tokenizedEquipment.getStatus())
-                .equipmentInfo(EquipmentInfo.from(tokenizedEquipment.getEquipment()))
+                .equipment(EquipmentInfo.from(tokenizedEquipment.getEquipment()))
                 .build();
     }
 }
