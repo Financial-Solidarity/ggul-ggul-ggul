@@ -20,12 +20,13 @@ public class DemandDepositAccountService {
     private final AccountRepository accountRepository;
 
     @Transactional(readOnly = true)
-    public void getMyDemandDepositAccount(UUID userId, InquireDemandDepositAccountView inquireDemandDepositAccountView){
-        Account userAccount = accountRepository.getReferenceById(userId);
+    public Map<String, Object> getMyDemandDepositAccount(UUID userId, InquireDemandDepositAccountView inquireDemandDepositAccountView){
+        String userKey = accountRepository.findUserKeyByUserId(userId);
 
-        Map<String, Object> userAccountDetail = bankMasterService.getDemandDepositAccount(userAccount.getUserKey(), inquireDemandDepositAccountView.getAccountNo());
+        Map<String, Object> userAccountDetail = bankMasterService.getDemandDepositAccount(userKey, inquireDemandDepositAccountView.getAccountNo());
         log.info("userAccountDetail = {}", userAccountDetail);
 
+        return (Map<String, Object>) userAccountDetail.get("REC") ;
     }
 
 }

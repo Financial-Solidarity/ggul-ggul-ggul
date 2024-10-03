@@ -92,9 +92,9 @@ public class AccountController {
     // 내가 등록한 계좌 조회(단건)
     @GetMapping("/inquireDemandDepositAccount")
     public ResponseEntity<?> getDemandDepositAccount(@RequestBody InquireDemandDepositAccountView inquireDemandDepositAccountView, @AuthenticationPrincipal UserLoginContext userLoginContext){
-        demandDepositAccountService.getMyDemandDepositAccount(userLoginContext.getUserId(), inquireDemandDepositAccountView);
+        Map<String, Object> userAccount = demandDepositAccountService.getMyDemandDepositAccount(userLoginContext.getUserId(), inquireDemandDepositAccountView);
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(userAccount);
     }
 
     // 세션이 등록한 계좌를 모두 해지
