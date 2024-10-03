@@ -108,6 +108,7 @@ CREATE TABLE notification
     user_id            BINARY(16)   NOT NULL,
     notification_type  VARCHAR(40)  NOT NULL,
     data               JSON,
+    created_at          DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
