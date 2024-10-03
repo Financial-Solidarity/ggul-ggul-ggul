@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { Button } from '@nextui-org/react';
+import { Button, Skeleton } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
 import { ChallengeListItem } from '../components/challengeList/ChallengeListItem';
@@ -15,6 +15,7 @@ export const ChallengeListPage = () => {
   const navigate = useNavigate();
   const {
     data: { content },
+    isFetching,
   } = useGetChallengeList({ page: 0 });
 
   useSetBottomBar({ active: true, isDarkMode: false });
@@ -28,6 +29,14 @@ export const ChallengeListPage = () => {
       <TopBar />
       <PageContainer>
         <div className="mb-20 flex flex-col gap-2">
+          {isFetching &&
+            Array(5)
+              .fill(0)
+              .map((_, index) => (
+                <Skeleton key={index} className="rounded-2xl">
+                  <div className="h-40 w-full" />
+                </Skeleton>
+              ))}
           {content.map((item) => (
             <ChallengeListItem key={item.challengeId} item={item} />
           ))}

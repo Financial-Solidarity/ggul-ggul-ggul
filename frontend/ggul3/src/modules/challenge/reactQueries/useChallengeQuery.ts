@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   ChallengeListResponse,
+  ChangeTeamResponse,
   CreateChallengeRequestBody,
   CreateChallengeResponse,
   ErrorDTO,
@@ -17,6 +18,7 @@ import {
   getParticipantList,
 } from '../apis/challenge';
 import {
+  changeTeam,
   exitChallenge,
   getChallengeList,
   startChallenge,
@@ -100,5 +102,18 @@ export const useStartChallenge = () => {
 export const useExitChallenge = () => {
   return useMutation<void, ErrorDTO, string>({
     mutationFn: (challengeId) => exitChallenge(challengeId),
+  });
+};
+
+export const useChangeTeam = () => {
+  const client = useQueryClient();
+
+  return useMutation<ChangeTeamResponse, ErrorDTO, string>({
+    mutationFn: (participantId) => changeTeam(participantId),
+    onSuccess: () => {
+      client.invalidateQueries({
+        queryKey: [QUERY_KEYS.PARTICIPANT],
+      });
+    },
   });
 };

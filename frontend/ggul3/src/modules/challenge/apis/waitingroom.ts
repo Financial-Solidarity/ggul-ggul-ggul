@@ -1,4 +1,8 @@
-import { ChallengeListRequestBody, ChallengeListResponse } from '@types';
+import {
+  ChallengeListRequestBody,
+  ChallengeListResponse,
+  ChangeTeamResponse,
+} from '@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
@@ -63,5 +67,13 @@ export const exitChallenge = (challengeId: string) => {
     method: 'patch',
     url: 'challenges/exit',
     data: { challengeId },
+  });
+};
+
+export const changeTeam = (participantId: string) => {
+  return _axios<ChangeTeamResponse>({
+    method: 'patch',
+    url: 'challenges/team ',
+    data: { participantId },
   });
 };
