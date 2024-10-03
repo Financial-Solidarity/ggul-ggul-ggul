@@ -92,8 +92,9 @@ export const TeamDrawer = ({
           {teamB.map((participant) => (
             <Participant
               key={participant.participantId}
-              {...participant}
               img={participant.profileImg}
+              isMe={participant.isMine}
+              nickname={participant.nickname}
             />
           ))}
         </div>
