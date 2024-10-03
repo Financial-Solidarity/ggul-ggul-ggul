@@ -10,6 +10,7 @@ import com.ggul.application.chatting.domain.repository.ChattingRoomRepository;
 import com.ggul.application.chatting.exception.ChattingJustificationUnAuthorizedException;
 import com.ggul.application.chatting.exception.ChattingNotFoundException;
 import com.ggul.application.chatting.exception.ChattingRoomParticipantExistException;
+import com.ggul.application.chatting.exception.ChattingRoomParticipantNotExistException;
 import com.ggul.application.chatting.query.ChattingSendService;
 import com.ggul.application.chatting.query.NotificationSender;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class ChattingRegisterService {
 
         @Transactional
         public void chattingCreate(ChatRequest request, UUID userId) {
-            ChallengeParticipant participant = chattingRoomParticipantRepository.findByChattingRoomIdAndUserId(request.getChattingRoomId(), userId).orElseThrow(ChattingRoomParticipantExistException::new);
+            ChallengeParticipant participant = chattingRoomParticipantRepository.findByChattingRoomIdAndUserId(request.getChattingRoomId(), userId).orElseThrow(ChattingRoomParticipantNotExistException::new);
             Chatting chatting = Chatting.builder()
                     .participant(participant)
                     .type(Chatting.Type.COMMON)

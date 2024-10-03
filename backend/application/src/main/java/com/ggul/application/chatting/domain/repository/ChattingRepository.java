@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ChattingRepository extends JpaRepository<Chatting, UUID> {
@@ -23,7 +24,7 @@ public interface ChattingRepository extends JpaRepository<Chatting, UUID> {
             " AND c.createdAt BETWEEN ( SELECT cp.lastConnectedAt FROM ChattingRoomParticipant cp WHERE cp.challengeParticipant.user.id = :sessionId ) AND NOW() ")
     ChattingBadgeCount countByChattingRoomAndParticipantId(@Param("chattingRoomId") UUID chattingRoomId, @Param("sessionId") UUID sessionId);
 
-    Chatting findFirstByChattingRoom_IdOrderByCreatedAtDesc(UUID chattingRoomId);
+    Optional<Chatting> findFirstByChattingRoom_IdOrderByCreatedAtDesc(UUID chattingRoomId);
 
     List<Chatting> findAllByChattingRoom_IdAndCreatedAtBeforeOrderByCreatedAt(UUID chattingRoomId, LocalDateTime createdAt);
 

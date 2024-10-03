@@ -13,6 +13,6 @@ import java.util.UUID;
 public class ChattingRoomInfoView {
     private UUID chattingRoomId;
     private String lastChattingContent;
-    private LocalDateTime lastChattingSendAt;
+    private LocalDateTime lastChattingSentAt;
     private Integer badge;
 }

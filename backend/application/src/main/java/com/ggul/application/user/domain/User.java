@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +44,7 @@ public class User extends SoftDeleteEntity {
     private String profile;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<FcmToken> fcmTokens;
+    private List<FcmToken> fcmTokens = new ArrayList<>();
 
     public void update(UserInfoModifyRequest request, String imageUrl) {
         if(request.getNickname() != null && !request.getNickname().isEmpty()) {

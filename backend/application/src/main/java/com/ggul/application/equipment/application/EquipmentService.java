@@ -10,7 +10,6 @@ import com.ggul.application.equipment.exception.*;
 import com.ggul.application.game.application.GameService;
 import com.ggul.application.game.domain.Game;
 import com.ggul.application.game.domain.GameRepository;
-import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;

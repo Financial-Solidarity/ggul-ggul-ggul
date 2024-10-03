@@ -43,7 +43,7 @@ public class ChallengeReadyService {
         }
 
         List<ChattingRoom> chattingRooms = chattingRoomGenerateService.generateAll(target);
-
+        ChallengeReadiedEvent build = null;
         if(target.getCompetitionType().equals(CompetitionType.TEAM)) {
             List<ChallengeParticipant> redTeam = challengeParticipantRepository.findChallengeParticipantByChallenge_IdAndType(request.getChallengeId(), ChallengeParticipantType.RED);
             List<ChallengeParticipant> blueTeam = challengeParticipantRepository.findChallengeParticipantByChallenge_IdAndType(request.getChallengeId(), ChallengeParticipantType.BLUE);
@@ -57,6 +57,13 @@ public class ChallengeReadyService {
             chattingRoomJoinService.joinAll(chattingRooms.get(2), redTeam);
             chattingRoomJoinService.joinAll(chattingRooms.get(2), blueTeam);
 
+            build = ChallengeReadiedEvent.builder().challengeId(target.getId())
+                    .type(target.getCompetitionType())
+                    .blueTeamChattingRoomId(chattingRooms.get(0).getId())
+                    .redTeamChattingRoomId(chattingRooms.get(1).getId())
+                    .totalChattingRoomId(chattingRooms.get(2).getId())
+                    .build();
+
         }else {
             List<ChallengeParticipant> solo = challengeParticipantRepository.findChallengeParticipantByChallenge_IdAndType(request.getChallengeId(), ChallengeParticipantType.PERSONAL);
 
@@ -64,18 +71,18 @@ public class ChallengeReadyService {
                 throw new ChallengeParticipantNotMatchException();
             }
             chattingRoomJoinService.joinAll(chattingRooms.get(0), solo);
+
+            build = ChallengeReadiedEvent.builder().challengeId(target.getId())
+                    .type(target.getCompetitionType())
+                    .totalChattingRoomId(chattingRooms.get(0).getId())
+                    .build();
         }
 
 
 
         target.ready();
 
-        ChallengeReadiedEvent build = ChallengeReadiedEvent.builder().challengeId(target.getId())
-                .type(target.getCompetitionType())
-                .blueTeamChattingRoomId(chattingRooms.get(0).getId())
-                .redTeamChattingRoomId(chattingRooms.get(1).getId())
-                .totalChattingRoomId(chattingRooms.get(2).getId())
-                .build();
+
         Events.raise(build);
     }
 }
