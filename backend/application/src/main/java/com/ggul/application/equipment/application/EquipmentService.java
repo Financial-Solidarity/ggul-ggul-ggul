@@ -7,7 +7,6 @@ import com.ggul.application.equipment.application.dto.EquipmentMintResult;
 import com.ggul.application.equipment.application.dto.TokenizedEquipmentInfo;
 import com.ggul.application.equipment.domain.*;
 import com.ggul.application.equipment.exception.*;
-import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
@@ -48,7 +47,7 @@ public class EquipmentService {
 
         EquipmentDrawResult result = equipmentDrawService.drawEquipment(wallet.getAddress());
 
-        EquipmentItem equipmentItem = equipmentItemRepository.findById(result.getItem().longValue()).orElseThrow(EquipmentNotFoundException::new);
+        EquipmentItem equipmentItem = equipmentItemRepository.getReferenceById(result.getItem().longValue());
 
         Equipment equipment = equipmentRepository.save(Equipment.builder()
                 .publisher(wallet.getAddress())
