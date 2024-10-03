@@ -1,5 +1,6 @@
 package com.ggul.application.account.ui;
 
+import com.ggul.application.account.application.TerminationAccountService;
 import com.ggul.application.account.query.DemandDepositAccountListService;
 import com.ggul.application.account.application.GenerationDemandDepositAccountService;
 import com.ggul.application.account.application.GenerationUserService;
@@ -29,6 +30,8 @@ public class AccountController {
     private final GenerationDemandDepositAccountService generationDemandDepositAccountService;
     private final DemandDepositAccountListService demandDepositAccountListService;
     private final DemandDepositAccountService demandDepositAccountService;
+    private final TerminationAccountService terminationAccountService;
+
 
     //유저 계정 만들기
     @PostMapping("/users")
@@ -90,6 +93,14 @@ public class AccountController {
     @GetMapping("/inquireDemandDepositAccount")
     public ResponseEntity<?> getDemandDepositAccount(@RequestBody InquireDemandDepositAccountView inquireDemandDepositAccountView, @AuthenticationPrincipal UserLoginContext userLoginContext){
         demandDepositAccountService.getMyDemandDepositAccount(userLoginContext.getUserId(), inquireDemandDepositAccountView);
+
+        return ResponseEntity.ok(null);
+    }
+
+    // 세션이 등록한 계좌를 모두 해지
+    @DeleteMapping("/deleteDemandDepositAccounts")
+    public ResponseEntity<?> deleteDemandDepositMyAccounts(@AuthenticationPrincipal UserLoginContext userLoginContext){
+        terminationAccountService.terminationMyAccounts(userLoginContext.getUserId());
 
         return ResponseEntity.ok(null);
     }

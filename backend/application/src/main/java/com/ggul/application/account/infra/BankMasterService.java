@@ -98,6 +98,13 @@ public class BankMasterService {
     }
 
 
+    public Map<String, Object> deleteDemandDepositAccount(String userKey, String accountNo){
+        String url = "/edu/demandDeposit/deleteDemandDepositAccount";
+        Map<String, Object> body = generatorBodyWithHeader(url, userKey);
+        body.put("accountNo", accountNo);
+
+        return postRequest(url, body);
+    }
 
 
 
