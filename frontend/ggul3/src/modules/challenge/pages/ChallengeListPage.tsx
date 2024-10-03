@@ -13,6 +13,9 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PathNames } from '@/router';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
+import { NavTitle } from '@/modules/common/components';
+import { BackButton } from '@/modules/common/components/BackButton/BackButton';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const ChallengeListPage = () => {
   const navigate = useNavigate();
@@ -31,7 +34,11 @@ export const ChallengeListPage = () => {
 
   return (
     <>
-      <TopBar />
+      <TopBar
+        center={<NavTitle title="챌린지" />}
+        left={<BackButton color="black" />}
+        right={<NotificationButton color="black" />}
+      />
       <PageContainer>
         <div className="mb-20 flex h-full flex-col gap-2">
           {participatingChallenge?.state === 'READY' ? (

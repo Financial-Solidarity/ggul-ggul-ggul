@@ -101,7 +101,6 @@ export const WaitingRoomPage = () => {
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
-          if (!id) return;
           <ChallengeInfoAccordion challengeId={challengeId!} />
           <div
             ref={containerRef}
