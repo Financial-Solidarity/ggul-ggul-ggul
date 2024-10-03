@@ -48,7 +48,8 @@ public class EquipmentService {
 
         EquipmentDrawResult result = equipmentDrawService.drawEquipment(wallet.getAddress());
 
-        EquipmentItem equipmentItem = equipmentItemRepository.getReferenceById(result.getItem().longValue());
+        EquipmentItem equipmentItem = equipmentItemRepository.findById(result.getItem().longValue()).orElseThrow(EquipmentNotFoundException::new);
+
         Equipment equipment = equipmentRepository.save(Equipment.builder()
                 .publisher(wallet.getAddress())
                 .adjective(adjective)
