@@ -248,6 +248,13 @@ VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1
 insert into user(user_id, username, user_password, user_nickname, created_at, is_deleted)
 values("2", "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 'asdf', now(), 0);
 
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
+VALUES
+    (2,
+     2,
+     UNHEX('d0a443f0212f1a529911199c1b46f6af9864b846'),
+     UNHEX('8e80be688dba0dc84903604386c6c2f5f81e7e39198fe11ef5c30d2f443ef5f0'));
+
 insert into account(account_id, user_id, account_user_key)
 values (1, 2, 'ff883feb-b587-40f7-b41e-394743b1e435');
 
