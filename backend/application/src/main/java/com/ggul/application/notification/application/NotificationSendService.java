@@ -25,7 +25,7 @@ public class NotificationSendService {
         for(Notification noti : lists) {
             List<FcmToken> tokens = noti.getUser().getFcmTokens();
             if(tokens.size() != 0) {
-                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(noti.getUser().getFcmTokens(), noti.getTitle(), noti.getBody(), noti.getType().name(), noti.getData());
+                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(noti.getUser().getFcmTokens(), noti.getTitle(), noti.getBody(), noti.getType().name(), noti.getData(), false);
                 mlists.add(multicastMessage);
             }
         }

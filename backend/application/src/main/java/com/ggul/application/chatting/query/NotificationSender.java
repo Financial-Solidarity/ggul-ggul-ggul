@@ -32,7 +32,7 @@ public class NotificationSender {
         participants.forEach(participant -> {
             if(participant.getUser().getFcmTokens().size() != 0) {
                 MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(participant.getUser().getFcmTokens(), chatting.getParticipant().getNickname(), content,
-                        type, Map.of());
+                        type, Map.of(), false);
                 messages.add(multicastMessage);
             }
         });

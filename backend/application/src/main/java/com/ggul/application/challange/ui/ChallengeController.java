@@ -10,6 +10,7 @@ import com.ggul.application.challange.query.ChallengeFindService;
 import com.ggul.application.challange.query.ChallengeParticipantFindService;
 import com.ggul.application.challange.ui.dto.ChallengeParticipantView;
 import com.ggul.application.challange.ui.dto.ChallengeView;
+import com.ggul.application.chatting.application.ChattingRoomJoinService;
 import com.ggul.application.common.domain.password.Password;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class ChallengeController {
     private final ChallengeReadyService challengeReadyService;
     private final ChallengeExitService challengeExitService;
     private final ChallengeParticipantFindService challengeParticipantFindService;
+    private final ChattingRoomJoinService chattingRoomJoinService;
     private final ChallengeTeamChangeService challengeTeamChangeService;
 
     @PostMapping()
@@ -51,7 +53,7 @@ public class ChallengeController {
 
     @PostMapping("/join")
     public ResponseEntity<?> joinChallenge(@RequestBody ChallengeJoinRequest request, @AuthenticationPrincipal UserLoginContext context) {
-        challengeJoinService.join(request.getChallengeId(), context.getUserId(), Password.of(request.getPassword(), false));
+        challengeJoinService.joinLobby(request.getChallengeId(), context.getUserId(), Password.of(request.getPassword(), false));
         return ResponseEntity.ok().build();
     }
 

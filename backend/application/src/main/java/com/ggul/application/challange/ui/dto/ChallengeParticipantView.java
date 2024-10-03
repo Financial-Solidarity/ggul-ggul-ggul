@@ -36,10 +36,17 @@ public class ChallengeParticipantView {
     }
 
     public ChallengeParticipantView(ChallengeParticipant challengeParticipant) {
-        this.participantId = challengeParticipant.getId();
-        this.nickname = challengeParticipant.getNickname();
-        this.profileImg = challengeParticipant.getProfile();
-        this.type = challengeParticipant.getType().getType();
+        if(challengeParticipant == null) {
+            this.participantId = null;
+            this.nickname = "탈퇴한 사용자";
+            this.profileImg = null;
+            this.type = null;
+        }else {
+            this.participantId = challengeParticipant.getId();
+            this.nickname = challengeParticipant.getNickname();
+            this.profileImg = challengeParticipant.getProfile();
+            this.type = challengeParticipant.getType().getType();
+        }
     }
 
     public void setIsMine(UUID sessionParticipantId) {

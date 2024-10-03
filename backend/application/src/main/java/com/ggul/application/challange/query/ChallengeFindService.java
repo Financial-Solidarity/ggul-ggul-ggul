@@ -73,8 +73,8 @@ public class ChallengeFindService {
             return ChallengeChattingView.builder()
                     .challenge(ChallengeView.from(challenge, challengeParticipantRepository.countByChallenge_Id(challenge.getId()), challenge.isOwner(me)))
                     .lobbyChattingRoom(chattingRoomFindService.getChattingRoomInfo(chattingRooms.getLobbyChattingRoomId(), sessionId))
-                    .totalChattingRoom(chattingRoomFindService.getChattingRoomInfo(chattingRooms.getMyTeamChattingRoomId(), sessionId))
-                    .myTeamChattingRoom(chattingRoomFindService.getChattingRoomInfo(chattingRooms.getTotalChattingRoomId(), sessionId))
+                    .totalChattingRoom(chattingRoomFindService.getChattingRoomInfo(chattingRooms.getTotalChattingRoomId(), sessionId))
+                    .myTeamChattingRoom(chattingRoomFindService.getChattingRoomInfo(chattingRooms.getMyTeamChattingRoomId(), sessionId))
                     .build();
         }).toList();
     }

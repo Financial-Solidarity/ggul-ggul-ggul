@@ -41,14 +41,26 @@ public class ChattingRoomFindService {
     @Transactional(readOnly = true)
     public ChattingRoomInfoView getChattingRoomInfo(UUID chattingRoomId, UUID sessionId) {
         ChattingRepository.ChattingBadgeCount chattingBadgeCount = chattingRepository.countByChattingRoomAndParticipantId(chattingRoomId, sessionId);
-        Chatting chatting = chattingRepository.findFirstByChattingRoom_IdOrderByCreatedAtDesc(chattingRoomId);
+        Optional<Chatting> chatting = chattingRepository.findFirstByChattingRoom_IdOrderByCreatedAtDesc(chattingRoomId);
 
-        return ChattingRoomInfoView.builder().badge(chattingBadgeCount.getCount().intValue()).chattingRoomId(chattingRoomId)
-                .lastChattingSendAt(chatting.getCreatedAt())
-                .lastChattingContent(chatting.getType().equals(Chatting.Type.COMMON) ? chatting.getContent() :
-                        (chatting.getType().equals(Chatting.Type.JUSTIFICATION) ? "소명을 올렸습니다." : "소비내역을 올렸습니다."))
-                .chattingRoomId(chattingRoomId)
-                .build();
+
+        if(chatting.isPresent()) {
+            Chatting target = chatting.get();
+            return ChattingRoomInfoView.builder().badge(chattingBadgeCount.getCount().intValue()).chattingRoomId(chattingRoomId)
+                    .lastChattingSentAt(target.getCreatedAt())
+                    .lastChattingContent(target.getType().equals(Chatting.Type.COMMON) ? target.getContent() :
+                            (target.getType().equals(Chatting.Type.JUSTIFICATION) ? "소명을 올렸습니다." : "소비내역을 올렸습니다."))
+                    .chattingRoomId(chattingRoomId)
+                    .build();
+        }else {
+            return ChattingRoomInfoView.builder().badge(chattingBadgeCount.getCount().intValue()).chattingRoomId(chattingRoomId)
+                    .lastChattingSentAt(null)
+                    .lastChattingContent(null)
+                    .chattingRoomId(chattingRoomId)
+                    .build();
+        }
+
+
     }
 
 
