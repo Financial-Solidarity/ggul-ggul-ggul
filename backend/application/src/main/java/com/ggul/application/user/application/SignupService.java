@@ -9,6 +9,9 @@ import com.ggul.application.user.exception.EmailVerificationNotFoundException;
 import com.ggul.application.user.exception.EmailVerificationRequestNotFoundException;
 import com.ggul.application.user.exception.NicknameExistException;
 import com.ggul.application.user.exception.UserExistException;
+import com.ggul.application.wallet.application.WalletGenerateService;
+import com.ggul.application.wallet.domain.Wallet;
+import com.ggul.application.wallet.domain.WalletRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +24,8 @@ import java.util.Optional;
 @Service
 public class SignupService {
     private final UserRepository userRepository;
+    private final WalletGenerateService walletGenerateService;
+    private final WalletRepository walletRepository;
     private final HttpSession httpSession;
     private static final String EMAIL_VERIFICATION_REQUEST = "EMAIL_VERIFICATION_REQUEST";
 
@@ -40,6 +45,7 @@ public class SignupService {
 
         userRepository.save(user);
 
+        walletRepository.save(walletGenerateService.generatorWallet(user));
     }
 
     private void validNickname(String nickname) {

@@ -119,6 +119,7 @@ public class MarketService {
         equipment.changeOwner(userRepository.getReferenceById(userId));
 
         market.changeStatus(com.ggul.application.market.domain.Status.COMPLETED);
+        market.initBuyer(userRepository.getReferenceById(userId));
         market.initCompletedAt();
     }
 

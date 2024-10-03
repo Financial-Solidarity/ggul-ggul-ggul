@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS market_deal;
 DROP TABLE IF EXISTS market;
 DROP TABLE IF EXISTS tokenized_equipment;
@@ -228,6 +229,12 @@ CREATE TABLE bank_book
     bank_book_id          BINARY(16) PRIMARY KEY NOT NULL,
     user_id               BINARY(16)             NOT NULL,
     account_number        VARCHAR(40)            NOT NULL
+);
+
+CREATE TABLE game
+(
+    user_id               BINARY(16) PRIMARY KEY NOT NULL,
+    last_received_at      DATETIME NOT NULL
 );
 
 

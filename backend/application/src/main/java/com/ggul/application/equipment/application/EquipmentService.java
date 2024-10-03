@@ -7,6 +7,9 @@ import com.ggul.application.equipment.application.dto.EquipmentMintResult;
 import com.ggul.application.equipment.application.dto.TokenizedEquipmentInfo;
 import com.ggul.application.equipment.domain.*;
 import com.ggul.application.equipment.exception.*;
+import com.ggul.application.game.application.GameService;
+import com.ggul.application.game.domain.Game;
+import com.ggul.application.game.domain.GameRepository;
 import com.ggul.application.user.domain.UserRepository;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
@@ -24,9 +27,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EquipmentService {
 
+    private final GameService gameService;
     private final EquipmentDrawService equipmentDrawService;
     private final EquipmentNFTService equipmentNFTService;
 
+    private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final EquipmentRepository equipmentRepository;
@@ -48,7 +53,6 @@ public class EquipmentService {
         EquipmentDrawResult result = equipmentDrawService.drawEquipment(wallet.getAddress());
 
         EquipmentItem equipmentItem = equipmentItemRepository.getReferenceById(result.getItem().longValue());
-
         Equipment equipment = equipmentRepository.save(Equipment.builder()
                 .publisher(wallet.getAddress())
                 .adjective(adjective)
@@ -141,8 +145,14 @@ public class EquipmentService {
         }
 
         Optional<TokenizedEquipment> previous = tokenizedEquipmentRepository.findByUserIdAndStatus(userId, Status.EQUIPPED);
-        previous.ifPresent(previousEquipment -> previousEquipment.changeStatus(Status.NONE));
 
+        if(previous.isPresent()){
+            gameService.receiveToken(userId);
+            TokenizedEquipment previousEquipment = previous.get();
+            previousEquipment.changeStatus(Status.NONE);
+        } else {
+            gameRepository.save(Game.builder().user(userRepository.getReferenceById(userId)).build());
+        }
         equipment.changeStatus(Status.EQUIPPED);
     }
 
@@ -163,6 +173,10 @@ public class EquipmentService {
             case NONE: throw new EquipmentNotEquippedException();
             case SELLING: throw new EquipmentSellingException();
         }
+
+        gameService.receiveToken(userId);
+        gameRepository.delete(gameRepository.getReferenceById(userId));
+
         equipment.changeStatus(Status.NONE);
     }
 

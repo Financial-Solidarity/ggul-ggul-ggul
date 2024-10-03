@@ -62,8 +62,19 @@ public class TokenService {
         throw new TokenGrantFailureException();
     }
 
+    public void retryGrantToken(String address, BigInteger quantity) {
+        generateTokens(quantity);
+        try{
+            grantTokens(address, quantity);
+        } catch(ContractInsufficientTokenException e) {
+            throw new TokenGrantFailureException();
+        }
+    }
+
     private BigInteger getUnusedTokens() {
         EthereumCall<BigInteger> ec = call(adminTokenContract.balanceOf(web3jConfig.getAddress()));
         return handleException(ec);
     }
+
+
 }
