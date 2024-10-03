@@ -3,7 +3,6 @@ server:
     encoding:
       charset: UTF-8
     session:
-      timeout: 1209600
       cookie:
         name: SESSIONID
         secure: true
