@@ -75,7 +75,7 @@ public class EquipmentService {
         EquipmentDrawResult drawResult = equipmentDrawService.getDrawResult(transactionHash);
         validateTransaction(equipment, drawResult);
 
-        EquipmentMintResult mintResult =  equipmentNFTService.mintNFT(wallet.getAddress(), equipment);
+        EquipmentMintResult mintResult = equipmentNFTService.mintNFT(wallet.getAddress(), equipment);
         equipment.runMint();
 
         TokenizedEquipment tokenizedEquipment = tokenizedEquipmentRepository.save(TokenizedEquipment.builder()
@@ -83,7 +83,6 @@ public class EquipmentService {
                 .ipfsCID(mintResult.getIpfsCID())
                 .nftUrl(mintResult.getNftURI())
                 .equipment(equipment)
-                .status(Status.NONE)
                 .build());
         return TokenizedEquipmentInfo.from(tokenizedEquipment);
     }
@@ -184,5 +183,14 @@ public class EquipmentService {
         }
         equipmentNFTService.burnNFT(wallet.getAddress(), equipment);
         tokenizedEquipmentRepository.delete(equipment);
+    }
+
+    /**
+     * Equipment Item 이름 조회
+     * @return Equipment Item 이름 목록
+     */
+    @Transactional
+    public List<String> getEquipmentNames() {
+        return ListUtils.applyFunctionToElements(equipmentItemRepository.findAll(), EquipmentItem::getName);
     }
 }

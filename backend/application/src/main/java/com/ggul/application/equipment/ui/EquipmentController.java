@@ -72,4 +72,9 @@ public class EquipmentController {
         equipmentService.removeEquipment(context.getUserId(), request.getIpfsCID());
         return ResponseEntity.ok().body(null);
     }
+
+    @GetMapping("/names")
+    public ResponseEntity<?> getEquipmentNames(){
+        return ResponseEntity.ok().body(equipmentService.getEquipmentNames());
+    }
 }

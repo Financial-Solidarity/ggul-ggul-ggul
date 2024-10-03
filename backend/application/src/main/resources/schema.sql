@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS market_deal;
+DROP TABLE IF EXISTS market;
 DROP TABLE IF EXISTS tokenized_equipment;
 DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS equipment_item;
@@ -13,6 +15,8 @@ DROP TABLE IF EXISTS consumption_log;
 DROP TABLE IF EXISTS ggul_log;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS bank_book;
 
 CREATE TABLE user
 (
@@ -157,6 +161,32 @@ CREATE TABLE tokenized_equipment (
     FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
 );
 
+CREATE TABLE market (
+    market_id BINARY(16) NOT NULL PRIMARY KEY,
+    tokenized_equipment_id BINARY(16) NOT NULL,
+    seller_id BINARY(16) NOT NULL,
+    buyer_id BINARY(16) NULL,
+    title VARCHAR(40) NOT NULL,
+    description VARCHAR(200) NULL,
+    price BIGINT NOT NULL,
+    created_at DATETIME NOT NULL,
+    completed_at DATETIME NULL,
+    status VARCHAR(16) NOT NULL,
+
+    FOREIGN KEY (tokenized_equipment_id) REFERENCES tokenized_equipment(tokenized_equipment_id),
+    FOREIGN KEY (seller_id) REFERENCES user(user_id),
+    FOREIGN KEY (buyer_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE market_deal (
+    market_deal_id BINARY(16) NOT NULL PRIMARY KEY,
+    market_id BINARY(16) NOT NULL,
+    deal_no BIGINT NOT NULL,
+
+    FOREIGN KEY (market_id) REFERENCES market(market_id)
+);
+
+
 CREATE TABLE consumption_log
 (
     consumption_log_id  BINARY(16)  NOT NULL PRIMARY KEY,
@@ -186,6 +216,21 @@ CREATE TABLE chatting
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room(chatting_room_id)
 );
 
+CREATE TABLE account
+(
+    account_id            BINARY(16) PRIMARY KEY NOT NULL,
+    user_id               BINARY(16)             NOT NULL,
+    account_user_key      VARCHAR(40)            NOT NULL
+);
+
+CREATE TABLE bank_book
+(
+    bank_book_id          BINARY(16) PRIMARY KEY NOT NULL,
+    user_id               BINARY(16)             NOT NULL,
+    account_number        VARCHAR(40)            NOT NULL
+);
+
+
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
 VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡1', null, now()),
 (2, 'test1@test.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡2', null, now()),
@@ -204,6 +249,19 @@ INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, 
                        created_at)
 VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3,
         false, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (2) MINUTE, 'T', NOW());
+
+insert into user(user_id, username, user_password, user_nickname, created_at, is_deleted)
+values("2", "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 'asdf', now(), 0);
+
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
+VALUES
+    (2,
+     2,
+     UNHEX('d0a443f0212f1a529911199c1b46f6af9864b846'),
+     UNHEX('8e80be688dba0dc84903604386c6c2f5f81e7e39198fe11ef5c30d2f443ef5f0'));
+
+insert into account(account_id, user_id, account_user_key)
+values (1, 2, 'ff883feb-b587-40f7-b41e-394743b1e435');
 
 INSERT INTO equipment_item (equipment_item_id, name, url)
 VALUES (1, "컵케익","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/cupcake.png"),
