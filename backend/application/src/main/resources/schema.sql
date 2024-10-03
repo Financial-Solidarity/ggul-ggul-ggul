@@ -249,7 +249,7 @@ insert into user(user_id, username, user_password, user_nickname, created_at, is
 values("2", "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 'asdf', now(), 0);
 
 insert into account(account_id, user_id, account_user_key)
-values (1, 2, 'ff883feb-b587-40f7-b41e-394743b1e435')
+values (1, 2, 'ff883feb-b587-40f7-b41e-394743b1e435');
 
 INSERT INTO equipment_item (equipment_item_id, name, url)
 VALUES (1, "컵케익","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/cupcake.png"),
