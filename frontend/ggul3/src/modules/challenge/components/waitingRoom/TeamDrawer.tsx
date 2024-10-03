@@ -15,10 +15,12 @@ interface TeamDrawerProps {
   isOpen: boolean;
   challengeId: string;
   onClose: () => void;
+  isWaitingRoom?: boolean;
 }
 export const TeamDrawer = ({
   isOpen,
   challengeId,
+  isWaitingRoom = false,
   onClose,
 }: TeamDrawerProps) => {
   const { setIsExitConfirmModalOpen } = useWaitingRoomStore();
@@ -50,14 +52,16 @@ export const TeamDrawer = ({
       <div className="relative flex h-full flex-col">
         <div className="flex items-center justify-between px-4 py-4">
           <h5 className="text-lg font-bold">참가자</h5>
-          <button
-            className="flex items-center gap-1 rounded px-2 py-1 text-default-600 transition-colors hover:bg-default-100 disabled:opacity-50"
-            disabled={isChangeTeamLoading}
-            onClick={handleChangeTeam}
-          >
-            <ArrowsRightLeftIcon className="w-4" />
-            <span className="font-bold">팀변경</span>
-          </button>
+          {isWaitingRoom && (
+            <button
+              className="flex items-center gap-1 rounded px-2 py-1 text-default-600 transition-colors hover:bg-default-100 disabled:opacity-50"
+              disabled={isChangeTeamLoading}
+              onClick={handleChangeTeam}
+            >
+              <ArrowsRightLeftIcon className="w-4" />
+              <span className="font-bold">팀변경</span>
+            </button>
+          )}
         </div>
         <div className="flex w-full flex-col items-start overflow-y-auto">
           <div>

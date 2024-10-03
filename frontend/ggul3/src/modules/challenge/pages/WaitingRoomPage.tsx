@@ -73,7 +73,6 @@ export const WaitingRoomPage = () => {
 
   const handleSubmit = (message: string) => {
     if (!lobbyChattingRoomId) return;
-    console.log('lobbyChattingRoomId', lobbyChattingRoomId);
     sendChat({
       chattingRoomId: lobbyChattingRoomId,
       content: message,
@@ -127,6 +126,7 @@ export const WaitingRoomPage = () => {
         />
       ) : (
         <TeamDrawer
+          isWaitingRoom
           challengeId={challengeId!}
           isOpen={isDrawerOpen}
           onClose={closeDrawer}
