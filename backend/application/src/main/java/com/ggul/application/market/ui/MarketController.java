@@ -1,7 +1,6 @@
 package com.ggul.application.market.ui;
 
 import com.ggul.application.market.application.MarketService;
-import com.ggul.application.market.application.dto.MarketListElement;
 import com.ggul.application.market.application.dto.MarketSearchDto;
 import com.ggul.application.market.domain.Status;
 import com.ggul.application.market.ui.request.MarketSellRequest;
@@ -9,8 +8,6 @@ import com.ggul.application.market.ui.response.MarketSellResponse;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

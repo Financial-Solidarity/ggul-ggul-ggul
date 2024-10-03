@@ -69,4 +69,8 @@ public class Market {
     public void initCompletedAt(){
         this.completedAt = LocalDateTime.now();
     }
+
+    public void initBuyer(User user) {
+        this.buyer = user;
+    }
 }
