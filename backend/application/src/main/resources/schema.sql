@@ -48,7 +48,7 @@ CREATE TABLE fcm_token
 CREATE TABLE challenge
 (
     challenge_id                BINARY(16)  NOT NULL PRIMARY KEY,
-    challenge_title             VARCHAR(40) NOT NULL,
+    challenge_title             VARCHAR(120) NOT NULL,
     challenge_password_exist    BOOL        NOT NULL,
     challenge_password          BINARY(60),
     challenge_owner_id          BINARY(16)  NOT NULL,
