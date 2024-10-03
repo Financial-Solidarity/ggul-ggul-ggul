@@ -23,6 +23,9 @@ export const useRecentChattingList = (chattingRoomId: string) => {
     queryFn: () => getRecentChattingList(chattingRoomId),
     initialData: [],
     enabled: !!chattingRoomId,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -32,5 +35,8 @@ export const usePreviousChattingList = (chattingRoomId: string) => {
     queryFn: () => getPreviousChattingList(chattingRoomId),
     initialData: [],
     enabled: !!chattingRoomId,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   });
 };

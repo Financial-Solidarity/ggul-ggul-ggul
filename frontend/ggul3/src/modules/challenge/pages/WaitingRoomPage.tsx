@@ -1,6 +1,6 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
@@ -15,6 +15,7 @@ import {
   usePreviousChattingList,
   useRecentChattingList,
 } from '../reactQueries/useChattingRoomQuery';
+import { useSocketChattingStore } from '../store/socketChattingStore';
 
 import { ChallengeInfoAccordion } from '@/modules/challenge/components/waitingRoom/ChallengeInfoAccordion';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
@@ -27,7 +28,10 @@ export const WaitingRoomPage = () => {
   useSetBottomBar({ active: false });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { id: challengeId } = useParams();
-  const [chat, setChat] = useState([]);
+  const socketChattingList = useSocketChattingStore((state) => state.chatList);
+  const clearSocketChattingList = useSocketChattingStore(
+    (state) => state.clearChatList,
+  );
 
   const { sendChat, connect } = useSocket();
 
@@ -62,6 +66,10 @@ export const WaitingRoomPage = () => {
     });
   };
 
+  useEffect(() => {
+    clearSocketChattingList();
+  }, [previousChattingList, recentChattingList]);
+
   return (
     <>
       <TopBar
@@ -76,7 +84,11 @@ export const WaitingRoomPage = () => {
           <ChallengeInfoAccordion challengeId={challengeId!} />
           <div className="z-0 overflow-y-auto px-4 py-16">
             <ChatList
-              chats={[...previousChattingList, ...recentChattingList]}
+              chats={[
+                ...previousChattingList,
+                ...recentChattingList,
+                ...socketChattingList,
+              ]}
             />
           </div>
           <Chatform onSubmit={handleSubmit} />
