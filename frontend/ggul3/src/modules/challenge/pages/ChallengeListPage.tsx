@@ -28,18 +28,27 @@ export const ChallengeListPage = () => {
     <>
       <TopBar />
       <PageContainer>
-        <div className="mb-20 flex flex-col gap-2">
-          {isFetching &&
+        <div className="mb-20 flex h-full flex-col gap-2">
+          {isFetching ? (
             Array(5)
               .fill(0)
               .map((_, index) => (
                 <Skeleton key={index} className="rounded-2xl">
                   <div className="h-40 w-full" />
                 </Skeleton>
-              ))}
-          {content.map((item) => (
-            <ChallengeListItem key={item.challengeId} item={item} />
-          ))}
+              ))
+          ) : content.length === 0 ? (
+            <div className="flex w-full flex-1 flex-col items-center justify-center gap-2">
+              <p className="text-default-400">진행중인 챌린지가 없습니다</p>
+              <Button className="w-max" onClick={toCreateChallenge}>
+                챌린지 만들기
+              </Button>
+            </div>
+          ) : (
+            content.map((item) => (
+              <ChallengeListItem key={item.challengeId} item={item} />
+            ))
+          )}
         </div>
 
         <Button
