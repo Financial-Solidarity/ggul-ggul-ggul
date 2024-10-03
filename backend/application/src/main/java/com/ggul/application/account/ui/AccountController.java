@@ -1,16 +1,14 @@
 package com.ggul.application.account.ui;
 
 import com.ggul.application.account.application.TerminationAccountService;
-import com.ggul.application.account.query.DemandDepositAccountListService;
+import com.ggul.application.account.query.UserKeyService;
 import com.ggul.application.account.application.GenerationDemandDepositAccountService;
 import com.ggul.application.account.application.GenerationUserService;
 import com.ggul.application.account.infra.BankMasterService;
-import com.ggul.application.account.query.DemandDepositAccountService;
+import com.ggul.application.account.ui.dto.AccountDepositAndWithdrawView;
 import com.ggul.application.account.ui.dto.GenerationDemandDepositView;
-import com.ggul.application.account.ui.dto.GenerationUserView;
 import com.ggul.application.account.ui.dto.InquireDemandDepositAccountView;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
-import com.ggul.application.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,12 +24,10 @@ import java.util.Map;
 @Slf4j
 public class AccountController {
     private final GenerationUserService generationUserService;
-    private final UserRepository userRepository;
     private final BankMasterService bankMasterService;
     private final GenerationDemandDepositAccountService generationDemandDepositAccountService;
-    private final DemandDepositAccountListService demandDepositAccountListService;
-    private final DemandDepositAccountService demandDepositAccountService;
     private final TerminationAccountService terminationAccountService;
+    private final UserKeyService userKeyService;
 
 
     //유저 계정 만들기
@@ -84,7 +81,7 @@ public class AccountController {
     // 내가 등록한 계좌들 조회
     @GetMapping("/inquireDemandDepositAccountList")
     public ResponseEntity<?> getDemandDepositAccountListService(@AuthenticationPrincipal UserLoginContext userLoginContext){
-        Map<String, Object> result = demandDepositAccountListService.getMyDemandDepositAccountList(userLoginContext.getUserId());
+        Map<String, Object> result = bankMasterService.getDemandDepositAccountList(getUserKey(userLoginContext.getUserId()));
 
         return ResponseEntity.ok(result);
     }
@@ -92,7 +89,7 @@ public class AccountController {
     // 내가 등록한 계좌 조회(단건)
     @GetMapping("/inquireDemandDepositAccount")
     public ResponseEntity<?> getDemandDepositAccount(@RequestBody InquireDemandDepositAccountView inquireDemandDepositAccountView, @AuthenticationPrincipal UserLoginContext userLoginContext){
-        Map<String, Object> userAccount = demandDepositAccountService.getMyDemandDepositAccount(userLoginContext.getUserId(), inquireDemandDepositAccountView);
+        Map<String, Object> userAccount = (Map<String, Object>) bankMasterService.getDemandDepositAccount(getUserKey(userLoginContext.getUserId()), inquireDemandDepositAccountView.getAccountNo()).get("REC");
 
         return ResponseEntity.ok(userAccount);
     }
@@ -105,5 +102,26 @@ public class AccountController {
         return ResponseEntity.ok(null);
     }
 
+    //계좌 입금
+    @PostMapping("/demandDepositAccountDeposit")
+    public ResponseEntity<?> demandDepositAccountDeposit(@AuthenticationPrincipal UserLoginContext userLoginContext, @RequestBody AccountDepositAndWithdrawView accountDepositAndWithdrawView){
+        bankMasterService.demandDepositAccountDeposit(getUserKey(userLoginContext.getUserId()), accountDepositAndWithdrawView);
+
+        return ResponseEntity.ok(null);
+    }
+
+    //계좌 출금
+    @PostMapping("/demandDepositAccountWithdrawal")
+    public ResponseEntity<?> demandDepositAccountWithdrawal(@AuthenticationPrincipal UserLoginContext userLoginContext, @RequestBody AccountDepositAndWithdrawView accountDepositAndWithdrawView){
+        bankMasterService.demandDepositAccountWithdrawal(getUserKey(userLoginContext.getUserId()), accountDepositAndWithdrawView);
+
+        return ResponseEntity.ok(null);
+    }
+
+
+
+    private String getUserKey(UUID userId){
+        return userKeyService.getUserKey(userId);
+    }
 
 }

@@ -3,8 +3,8 @@ package com.ggul.application.account.infra;
 import com.ggul.application.account.config.AccountConfig;
 import com.ggul.application.account.exception.GenerationDemandDepositFailureException;
 import com.ggul.application.account.exception.GenerationUserAccountFailureException;
+import com.ggul.application.account.ui.dto.AccountDepositAndWithdrawView;
 import com.ggul.application.account.ui.dto.GenerationDemandDepositView;
-import com.ggul.application.account.ui.dto.GenerationUserView;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -105,6 +105,29 @@ public class BankMasterService {
 
         return postRequest(url, body);
     }
+
+
+    public Map<String, Object> demandDepositAccountDeposit(String userKey, AccountDepositAndWithdrawView accountDepositAndWithdrawView){
+        String url = "/edu/demandDeposit/updateDemandDepositAccountDeposit";
+        Map<String, Object> body = generatorBodyWithHeader(url, userKey);
+        body.put("accountNo", accountDepositAndWithdrawView.getAccountNo());
+        body.put("transactionBalance", accountDepositAndWithdrawView.getTransactionBalance());
+        if(accountDepositAndWithdrawView.getTransactionSummary() != null) body.put("transactionSummary", accountDepositAndWithdrawView.getTransactionSummary());
+
+        return postRequest(url, body);
+    }
+
+
+    public Map<String, Object> demandDepositAccountWithdrawal(String userKey, AccountDepositAndWithdrawView accountDepositAndWithdrawView){
+        String url = "/edu/demandDeposit/updateDemandDepositAccountWithdrawal";
+        Map<String, Object> body = generatorBodyWithHeader(url, userKey);
+        body.put("accountNo", accountDepositAndWithdrawView.getAccountNo());
+        body.put("transactionBalance", accountDepositAndWithdrawView.getTransactionBalance());
+        if(accountDepositAndWithdrawView.getTransactionSummary() != null) body.put("transactionSummary", accountDepositAndWithdrawView.getTransactionSummary());
+
+        return postRequest(url, body);
+    }
+
 
 
 
