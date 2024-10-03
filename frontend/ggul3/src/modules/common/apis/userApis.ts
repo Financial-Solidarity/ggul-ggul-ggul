@@ -8,3 +8,44 @@ export const getUserData = () => {
     url: `/users/info`,
   });
 };
+
+interface EditUser {
+  nickname: string;
+  nowPassword?: string;
+  newPassword?: string;
+  isProfileImgRemove?: boolean;
+  profileImg?: File | string;
+}
+
+export const editUserNickname = ({
+  nickname = '',
+  nowPassword = '',
+  newPassword = '',
+  isProfileImgRemove = false,
+  profileImg = '',
+}: EditUser) => {
+  const formData = new FormData();
+
+  formData.append('nickname', nickname);
+  if (nowPassword) formData.append('nowPassword', nowPassword);
+  if (newPassword) formData.append('newPassword', newPassword);
+  formData.append('isProfileImgRemove', String(isProfileImgRemove));
+
+  if (profileImg instanceof File) {
+    formData.append('profileImg', profileImg);
+  } else if (typeof profileImg === 'string') {
+    formData.append(
+      'profileImg',
+      new Blob([profileImg], { type: 'image/jpeg' }),
+    ); // 적절한 MIME 타입으로 변경
+  }
+
+  return _axios({
+    method: 'PATCH',
+    url: `/users/info`,
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

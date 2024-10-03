@@ -1,44 +1,100 @@
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { Card, CardBody } from '@nextui-org/card';
-import { Image } from '@nextui-org/react';
-import { useNavigate } from 'react-router-dom';
+import { Button, Input } from '@nextui-org/react';
 
-interface MyProfileProps {
-  nickname: string;
-  email: string;
-  profileImg: string;
-}
+import { useEditUserStore } from '../../store/editUserStore';
 
-export const MyProfile = ({ nickname, email, profileImg }: MyProfileProps) => {
-  const navigate = useNavigate();
+import { useUserStore } from '@/modules/common/store/userStore';
+import { editUserNickname } from '@/modules/common/apis/userApis';
 
-  const handleClickProfile = () => {
-    navigate('/mypage/user/edit');
+export const MyProfile = () => {
+  const { isEditing, nicknameInput, setIsEditing, setNicknameInput } =
+    useEditUserStore();
+
+  const { user, setUser } = useUserStore();
+
+  if (user === null) {
+    return <div>로그인 되어 있지 않음</div>;
+  }
+
+  const handleClickCancelEditNicknameButton = () => {
+    setIsEditing(false);
+    setNicknameInput(user.nickname);
+  };
+
+  const handleClickEditNicknameConfirmButton = async () => {
+    try {
+      await editUserNickname({ nickname: nicknameInput });
+
+      setUser({
+        ...user,
+        nickname: nicknameInput,
+      });
+      setIsEditing(false);
+    } catch (e) {
+      console.error('닉네임 변경 실패', e);
+    }
   };
 
   return (
     <Card className="py-2">
-      <button onClick={handleClickProfile}>
-        <CardBody>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="mr-2">
-                <Image
-                  className="rounded-full"
-                  height={64}
-                  src={profileImg}
-                  width={64}
-                />
-              </div>
-              <div>
-                <div className="text-xl font-bold">{nickname}</div>
-                <div className="font-light text-gray-500">{email}</div>
+      <CardBody>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            {/* <div className="mr-2">
+              <Image
+                className="rounded-full"
+                height={64}
+                src={profileImg}
+                width={64}
+              />
+            </div> */}
+            <div>
+              {isEditing ? (
+                <div className="flex items-center gap-1">
+                  <Input
+                    placeholder="닉네임"
+                    size="sm"
+                    value={nicknameInput}
+                    onChange={(e) => setNicknameInput(e.target.value)}
+                  />
+                  <Button
+                    color="primary"
+                    size="sm"
+                    onClick={handleClickEditNicknameConfirmButton}
+                  >
+                    닉네임 변경
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={handleClickCancelEditNicknameButton}
+                  >
+                    취소
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex">
+                  <div className="text-xl">{user.nickname}</div>
+                  <Button
+                    isIconOnly
+                    className="ml-1 rounded-full hover:bg-gray-500/10"
+                    // @ts-ignore
+                    color="none"
+                    size="sm"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <PencilIcon className="w-4 cursor-pointer text-gray-500" />
+                  </Button>
+                </div>
+              )}
+
+              <div className="text-sm font-light text-gray-500">
+                {user.username}
               </div>
             </div>
-            <ChevronRightIcon className="w-6 cursor-pointer text-gray-500" />
           </div>
-        </CardBody>
-      </button>
+        </div>
+      </CardBody>
     </Card>
   );
 };

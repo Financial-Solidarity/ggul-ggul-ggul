@@ -1,1 +1,1 @@
-export * from './EditUserInfo';
+export * from './MyPage';

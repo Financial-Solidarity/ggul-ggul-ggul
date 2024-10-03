@@ -29,7 +29,6 @@ import { MyPage } from './modules/myPage/pages/MyPage';
 import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoomPage';
 import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
 import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
-import { ChangeUserInfo } from './modules/myPage/pages';
 
 export interface Path {
   path: string;
@@ -300,10 +299,6 @@ const myPageRoutes: RouteObject[] = [
     path: PathNames.MYPAGE.MAIN.path,
     element: <MyPage />,
   },
-  {
-    path: PathNames.MYPAGE.CHANGE_USER_INFO.path,
-    element: <ChangeUserInfo />,
-  },
 ];
 
 export const router = createBrowserRouter([
@@ -341,6 +336,10 @@ export const router = createBrowserRouter([
       ...loginRoutes,
       ...accountBook,
       ...myPageRoutes,
+      {
+        path: PathNames.HOME.path,
+        element: <MyPage />,
+      },
     ],
   },
 ]);
