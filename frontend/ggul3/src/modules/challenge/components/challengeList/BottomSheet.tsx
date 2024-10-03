@@ -4,23 +4,18 @@ import { UserGroupIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ErrorDTO } from '@types';
 
-import {
-  joinChallenge,
-  verifyJoinChallengePassword,
-} from '../../apis/waitingroom';
-import { useChattingRoomStore } from '../../store/chattingRoom';
+import { useJoinChallenge } from '../../reactQueries/useChallengeQuery';
 
 import { useChallengeListStore } from '@/modules/challenge/store/challengeListStore';
 import { formatCountdown, toYYMDhm_ko } from '@/modules/common/utils/dateUtils';
 import { useCountdown } from '@/modules/common/hooks/useCountDown';
-import { mockRequest } from '@/mocks/wrapper';
 
 export const BottomSheet = () => {
   const navigate = useNavigate();
 
   const { closeSheet, isSheetOpen, item } = useChallengeListStore();
-  const { setLobbyChattingRoomId } = useChattingRoomStore(); // 09.30 13:10 yyh
 
   const [password, setPassword] = useState('');
   const countdown = useCountdown(item?.startAt || '');
@@ -28,6 +23,8 @@ export const BottomSheet = () => {
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
+
+  const { mutateAsync: join, isPending: isJoinLoading } = useJoinChallenge();
 
   const {
     title,
@@ -47,35 +44,16 @@ export const BottomSheet = () => {
     }
   }, [isSheetOpen]);
 
-  // ------------------------------------------- 09.30 12:52 yyh
-  // 챌린지 참가 (MSW mock 요청)
-  const mockJoinChallenge = async () => {
-    // 비밀방인 경우 비밀번호 확인
-    if (isEncrypted) {
-      await verifyJoinChallengePassword({
-        challengeId: item?.challengeId,
-        password, // test 비밀번호: '1'
-      });
-    }
-
-    // 검증 후 참가
-    return joinChallenge({ challengeId: item?.challengeId, password }).then();
-  };
-
   // 참가하기 버튼 클릭 이벤트
-  const handleJoinChallenge = async () => {
-    // 채팅방 입장 (MSW mock 요청)
-    try {
-      const { challengeId, lobbyChattingRoomId } =
-        await mockRequest(mockJoinChallenge);
-
-      navigate(`/challenge/waiting-room/${challengeId}`);
-    } catch (e) {
-      console.error(e);
-      // 없다면 FCM 알림 해야함 (code: 400)
-      window.alert('참가에 실패했습니다.');
-      closeSheet();
-    }
+  const handleJoinChallenge = () => {
+    join({ challengeId: item?.challengeId, password })
+      .then(() => {
+        closeSheet();
+        navigate(`/challenge/waiting-room/${item?.challengeId}`);
+      })
+      .catch((error: ErrorDTO) => {
+        window.alert(error.message);
+      });
   };
   // ------------------------------------------- 09.30 12:52 yyh
 
@@ -153,6 +131,7 @@ export const BottomSheet = () => {
               className="w-full"
               color="primary"
               isDisabled={isEncrypted && password === ''}
+              isLoading={isJoinLoading}
               onClick={handleJoinChallenge}
             >
               참가하기

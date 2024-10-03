@@ -25,4 +25,14 @@ declare module '@types' {
     content: ChallengeDTO[];
     pageable: Pageable;
   }
+
+  export interface ChallengeJoinRequestBody {
+    challengeId: string;
+    password?: string | null;
+  }
+
+  export interface ChallengeJoinResponse {
+    challengeId: string; // 'uuid'
+    lobbyChattingRoomId: string | null; // 'uuid'
+  }
 }

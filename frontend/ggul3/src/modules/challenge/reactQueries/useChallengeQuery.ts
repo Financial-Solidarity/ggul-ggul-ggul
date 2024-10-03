@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  ChallengeJoinRequestBody,
+  ChallengeJoinResponse,
   ChallengeListResponse,
   ChangeTeamResponse,
   CreateChallengeRequestBody,
@@ -21,6 +23,7 @@ import {
   changeTeam,
   exitChallenge,
   getChallengeList,
+  joinChallenge,
   startChallenge,
 } from '../apis/waitingroom';
 
@@ -82,6 +85,14 @@ export const useGetParticipantList = (challengeId: string) => {
     enabled: !!challengeId,
     initialData: [],
   });
+};
+
+export const useJoinChallenge = () => {
+  return useMutation<ChallengeJoinResponse, ErrorDTO, ChallengeJoinRequestBody>(
+    {
+      mutationFn: (data) => joinChallenge(data),
+    },
+  );
 };
 
 export const useGetChattingroomIds = (challengeId: string) => {
