@@ -73,7 +73,7 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeParticipantViews);
     }
 
-    @PostMapping("/team")
+    @PatchMapping("/team")
     public ResponseEntity<?> challengeTeam(@RequestBody ChallengeTeamChangeRequest request, @AuthenticationPrincipal UserLoginContext loginContext) {
         ChallengeParticipantView challengeParticipantView = challengeTeamChangeService.changeTeam(request, loginContext.getUserId());
         return ResponseEntity.ok(challengeParticipantView);

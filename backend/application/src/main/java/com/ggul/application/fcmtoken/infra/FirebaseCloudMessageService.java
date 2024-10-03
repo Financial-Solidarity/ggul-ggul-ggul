@@ -17,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class FirebaseCloudMessageService {
 
-
     public static MulticastMessage generateMulticastMessage(List<FcmToken> targetTokens, String title, String body, String type, Map<String, String> values) {
         return MulticastMessage.builder()
                 .putData("time", LocalDateTime.now().toString())

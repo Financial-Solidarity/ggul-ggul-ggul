@@ -3,12 +3,11 @@ server:
     encoding:
       charset: UTF-8
     session:
-      timeout: 1209600
       cookie:
         name: SESSIONID
-      secure: true
-      http-only: true
-      same-site: none
+        secure: true
+        http-only: true
+        same-site: none
 
 spring:
   profiles:

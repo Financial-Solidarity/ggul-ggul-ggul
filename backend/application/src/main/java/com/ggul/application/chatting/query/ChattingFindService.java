@@ -6,6 +6,7 @@ import com.ggul.application.chatting.domain.Chatting;
 import com.ggul.application.chatting.domain.ChattingRoomParticipant;
 import com.ggul.application.chatting.domain.repository.ChattingRepository;
 import com.ggul.application.chatting.domain.repository.ChattingRoomParticipantRepository;
+import com.ggul.application.chatting.domain.repository.ChattingRoomRepository;
 import com.ggul.application.chatting.exception.ChattingRoomParticipantNotExistException;
 import com.ggul.application.chatting.ui.dto.ChattingView;
 import com.ggul.application.payment.ui.dto.ConsumptionView;
@@ -22,7 +23,6 @@ public class ChattingFindService {
     private final ChattingRepository chattingRepository;
     private final ChattingRoomParticipantRepository chattingRoomParticipantRepository;
 
-
     @Transactional(readOnly = true)
     public List<ChattingView> findAllByBefore(UUID userId, UUID chattingRoomId) {
         ChattingRoomParticipant me = chattingRoomParticipantRepository.findByChattingRoom_IdAndChallengeParticipant_User_Id(chattingRoomId, userId).orElseThrow(ChattingRoomParticipantNotExistException::new);
@@ -33,7 +33,6 @@ public class ChattingFindService {
             ChallengeParticipantView participantView = new ChallengeParticipantView(chatting.getParticipant());
             participantView.setIsMine(meChallengeInfo.getId());
             return ChattingView.builder().chattingId(chatting.getId()).type(chatting.getType().name()).content(chatting.getContent()).consumption(generateConsumption(chatting)).profile(participantView).sentAt(chatting.getCreatedAt()).build();
-
         }).toList();
     }
 
@@ -42,13 +41,17 @@ public class ChattingFindService {
         ChattingRoomParticipant me = chattingRoomParticipantRepository.findByChattingRoom_IdAndChallengeParticipant_User_Id(chattingRoomId, userId).orElseThrow(ChattingRoomParticipantNotExistException::new);
         ChallengeParticipant meChallengeInfo = me.getChallengeParticipant();
         List<Chatting> chattings = chattingRepository.findAllByChattingRoom_IdAndCreatedAtAfterOrderByCreatedAt(chattingRoomId, me.getLastConnectedAt());
-        me.connected();
-        return chattings.stream().map(chatting -> {
+
+        List<ChattingView> list = chattings.stream().map(chatting -> {
             ChallengeParticipantView participantView = new ChallengeParticipantView(chatting.getParticipant());
             participantView.setIsMine(meChallengeInfo.getId());
             return ChattingView.builder().chattingId(chatting.getId()).type(chatting.getType().name()).content(chatting.getContent()).consumption(generateConsumption(chatting)).profile(participantView).sentAt(chatting.getCreatedAt()).build();
 
         }).toList();
+
+        me.connected();
+
+        return list;
     }
 
     private ConsumptionView generateConsumption(Chatting chatting) {

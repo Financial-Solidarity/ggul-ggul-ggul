@@ -176,10 +176,11 @@ CREATE TABLE chatting
     chatting_id               BINARY(16) PRIMARY KEY NOT NULL,
     challenge_participant_id  BINARY(16)             NOT NULL,
     chatting_room_id          BINARY(16)             NOT NULL,
-    type                      CHAR(1)                NOT NULL,
+    type                      TINYINT                NOT NULL,
     chatting_content          TEXT,
     consumption_category_name VARCHAR(40),
     consumption_balance       INTEGER,
+    created_at                DATETIME               NOT NULL,
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant(challenge_participant_id),
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room(chatting_room_id)
 );
