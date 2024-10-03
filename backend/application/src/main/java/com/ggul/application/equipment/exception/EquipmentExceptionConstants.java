@@ -15,6 +15,7 @@ public enum EquipmentExceptionConstants implements ErrorCodeDefinition {
     EQUIPMENT_UNAUTHORIZED("권한 없는 장비입니다.", "E005", HttpStatus.UNAUTHORIZED),
     EQUIPMENT_EQUIPPED("장착중인 장비입니다.","E006", HttpStatus.BAD_REQUEST),
     EQUIPMENT_SELLING("판매중인 장비입니다.", "E007", HttpStatus.BAD_REQUEST),
+    EQUIPMENT_ALREADY_OWNED("이미 소유한 장비입니다.", "E008", HttpStatus.BAD_REQUEST),
     ;
 
     private final String message;

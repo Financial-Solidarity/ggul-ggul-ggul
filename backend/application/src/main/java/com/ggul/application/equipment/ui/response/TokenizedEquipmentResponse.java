@@ -19,7 +19,7 @@ public class TokenizedEquipmentResponse {
 
     public static TokenizedEquipmentResponse from(TokenizedEquipmentInfo info) {
         return TokenizedEquipmentResponse.builder()
-                .equipment(EquipmentResponse.from(info.getEquipmentInfo()))
+                .equipment(EquipmentResponse.from(info.getEquipment()))
                 .ipfsCID(info.getIpfsCID())
                 .nftUrl(info.getNftUrl())
                 .status(info.getStatus())

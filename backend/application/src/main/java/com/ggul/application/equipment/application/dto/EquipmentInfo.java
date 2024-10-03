@@ -17,6 +17,7 @@ public class EquipmentInfo {
 
     private String publisher;
     private Long power;
+    private Integer grade;
 
     private String transactionHash;
     private Boolean minted;
@@ -27,6 +28,7 @@ public class EquipmentInfo {
                 .adjective(equipment.getAdjective())
                 .publisher(equipment.getPublisher())
                 .power(equipment.getPower())
+                .grade((int) (equipment.getPower()/200))
                 .transactionHash(equipment.getTransactionHash())
                 .minted(equipment.getMinted())
                 .name(item.getName())
