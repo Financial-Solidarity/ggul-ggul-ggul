@@ -47,14 +47,14 @@ public class ChattingRoomFindService {
         if(chatting.isPresent()) {
             Chatting target = chatting.get();
             return ChattingRoomInfoView.builder().badge(chattingBadgeCount.getCount().intValue()).chattingRoomId(chattingRoomId)
-                    .lastChattingSendAt(target.getCreatedAt())
+                    .lastChattingSentAt(target.getCreatedAt())
                     .lastChattingContent(target.getType().equals(Chatting.Type.COMMON) ? target.getContent() :
                             (target.getType().equals(Chatting.Type.JUSTIFICATION) ? "소명을 올렸습니다." : "소비내역을 올렸습니다."))
                     .chattingRoomId(chattingRoomId)
                     .build();
         }else {
             return ChattingRoomInfoView.builder().badge(chattingBadgeCount.getCount().intValue()).chattingRoomId(chattingRoomId)
-                    .lastChattingSendAt(null)
+                    .lastChattingSentAt(null)
                     .lastChattingContent(null)
                     .chattingRoomId(chattingRoomId)
                     .build();
