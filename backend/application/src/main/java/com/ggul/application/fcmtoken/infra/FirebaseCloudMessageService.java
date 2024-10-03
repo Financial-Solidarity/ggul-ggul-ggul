@@ -17,14 +17,14 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class FirebaseCloudMessageService {
 
-    public static MulticastMessage generateMulticastMessage(List<FcmToken> targetTokens, String title, String body, String type, Map<String, String> values) {
+    public static MulticastMessage generateMulticastMessage(List<FcmToken> targetTokens, String title, String body, String type, Map<String, String> values, Boolean isForeground) {
         return MulticastMessage.builder()
                 .putData("time", LocalDateTime.now().toString())
                 .putData("title", title)
                 .putData("body", body)
                 .putData("type", type)
                 .putAllData(values)
-                .addAllTokens(targetTokens.stream().filter(fcmToken -> !fcmToken.getIsForeground()).map(FcmToken::getToken).toList())
+                .addAllTokens(targetTokens.stream().filter(fcmToken -> fcmToken.getIsForeground() == isForeground).map(FcmToken::getToken).toList())
                 .setApnsConfig(ApnsConfig.builder().setAps(Aps.builder().setContentAvailable(true).build()).putHeader("apns-priority", "10").build())
                 .setNotification(Notification.builder()
                         .setBody(body).setTitle(title)
