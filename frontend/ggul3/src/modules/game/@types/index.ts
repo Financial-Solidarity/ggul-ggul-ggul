@@ -99,7 +99,7 @@ export interface GetMarketListParams {
 // 장비 매물 목록 조회 응답 타입
 export interface GetMarketListResponse {
   content: MarketItemDTO[];
-  pagination: Pagination;
+  pageable: Pagination;
 }
 
 // 장비 매물 조회 API 요청 및 응답 타입
@@ -134,7 +134,7 @@ export interface RegisterSellNFTResponse {
 export type GetSellNFTListParams = GetMarketListParams; // 요청 파라미터 공통화
 export interface GetSellNFTListResponse {
   content: MarketItemDTO[];
-  pagination: Pagination;
+  pageable: Pagination;
 }
 
 // 장비 해제 API 응답 타입
@@ -160,9 +160,17 @@ export interface GetReceivableTokenResponse {
 
 // ============ 컬러 코드 정의 ============
 export const HexCodesByGrade: Record<Grades, string> = {
-  0: '#FFD700',
-  1: '#BC75FF',
+  0: '#D3D3D3',
+  1: '#87CEEB',
   2: '#CD7F32',
-  3: '#87CEEB',
-  4: '#D3D3D3',
+  3: '#BC75FF',
+  4: '#FFD700',
+};
+
+export const GradeNames: Record<Grades, string> = {
+  0: '매우 희귀',
+  1: '희귀',
+  2: '보통',
+  3: '흔함',
+  4: '매우 흔함',
 };

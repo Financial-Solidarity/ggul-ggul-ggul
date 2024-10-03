@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 import { SkeletonCards } from './SkeletonCard';
 import { NftMiniCard } from './NftMiniCard';
 
-import { EquipmentNFTDTO } from '@/modules/game/@types';
+import { EquipmentNFTDTO, Grades, GradeNames } from '@/modules/game/@types';
 
 interface NftCardListSectionProps {
-  activeGradeIndex: string;
-  setActiveGradeIndex: (index: '0' | '1' | '2' | '3' | '4') => void;
+  activeGradeIndex: Grades;
+  setActiveGradeIndex: (index: Grades) => void;
   equipmentList: EquipmentNFTDTO[];
   isLoading: boolean;
   onCardClick: (equipmentNft: EquipmentNFTDTO) => void;
@@ -44,26 +44,22 @@ export const NftCardListSection = ({
       <Tabs
         aria-label="NFT Grade Tabs"
         radius="full"
-        selectedKey={activeGradeIndex}
-        onSelectionChange={(key) =>
-          setActiveGradeIndex(key as '0' | '1' | '2' | '3' | '4')
-        }
+        selectedKey={activeGradeIndex.toString()}
+        onSelectionChange={(key) => setActiveGradeIndex(Number(key) as Grades)}
       >
-        <Tab key="0" title="매우 희귀" />
-        <Tab key="1" title="희귀" />
-        <Tab key="2" title="보통" />
-        <Tab key="3" title="흔함" />
-        <Tab key="4" title="매우 흔함" />
+        {Object.entries(GradeNames).map(([key, name]) => (
+          <Tab key={key} title={name} />
+        ))}
       </Tabs>
       <div className="CARD-LIST mt-4 grid min-h-36 grid-cols-3 gap-4 px-3 py-4">
         {isLoading ? (
           <SkeletonCards count={6} />
         ) : (
-          equipmentList.map((equipmentNft, index) => (
+          equipmentList.map((equipmentNft) => (
             <NftMiniCard
-              key={index}
+              key={equipmentNft?.ipfsCID}
               equipmentNft={equipmentNft}
-              isEquipped={equippedNft?.ipfsCID === equipmentNft.ipfsCID}
+              isEquipped={equipmentNft.status === 'EQUIPPED'}
               onCardClick={onCardClick}
             />
           ))

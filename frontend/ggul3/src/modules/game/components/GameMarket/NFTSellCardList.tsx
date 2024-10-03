@@ -14,9 +14,15 @@ export const NFTSellCardList: React.FC<NFTSellCardListProps> = ({
   const navigate = useNavigate();
 
   const handleDetailClick = (marketItem: MarketItemDTO) => {
+    if (!marketItem.marketId) {
+      console.log('marketId is undefined:', marketItem);
+
+      return;
+    }
+
     navigate(
       `${PathNames.GAME.MARKET_DETAIL.path.replace(':id', marketItem.marketId)}`,
-      { state: { marketItem } },
+      { state: { marketId: marketItem.marketId } },
     );
   };
 

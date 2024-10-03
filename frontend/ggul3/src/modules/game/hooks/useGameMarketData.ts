@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { useSellNFTListQuery } from '../queries';
+import { useSellNFTListQuery, useCancelMarketSaleMutation } from '../queries';
 import { GetSellNFTListResponse } from '../@types';
 
 export const useGameMarketData = (pageSize: number) => {
@@ -15,7 +15,11 @@ export const useGameMarketData = (pageSize: number) => {
     minPower?: number;
     maxPower?: number;
     own?: 'x' | 'true' | 'false';
-  }>({});
+    status?: 'PENDING' | 'COMPLETED' | 'CANCELED';
+  }>({
+    own: 'x', // 기본값 설정
+    status: 'PENDING', // 기본값 설정
+  });
   const [isLastPage, setIsLastPage] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -25,31 +29,33 @@ export const useGameMarketData = (pageSize: number) => {
     ...searchCriteria,
   });
 
+  const { mutate: cancelMarketSale } = useCancelMarketSaleMutation();
+
   useEffect(() => {
-    // 에러가 발생한 경우
     if (isError) {
       setHasError(true);
 
       return;
     }
 
-    // 데이터를 정상적으로 가져온 경우
     if (data?.content) {
       setHasError(false);
+
+      // 데이터를 업데이트하고 마지막 페이지인지 여부를 설정
       if (pageNumber === 0) {
         setSellNftList(data.content);
       } else {
         setSellNftList((prevList) => [...prevList, ...data.content]);
       }
-      setIsLastPage(data.pagination.last);
+      setIsLastPage(data.pageable.last || data.content.length < pageSize);
     }
-  }, [data, pageNumber, isError]);
+  }, [data, pageNumber, isError, pageSize]);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
 
-      // 페이지네이션: 검색 결과가 있고, 에러가 없으며, 더 가져올 데이터가 있을 때만
+      // target이 보이고, 마지막 페이지가 아니며, 에러가 없고, 페칭 중이 아닐 때만 페이지를 증가시킴
       if (
         target.isIntersecting &&
         !isFetching &&
@@ -63,6 +69,20 @@ export const useGameMarketData = (pageSize: number) => {
     [isFetching, isLastPage, hasError, sellNftList.length],
   );
 
+  const handleCancelSale = (marketId: string) => {
+    cancelMarketSale(marketId, {
+      onSuccess: () => {
+        // 성공적으로 판매 취소 시 리스트 갱신
+        setSellNftList((prevList) =>
+          prevList.filter((item) => item.marketId !== marketId),
+        );
+      },
+      onError: (error) => {
+        console.error('판매 취소 오류:', error);
+      },
+    });
+  };
+
   return {
     sellNftList,
     isFetching,
@@ -71,5 +91,6 @@ export const useGameMarketData = (pageSize: number) => {
     setSellNftList,
     setPageNumber,
     hasError,
+    handleCancelSale,
   };
 };

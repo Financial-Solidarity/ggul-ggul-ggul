@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { EquipmentNFTDTO } from '../../@types';
 import { EquipmentNftInfo } from '../common/EquipmentNftInfo';
+import { useGameMarketData } from '../../hooks/useGameMarketData';
 
 import { PathNames } from '@/router';
 
@@ -25,6 +26,7 @@ export const NftDetailSheet = ({
   onUnequip,
 }: NftDetailSheetProps) => {
   const navigate = useNavigate();
+  const { handleCancelSale } = useGameMarketData(10);
 
   const handleSellNft = () => {
     navigate(PathNames.GAME.SELL_CREATE.path, {
@@ -32,7 +34,8 @@ export const NftDetailSheet = ({
     });
   };
 
-  const isEquipped = equippedNft?.ipfsCID === selectedEquipmentNft?.ipfsCID;
+  const isEquipped = selectedEquipmentNft?.status === 'EQUIPPED';
+  const isSelling = selectedEquipmentNft?.status === 'SELLING';
 
   return (
     <Sheet
@@ -51,7 +54,26 @@ export const NftDetailSheet = ({
             )}
           </div>
           <div className="mt-4 flex w-full flex-row gap-3">
-            {isEquipped ? (
+            {isSelling ? (
+              <>
+                <Button
+                  fullWidth
+                  className="h-12 bg-red-500 text-white"
+                  onPress={() =>
+                    handleCancelSale(selectedEquipmentNft?.ipfsCID)
+                  }
+                >
+                  판매 취소하기
+                </Button>
+                <Button
+                  fullWidth
+                  className="h-12 bg-blue-500 text-white"
+                  onPress={() => navigate(PathNames.GAME.MARKET.path)}
+                >
+                  판매중인 장비 보러가기
+                </Button>
+              </>
+            ) : isEquipped ? (
               <Button
                 fullWidth
                 className="h-12 bg-red-500 text-white"

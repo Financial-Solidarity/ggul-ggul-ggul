@@ -217,3 +217,13 @@ export const receiveToken = async (): Promise<void> => {
     url,
   });
 };
+
+// 토큰 밸런스 조회
+export const getTokenBalance = async (): Promise<{ balance: number }> => {
+  const url = `/wallet/token`;
+
+  return await _axios<{ balance: number }>({
+    method: 'GET',
+    url,
+  });
+};

@@ -15,18 +15,18 @@ export const useGameInventory = () => {
     EquipmentNFTDTO | undefined
   >(undefined);
   const [activeGradeIndex, setActiveGradeIndex] =
-    useState<keyof typeof powerRanges>('0');
+    useState<keyof typeof powerRanges>(0);
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
 
   // `activeGradeIndex`에 따른 `minPower`와 `maxPower` 설정
   const powerRanges = {
-    '0': { minPower: 800, maxPower: 999 },
-    '1': { minPower: 600, maxPower: 799 },
-    '2': { minPower: 400, maxPower: 599 },
-    '3': { minPower: 200, maxPower: 399 },
-    '4': { minPower: 1, maxPower: 199 },
+    0: { minPower: 800, maxPower: 999 },
+    1: { minPower: 600, maxPower: 799 },
+    2: { minPower: 400, maxPower: 599 },
+    3: { minPower: 200, maxPower: 399 },
+    4: { minPower: 1, maxPower: 199 },
   };
 
   const { minPower, maxPower } = powerRanges[activeGradeIndex];
@@ -52,14 +52,17 @@ export const useGameInventory = () => {
   }, []);
 
   // 장비 장착을 처리하는 함수
-  const handleEquip = useCallback(() => {
+  const handleEquip = () => {
     if (!selectedEquipmentNft) return;
 
     equipEquipment(
       { ipfsCID: selectedEquipmentNft.ipfsCID },
       {
         onSuccess: () => {
-          queryClient.setQueryData(['equippedEquipment'], selectedEquipmentNft);
+          queryClient.invalidateQueries({ queryKey: ['equippedEquipment'] });
+          queryClient.invalidateQueries({
+            queryKey: ['equipmentList'],
+          });
           setOpen(false);
 
           scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -69,19 +72,18 @@ export const useGameInventory = () => {
         },
       },
     );
-  }, [selectedEquipmentNft, equipEquipment, queryClient]);
+  };
 
-  const handleUnequip = useCallback(() => {
+  const handleUnequip = () => {
     if (!equippedNft) return;
-
     unequipEquipment(
       { ipfsCID: equippedNft.ipfsCID },
       {
         onSuccess: () => {
           // 캐시 무효화 후 강제 재요청
-          queryClient.invalidateQueries({ queryKey: ['equippedEquipment'] });
+          queryClient.setQueryData(['equippedEquipment'], null);
           queryClient.invalidateQueries({
-            queryKey: ['equipmentList', minPower, maxPower],
+            queryKey: ['equipmentList'],
           });
           setOpen(false);
         },
@@ -90,7 +92,7 @@ export const useGameInventory = () => {
         },
       },
     );
-  }, [equippedNft, unequipEquipment, queryClient, minPower, maxPower]);
+  };
 
   return {
     isOpen,

@@ -35,6 +35,7 @@ import {
   cancelMarketSale,
   getReceivableTokenAmount,
   receiveToken,
+  getTokenBalance,
 } from '../apis';
 
 // 장착된 장비 조회 쿼리 훅
@@ -179,8 +180,20 @@ export const useReceivableTokenAmountQuery =
   };
 
 // 껄 수령 뮤테이션 훅
-export const useReceiveTokenMutation = (): UseMutationResult<void> => {
+export const useReceiveTokenMutation = (): UseMutationResult<
+  void,
+  unknown,
+  void
+> => {
   return useMutation({
-    mutationFn: receiveToken,
+    mutationFn: () => receiveToken(),
+  });
+};
+
+// 토큰 밸런스 조회 쿼리 훅
+export const useTokenBalanceQuery = (): UseQueryResult<{ balance: number }> => {
+  return useQuery({
+    queryKey: ['tokenBalance'],
+    queryFn: getTokenBalance,
   });
 };

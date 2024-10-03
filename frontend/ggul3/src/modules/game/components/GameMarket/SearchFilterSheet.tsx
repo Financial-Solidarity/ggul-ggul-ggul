@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Sheet } from 'react-modal-sheet';
 import { Input, Button, Tabs, Tab, Slider } from '@nextui-org/react';
 
+import { MarketStatus } from '../../@types';
+
 interface SearchFilterSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -11,6 +13,8 @@ interface SearchFilterSheetProps {
     maxPower?: number;
     minPrice?: number;
     maxPrice?: number;
+    own?: 'x' | 'true' | 'false';
+    status: MarketStatus;
   }) => void;
 }
 
@@ -45,6 +49,8 @@ export const SearchFilterSheet = ({
       maxPower,
       minPrice,
       maxPrice,
+      own: 'x',
+      status: 'PENDING',
     });
     onClose();
   };
