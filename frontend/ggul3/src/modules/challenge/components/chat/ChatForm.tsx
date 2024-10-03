@@ -28,6 +28,7 @@ export const Chatform = ({ onSubmit }: ChatformProps) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault(); // 기본 Enter 키 동작(줄바꿈) 방지
+      if (!message) return;
       onSubmit(message);
       clearMessage();
     }
