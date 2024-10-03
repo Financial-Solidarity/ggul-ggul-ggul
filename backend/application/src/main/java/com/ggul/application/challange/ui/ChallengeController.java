@@ -73,7 +73,7 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeParticipantViews);
     }
 
-    @PostMapping("/team")
+    @PatchMapping("/team")
     public ResponseEntity<?> challengeTeam(@RequestBody ChallengeTeamChangeRequest request, @AuthenticationPrincipal UserLoginContext loginContext) {
         ChallengeParticipantView challengeParticipantView = challengeTeamChangeService.changeTeam(request, loginContext.getUserId());
         return ResponseEntity.ok(challengeParticipantView);
@@ -82,5 +82,10 @@ public class ChallengeController {
     @GetMapping()
     public ResponseEntity<?> joinedChallengeList(@AuthenticationPrincipal UserLoginContext context) {
         return ResponseEntity.ok(challengeFindService.findAllMyChallengeAndChatting(context.getUserId()));
+    }
+
+    @GetMapping("/now")
+    public ResponseEntity<?> getNowChallenge(@AuthenticationPrincipal UserLoginContext context) {
+        return ResponseEntity.ok(challengeFindService.getNowChallenge(context.getUserId()));
     }
 }

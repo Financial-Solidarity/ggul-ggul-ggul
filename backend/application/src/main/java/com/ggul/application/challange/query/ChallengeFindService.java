@@ -6,6 +6,7 @@ import com.ggul.application.challange.domain.repository.ChallengeRepository;
 import com.ggul.application.challange.exception.ChallengeNotFoundException;
 import com.ggul.application.challange.ui.dto.ChallengeChattingView;
 import com.ggul.application.challange.ui.dto.ChallengeView;
+import com.ggul.application.challange.ui.dto.NowChallengeView;
 import com.ggul.application.chatting.query.ChattingRoomFindService;
 import com.ggul.application.chatting.ui.dto.ChattingRoomFindView;
 import com.ggul.application.user.domain.User;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -35,6 +37,23 @@ public class ChallengeFindService {
         Integer count = challengeParticipantRepository.countByChallenge_Id(challenge.getId());
 
         return ChallengeView.from(challenge, count, Objects.equals(challenge.getOwner().getId(), userId));
+    }
+
+    @Transactional(readOnly = true)
+    public NowChallengeView getNowChallenge(UUID userId) {
+        Optional<Challenge> byIsEndedFalse = challengeRepository.findByIsEndedFalse(userId);
+
+        NowChallengeView nowChallengeView = null;
+
+        if(byIsEndedFalse.isPresent()) {
+            Challenge challenge = byIsEndedFalse.get();
+            nowChallengeView = NowChallengeView.builder()
+                    .challengeId(challenge.getId())
+                    .state(!challenge.getIsReady() ? "READY" : "START")
+                    .build();
+        }
+
+        return nowChallengeView;
     }
 
     @Transactional(readOnly = true)

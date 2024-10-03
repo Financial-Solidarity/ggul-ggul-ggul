@@ -12,6 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 
 @RequiredArgsConstructor
@@ -26,16 +28,16 @@ public class PaymentController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> paymentList(@RequestParam(name = "start-date") @DateTimeFormat(pattern = "yyyy-MM") LocalDate startDate,
-                                         @RequestParam(name = "end-date") @DateTimeFormat(pattern = "yyyy-MM") LocalDate endDate,
+    public ResponseEntity<?> paymentList(@RequestParam(name = "start-date") @DateTimeFormat(pattern = "yyyy-MM") YearMonth startDate,
+                                         @RequestParam(name = "end-date") @DateTimeFormat(pattern = "yyyy-MM") YearMonth endDate,
                                          Pageable pageable, @AuthenticationPrincipal UserLoginContext userLoginContext) {
-        return ResponseEntity.ok(consumptionLogFindService.findAll(userLoginContext.getUserId(), pageable, startDate, endDate));
+        return ResponseEntity.ok(consumptionLogFindService.findAll(userLoginContext.getUserId(), pageable, startDate.atDay(1), endDate.atEndOfMonth()));
     }
 
     @GetMapping("/month/chart/search")
-    public ResponseEntity<?> chartValue(@RequestParam(name = "start-date") @DateTimeFormat(pattern = "yyyy-MM") LocalDate startDate,
-                                         @RequestParam(name = "end-date") @DateTimeFormat(pattern = "yyyy-MM") LocalDate endDate,
+    public ResponseEntity<?> chartValue(@RequestParam(name = "start-date") @DateTimeFormat(pattern = "yyyy-MM") YearMonth startDate,
+                                         @RequestParam(name = "end-date") @DateTimeFormat(pattern = "yyyy-MM") YearMonth endDate,
                                          @AuthenticationPrincipal UserLoginContext userLoginContext) {
-        return ResponseEntity.ok(consumptionLogFindService.findChartValue(userLoginContext.getUserId(), startDate, endDate));
+        return ResponseEntity.ok(consumptionLogFindService.findChartValue(userLoginContext.getUserId(), startDate.atDay(1), endDate.atEndOfMonth()));
     }
 }

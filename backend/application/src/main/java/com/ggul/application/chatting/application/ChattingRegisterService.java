@@ -6,6 +6,7 @@ import com.ggul.application.chatting.application.dto.JustificationChattingReques
 import com.ggul.application.chatting.domain.Chatting;
 import com.ggul.application.chatting.domain.repository.ChattingRepository;
 import com.ggul.application.chatting.domain.repository.ChattingRoomParticipantRepository;
+import com.ggul.application.chatting.domain.repository.ChattingRoomRepository;
 import com.ggul.application.chatting.exception.ChattingJustificationUnAuthorizedException;
 import com.ggul.application.chatting.exception.ChattingNotFoundException;
 import com.ggul.application.chatting.exception.ChattingRoomParticipantExistException;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class ChattingRegisterService {
     private final ChattingRepository chattingRepository;
     private final ChattingRoomParticipantRepository chattingRoomParticipantRepository;
+    private final ChattingRoomRepository chattingRoomRepository;
     private final ChattingSendService chattingSendService;
     private final NotificationSender notificationSender;
 
@@ -39,6 +41,7 @@ public class ChattingRegisterService {
                 .categoryName(chatting.getCategoryName())
                 .balance(chatting.getBalance())
                 .content(request.getContent())
+                .chattingRoom(chatting.getChattingRoom())
                 .build();
 
         generate = chattingRepository.save(generate);
@@ -46,16 +49,17 @@ public class ChattingRegisterService {
         notificationSender.sendNotification(generate);
     }
 
-    @Transactional
-    public void chattingCreate(ChatRequest request, UUID userId) {
-        ChallengeParticipant participant = chattingRoomParticipantRepository.findByChattingRoomIdAndUserId(request.getChattingRoomId(), userId).orElseThrow(ChattingRoomParticipantExistException::new);
-        Chatting chatting = Chatting.builder()
-                .participant(participant)
-                .type(Chatting.Type.COMMON)
-                .content(request.getContent())
-                .build();
-        chatting = chattingRepository.save(chatting);
-        chattingSendService.sendChat(chatting);
-        notificationSender.sendNotification(chatting);
+        @Transactional
+        public void chattingCreate(ChatRequest request, UUID userId) {
+            ChallengeParticipant participant = chattingRoomParticipantRepository.findByChattingRoomIdAndUserId(request.getChattingRoomId(), userId).orElseThrow(ChattingRoomParticipantExistException::new);
+            Chatting chatting = Chatting.builder()
+                    .participant(participant)
+                    .type(Chatting.Type.COMMON)
+                    .chattingRoom(chattingRoomRepository.getReferenceById(request.getChattingRoomId()))
+                    .content(request.getContent())
+                    .build();
+            chatting = chattingRepository.save(chatting);
+            chattingSendService.sendChat(chatting);
+            notificationSender.sendNotification(chatting);
     }
 }

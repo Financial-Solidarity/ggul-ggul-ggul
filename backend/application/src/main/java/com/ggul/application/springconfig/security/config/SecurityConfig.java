@@ -26,8 +26,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.*;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -44,9 +50,8 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler(){
+    public AuthenticationFailureHandler authenticationFailureHandler() {
         return new JsonAuthFailureHandler();
     }
 
@@ -61,7 +66,7 @@ public class SecurityConfig {
     }
 
 
-    public AuthenticationProvider jsonAuthenticationProvider(){
+    public AuthenticationProvider jsonAuthenticationProvider() {
         return new JsonLoginAuthenticationProvider(userDetailsService, bCryptPasswordEncoder());
     }
 
@@ -92,13 +97,40 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // 와일드카드 대신 특정 출처만 허용
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        // 허용할 HTTP 메서드 설정
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // 허용할 HTTP 헤더 설정
+        config.setAllowedHeaders(List.of("*"));
+
+        // 특정 헤더를 노출 (필요한 경우)
+        config.setExposedHeaders(List.of());
+
+        // 자격 증명(쿠키, 인증 정보 등)을 허용할 경우 true로 설정
+        config.setAllowCredentials(true);
+
+        // CORS 설정을 URL에 매핑
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.anonymous(AbstractHttpConfigurer::disable);
-
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         AuthenticationManager authenticationManager = authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
+
         ProviderManager p = (ProviderManager) authenticationManager;
         p.getProviders().add(jsonAuthenticationProvider());
 
@@ -107,11 +139,12 @@ public class SecurityConfig {
             securityContext.requireExplicitSave(true); // true로 주게 되면 SecurityContextHolder의 값이 변경되어도 자동 저장되지 않게 함.
         });
 
-        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**", "/backdoor/**", "/account/**").permitAll()
+
+        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**", "/backdoor/**", "/health-check").permitAll()
                 .anyRequest().authenticated());
         http.addFilterAt(jsonLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
-
-        http.sessionManagement(httpSecuritySessionManagementConfigurer ->{
+//        http.addFilterBefore(new CorsFilter(), JsonLoginAuthenticationFilter.class);
+        http.sessionManagement(httpSecuritySessionManagementConfigurer -> {
             httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
         });
         http.exceptionHandling(httpSecurityExceptionHandlingConfigurer ->

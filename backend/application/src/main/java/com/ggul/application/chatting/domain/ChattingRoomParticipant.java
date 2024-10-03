@@ -40,4 +40,8 @@ public class ChattingRoomParticipant extends BaseEntity {
     protected void onCreate() {
         lastConnectedAt = LocalDateTime.now();
     }
+
+    public void connected() {
+        this.lastConnectedAt = LocalDateTime.now();
+    }
 }

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS market_deal;
+DROP TABLE IF EXISTS market;
 DROP TABLE IF EXISTS tokenized_equipment;
 DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS equipment_item;
@@ -116,7 +118,7 @@ CREATE TABLE notification
 
 CREATE TABLE category
 (
-    product_category_id INT         NOT NULL,
+    product_category_id INT         NOT NULL PRIMARY KEY ,
     category_name       VARCHAR(40) NOT NULL
 );
 
@@ -158,6 +160,32 @@ CREATE TABLE tokenized_equipment (
     FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
 );
 
+CREATE TABLE market (
+    market_id BINARY(16) NOT NULL PRIMARY KEY,
+    tokenized_equipment_id BINARY(16) NOT NULL,
+    seller_id BINARY(16) NOT NULL,
+    buyer_id BINARY(16) NULL,
+    title VARCHAR(40) NOT NULL,
+    description VARCHAR(200) NULL,
+    price BIGINT NOT NULL,
+    created_at DATETIME NOT NULL,
+    completed_at DATETIME NULL,
+    status VARCHAR(16) NOT NULL,
+
+    FOREIGN KEY (tokenized_equipment_id) REFERENCES tokenized_equipment(tokenized_equipment_id),
+    FOREIGN KEY (seller_id) REFERENCES user(user_id),
+    FOREIGN KEY (buyer_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE market_deal (
+    market_deal_id BINARY(16) NOT NULL PRIMARY KEY,
+    market_id BINARY(16) NOT NULL,
+    deal_no BIGINT NOT NULL,
+
+    FOREIGN KEY (market_id) REFERENCES market(market_id)
+);
+
+
 CREATE TABLE consumption_log
 (
     consumption_log_id  BINARY(16)  NOT NULL PRIMARY KEY,
@@ -169,6 +197,7 @@ CREATE TABLE consumption_log
     consumption_market  VARCHAR(50) NOT NULL,
     ggul_log_id         BINARY(16),
     FOREIGN KEY (user_id) REFERENCES user (user_id),
+    FOREIGN KEY (product_category_id) REFERENCES category (product_category_id),
     FOREIGN KEY (ggul_log_id) REFERENCES ggul_log (ggul_log_id)
 );
 
@@ -177,10 +206,11 @@ CREATE TABLE chatting
     chatting_id               BINARY(16) PRIMARY KEY NOT NULL,
     challenge_participant_id  BINARY(16)             NOT NULL,
     chatting_room_id          BINARY(16)             NOT NULL,
-    type                      CHAR(1)                NOT NULL,
+    type                      TINYINT                NOT NULL,
     chatting_content          TEXT,
     consumption_category_name VARCHAR(40),
     consumption_balance       INTEGER,
+    created_at                DATETIME               NOT NULL,
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant(challenge_participant_id),
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room(chatting_room_id)
 );
@@ -242,3 +272,6 @@ VALUES (1, "컵케익","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/
        (18, "토스트","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/toast.png"),
        (19, "두부","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/tofu.png"),
        (20, "참치캔","https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/tunacan.png");
+
+
+INSERT INTO category (product_category_id, category_name) VALUES (1, '배달 음식');

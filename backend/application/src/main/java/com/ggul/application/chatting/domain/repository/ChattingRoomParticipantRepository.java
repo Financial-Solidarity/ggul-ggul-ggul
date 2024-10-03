@@ -20,4 +20,6 @@ public interface ChattingRoomParticipantRepository extends JpaRepository<Chattin
 
     @Query("SELECT cp FROM ChattingRoomParticipant crp JOIN ChallengeParticipant cp on crp.challengeParticipant = cp WHERE crp.chattingRoom.id = :chattingRoomId AND cp.user.id = :userId")
     Optional<ChallengeParticipant> findByChattingRoomIdAndUserId(@Param("chattingRoomId") UUID chattingRoomId, @Param("userId") UUID userId);
+
+    Optional<ChattingRoomParticipant> findByChattingRoom_IdAndChallengeParticipant_User_Id(UUID chattingRoomId, UUID userId);
 }

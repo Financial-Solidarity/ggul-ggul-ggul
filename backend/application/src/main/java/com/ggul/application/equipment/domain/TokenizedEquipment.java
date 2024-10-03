@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -40,4 +41,18 @@ public class TokenizedEquipment {
     @JoinColumn(name = "equipment_id")
     @OneToOne(fetch = FetchType.LAZY)
     private Equipment equipment;
+
+    @PrePersist
+    protected void onCreate() {
+        this.status = Status.NONE;
+    }
+
+    public void changeOwner(User user){
+        this.owner = user;
+    }
+
+    public void changeStatus(Status status){
+        this.status = status;
+    }
+
 }

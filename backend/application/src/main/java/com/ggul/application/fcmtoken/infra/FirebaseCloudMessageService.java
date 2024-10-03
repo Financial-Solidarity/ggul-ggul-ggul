@@ -4,17 +4,18 @@ import com.ggul.application.fcmtoken.domain.FcmToken;
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class FirebaseCloudMessageService {
-
 
     public static MulticastMessage generateMulticastMessage(List<FcmToken> targetTokens, String title, String body, String type, Map<String, String> values) {
         return MulticastMessage.builder()
@@ -58,8 +59,9 @@ public class FirebaseCloudMessageService {
         return FirebaseMessaging.getInstance().sendEachForMulticast(multicastMessage);
     }
 
-    public List<BatchResponse> sendDataMessageTo(List<MulticastMessage> multicastMessage){
-        return multicastMessage.stream().map(multicastMessage1 -> {
+    @Async
+    public CompletableFuture<List<BatchResponse>> sendDataMessageTo(List<MulticastMessage> multicastMessage){
+        List<BatchResponse> list = multicastMessage.stream().map(multicastMessage1 -> {
             try {
                 return sendDataMessageTo(multicastMessage1);
             } catch (FirebaseMessagingException ignored) {
@@ -81,6 +83,8 @@ public class FirebaseCloudMessageService {
                 };
             }
         }).toList();
+
+        return CompletableFuture.completedFuture(list);
     }
 
     public String sendMessageTo(Message message) throws FirebaseMessagingException {

@@ -31,6 +31,13 @@ public class ChallengeParticipantType {
         this.type = type;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChallengeParticipantType that = (ChallengeParticipantType) o;
+        return type == that.type;
+    }
 
     public static ChallengeParticipantType valueOf(String value) {
         EnumSet<Type> set = EnumSet.allOf(ChallengeParticipantType.Type.class);
@@ -44,11 +51,11 @@ public class ChallengeParticipantType {
     }
 
     public ChattingRoomType convertType() {
-        if(this.equals(RED)) {
+        if (this.equals(RED)) {
             return ChattingRoomType.RED;
         }
 
-        if(this.equals(BLUE)) {
+        if (this.equals(BLUE)) {
             return ChattingRoomType.BLUE;
         }
 
