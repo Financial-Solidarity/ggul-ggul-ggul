@@ -9,6 +9,7 @@ import {
   ErrorDTO,
   GetChallengeDetailResponse,
   getChattingRooomIdsResponse,
+  GetParticipatingChallengeResponse,
   Pageable,
   ParticipantDTO,
 } from '@types';
@@ -18,6 +19,7 @@ import {
   getChallengeDetail,
   getChattingRooomIds,
   getParticipantList,
+  getParticipatingChallenge,
 } from '../apis/challenge';
 import {
   changeTeam,
@@ -126,5 +128,13 @@ export const useChangeTeam = () => {
         queryKey: [QUERY_KEYS.PARTICIPANT],
       });
     },
+  });
+};
+
+export const useGetParticipatingChallenge = () => {
+  return useQuery<GetParticipatingChallengeResponse, ErrorDTO>({
+    queryKey: [QUERY_KEYS.PARTICIPARING_CHALLENGE],
+    queryFn: () => getParticipatingChallenge(),
+    initialData: null,
   });
 };

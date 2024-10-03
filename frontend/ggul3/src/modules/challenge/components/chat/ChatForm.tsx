@@ -25,6 +25,14 @@ export const Chatform = ({ onSubmit }: ChatformProps) => {
     setMessage('');
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // 기본 Enter 키 동작(줄바꿈) 방지
+      onSubmit(message);
+      clearMessage();
+    }
+  };
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
@@ -41,6 +49,7 @@ export const Chatform = ({ onSubmit }: ChatformProps) => {
         type="text"
         value={message}
         onChange={handleInput}
+        onKeyDown={handleKeyDown}
       />
       <button className="flex w-10 items-end justify-center bg-primary p-1.5 text-white">
         <PencilIcon className="w-6" />

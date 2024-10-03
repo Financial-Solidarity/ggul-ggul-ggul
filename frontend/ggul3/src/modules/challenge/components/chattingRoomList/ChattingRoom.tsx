@@ -4,10 +4,10 @@ import { Chip, Image } from '@nextui-org/react';
 import { formatUnreadMessageCount } from '../../utils/chat';
 
 import { toAMPM_ko } from '@/modules/common/utils/dateUtils';
-
 interface ChattingRoomProps extends ChattingRoomDTO {
   title: string;
   img: string;
+  onClick: () => void;
 }
 
 export const ChattingRoom = ({
@@ -15,10 +15,13 @@ export const ChattingRoom = ({
   img,
   lastChattingContent,
   lastChattingSentAt,
+  onClick,
   badge,
 }: ChattingRoomProps) => {
+  const handleChattingRoomClick = () => {};
+
   return (
-    <div className="flex gap-2">
+    <div className="flex cursor-pointer gap-2" onClick={onClick}>
       <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-default-200">
         <Image className="h-full w-full object-cover" src={img} />
       </div>
