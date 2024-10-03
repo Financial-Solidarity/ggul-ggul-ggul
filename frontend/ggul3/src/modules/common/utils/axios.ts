@@ -10,6 +10,11 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    if (import.meta.env.MODE !== 'production') {
+      config.headers['Access-Control-Allow-Credentials'] = true;
+      config.headers['ngrok-skip-browser-warning'] = true;
+    }
+
     return config;
   },
   (error) => {

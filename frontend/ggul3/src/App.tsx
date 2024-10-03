@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { BottomBar } from './modules/common/components/Layouts/BottomBar';
 import { Provider } from './provider';
-import { SessionCheck } from './modules/common/components/SessionCheck';
 
 const queryClient = new QueryClient();
 
@@ -12,7 +11,6 @@ function App() {
     <Provider>
       <QueryClientProvider client={queryClient}>
         <div className="flex h-screen w-full flex-col">
-          <SessionCheck />
           <Outlet />
           <BottomBar />
         </div>

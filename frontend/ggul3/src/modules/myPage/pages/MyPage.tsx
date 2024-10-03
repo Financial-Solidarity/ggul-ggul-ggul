@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-
-import { Banner, ChangeMainAccountLinkButton, MyProfile } from '../components';
+import {
+  Banner,
+  ChangeMainAccountLinkButton,
+  LogOutButton,
+  MyProfile,
+} from '../components';
 
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -11,15 +13,11 @@ import { NotificationButton } from '@/modules/common/components/NotificationButt
 import { useUserStore } from '@/modules/common/store/userStore';
 
 export const MyPage = () => {
-  const navigate = useNavigate();
-
   const { user } = useUserStore();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    }
-  }, []);
+  if (user === null) {
+    return <div>로그인 되어 있지 않음</div>;
+  }
 
   return (
     <>
@@ -29,21 +27,13 @@ export const MyPage = () => {
         right={<NotificationButton color="black" />}
       />
       <PageContainer>
-        <div className="my-2">
-          <MyProfile
-            email={user.username}
-            nickname={user.nickname}
-            profileImg={
-              user.profileImg ||
-              'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/user%2Fprofile%2F01920d13-21f2-7f43-aa95-d8addad2c1bejpg'
-            }
-          />
-        </div>
-        <div className="mb-3">
-          <Banner nickname={user.nickname} />
-        </div>
-        <div>
+        <div className="flex flex-col gap-3">
+          <div className="mt-3">
+            <MyProfile />
+          </div>
+          <Banner nickname={user?.nickname} />
           <ChangeMainAccountLinkButton />
+          <LogOutButton />
         </div>
       </PageContainer>
     </>
