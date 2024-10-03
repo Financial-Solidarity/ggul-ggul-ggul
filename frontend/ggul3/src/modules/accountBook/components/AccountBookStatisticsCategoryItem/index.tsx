@@ -25,9 +25,11 @@ export const AccountBookStatisticsCategoryItem = ({
       <div className="flex items-center gap-2">
         <BsCircleFill className={`text-xs ${color}`} />
         <span>{label}</span>
-        <span>{percentage}%</span>
+        <span className="text-sm text-gray-500">{percentage}%</span>
       </div>
-      <div className="font-medium">{transformMoneyUnit(money).slice(1)}원</div>
+      <div className="font-medium">
+        {transformMoneyUnit({ money }).slice(1)}원
+      </div>
     </div>
   );
 };
