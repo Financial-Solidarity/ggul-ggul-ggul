@@ -24,8 +24,6 @@ export const ChallengeTeamSpentMoney = ({}) => {
 
   const totalSpentMoney = categoryList.reduce((acc, cur) => acc + cur.money, 0);
 
-  console.log(Math.floor((totalSpentMoney / teamInfo.goalMoney) * 100));
-
   return (
     <div className="flex flex-col gap-2 py-4">
       <div className="flex items-center font-bold">

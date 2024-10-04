@@ -20,10 +20,6 @@ import { useUserStore } from '@/modules/common/store/userStore';
 export const MyPage = () => {
   const { user } = useUserStore();
 
-  if (user === null) {
-    return <div>로그인 되어 있지 않음</div>;
-  }
-
   return (
     <>
       <TopBar

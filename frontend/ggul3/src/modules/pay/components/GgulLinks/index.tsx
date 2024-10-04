@@ -2,7 +2,7 @@ import { Card, CardFooter } from '@nextui-org/card';
 import { Image } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
 
-import charityGroup from '@/assets/images/charity-group.png';
+import charityGroup from '@/assets/images/charity_group.png';
 import woodenTrainingSword from '@/assets/images/wooden-training-sword.png';
 
 export const GgulLinks = () => {

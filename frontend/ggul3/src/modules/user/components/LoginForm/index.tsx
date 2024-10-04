@@ -38,7 +38,7 @@ export const LoginForm = ({
 }: LoginFormProps) => {
   const navigate = useNavigate();
 
-  const { setUser } = useUserStore();
+  const { setUser, setIsLoggedIn } = useUserStore();
 
   const handleSubmitLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -49,10 +49,9 @@ export const LoginForm = ({
       // 유저 데이터 가져오기
       const userData = await getUserData();
 
-      console.log(userData, 'userData');
-
       // 유저 데이터 상태에 저장
       setUser(userData);
+      setIsLoggedIn(true);
 
       navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
     } catch (error) {

@@ -1,4 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
+
+import { useUserStore } from '../store/userStore';
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT,
   timeout: 30000,
@@ -51,6 +53,20 @@ instance.interceptors.response.use(
       console.group(`🔴[${config.method.toUpperCase()}][]${config.url}`);
       console.error(error);
       console.groupEnd();
+    }
+
+    if (error.status === 401) {
+      useUserStore.getState().setUser({
+        userId: '',
+        username: '',
+        nickname: '',
+        profileImg: '',
+      });
+
+      useUserStore.getState().setIsLoggedIn(false);
+
+      window.alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+      window.location.href = '/login';
     }
 
     return Promise.reject(error.response.data);
