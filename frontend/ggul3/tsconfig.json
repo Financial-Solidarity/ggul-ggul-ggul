@@ -21,8 +21,10 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "allowJs": true
   },
-  "include": ["src"],
+  "include": ["src", "src/firebase.js", "public/firebase-messaging-sw.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
