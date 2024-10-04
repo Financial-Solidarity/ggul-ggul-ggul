@@ -33,8 +33,6 @@ export const AccountBookStatisticsPage = () => {
   const endDate = searchParams.get('end-date') || currentDate;
 
   useEffect(() => {
-    // setStatisticsList(data);
-    // setFormedStatisticsList(data);
     getPaymentStatistics({ startDate, endDate })
       .then((res) => {
         setStatisticsList(res);

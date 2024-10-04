@@ -6,17 +6,20 @@ import { getYYMMDD } from '../../utils/getYYMMDD';
 import { transformMoneyUnit } from '@/modules/common/utils/transformMoneyUnit';
 
 interface AccountBookTradingHistoryItemProps extends Payment {
-  imgUrl: string;
+  imgUrl?: string;
+  profileImg?: string;
+  nickname?: string;
 }
 
 export const AccountBookTradingHistoryItem = ({
   imgUrl,
-  label,
   market,
   money,
   productName,
   spendGgulToken,
   spentAt,
+  profileImg,
+  nickname,
 }: AccountBookTradingHistoryItemProps) => {
   const isPositive = money >= 0;
 
@@ -24,7 +27,13 @@ export const AccountBookTradingHistoryItem = ({
     <div>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <Image sizes="36" src={imgUrl} />
+          <div className="flex flex-col items-center">
+            <Image
+              sizes="36px"
+              src={profileImg || imgUrl || 'https://via.placeholder.com/36'}
+            />
+            {nickname && <p className="text-xs text-gray-500">{nickname}</p>}
+          </div>
           <div className="ml-2">
             <div
               className={`font-bold leading-5 text-${isPositive ? 'black' : 'gray-500'}`}
@@ -40,7 +49,7 @@ export const AccountBookTradingHistoryItem = ({
           <div
             className={`text-gray font-bold text-${isPositive ? 'primary' : ''}`}
           >
-            {transformMoneyUnit(money)}원
+            {transformMoneyUnit({ money })}원
           </div>
           {spendGgulToken && <CoinIcon discountValue={spendGgulToken} />}
         </div>
@@ -51,7 +60,7 @@ export const AccountBookTradingHistoryItem = ({
 
 const CoinIcon = ({ discountValue }: { discountValue: number }) => {
   return (
-    <div className="flex items-center text-sm leading-3">
+    <div className="flex items-center text-sm">
       <span className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-warning text-xs font-bold">
         G
       </span>
