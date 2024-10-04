@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "cd ../.. && husky install frontend/ggul3/.husky"
+    "prepare": "cd ../.. && husky install frontend/ggul3/.husky",
+    "gen-pwa": "pwa-assets-generator --preset minimal public/logo.svg"
   },
   "lint-staged": {
     "**/*.{js,ts,tsx}": [
@@ -76,10 +77,12 @@
     "@storybook/test": "^8.2.9",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.1",
+    "@types/node": "^22.7.4",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
+    "@vite-pwa/assets-generator": "^0.2.6",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "eslint": "^9.10.0",
@@ -104,6 +107,7 @@
     "storybook": "^8.2.9",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-pwa": "^0.20.5",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "msw": {

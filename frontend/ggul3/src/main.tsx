@@ -17,6 +17,19 @@ async function enableMocking() {
   return;
 }
 
+// 서비스 워커 등록 함수
+async function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register('/sw.js');
+
+      console.log('PWA 서비스 워커 실행:', registration.scope);
+    } catch (error) {
+      console.error('PWA 서비스 워커 실패:', error);
+    }
+  }
+}
+
 // Mocking을 적용하고 앱을 렌더링
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -24,4 +37,7 @@ enableMocking().then(() => {
       <RouterProvider router={router} />
     </React.StrictMode>,
   );
+
+  // 서비스 워커 등록
+  registerServiceWorker();
 });

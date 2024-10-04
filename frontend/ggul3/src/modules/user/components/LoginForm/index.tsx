@@ -16,6 +16,7 @@ import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { useUserStore } from '@/modules/common/store/userStore';
 import { getUserData } from '@/modules/common/apis/userApis';
+import { requestPermission } from '@/modules/common/hooks/useFcmRegistration';
 
 interface LoginFormProps {
   email: string;
@@ -52,6 +53,9 @@ export const LoginForm = ({
       // 유저 데이터 상태에 저장
       setUser(userData);
       setIsLoggedIn(true);
+
+      //fcm 등록
+      await requestPermission();
 
       navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
     } catch (error) {

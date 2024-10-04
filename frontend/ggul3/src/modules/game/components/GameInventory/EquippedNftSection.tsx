@@ -1,5 +1,3 @@
-// frontend/ggul3/src/modules/game/components/GameInventory/EquippedNftSection.tsx
-
 import { EquipmentNftInfo } from '../common/EquipmentNftInfo';
 
 import { SkeletonGroupNumbers } from './SkeletonGroupNumbers';

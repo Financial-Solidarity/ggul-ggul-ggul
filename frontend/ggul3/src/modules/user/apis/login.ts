@@ -12,3 +12,11 @@ export const login = ({ email, password }: ILogin) => {
     data: { email, password },
   });
 };
+
+export const postFcmToken = (fcmToken: string | undefined) => {
+  return _axios({
+    method: 'POST',
+    url: `/fcm`,
+    data: { fcmToken },
+  });
+};
