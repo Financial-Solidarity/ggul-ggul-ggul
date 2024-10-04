@@ -13,10 +13,6 @@ export const MyProfile = () => {
 
   const { user, setUser } = useUserStore();
 
-  if (user === null) {
-    return <div>로그인 되어 있지 않음</div>;
-  }
-
   const handleClickCancelEditNicknameButton = () => {
     setIsEditing(false);
     setNicknameInput(user.nickname);
