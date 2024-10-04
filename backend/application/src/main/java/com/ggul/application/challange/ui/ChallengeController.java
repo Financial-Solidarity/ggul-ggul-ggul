@@ -90,4 +90,9 @@ public class ChallengeController {
     public ResponseEntity<?> getNowChallenge(@AuthenticationPrincipal UserLoginContext context) {
         return ResponseEntity.ok(challengeFindService.getNowChallenge(context.getUserId()));
     }
+
+    @GetMapping("/{challengeId}/consumptions")
+    public ResponseEntity<?> getConsumptionLog(@PathVariable("challengeId")UUID challengeId, @AuthenticationPrincipal UserLoginContext userLoginContext) {
+
+    }
 }

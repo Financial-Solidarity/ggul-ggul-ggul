@@ -1,5 +1,6 @@
 package com.ggul.application.payment.query;
 
+import com.ggul.application.payment.ui.dto.ChallengeConsumptionView;
 import com.ggul.application.payment.ui.dto.ConsumptionChartView;
 import com.ggul.application.payment.domain.repository.ConsumptionLogRepository;
 import com.ggul.application.payment.ui.dto.ConsumptionLogView;
@@ -27,5 +28,15 @@ public class ConsumptionLogFindService {
     @Transactional(readOnly = true)
     public List<ConsumptionChartView> findChartValue(UUID userId, LocalDate startedAt, LocalDate endedAt) {
         return consumptionLogRepository.findByUserAndCreatedAtBetweenGroupByProductCategoryName(userId, startedAt.atStartOfDay(), endedAt.atStartOfDay().with(LocalTime.MAX));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ChallengeConsumptionView> findAllByChallengeID(UUID challengeId) {
+        List<ConsumptionLogRepository.ParticipantAndConsumptionLog> allByChallengeId = consumptionLogRepository.findAllByChallenge_Id(challengeId);
+        allByChallengeId.stream().map(participantAndConsumptionLog -> {
+
+            ChallengeConsumptionView.builder()
+                    .money()
+        });
     }
 }
