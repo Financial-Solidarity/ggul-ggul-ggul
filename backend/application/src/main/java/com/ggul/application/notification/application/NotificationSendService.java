@@ -23,9 +23,9 @@ public class NotificationSendService {
     public void sendAllAndPersist(List<Notification> lists) {
         List<MulticastMessage> mlists = new ArrayList<>();
         for(Notification noti : lists) {
-            List<FcmToken> tokens = noti.getUser().getFcmTokens();
+            List<FcmToken> tokens = noti.getUser().getFcmTokens().stream().filter(fcm -> !fcm.getIsForeground()).toList();
             if(tokens.size() != 0) {
-                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(noti.getUser().getFcmTokens(), noti.getTitle(), noti.getBody(), noti.getType().name(), noti.getData(), false);
+                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(noti.getUser().getFcmTokens(), noti.getTitle(), noti.getBody(), noti.getType().name(), noti.getData());
                 mlists.add(multicastMessage);
             }
         }
