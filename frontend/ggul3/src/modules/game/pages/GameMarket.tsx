@@ -55,7 +55,7 @@ export const GameMarket = (): JSX.Element => {
     maxPrice?: number;
     minPower?: number;
     maxPower?: number;
-    own?: 'x' | 'true' | 'false';
+    own?: 'true' | 'false';
   }) => {
     setSearchCriteria(criteria);
     setPageNumber(0);

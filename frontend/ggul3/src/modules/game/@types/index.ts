@@ -93,7 +93,7 @@ export interface GetMarketListParams {
   minPrice?: number;
   maxPrice?: number;
   name?: string;
-  own?: 'x' | 'true' | 'false'; // 전체, 내 판매글만, 내걸 제외한 글만
+  own?: 'true' | 'false'; // 전체, 내 판매글만, 내걸 제외한 글만
 }
 
 // 장비 매물 목록 조회 응답 타입
@@ -116,7 +116,7 @@ export interface GetMarketItemResponse {
   price: number;
   createdAt: string;
   completedAt: string | null;
-  status: string; // e.g., "PENDING" <- 정확히 알아내서 타입 정의하기@@@
+  status: MarketStatus; // e.g., "PENDING" <- 정확히 알아내서 타입 정의하기@@@
 }
 
 // 판매 글 작성 요청 및 응답 타입

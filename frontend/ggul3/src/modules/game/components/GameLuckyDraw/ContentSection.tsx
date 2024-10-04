@@ -6,6 +6,7 @@ import { CookingLottie } from './Lotties/CookingLottie';
 import { EquipmentInfoDisplay } from './EquipmentInfoDisplay';
 import { RandomNumber } from './RandomNumber';
 
+import ServingLid from '@/assets/images/serving_lid.png';
 import { EquipmentDTO, HexCodesByGrade } from '@/modules/game/@types';
 import ServingLid from '@/assets/images/serving_lid.png';
 export interface ContentSectionProps {
