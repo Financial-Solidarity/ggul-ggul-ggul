@@ -20,7 +20,7 @@ import { NotificationButton } from '@/modules/common/components/NotificationButt
 export const ChallengeListPage = () => {
   const navigate = useNavigate();
   const {
-    data: { content },
+    data: { content = [] },
     isFetching,
   } = useGetChallengeList({ page: 0 });
 
@@ -75,7 +75,7 @@ export const ChallengeListPage = () => {
                   <div className="h-40 w-full" />
                 </Skeleton>
               ))
-          ) : content.length === 0 ? (
+          ) : content?.length === 0 ? (
             <div className="flex w-full flex-1 flex-col items-center justify-center gap-2">
               <p className="text-default-400">진행중인 챌린지가 없습니다</p>
               <Button className="w-max" onClick={toCreateChallenge}>
