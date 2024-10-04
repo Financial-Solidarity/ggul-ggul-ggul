@@ -20,7 +20,7 @@ public interface ChattingRepository extends JpaRepository<Chatting, UUID> {
     @Query("SELECT COUNT(c.id) as count " +
             "FROM Chatting c " +
             "JOIN ChattingRoom cr ON c.chattingRoom.id = cr.id " +
-            "WHERE c.id = :chattingRoomId " +
+            "WHERE c.chattingRoom.id = :chattingRoomId " +
             " AND c.createdAt BETWEEN ( SELECT cp.lastConnectedAt FROM ChattingRoomParticipant cp WHERE cp.challengeParticipant.user.id = :sessionId ) AND NOW() ")
     ChattingBadgeCount countByChattingRoomAndParticipantId(@Param("chattingRoomId") UUID chattingRoomId, @Param("sessionId") UUID sessionId);
 
