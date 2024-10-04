@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface UserState {
-  user: UserDTO; // user를 null을 허용하도록 타입 수정
+  user: UserDTO;
   setUser: (user: UserDTO) => void;
   logout: () => void;
   isLoggedIn: boolean;
@@ -20,15 +20,9 @@ export const useUserStore = create<UserState>()(
         profileImg: '',
       },
       isLoggedIn: false,
-      setUser: (user) => {
-        console.log('set 실행');
 
-        set({ user });
-      },
-      setIsLoggedIn: (isLoggedIn) => {
-        set({ isLoggedIn });
-      },
-
+      setUser: (user) => set({ user }),
+      setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
       logout: () =>
         set({
           user: {
@@ -38,7 +32,7 @@ export const useUserStore = create<UserState>()(
             profileImg: '',
           },
           isLoggedIn: false,
-        }), // user를 null로 설정하여 로그아웃 처리
+        }),
     }),
     {
       name: 'session', // storage의 키 이름
