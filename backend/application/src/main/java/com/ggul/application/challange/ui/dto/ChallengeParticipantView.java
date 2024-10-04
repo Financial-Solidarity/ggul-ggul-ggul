@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Builder
@@ -50,7 +51,7 @@ public class ChallengeParticipantView {
     }
 
     public void setIsMine(UUID sessionParticipantId) {
-        isMine = participantId.equals(sessionParticipantId);
+        isMine = Objects.equals(this.participantId, sessionParticipantId);
     }
 
     public void setIsMine(Boolean isMine) {
