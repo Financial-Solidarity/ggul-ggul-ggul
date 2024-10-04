@@ -13,7 +13,7 @@ interface SearchFilterSheetProps {
     maxPower?: number;
     minPrice?: number;
     maxPrice?: number;
-    own?: 'x' | 'true' | 'false';
+    own?: 'true' | 'false';
     status: MarketStatus;
   }) => void;
 }
@@ -49,7 +49,7 @@ export const SearchFilterSheet = ({
       maxPower,
       minPrice,
       maxPrice,
-      own: 'x',
+      own: 'false',
       status: 'PENDING',
     });
     onClose();

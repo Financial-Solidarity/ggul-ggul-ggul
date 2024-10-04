@@ -14,11 +14,11 @@ export const useGameMarketData = (pageSize: number) => {
     maxPrice?: number;
     minPower?: number;
     maxPower?: number;
-    own?: 'x' | 'true' | 'false';
+    own?: 'true' | 'false';
     status?: 'PENDING' | 'COMPLETED' | 'CANCELED';
   }>({
-    own: 'x', // 기본값 설정
-    status: 'PENDING', // 기본값 설정
+    own: 'false',
+    status: 'PENDING',
   });
   const [isLastPage, setIsLastPage] = useState(false);
   const [hasError, setHasError] = useState(false);
