@@ -5,13 +5,16 @@ import { Toaster } from 'react-hot-toast';
 import { BottomBar } from './modules/common/components/Layouts/BottomBar';
 import { Provider } from './provider';
 import { useSocket } from './modules/common/hooks/useSocket';
+import { useUserStore } from './modules/common/store/userStore';
 
 function App() {
   const { connect } = useSocket();
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
+    if (!user) return;
     connect();
-  }, []);
+  }, [user]);
 
   return (
     <Provider>

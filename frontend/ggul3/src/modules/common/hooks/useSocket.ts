@@ -163,6 +163,7 @@ export const useSocket = () => {
 
   const connect = () => {
     socket.onConnect = () => {
+      if (!user) return;
       socket.subscribe(`/sub/${user.userId}`, (message) => {
         const { type, data } = JSON.parse(message.body);
 
@@ -186,6 +187,7 @@ export const useSocket = () => {
     content: string;
   }) => {
     if (!socket) return;
+    if (!user) return;
     try {
       socket.publish({
         destination: `/pub/${user.userId}`,
