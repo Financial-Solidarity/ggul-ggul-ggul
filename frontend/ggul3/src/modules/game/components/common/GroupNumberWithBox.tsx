@@ -1,14 +1,20 @@
 import { NumberWithBox } from './NumberWithBox.tsx';
 
 interface GroupNumberWithBoxProps {
-  number: number;
+  number: number | undefined;
+  withLabel?: boolean;
 }
-export const GroupNumberWithBox = ({ number }: GroupNumberWithBoxProps) => {
+export const GroupNumberWithBox = ({
+  number,
+  withLabel = true,
+}: GroupNumberWithBoxProps) => {
   const stringNumbers = formatNumberToStringArray(number);
 
   return (
-    <div className="ml-8 flex items-center justify-center gap-[0.35rem]">
-      {stringNumbers.map((char, idx) => (
+    <div
+      className={`${withLabel && 'ml-8 justify-center'} flex items-center gap-[0.35rem]`}
+    >
+      {stringNumbers?.map((char, idx) => (
         <NumberWithBox key={idx} number={char} />
       ))}
       <div className="ml-2 text-lg font-semibold text-white">맛도리</div>
@@ -16,6 +22,8 @@ export const GroupNumberWithBox = ({ number }: GroupNumberWithBoxProps) => {
   );
 };
 
-const formatNumberToStringArray = (number: number): string[] => {
-  return number.toString().padStart(3, '0').split('');
+const formatNumberToStringArray = (
+  number: number | undefined,
+): string[] | undefined => {
+  return number?.toString().padStart(3, '0').split('');
 };

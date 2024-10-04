@@ -1,12 +1,14 @@
-import { FoodNftInfo } from '../common/FoodNftInfo';
+// frontend/ggul3/src/modules/game/components/GameInventory/EquippedNftSection.tsx
+
+import { EquipmentNftInfo } from '../common/EquipmentNftInfo';
 
 import { SkeletonGroupNumbers } from './SkeletonGroupNumbers';
 
-import { FoodNftDTO } from '@/modules/game/@types/food';
+import { EquipmentNFTDTO } from '@/modules/game/@types';
 
 interface EquippedNftSectionProps {
   isLoading: boolean;
-  equippedNft?: FoodNftDTO;
+  equippedNft?: EquipmentNFTDTO;
 }
 
 export const EquippedNftSection = ({
@@ -19,8 +21,13 @@ export const EquippedNftSection = ({
     </div>
     {isLoading ? (
       <SkeletonGroupNumbers />
+    ) : equippedNft ? (
+      <EquipmentNftInfo equipmentNft={equippedNft} />
     ) : (
-      equippedNft && <FoodNftInfo foodNft={equippedNft} />
+      // 장착된 NFT가 없는 경우
+      <div className="flex h-44 w-44 items-center justify-center rounded-full border-2 border-dashed border-gray-400">
+        <p className="text-2xl font-semibold text-gray-400">텅</p>
+      </div>
     )}
   </div>
 );

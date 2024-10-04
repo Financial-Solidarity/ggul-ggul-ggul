@@ -1,36 +1,39 @@
 import { useNavigate } from 'react-router-dom';
 import { Image } from '@nextui-org/react';
 
-import { CookingLottie } from './CookingLottie';
-import { MintedFoodCard } from './MintedFoodCard';
-import { FoodInfoDisplay } from './FoodInfoDisplay';
+import { MintedEquipmentCard } from './MintedFoodCard';
+import { CookingLottie } from './Lotties/CookingLottie';
+import { EquipmentInfoDisplay } from './EquipmentInfoDisplay';
 import { RandomNumber } from './RandomNumber';
 
-import { FoodDTO } from '@/modules/game/@types/food';
+import { EquipmentDTO, HexCodesByGrade } from '@/modules/game/@types';
 
 export interface ContentSectionProps {
   step: string;
-  food: FoodDTO | null;
+  equipment: EquipmentDTO | null;
   navigate: ReturnType<typeof useNavigate>;
 }
 
 export const ContentSection = ({
   step,
-  food,
+  equipment,
   navigate,
 }: ContentSectionProps) => {
+  const hexCode = equipment ? HexCodesByGrade[equipment.grade] : '#FFFFFF';
+
   return (
     <div className="CONTENT-SECTION flex h-3/5 w-full flex-col items-center justify-center">
-      <div className="FOOD-BOX relative mt-24 flex h-full w-full flex-col items-center">
+      <div className="EQUIPMENT-BOX relative mt-24 flex h-full w-full flex-col items-center">
         {step === 'init' && (
           <Image src={'/src/assets/images/serving_lid.png'} width={180} />
         )}
-        {step === 'minted' && (
-          <MintedFoodCard food={food} navigate={navigate} />
+        {/* equipment가 null이 아닐 때만 렌더링 */}
+        {step === 'minted' && equipment && (
+          <MintedEquipmentCard equipment={equipment} onCardClick={() => {}} />
         )}
         {step === 'drawing' && <CookingLottie />}
         {(step === 'drawed' || step === 'minting') && (
-          <FoodInfoDisplay food={food} step={step} />
+          <EquipmentInfoDisplay equipment={equipment} step={step} />
         )}
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
           <div className="flex w-full flex-col items-center justify-center gap-12">
@@ -38,7 +41,8 @@ export const ContentSection = ({
           </div>
         </div>
 
-        <div className="PREOCESS-INFO absolute -bottom-12 left-1/2 flex -translate-x-1/2 items-center justify-center">
+        {/* Process info section with grade-based color */}
+        <div className="PROCESS-INFO absolute -bottom-12 left-1/2 flex w-full -translate-x-1/2 items-center justify-center">
           {(step === 'minting' || step === 'minted') && (
             <>
               {step === 'minting' && (
@@ -47,12 +51,12 @@ export const ContentSection = ({
                 >
                   <span
                     style={{
-                      color: food?.hexCode,
+                      color: hexCode,
                     }}
                   >
-                    {food?.name}
+                    {`${equipment?.adjective} ${equipment?.name}`}
                   </span>
-                  을<p className="text-center">조리하고 있어요.</p>
+                  를<p className="text-center">조리하고 있어요.</p>
                 </div>
               )}
               {step === 'minted' && (
@@ -61,12 +65,12 @@ export const ContentSection = ({
                 >
                   <span
                     style={{
-                      color: food?.hexCode,
+                      color: hexCode,
                     }}
                   >
-                    {food?.name}
+                    {`${equipment?.adjective} ${equipment?.name}`}
                   </span>
-                  이<p className="text-center">조리되었어요.</p>
+                  가<p className="text-center">조리되었어요.</p>
                 </div>
               )}
             </>

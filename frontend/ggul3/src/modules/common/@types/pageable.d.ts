@@ -13,7 +13,7 @@ declare module '@types' {
       unpaged: boolean;
     };
     first: boolean;
-    last: boolean;
+    last: boolean; // true면 끝난처리. total
     number: number;
     sort: {
       empty: boolean;

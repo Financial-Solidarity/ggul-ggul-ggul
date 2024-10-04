@@ -4,27 +4,27 @@ import { useEffect } from 'react';
 import {
   useGameLuckyDrawState,
   useLuckyDrawActions,
-} from '../hooks/luckyDraw.ts';
-import { ContentSection } from '../components/GameLuckyDraw/ContentSection.tsx';
-import { ActionButtons } from '../components/GameLuckyDraw/ActionButtons.tsx';
-import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip.tsx';
+} from '../hooks/useLuckyDraw';
+import { ContentSection } from '../components/GameLuckyDraw/ContentSection';
+import { ActionButtons } from '../components/GameLuckyDraw/ActionButtons';
+import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip';
 
-import { useLuckyDrawStore } from '@/modules/game/store/useLuckyDrawStore.ts';
+import { useLuckyDrawStore } from '@/modules/game/store/useLuckyDrawStore';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
-import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar.ts';
+import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const GameLuckyDraw = (): JSX.Element => {
   useSetBottomBar({ active: false });
   const navigate = useNavigate();
 
-  const { food, setFood, setNft, reset } = useGameLuckyDrawState();
+  const { equipment, setEquipment, setNft, reset } = useGameLuckyDrawState();
   const { step, startDrawing, stopDrawing, startMinting, stopMinting } =
     useLuckyDrawStore();
   const { onClickLuckyDrawButton, onClickMintButton } = useLuckyDrawActions({
-    setFood,
+    setEquipment,
     setNft,
     startDrawing,
     stopDrawing,
@@ -52,14 +52,14 @@ export const GameLuckyDraw = (): JSX.Element => {
         bgColor="bg-black"
         titleContent={
           <div className="flex w-full flex-row justify-between">
-            <p className="text-2xl font-semibold text-white">껄 음식 뽑기</p>
+            <p className="text-2xl font-semibold text-white">껄 장비 뽑기</p>
             {<MiniTokenBalanceChip />}
           </div>
         }
       >
-        <ContentSection food={food} navigate={navigate} step={step} />
+        <ContentSection equipment={equipment} navigate={navigate} step={step} />
         <ActionButtons
-          food={food}
+          equipment={equipment}
           step={step}
           onClickLuckyDrawButton={onClickLuckyDrawButton}
           onClickMintButton={onClickMintButton}
