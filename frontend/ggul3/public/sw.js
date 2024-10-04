@@ -7,6 +7,7 @@ const urlsToCache = [
   // 필요한 정적 리소스 추가
   '/pwa-192x192.png',
   '/pwa-512x512.png',
+  '/source/image1.png',
 ];
 
 // 서비스 워커 설치 이벤트: 앱의 정적 파일을 캐싱
@@ -39,28 +40,33 @@ self.addEventListener('activate', (event) => {
 
 // 네트워크 요청 이벤트: 캐시된 파일을 우선 반환하고, 네트워크를 통해 가져와 캐시 업데이트
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => {
-        // 캐시된 응답이 있으면 반환하고, 그렇지 않으면 네트워크 요청
-        return (
-          response ||
-          fetch(event.request).then((networkResponse) => {
-            // 성공적인 응답을 캐시에 저장
-            return caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, networkResponse.clone());
+  const requestURL = new URL(event.request.url);
 
-              return networkResponse;
-            });
-          })
-        );
-      })
-      .catch(() => {
-        // 오프라인 상태에서 캐시도 없는 경우 대체 페이지 또는 리소스 제공 (예: 오프라인 페이지)
-        return caches.match('/');
-      }),
-  );
+  // 캐시할 스킴이 'http' 또는 'https'인 경우에만 캐싱
+  if (requestURL.protocol === 'http:' || requestURL.protocol === 'https:') {
+    event.respondWith(
+      caches
+        .match(event.request)
+        .then((response) => {
+          // 캐시된 응답이 있으면 반환하고, 그렇지 않으면 네트워크 요청
+          return (
+            response ||
+            fetch(event.request).then((networkResponse) => {
+              // 성공적인 응답을 캐시에 저장
+              return caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, networkResponse.clone());
+
+                return networkResponse;
+              });
+            })
+          );
+        })
+        .catch(() => {
+          // 오프라인 상태에서 캐시도 없는 경우 대체 페이지 또는 리소스 제공 (예: 오프라인 페이지)
+          return caches.match('/');
+        }),
+    );
+  }
 });
 
 // 푸시 알림 이벤트: 서버로부터 푸시 알림을 받아서 처리

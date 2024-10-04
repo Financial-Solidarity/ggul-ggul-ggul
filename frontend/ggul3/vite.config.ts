@@ -12,12 +12,16 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      workbox: {
+        maximumFileSizeToCacheInBytes: 3000000,
+      },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Vite PWA Project',
-        short_name: 'Vite PWA Project',
-        description: 'description',
-        theme_color: '#ffffff',
+        name: '껄껄껄',
+        short_name: '껄껄껄',
+        description: '소비 줄이기 챌린지! 껄껄껄',
+        theme_color: '#7C5BDE',
+        lang: 'ko',
         icons: [
           {
             src: 'pwa-64x64.png',
@@ -42,9 +46,19 @@ export default defineConfig({
             purpose: 'maskable',
           },
         ],
+        screenshots: [
+          {
+            src: 'pwa-wide.png',
+            sizes: '640x320',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Wonder Widgets',
+          },
+        ],
       },
     }),
   ],
+
   css: {
     preprocessorOptions: {
       scss: {
@@ -52,6 +66,7 @@ export default defineConfig({
       },
     },
   },
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
