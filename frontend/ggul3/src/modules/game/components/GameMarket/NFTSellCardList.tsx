@@ -1,4 +1,4 @@
-import { Card, CardBody, Button } from '@nextui-org/react';
+import { Card, CardBody, Button, Image } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
 import { MarketItemDTO } from '@/modules/game/@types';
@@ -41,6 +41,20 @@ export const NFTSellCardList: React.FC<NFTSellCardListProps> = ({
               <p className="font-semibold">{marketItem.title}</p>
               <div className="mt-2 flex items-center justify-between">
                 <span>껄 {marketItem.price}</span>
+              </div>
+              <div
+                className={`relative flex h-28 w-28 items-center justify-center`}
+              >
+                <div
+                  className={`h-28 w-28 animate-popIn rounded-full bg-primary-400`}
+                />
+                <div className="IMAGE-WRAPPER absolute flex animate-fadeIn items-center justify-center">
+                  <Image
+                    className="animate-floating"
+                    src={marketItem.imageUrl}
+                    width={135}
+                  />
+                </div>
               </div>
               <Button
                 className="absolute bottom-1 right-4 z-20 mt-4 h-12 w-44 rounded-full bg-default-500/20 font-semibold text-white shadow-lg backdrop-blur-md backdrop-saturate-150"

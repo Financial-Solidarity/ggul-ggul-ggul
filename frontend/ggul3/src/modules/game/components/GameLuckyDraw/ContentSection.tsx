@@ -8,7 +8,7 @@ import { RandomNumber } from './RandomNumber';
 
 import ServingLid from '@/assets/images/serving_lid.png';
 import { EquipmentDTO, HexCodesByGrade } from '@/modules/game/@types';
-import ServingLid from '@/assets/images/serving_lid.png';
+
 export interface ContentSectionProps {
   step: string;
   equipment: EquipmentDTO | null;
