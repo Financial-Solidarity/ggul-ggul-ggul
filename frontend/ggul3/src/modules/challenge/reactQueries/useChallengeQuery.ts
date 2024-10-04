@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  ChallengeJoinRequestBody,
+  ChallengeJoinResponse,
   ChallengeListResponse,
   ChangeTeamResponse,
   CreateChallengeRequestBody,
@@ -7,6 +9,7 @@ import {
   ErrorDTO,
   GetChallengeDetailResponse,
   getChattingRooomIdsResponse,
+  GetParticipatingChallengeResponse,
   Pageable,
   ParticipantDTO,
 } from '@types';
@@ -16,11 +19,13 @@ import {
   getChallengeDetail,
   getChattingRooomIds,
   getParticipantList,
+  getParticipatingChallenge,
 } from '../apis/challenge';
 import {
   changeTeam,
   exitChallenge,
   getChallengeList,
+  joinChallenge,
   startChallenge,
 } from '../apis/waitingroom';
 
@@ -84,6 +89,14 @@ export const useGetParticipantList = (challengeId: string) => {
   });
 };
 
+export const useJoinChallenge = () => {
+  return useMutation<ChallengeJoinResponse, ErrorDTO, ChallengeJoinRequestBody>(
+    {
+      mutationFn: (data) => joinChallenge(data),
+    },
+  );
+};
+
 export const useGetChattingroomIds = (challengeId: string) => {
   return useQuery<getChattingRooomIdsResponse, ErrorDTO>({
     queryKey: [QUERY_KEYS.CHATTINGROOM_IDS, challengeId],
@@ -115,5 +128,13 @@ export const useChangeTeam = () => {
         queryKey: [QUERY_KEYS.PARTICIPANT],
       });
     },
+  });
+};
+
+export const useGetParticipatingChallenge = () => {
+  return useQuery<GetParticipatingChallengeResponse, ErrorDTO>({
+    queryKey: [QUERY_KEYS.PARTICIPARING_CHALLENGE],
+    queryFn: () => getParticipatingChallenge(),
+    initialData: null,
   });
 };

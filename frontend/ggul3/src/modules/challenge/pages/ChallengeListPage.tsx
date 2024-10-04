@@ -4,12 +4,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { ChallengeListItem } from '../components/challengeList/ChallengeListItem';
 import { BottomSheet } from '../components/challengeList/BottomSheet';
-import { useGetChallengeList } from '../reactQueries/useChallengeQuery';
+import {
+  useGetChallengeList,
+  useGetParticipatingChallenge,
+} from '../reactQueries/useChallengeQuery';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PathNames } from '@/router';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
+import { NavTitle } from '@/modules/common/components';
+import { BackButton } from '@/modules/common/components/BackButton/BackButton';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const ChallengeListPage = () => {
   const navigate = useNavigate();
@@ -20,26 +26,67 @@ export const ChallengeListPage = () => {
 
   useSetBottomBar({ active: true, isDarkMode: false });
 
+  const { data: participatingChallenge } = useGetParticipatingChallenge();
+
   const toCreateChallenge = () => {
     navigate(PathNames.CHALLENGE.CREATE.path);
   };
 
   return (
     <>
-      <TopBar />
+      <TopBar
+        center={<NavTitle title="챌린지" />}
+        left={<BackButton color="black" />}
+        right={<NotificationButton color="black" />}
+      />
       <PageContainer>
-        <div className="mb-20 flex flex-col gap-2">
-          {isFetching &&
+        <div className="mb-20 flex h-full flex-col gap-2">
+          {participatingChallenge?.state === 'READY' ? (
+            <div className="flex w-full flex-1 flex-col items-center justify-center gap-2">
+              <p className="text-default-400">준비중인 챌린지가 있습니다</p>
+              <Button
+                className="w-max"
+                onClick={() => {
+                  navigate(
+                    `/challenge/waiting-room/${participatingChallenge.challengeId}`,
+                  );
+                }}
+              >
+                대기실로 이동
+              </Button>
+            </div>
+          ) : participatingChallenge?.state === 'START' ? (
+            <div className="flex w-full flex-1 flex-col items-center justify-center gap-2">
+              <p className="text-default-400">진행중인 챌린지가 있습니다</p>
+              <Button
+                className="w-max"
+                onClick={() => {
+                  navigate(PathNames.CHALLENGE.CHATTING_ROOMS.path);
+                }}
+              >
+                채팅방 목록으로 이동
+              </Button>
+            </div>
+          ) : isFetching ? (
             Array(5)
               .fill(0)
               .map((_, index) => (
                 <Skeleton key={index} className="rounded-2xl">
                   <div className="h-40 w-full" />
                 </Skeleton>
-              ))}
-          {content.map((item) => (
-            <ChallengeListItem key={item.challengeId} item={item} />
-          ))}
+              ))
+          ) : content.length === 0 ? (
+            <div className="flex w-full flex-1 flex-col items-center justify-center gap-2">
+              <p className="text-default-400">진행중인 챌린지가 없습니다</p>
+              <Button className="w-max" onClick={toCreateChallenge}>
+                챌린지 만들기
+              </Button>
+            </div>
+          ) : (
+            content.map((item) => (
+              <ChallengeListItem key={item.challengeId} item={item} />
+            ))
+          )}
         </div>
 
         <Button

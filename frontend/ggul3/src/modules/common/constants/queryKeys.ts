@@ -5,4 +5,5 @@ export const QUERY_KEYS = {
   CHATTINGROOM: 'chattingRoom',
   RECENT_CHATTING: 'recentChatting',
   PREVIOUS_CHATTING: 'previousChatting',
+  PARTICIPARING_CHALLENGE: 'participatingChallenge',
 } as const;

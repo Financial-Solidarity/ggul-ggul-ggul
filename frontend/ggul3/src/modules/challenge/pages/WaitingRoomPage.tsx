@@ -1,6 +1,6 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
@@ -32,6 +32,20 @@ export const WaitingRoomPage = () => {
   const clearSocketChattingList = useSocketChattingStore(
     (state) => state.clearChatList,
   );
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [isAutoScroll, setIsAutoScroll] = useState(true);
+
+  // 스크롤이 수동으로 이동될 때 자동 스크롤 비활성화
+  const handleScroll = () => {
+    if (!containerRef.current) return;
+
+    // 현재 스크롤 위치가 가장 아래에 있는지 확인
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+    const isBottom = scrollTop + clientHeight >= scrollHeight - 100; // 조금의 여유 공간을 둠
+
+    setIsAutoScroll(isBottom);
+  };
 
   const { sendChat, connect } = useSocket();
 
@@ -59,7 +73,6 @@ export const WaitingRoomPage = () => {
 
   const handleSubmit = (message: string) => {
     if (!lobbyChattingRoomId) return;
-    console.log('lobbyChattingRoomId', lobbyChattingRoomId);
     sendChat({
       chattingRoomId: lobbyChattingRoomId,
       content: message,
@@ -69,6 +82,13 @@ export const WaitingRoomPage = () => {
   useEffect(() => {
     clearSocketChattingList();
   }, [previousChattingList, recentChattingList]);
+
+  useEffect(() => {
+    // 새로운 메시지가 추가될 때만 자동 스크롤
+    if (isAutoScroll) {
+      bottomRef.current?.scrollIntoView();
+    }
+  }, [socketChattingList]);
 
   return (
     <>
@@ -80,9 +100,12 @@ export const WaitingRoomPage = () => {
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
-          if (!id) return;
           <ChallengeInfoAccordion challengeId={challengeId!} />
-          <div className="z-0 overflow-y-auto px-4 py-16">
+          <div
+            ref={containerRef}
+            className="z-0 overflow-y-auto px-4 py-16"
+            onScroll={handleScroll}
+          >
             <ChatList
               chats={[
                 ...previousChattingList,
@@ -90,6 +113,7 @@ export const WaitingRoomPage = () => {
                 ...socketChattingList,
               ]}
             />
+            <div ref={bottomRef} />
           </div>
           <Chatform onSubmit={handleSubmit} />
         </div>
@@ -102,6 +126,7 @@ export const WaitingRoomPage = () => {
         />
       ) : (
         <TeamDrawer
+          isWaitingRoom
           challengeId={challengeId!}
           isOpen={isDrawerOpen}
           onClose={closeDrawer}

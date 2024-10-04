@@ -1,6 +1,7 @@
 import { Card, CardBody, CardFooter, CardHeader } from '@nextui-org/card';
 import { ChattingRoomDTO } from '@types';
 import { twMerge } from 'tailwind-merge';
+import { useNavigate } from 'react-router-dom';
 
 import { ChattingRoom } from './ChattingRoom';
 
@@ -34,6 +35,20 @@ export const ChattingRoomGroup = ({
 }: ChattingRoomGroupProps) => {
   const { title, competitionType, startAt, endAt, isEnd } = challenge;
 
+  const navigate = useNavigate();
+
+  const toSoloChattingRoom = () => {
+    navigate(`/challenge/solo-chatting/${challenge.challengeId}`);
+  };
+
+  const toTotalChattingRoom = () => {
+    navigate(`/challenge/total-chatting/${challenge.challengeId}`);
+  };
+
+  const toTeamChattingRoom = () => {
+    navigate(`/challenge/team-chatting/${challenge.challengeId}`);
+  };
+
   return (
     <Card shadow="sm">
       <CardHeader>
@@ -51,15 +66,23 @@ export const ChattingRoomGroup = ({
       </CardHeader>
       <CardBody className="py-0">
         <div className="flex w-full flex-col gap-2">
-          <ChattingRoom img={Team} title="전체 채팅방" {...totalChattingRoom} />
+          <ChattingRoom
+            img={Team}
+            title="전체 채팅방"
+            {...totalChattingRoom}
+            onClick={
+              competitionType === 'T' ? toTotalChattingRoom : toSoloChattingRoom
+            }
+          />
 
-          {myTeamChattingRoom && (
+          {challenge.competitionType == 'T' && myTeamChattingRoom && (
             <>
               <hr className="border border-dashed" />
               <ChattingRoom
                 img={Solo}
                 title="팀 채팅방"
                 {...myTeamChattingRoom}
+                onClick={toTeamChattingRoom}
               />
             </>
           )}

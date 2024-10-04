@@ -2,6 +2,7 @@ import { Button } from '@nextui-org/react';
 import { ChevronRightIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
 import react from 'react';
+import toast from 'react-hot-toast';
 
 import {
   useGetChallengeDetail,
@@ -39,7 +40,13 @@ export const ChallengeInfoAccordion = ({
   };
 
   const handleStart = () => {
-    startChallenge(challengeId);
+    startChallenge(challengeId)
+      .then(() => {})
+      .catch((error) => {
+        toast.error(error.message, {
+          position: 'bottom-center',
+        });
+      });
   };
 
   return (

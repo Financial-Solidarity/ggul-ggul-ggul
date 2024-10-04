@@ -1,4 +1,6 @@
 import {
+  ChallengeJoinRequestBody,
+  ChallengeJoinResponse,
   ChallengeListRequestBody,
   ChallengeListResponse,
   ChangeTeamResponse,
@@ -16,16 +18,6 @@ export const getChallengeList = ({ title, page }: ChallengeListRequestBody) => {
     params: { title, page },
   });
 };
-
-interface ChallengeJoinRequestBody {
-  challengeId: string;
-  password?: string | null;
-}
-
-interface ChallengeJoinResponse {
-  challengeId: string; // 'uuid'
-  lobbyChattingRoomId: string | null; // 'uuid'
-}
 
 // 챌린지 참가
 export const joinChallenge = ({
