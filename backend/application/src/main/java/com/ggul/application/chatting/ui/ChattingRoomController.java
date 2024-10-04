@@ -22,7 +22,7 @@ public class ChattingRoomController {
     private final ChattingRoomFindService chattingRoomFindService;
 
     @GetMapping("/{challengeId}/chatting-room")
-    public ResponseEntity<?> getChattingRooms(@PathVariable UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
+    public ResponseEntity<?> getChattingRooms(@PathVariable(name = "challengeId") UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
         ChattingRoomFindView chattingRoom = chattingRoomFindService.getChattingRoom(challengeId, context.getUserId());
         return ResponseEntity.ok(chattingRoom);
     }
