@@ -23,8 +23,22 @@ public class NotificationSendService {
     public void sendAllAndPersist(List<Notification> lists) {
         List<MulticastMessage> mlists = new ArrayList<>();
         for(Notification noti : lists) {
-            List<FcmToken> tokens = noti.getUser().getFcmTokens().stream().filter(fcm -> !fcm.getIsForeground()).toList();
+            List<FcmToken> tokens = noti.getUser().getFcmTokens();
             if(tokens.size() != 0) {
+                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(noti.getUser().getFcmTokens(), noti.getTitle(), noti.getBody(), noti.getType().name(), noti.getData());
+                mlists.add(multicastMessage);
+            }
+        }
+        notificationRepository.saveAll(lists);
+        firebaseCloudMessageService.sendDataMessageTo(mlists);
+    }
+
+    @Transactional
+    public void sendAllAndPersist(List<Notification> lists, boolean isForeground) {
+        List<MulticastMessage> mlists = new ArrayList<>();
+        for(Notification noti : lists) {
+            List<FcmToken> tokens = noti.getUser().getFcmTokens().stream().filter(fcm -> fcm.getIsForeground() == isForeground).toList();
+            if(!tokens.isEmpty()) {
                 MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(noti.getUser().getFcmTokens(), noti.getTitle(), noti.getBody(), noti.getType().name(), noti.getData());
                 mlists.add(multicastMessage);
             }
