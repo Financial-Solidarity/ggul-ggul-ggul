@@ -8,6 +8,8 @@ server:
         secure: true
         http-only: true
         same-site: none
+        path: /
+
 
 spring:
   profiles:
