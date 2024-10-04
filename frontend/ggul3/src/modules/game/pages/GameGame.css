@@ -1,0 +1,64 @@
+.sprite-container {
+  width: 72px;
+  height: 166.67px;
+  background: url('@/assets/images/eating_spritesheet.png') no-repeat;
+  animation: eating-animation 2s steps(6) infinite;
+}
+
+@keyframes eating-animation {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -500px 0;
+  }
+}
+/* GameGame.css */
+.animation-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffd700;
+  opacity: 0; /* 초기 상태 */
+}
+
+.animation-number.animate {
+  animation: floatUp 1s ease-in-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150%);
+  }
+}
+
+/* 스푼 애니메이션 */
+.spoon-animation {
+  animation: rotateSpoon 2s ease-in-out infinite;
+}
+
+@keyframes rotateSpoon {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(45deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-45deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

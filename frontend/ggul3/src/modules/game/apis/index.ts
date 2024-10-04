@@ -1,119 +1,229 @@
-import { FoodDTO, FoodNftDTO } from '../@types/food';
+import {
+  EquipEquipmentRequest,
+  EquipmentDTO,
+  EquipmentNFTDTO,
+  GetEquippedEquipmentResponse,
+  GetReceivableTokenResponse,
+  GetSellNFTListParams,
+  GetSellNFTListResponse,
+  MintEquipmentRequest,
+  MintEquipmentResponse,
+  RegisterSellNFTRequest,
+  RegisterSellNFTResponse,
+  RemoveEquipmentRequest,
+  MarketItemDTO,
+  UnequipEquipmentRequest,
+} from '../@types';
 
-export const mockGetEquippedFoodNft = async (): Promise<FoodNftDTO> => {
-  return new Promise<FoodNftDTO>((resolve) => {
-    setTimeout(() => {
-      // Mock data for the equipped NFT
-      const equippedNft = {
-        status: Math.floor(Math.random() * 101),
-        name: '비범한 오믈렛',
-        hexCode: '#C9A4FF',
-        gradeIndex: 0, // Example grade index
-        typeIndex: 0,
-        contractUrl: 'https://www.스마트컨트랙트주소.com',
-        tokenId: '0xABCDE',
-        ownerAddress: '0x1234567890ABCDEF',
-      };
+import { _axios } from '@/modules/common/utils/axios';
 
-      resolve(equippedNft);
-    }, 1000);
+// API 엔드포인트 베이스 URL
+const EQUIPMENT_BASE_URL = '/equipments';
+
+// 장비 장착 (변경)
+export const equipEquipment = async (
+  request: EquipEquipmentRequest,
+): Promise<void> => {
+  const url = `${EQUIPMENT_BASE_URL}/equip`;
+
+  await _axios<void>({
+    method: 'PUT',
+    url,
+    data: request,
   });
 };
 
-export const mockGetFoodNft = async (): Promise<FoodNftDTO> => {
-  return new Promise<FoodNftDTO>((resolve) => {
-    setTimeout(() => {
-      const status = Math.floor(Math.random() * 101);
-      const name = '비범한 오믈렛';
-      const hexCode = '#C9A4FF';
-      const gradeIndex = Math.floor(Math.random() * 6);
-      const typeIndex = Math.floor(Math.random() * 2);
-      const contractUrl = 'https://www.스마트컨트랙트주소.com';
-      const tokenId = '0xABCDE';
-      const ownerAddress = '0x1234567890ABCDEF';
+// 장비 해제
+export const unequipEquipment = async (
+  request: UnequipEquipmentRequest,
+): Promise<void> => {
+  const url = `${EQUIPMENT_BASE_URL}/unequip`;
 
-      resolve({
-        status,
-        name,
-        hexCode,
-        gradeIndex,
-        typeIndex,
-        contractUrl,
-        tokenId,
-        ownerAddress,
-      });
-    }, 1000);
+  await _axios<void>({
+    method: 'PUT',
+    url,
+    data: request,
   });
 };
 
-export const mockGetFoodNftList = async (): Promise<FoodNftDTO[]> => {
-  return new Promise<FoodNftDTO[]>((resolve) => {
-    setTimeout(() => {
-      const generateNfts = (gradeIndex: number) => {
-        const names = [
-          ['전설의 피자', '왕의 스테이크', '별의 오믈렛'], // 매우 희귀
-          ['고급 햄버거', '비싼 초밥', '루비 아이스크림'], // 희귀
-          ['보통 떡볶이', '평범한 라면', '일반 김밥'], // 보통
-          ['흔한 샌드위치', '보통 스낵', '무난한 카레'], // 흔함
-          ['싸구려 과자', '저렴한 사탕', '일반 커피'], // 매우 흔함
-        ];
+// 보유한 장비 조회
+export const getEquipmentList = async (
+  minPower: number,
+  maxPower: number,
+): Promise<EquipmentNFTDTO[]> => {
+  const url = `${EQUIPMENT_BASE_URL}?min-power=${minPower}&max-power=${maxPower}`;
 
-        const hexCodes = [
-          '#FFD700',
-          '#BC75FF',
-          '#CD7F32',
-          '#87CEEB',
-          '#D3D3D3',
-        ];
-
-        return Array.from({ length: 10 }, (_, index) => ({
-          status: Math.floor(Math.random() * 101),
-          name: names[gradeIndex][index % names[gradeIndex].length],
-          hexCode: hexCodes[gradeIndex],
-          gradeIndex,
-          typeIndex: Math.floor(Math.random() * 5),
-          contractUrl: 'https://www.스마트컨트랙트주소.com',
-          tokenId: `0x${Math.random().toString(16).substr(2, 8)}`,
-          ownerAddress: `0x${Math.random().toString(16).substr(2, 12)}`,
-        }));
-      };
-      const data: FoodNftDTO[] = [
-        ...generateNfts(0), // 매우 희귀
-        ...generateNfts(1), // 희귀
-        ...generateNfts(2), // 보통
-        ...generateNfts(3), // 흔함
-        ...generateNfts(4), // 매우 흔함
-      ];
-
-      resolve(data);
-    }, 1000);
+  return await _axios<EquipmentNFTDTO[]>({
+    method: 'GET',
+    url,
   });
 };
 
-export const mockPostFoodLuckyDraw = async (): Promise<FoodDTO> => {
-  return new Promise<FoodDTO>((resolve) => {
-    setTimeout(() => {
-      const status = Math.floor(Math.random() * 101);
-      const name = '비범한 오믈렛';
-      const hexCode = '#C9A4FF';
-      const gradeIndex = Math.floor(Math.random() * 6);
-      const typeIndex = Math.floor(Math.random() * 2);
-      const contractUrl = 'https://www.스마트컨트랙트주소.com';
+// 장비 삭제
+export const removeEquipment = async (
+  request: RemoveEquipmentRequest,
+): Promise<void> => {
+  const url = `${EQUIPMENT_BASE_URL}/remove`;
 
-      resolve({ status, name, hexCode, gradeIndex, typeIndex, contractUrl });
-    }, 1000);
+  await _axios<void>({
+    method: 'POST',
+    url,
+    data: request,
   });
 };
 
-export const mockPostFoodMinting = async (
-  foodData: FoodDTO,
-): Promise<FoodNftDTO> => {
-  return new Promise<FoodNftDTO>((resolve) => {
-    setTimeout(() => {
-      const tokenId = '0x12345';
-      const ownerAddress = '0x98765';
+// 장비 NFT 발행
+export const mintEquipment = async (
+  request: MintEquipmentRequest,
+): Promise<MintEquipmentResponse> => {
+  const url = `${EQUIPMENT_BASE_URL}/mint`;
 
-      resolve({ ...foodData, tokenId, ownerAddress });
-    }, 1000);
+  return await _axios<MintEquipmentResponse>({
+    method: 'POST',
+    url,
+    data: request,
+  });
+};
+
+// 장비 뽑기
+export const drawEquipment = async (): Promise<EquipmentDTO> => {
+  const url = `${EQUIPMENT_BASE_URL}/draw`;
+
+  return await _axios<EquipmentDTO>({
+    method: 'POST',
+    url,
+  });
+};
+
+// 장착한 장비 조회
+export const getEquippedEquipment =
+  async (): Promise<GetEquippedEquipmentResponse> => {
+    const url = `${EQUIPMENT_BASE_URL}/equipped`;
+
+    return await _axios<GetEquippedEquipmentResponse>({
+      method: 'GET',
+      url,
+    });
+  };
+
+// 전체 장비 이름 조회
+export const getEquipmentNames = async (): Promise<string[]> => {
+  const url = `${EQUIPMENT_BASE_URL}/names`;
+
+  return await _axios<string[]>({
+    method: 'GET',
+    url,
+  });
+};
+
+// ======================== 마켓 관련 API ===========
+
+const MARKET_URL = '/markets';
+
+// 판매 글 작성
+export const registerSellNFT = async (
+  request: RegisterSellNFTRequest,
+): Promise<RegisterSellNFTResponse> => {
+  const url = `${MARKET_URL}`;
+
+  return await _axios<RegisterSellNFTResponse>({
+    method: 'POST',
+    url,
+    data: request,
+  });
+};
+
+// 구매하기
+export const buyEquipment = async (marketId: string): Promise<void> => {
+  const url = `${MARKET_URL}/${marketId}/buy`;
+
+  await _axios<void>({
+    method: 'POST',
+    url,
+  });
+};
+
+// 판매 글 상세 조회
+export const getMarketItemDetail = async (
+  marketId: string,
+): Promise<MarketItemDTO> => {
+  const url = `${MARKET_URL}/${marketId}`;
+
+  return await _axios<MarketItemDTO>({
+    method: 'GET',
+    url,
+  });
+};
+
+// 판매 글 리스트 조회
+export const getSellNFTList = async (
+  params: GetSellNFTListParams,
+): Promise<GetSellNFTListResponse> => {
+  const queryParams = new URLSearchParams();
+
+  // 여러 검색 조건을 쿼리스트링으로 변환
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      const paramKey = key
+        .replace(/^minPrice$/, 'min-price')
+        .replace(/^maxPrice$/, 'max-price')
+        .replace(/^minPower$/, 'min-power')
+        .replace(/^maxPower$/, 'max-power')
+        .replace(/^name$/, 'name');
+
+      queryParams.append(paramKey, value.toString());
+    }
+  });
+
+  const url = `${MARKET_URL}?${queryParams.toString()}`;
+
+  return await _axios<GetSellNFTListResponse>({
+    method: 'GET',
+    url,
+  });
+};
+
+// 판매 글 삭제(취소)
+export const cancelMarketSale = async (marketId: string): Promise<void> => {
+  const url = `${MARKET_URL}/${marketId}`;
+
+  await _axios<void>({
+    method: 'DELETE',
+    url,
+  });
+};
+
+//===================== 껄 키우기 관련 API ================
+
+const GAME_URL = '/games';
+
+// 현재 얻을 수 있는 껄 조회
+export const getReceivableTokenAmount =
+  async (): Promise<GetReceivableTokenResponse> => {
+    const url = `${GAME_URL}/receive`;
+
+    return await _axios<GetReceivableTokenResponse>({
+      method: 'GET',
+      url,
+    });
+  };
+
+// 껄 얻기
+export const receiveToken = async (): Promise<void> => {
+  const url = `${GAME_URL}/receive`;
+
+  await _axios<void>({
+    method: 'POST',
+    url,
+  });
+};
+
+// 토큰 밸런스 조회
+export const getTokenBalance = async (): Promise<{ balance: number }> => {
+  const url = `/wallet/token`;
+
+  return await _axios<{ balance: number }>({
+    method: 'GET',
+    url,
   });
 };

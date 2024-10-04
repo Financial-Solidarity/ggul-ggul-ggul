@@ -4,6 +4,8 @@ import App from './App';
 import { GameMain } from './modules/game/pages/GameMain';
 import { GameGame } from './modules/game/pages/GameGame';
 import { GameMarket } from './modules/game/pages/GameMarket';
+import { GameMarketSellDetail } from './modules/game/pages/GameMarketSellDetail';
+import { GameMarketSellCreate } from './modules/game/pages/GameMarketSellCreate';
 import { GameInventory } from './modules/game/pages/GameInventory';
 import { GameLuckyDraw } from './modules/game/pages/GameLuckyDraw';
 import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePage';
@@ -41,6 +43,8 @@ export interface PathNames {
     MAIN: Path;
     GAME: Path;
     MARKET: Path;
+    MARKET_DETAIL: Path;
+    SELL_CREATE: Path;
     INVENTORY: Path;
     LUCKYDRAW: Path;
   };
@@ -94,6 +98,14 @@ export const PathNames: PathNames = {
     MARKET: {
       path: '/game/market',
       name: '마켓',
+    },
+    MARKET_DETAIL: {
+      path: '/game/market/:id',
+      name: '마켓 디테일',
+    },
+    SELL_CREATE: {
+      path: '/game/market/sell-create',
+      name: '판매글 작성',
     },
     INVENTORY: {
       path: '/game/inventory',
@@ -320,6 +332,14 @@ export const router = createBrowserRouter([
           {
             path: PathNames.GAME.MARKET.path,
             element: <GameMarket />,
+          },
+          {
+            path: PathNames.GAME.MARKET_DETAIL.path,
+            element: <GameMarketSellDetail />,
+          },
+          {
+            path: PathNames.GAME.SELL_CREATE.path,
+            element: <GameMarketSellCreate />,
           },
           {
             path: PathNames.GAME.INVENTORY.path,

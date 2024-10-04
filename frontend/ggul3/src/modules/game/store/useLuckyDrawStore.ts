@@ -1,3 +1,4 @@
+// frontend/ggul3/src/modules/game/store/useLuckyDrawStore.ts
 import { create } from 'zustand';
 
 type stepType = 'init' | 'drawing' | 'drawed' | 'minting' | 'minted';
