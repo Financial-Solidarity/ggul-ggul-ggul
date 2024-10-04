@@ -1,8 +1,8 @@
 package com.ggul.application.payment.query;
 
+import com.ggul.application.payment.domain.repository.ConsumptionLogRepository;
 import com.ggul.application.payment.ui.dto.ChallengeConsumptionView;
 import com.ggul.application.payment.ui.dto.ConsumptionChartView;
-import com.ggul.application.payment.domain.repository.ConsumptionLogRepository;
 import com.ggul.application.payment.ui.dto.ConsumptionLogView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +31,15 @@ public class ConsumptionLogFindService {
     }
 
     @Transactional(readOnly = true)
-    public List<ChallengeConsumptionView> findAllByChallengeID(UUID challengeId) {
+    public List<ChallengeConsumptionView> findAllByChallengeId(UUID challengeId) {
         List<ConsumptionLogRepository.ParticipantAndConsumptionLog> allByChallengeId = consumptionLogRepository.findAllByChallenge_Id(challengeId);
-        allByChallengeId.stream().map(participantAndConsumptionLog -> {
-
-            ChallengeConsumptionView.builder()
-                    .money()
-        });
+        return allByChallengeId.stream().map(participantAndConsumptionLog ->
+                ChallengeConsumptionView.builder()
+                        .consumptionLog(participantAndConsumptionLog.getConsumptionLog())
+                        .category(participantAndConsumptionLog.getProductCategory())
+                        .ggulLog(participantAndConsumptionLog.getGgulLog())
+                        .challengeParticipant(participantAndConsumptionLog.getParticipant())
+                        .build()
+        ).toList();
     }
 }
