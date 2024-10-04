@@ -3,7 +3,6 @@ package com.ggul.application.challange.domain.repository;
 import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.challange.domain.ChallengeParticipantType;
 import com.ggul.application.challange.ui.dto.ChallengeParticipantView;
-import com.ggul.application.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

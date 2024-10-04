@@ -1,9 +1,7 @@
 package com.ggul.application.account.query;
 
-import com.ggul.application.account.domain.AccountRepository;
-import com.ggul.application.account.infra.BankMasterService;
+import com.ggul.application.account.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

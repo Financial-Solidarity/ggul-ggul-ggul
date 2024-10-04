@@ -1,16 +1,20 @@
 package com.ggul.application.account.ui;
 
 import com.ggul.application.account.application.TerminationAccountService;
+import com.ggul.application.account.application.UserPrimaryAccountService;
 import com.ggul.application.account.query.UserKeyService;
 import com.ggul.application.account.application.GenerationDemandDepositAccountService;
 import com.ggul.application.account.application.GenerationUserService;
 import com.ggul.application.account.infra.BankMasterService;
 import com.ggul.application.account.ui.dto.AccountDepositAndWithdrawView;
 import com.ggul.application.account.ui.dto.GenerationDemandDepositView;
+import com.ggul.application.account.application.dto.PrimaryAccountDto;
 import com.ggul.application.account.ui.dto.InquireDemandDepositAccountView;
+import com.ggul.application.account.ui.dto.PrimaryAccountView;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +32,7 @@ public class AccountController {
     private final GenerationDemandDepositAccountService generationDemandDepositAccountService;
     private final TerminationAccountService terminationAccountService;
     private final UserKeyService userKeyService;
+    private final UserPrimaryAccountService userPrimaryAccountService;
 
 
     //유저 계정 만들기
@@ -114,6 +119,33 @@ public class AccountController {
     @PostMapping("/demand-deposits/accounts/withdraw")
     public ResponseEntity<?> demandDepositAccountWithdrawal(@AuthenticationPrincipal UserLoginContext userLoginContext, @RequestBody AccountDepositAndWithdrawView accountDepositAndWithdrawView){
         bankMasterService.demandDepositAccountWithdrawal(getUserKey(userLoginContext.getUserId()), accountDepositAndWithdrawView);
+
+        return ResponseEntity.ok(null);
+    }
+
+    //세션의 주 계좌 조회
+    @GetMapping("/demand-deposits/primary")
+    public ResponseEntity<?> getDemandDepositAccountPrimary(@AuthenticationPrincipal UserLoginContext userLoginContext){
+        PrimaryAccountDto primaryAccountDto = userPrimaryAccountService.getPrimaryAccount(userLoginContext.getUserId());
+        if(primaryAccountDto == null) return ResponseEntity.ok(null);
+
+        Map<String, Object> userAccount = (Map<String, Object>) bankMasterService.getDemandDepositAccount(getUserKey(userLoginContext.getUserId()), primaryAccountDto.getAccountNo()).get("REC");
+
+        PrimaryAccountView primaryAccountView = PrimaryAccountView
+                .builder()
+                .accountNo(primaryAccountDto.getAccountNo())
+                .bankName((String) userAccount.get("bankName"))
+                .accountBalance(Long.parseLong((String)userAccount.get("accountBalance")))
+                .build();
+
+        return ResponseEntity.ok(primaryAccountView);
+    }
+
+
+    //세션의 주 계좌 등록
+    @PostMapping("/demand-deposits/primary")
+    public ResponseEntity<?> setDemandDepositAccountPrimary(@AuthenticationPrincipal UserLoginContext userLoginContext, @RequestBody InquireDemandDepositAccountView inquireDemandDepositAccountView){
+        userPrimaryAccountService.setPrimaryAccount(userLoginContext.getUserId(), inquireDemandDepositAccountView);
 
         return ResponseEntity.ok(null);
     }

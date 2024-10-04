@@ -1,9 +1,8 @@
 package com.ggul.application.account.application;
 
 import com.ggul.application.account.domain.Account;
-import com.ggul.application.account.domain.AccountRepository;
+import com.ggul.application.account.domain.repository.AccountRepository;
 import com.ggul.application.account.infra.BankMasterService;
-import com.ggul.application.account.ui.dto.GenerationUserView;
 import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
@@ -25,6 +24,10 @@ public class GenerationUserService {
         User loginUser = userRepository.getReferenceById(userId);
 
         Map<String, Object> map = bankMasterService.createBankMember(loginUser.getUsername());
+
+        if(accountRepository.findUserKeyByUserId(userId) != null && !accountRepository.findUserKeyByUserId(userId).isEmpty()){
+            return;
+        }
 
         Account account = Account.builder()
                 .user(loginUser)
