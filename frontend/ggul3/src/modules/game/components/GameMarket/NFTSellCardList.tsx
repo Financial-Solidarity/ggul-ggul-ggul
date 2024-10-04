@@ -42,13 +42,11 @@ export const NFTSellCardList: React.FC<NFTSellCardListProps> = ({
               <div className="mt-2 flex items-center justify-between">
                 <span>껄 {marketItem.price}</span>
               </div>
-              <div
-                className={`relative flex h-28 w-28 items-center justify-center`}
-              >
+              <div className={`flex h-28 w-28 items-center justify-center`}>
                 <div
-                  className={`h-28 w-28 animate-popIn rounded-full bg-primary-400`}
+                  className={`absolute left-1/2 h-28 w-28 -translate-x-1/2 animate-popIn rounded-full bg-primary-400`}
                 />
-                <div className="IMAGE-WRAPPER absolute flex animate-fadeIn items-center justify-center">
+                <div className="IMAGE-WRAPPER absolute left-1/2 flex -translate-x-1/2 animate-fadeIn items-center justify-center">
                   <Image
                     className="animate-floating"
                     src={marketItem.imageUrl}

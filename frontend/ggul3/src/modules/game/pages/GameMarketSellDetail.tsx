@@ -59,10 +59,7 @@ export const GameMarketSellDetail = (): JSX.Element => {
         <BackButton circular />
         <div className="flex flex-col items-center">
           {/* 이미지 영역 */}
-          <EquipmentNftInfo
-            equipmentNft={marketDetail.equipmentNFT}
-            showTitle={false}
-          />
+          <EquipmentNftInfo equipmentNft={marketDetail.equipmentNFT} />
         </div>
       </div>
 
