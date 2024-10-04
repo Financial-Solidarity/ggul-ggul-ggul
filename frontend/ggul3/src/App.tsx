@@ -12,6 +12,9 @@ function App() {
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
+    console.log(
+      'socket endpoint : ' + import.meta.env.VITE_SOCKET_CONNECT_ENDPOINT,
+    );
     if (!user) return;
     connect();
   }, [user]);
