@@ -41,7 +41,7 @@ public class ChallengeController {
     }
 
     @GetMapping("/{challengeId}")
-    public ResponseEntity<?> getChallenge(@PathVariable UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
+    public ResponseEntity<?> getChallenge(@PathVariable(name = "challengeId") UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
         ChallengeView challengeDto = challengeFindService.getChallenge(challengeId, context.getUserId());
         return ResponseEntity.ok(challengeDto);
     }
@@ -70,7 +70,7 @@ public class ChallengeController {
     }
 
     @GetMapping("/{challengeId}/participants")
-    public ResponseEntity<?> challengeParticipantList(@PathVariable UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
+    public ResponseEntity<?> challengeParticipantList(@PathVariable(name = "challengeId") UUID challengeId, @AuthenticationPrincipal UserLoginContext context) {
         List<ChallengeParticipantView> challengeParticipantViews = challengeParticipantFindService.findAllByChallengeId(challengeId, context.getUserId());
         return ResponseEntity.ok(challengeParticipantViews);
     }
