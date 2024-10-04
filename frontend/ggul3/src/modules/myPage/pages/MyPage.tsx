@@ -1,6 +1,3 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@nextui-org/react';
-
 import {
   Banner,
   ChangeMainAccountLinkButton,
@@ -22,17 +19,6 @@ import { useUserStore } from '@/modules/common/store/userStore';
 
 export const MyPage = () => {
   const { user } = useUserStore();
-
-  if (user === null) {
-    return (
-      <div>
-        로그인 되어 있지 않음
-        <Button>
-          <Link to="/login">로그인하러 가기</Link>
-        </Button>
-      </div>
-    );
-  }
 
   return (
     <>

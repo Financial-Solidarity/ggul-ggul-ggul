@@ -1,4 +1,5 @@
-import { createBrowserRouter, RouteObject } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouteObject } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 import App from './App';
 import { GameMain } from './modules/game/pages/GameMain';
@@ -31,6 +32,7 @@ import { MyPage } from './modules/myPage/pages/MyPage';
 import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoomPage';
 import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
 import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
+import { useUserStore } from './modules/common/store/userStore';
 
 export interface Path {
   path: string;
@@ -313,53 +315,82 @@ const myPageRoutes: RouteObject[] = [
   },
 ];
 
+const homeRoutes: RouteObject[] = [
+  {
+    path: PathNames.HOME.path,
+    element: <MyPage />,
+  },
+];
+
+const gameRoutes: RouteObject[] = [
+  {
+    path: PathNames.GAME.MAIN.path,
+    element: <GameMain />,
+  },
+  {
+    path: PathNames.GAME.GAME.path,
+    element: <GameGame />,
+  },
+  {
+    path: PathNames.GAME.MARKET.path,
+    element: <GameMarket />,
+  },
+  {
+    path: PathNames.GAME.MARKET_DETAIL.path,
+    element: <GameMarketSellDetail />,
+  },
+  {
+    path: PathNames.GAME.SELL_CREATE.path,
+    element: <GameMarketSellCreate />,
+  },
+  {
+    path: PathNames.GAME.INVENTORY.path,
+    element: <GameInventory />,
+  },
+  {
+    path: PathNames.GAME.LUCKYDRAW.path,
+    element: <GameLuckyDraw />,
+  },
+];
+
+// 비인가 사용자도 접근 가능한 경로
+const publicRoutes: RouteObject[] = [...loginRoutes];
+
+// 인가된 사용자만 접근 가능한 경로
+const privateRoutes: RouteObject[] = [
+  ...challengeRoutes,
+  ...payRoutes,
+  ...accountBook,
+  ...myPageRoutes,
+  ...homeRoutes,
+  ...gameRoutes,
+];
+
 export const router = createBrowserRouter([
   {
     path: PathNames.HOME.path,
     element: <App />,
     errorElement: <></>,
     children: [
-      {
-        children: [
-          {
-            path: PathNames.GAME.MAIN.path,
-            element: <GameMain />,
-          },
-          {
-            path: PathNames.GAME.GAME.path,
-            element: <GameGame />,
-          },
-          {
-            path: PathNames.GAME.MARKET.path,
-            element: <GameMarket />,
-          },
-          {
-            path: PathNames.GAME.MARKET_DETAIL.path,
-            element: <GameMarketSellDetail />,
-          },
-          {
-            path: PathNames.GAME.SELL_CREATE.path,
-            element: <GameMarketSellCreate />,
-          },
-          {
-            path: PathNames.GAME.INVENTORY.path,
-            element: <GameInventory />,
-          },
-          {
-            path: PathNames.GAME.LUCKYDRAW.path,
-            element: <GameLuckyDraw />,
-          },
-        ],
-      },
-      ...challengeRoutes,
-      ...payRoutes,
-      ...loginRoutes,
-      ...accountBook,
-      ...myPageRoutes,
-      {
-        path: PathNames.HOME.path,
-        element: <MyPage />,
-      },
+      // 비인가 사용자도 접근 가능한 경로
+      ...publicRoutes,
+
+      // 인가 된 사용자만 접근 가능한 경로
+      ...privateRoutes.map((route) => ({
+        ...route,
+        element: <PrivateRoute element={route.element} />,
+      })),
     ],
   },
 ]);
+
+// 인가된 사용자만 접근 가능한 경로로 설정
+function PrivateRoute({ element }: { element: ReactNode }) {
+  const { isLoggedIn } = useUserStore();
+
+  if (!isLoggedIn) {
+    return <Navigate replace to="/login" />;
+  } else {
+    return element;
+  }
+}
