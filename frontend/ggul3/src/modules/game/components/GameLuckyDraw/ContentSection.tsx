@@ -7,7 +7,7 @@ import { EquipmentInfoDisplay } from './EquipmentInfoDisplay';
 import { RandomNumber } from './RandomNumber';
 
 import { EquipmentDTO, HexCodesByGrade } from '@/modules/game/@types';
-
+import ServingLid from '@/assets/images/serving_lid.png';
 export interface ContentSectionProps {
   step: string;
   equipment: EquipmentDTO | null;
@@ -24,9 +24,7 @@ export const ContentSection = ({
   return (
     <div className="CONTENT-SECTION flex h-3/5 w-full flex-col items-center justify-center">
       <div className="EQUIPMENT-BOX relative mt-24 flex h-full w-full flex-col items-center">
-        {step === 'init' && (
-          <Image src={'/src/assets/images/serving_lid.png'} width={180} />
-        )}
+        {step === 'init' && <Image src={ServingLid} width={180} />}
         {/* equipment가 null이 아닐 때만 렌더링 */}
         {step === 'minted' && equipment && (
           <MintedEquipmentCard equipment={equipment} onCardClick={() => {}} />
