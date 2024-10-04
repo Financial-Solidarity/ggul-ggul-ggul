@@ -1,16 +1,14 @@
 package com.ggul.application.account.application;
 
-import com.ggul.application.account.domain.Account;
-import com.ggul.application.account.domain.AccountRepository;
+import com.ggul.application.account.domain.repository.AccountRepository;
 import com.ggul.application.account.domain.BankBook;
-import com.ggul.application.account.domain.BankBookRepository;
+import com.ggul.application.account.domain.repository.BankBookRepository;
 import com.ggul.application.account.infra.BankMasterService;
 import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

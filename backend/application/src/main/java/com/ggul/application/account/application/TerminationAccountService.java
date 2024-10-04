@@ -1,7 +1,7 @@
 package com.ggul.application.account.application;
 
-import com.ggul.application.account.domain.AccountRepository;
-import com.ggul.application.account.domain.BankBookRepository;
+import com.ggul.application.account.domain.repository.AccountRepository;
+import com.ggul.application.account.domain.repository.BankBookRepository;
 import com.ggul.application.account.infra.BankMasterService;
 import com.ggul.application.account.query.DemandDepositAccountListService;
 import lombok.RequiredArgsConstructor;
