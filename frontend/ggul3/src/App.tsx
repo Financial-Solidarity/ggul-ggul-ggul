@@ -15,13 +15,11 @@ function App() {
 
   return (
     <Provider>
-      <QueryClientProvider client={queryClient}>
-        <div className="flex h-screen w-full flex-col">
-          <Outlet />
-          <BottomBar />
-        </div>
-        <Toaster />
-      </QueryClientProvider>
+      <div className="flex h-screen w-full flex-col">
+        <Outlet />
+        <BottomBar />
+      </div>
+      <Toaster />
     </Provider>
   );
 }
