@@ -11,7 +11,7 @@ import { PathNames } from '@/router';
 interface NftDetailSheetProps {
   isOpen: boolean;
   selectedEquipmentNft?: EquipmentNFTDTO;
-  equippedNft?: EquipmentNFTDTO;
+  equippedNft?: EquipmentNFTDTO | null;
   onClose: () => void;
   onEquip: () => void;
   onUnequip: () => void;
@@ -58,17 +58,8 @@ export const NftDetailSheet = ({
               <>
                 <Button
                   fullWidth
-                  className="h-12 bg-red-500 text-white"
-                  onPress={() =>
-                    handleCancelSale(selectedEquipmentNft?.ipfsCID)
-                  }
-                >
-                  판매 취소하기
-                </Button>
-                <Button
-                  fullWidth
-                  className="h-12 bg-blue-500 text-white"
-                  onPress={() => navigate(PathNames.GAME.MARKET.path)}
+                  className="h-12 bg-default-600 text-white"
+                  onClick={() => navigate(PathNames.GAME.MARKET.path)}
                 >
                   판매중인 장비 보러가기
                 </Button>
@@ -77,7 +68,7 @@ export const NftDetailSheet = ({
               <Button
                 fullWidth
                 className="h-12 bg-red-500 text-white"
-                onPress={onUnequip}
+                onClick={onUnequip}
               >
                 장착 해제하기
               </Button>
@@ -86,7 +77,7 @@ export const NftDetailSheet = ({
                 <Button
                   fullWidth
                   className="h-12 bg-default-500 text-white"
-                  onPress={handleSellNft}
+                  onClick={handleSellNft}
                 >
                   NFT 판매하기
                 </Button>
@@ -94,7 +85,7 @@ export const NftDetailSheet = ({
                   fullWidth
                   className="h-12"
                   color="primary"
-                  onPress={onEquip}
+                  onClick={onEquip}
                 >
                   NFT 장착하기
                 </Button>

@@ -4,56 +4,51 @@ import { useTokenBalanceQuery } from '@/modules/game/queries';
 
 export const MiniTokenBalanceChip = () => {
   const { data, isLoading } = useTokenBalanceQuery();
-
   const tokenBalance = data?.balance ?? 0;
 
   // 현재 표시되는 토큰 밸런스 상태
   const [displayedBalance, setDisplayedBalance] = useState(tokenBalance);
   const [highlight, setHighlight] = useState(false);
-  const isFirstRender = useRef(true); // 최초 렌더링 여부 확인
-
   const previousTokenBalance = useRef(tokenBalance);
 
+  // 최초 렌더링 후에만 실행되도록 useLayoutEffect를 활용
   useEffect(() => {
-    // 최초 렌더링 시 애니메이션 적용 안함
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      setDisplayedBalance(tokenBalance);
+    // 데이터가 로딩 중이거나 아직 불러오지 않은 경우 처리하지 않음
+    if (isLoading || displayedBalance === tokenBalance) return;
 
-      return;
-    }
+    // 배경색 강조 애니메이션 시작
+    setHighlight(true);
 
-    if (previousTokenBalance.current !== tokenBalance) {
-      // 배경색 강조 애니메이션 시작
-      setHighlight(true);
+    // 이전 토큰 밸런스부터 목표 토큰 밸런스까지 서서히 변화를 줌
+    const step = tokenBalance > previousTokenBalance.current ? 1 : -1;
 
-      // 이전 토큰 밸런스부터 목표 토큰 밸런스까지 서서히 변화를 줌
-      const step = tokenBalance > previousTokenBalance.current ? 1 : -1;
+    const interval = setInterval(() => {
+      setDisplayedBalance((prev) => {
+        const newBalance = prev + step;
 
-      const interval = setInterval(() => {
-        setDisplayedBalance((prev) => {
-          const newBalance = prev + step;
+        // 목표 토큰 밸런스에 도달하면 애니메이션 종료
+        if (
+          (step > 0 && newBalance >= tokenBalance) ||
+          (step < 0 && newBalance <= tokenBalance)
+        ) {
+          clearInterval(interval);
 
-          if (
-            (step > 0 && newBalance >= tokenBalance) ||
-            (step < 0 && newBalance <= tokenBalance)
-          ) {
-            clearInterval(interval);
+          return tokenBalance;
+        }
 
-            return tokenBalance;
-          }
+        return newBalance;
+      });
+    }, 20); // 20ms마다 1씩 변하도록 설정
 
-          return newBalance;
-        });
-      }, 20); // 20ms마다 1씩 변하도록 설정
+    // 일정 시간 후 강조 효과를 종료
+    setTimeout(() => setHighlight(false), 500);
 
-      // 일정 시간 후 강조 효과를 종료
-      setTimeout(() => setHighlight(false), 500);
+    // 이전 토큰 밸런스 업데이트
+    previousTokenBalance.current = tokenBalance;
 
-      // 이전 토큰 밸런스 업데이트
-      previousTokenBalance.current = tokenBalance;
-    }
-  }, [tokenBalance]);
+    // 컴포넌트 언마운트 시 interval 정리
+    return () => clearInterval(interval);
+  }, [tokenBalance, isLoading, displayedBalance]);
 
   return (
     <div

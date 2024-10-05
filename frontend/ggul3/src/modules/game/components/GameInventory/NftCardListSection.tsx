@@ -13,7 +13,7 @@ interface NftCardListSectionProps {
   isLoading: boolean;
   onCardClick: (equipmentNft: EquipmentNFTDTO) => void;
   scrollContainerRef: React.RefObject<HTMLDivElement>;
-  equippedNft?: EquipmentNFTDTO;
+  equippedNft?: EquipmentNFTDTO | null;
 }
 
 export const NftCardListSection = ({
@@ -53,7 +53,7 @@ export const NftCardListSection = ({
       </Tabs>
       <div className="CARD-LIST mt-4 grid min-h-36 grid-cols-3 gap-4 px-3 py-4">
         {isLoading ? (
-          <SkeletonCards count={6} />
+          <SkeletonCards count={3} />
         ) : (
           equipmentList.map((equipmentNft) => (
             <NftMiniCard
