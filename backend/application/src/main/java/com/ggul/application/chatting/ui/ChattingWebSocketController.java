@@ -26,7 +26,7 @@ public class ChattingWebSocketController {
 
 
     @MessageMapping("/{userId}")
-    public void chatHandler(@DestinationVariable UUID userId, ChatRequest request) {
+    public void chatHandler(@DestinationVariable("userId") UUID userId, ChatRequest request) {
         log.info("front request chat : {}", request.toString());
         chattingRegisterService.chattingCreate(request, userId);
     }

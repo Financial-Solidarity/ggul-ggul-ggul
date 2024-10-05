@@ -261,6 +261,13 @@ CREATE TABLE application_history (
      FOREIGN KEY (user_id) REFERENCES user(user_id),
      FOREIGN KEY (application_id) REFERENCES application(application_id)
 );
+CREATE TABLE primary_account
+(
+    account_id            BINARY(16) PRIMARY KEY NOT NULL,
+    user_id               BINARY(16)             NOT NULL,
+    account_no            VARCHAR(40)            NOT NULL
+);
+
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
 VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡1', null, now()),
