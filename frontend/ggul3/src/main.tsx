@@ -21,7 +21,9 @@ async function enableMocking() {
 async function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
+      const registration = await navigator.serviceWorker.register(
+        '/firebase-messaging-sw.js',
+      );
 
       console.log('PWA 서비스 워커 실행:', registration.scope);
     } catch (error) {
