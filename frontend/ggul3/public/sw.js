@@ -1,3 +1,19 @@
+importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
+importScripts(
+  'https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js',
+);
+
+// Firebase 설정
+const firebaseConfig = {
+  apiKey: true,
+  projectId: true,
+  messagingSenderId: true,
+  appId: true,
+};
+
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+
 // 캐시 이름 정의
 const CACHE_NAME = 'ggul3-pwa-cache-v1';
 const urlsToCache = [
@@ -48,11 +64,9 @@ self.addEventListener('fetch', (event) => {
       caches
         .match(event.request)
         .then((response) => {
-          // 캐시된 응답이 있으면 반환하고, 그렇지 않으면 네트워크 요청
           return (
             response ||
             fetch(event.request).then((networkResponse) => {
-              // 성공적인 응답을 캐시에 저장
               return caches.open(CACHE_NAME).then((cache) => {
                 cache.put(event.request, networkResponse.clone());
 
@@ -62,11 +76,21 @@ self.addEventListener('fetch', (event) => {
           );
         })
         .catch(() => {
-          // 오프라인 상태에서 캐시도 없는 경우 대체 페이지 또는 리소스 제공 (예: 오프라인 페이지)
           return caches.match('/');
         }),
     );
   }
+});
+
+// FCM 백그라운드 메시지 처리
+messaging.onBackgroundMessage((payload) => {
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: payload.notification.image,
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 // 푸시 알림 이벤트: 서버로부터 푸시 알림을 받아서 처리
@@ -78,7 +102,7 @@ self.addEventListener('push', (event) => {
     body: data.body || '새로운 알림이 있습니다.',
     icon: '/pwa-192x192.png',
     badge: '/pwa-192x192.png',
-    data: data.url || '/', // 알림을 클릭했을 때 이동할 URL
+    data: data.url || '/',
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
@@ -92,14 +116,11 @@ self.addEventListener('notificationclick', (event) => {
     clients
       .matchAll({ type: 'window', includeUncontrolled: true })
       .then((clientList) => {
-        // 이미 열린 창이 있으면 해당 창으로 이동
         for (const client of clientList) {
           if (client.url === event.notification.data && 'focus' in client) {
             return client.focus();
           }
         }
-
-        // 새 창을 열어 이동
         if (clients.openWindow) {
           return clients.openWindow(event.notification.data);
         }

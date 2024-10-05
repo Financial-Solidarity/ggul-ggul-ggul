@@ -48,7 +48,7 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: 'pwa-wide.png',
+            src: 'source/image1.png',
             sizes: '640x320',
             type: 'image/png',
             form_factor: 'wide',
