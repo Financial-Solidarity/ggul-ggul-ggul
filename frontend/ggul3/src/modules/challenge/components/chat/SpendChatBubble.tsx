@@ -3,6 +3,7 @@ import { Image } from '@nextui-org/react';
 import { UserIcon } from '@heroicons/react/24/outline';
 
 import { formatWon } from '../../utils/chat';
+import { useJustifyModalStore } from '../../store/JustifyModalStore';
 
 import { toAMPM_ko } from '@/modules/common/utils/dateUtils';
 import BurnMoney from '@/assets/images/burn-money.png';
@@ -20,10 +21,18 @@ export const SpendChatBubble = ({ chat }: SpendChatBubbleProps) => {
 };
 
 const MySpendChatBubble = ({ chat }: SpendChatBubbleProps) => {
+  const openModal = useJustifyModalStore((state) => state.close);
+  const setSpendChat = useJustifyModalStore((state) => state.setSpendChat);
+
   const {
     sentAt,
     consumption: { balance, category },
   } = chat;
+
+  const onClickJustify = () => {
+    setSpendChat(chat);
+    openModal();
+  };
 
   return (
     <div className="flex w-full items-end justify-end gap-2">
@@ -37,7 +46,10 @@ const MySpendChatBubble = ({ chat }: SpendChatBubbleProps) => {
             <Image alt="burn-money" height={32} src={BurnMoney} width={32} />
           </div>
         </div>
-        <button className="bg-default-200 px-4 py-2 font-bold text-default-600">
+        <button
+          className="bg-default-200 px-4 py-2 font-bold text-default-600"
+          onClick={onClickJustify}
+        >
           소명하기
         </button>
       </div>
