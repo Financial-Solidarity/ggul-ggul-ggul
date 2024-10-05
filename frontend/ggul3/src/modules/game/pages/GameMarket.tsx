@@ -108,7 +108,7 @@ export const GameMarket = (): JSX.Element => {
         </div>
 
         <Button
-          className="fixed bottom-20 right-8 bg-purple-600 text-white"
+          className="fixed bottom-20 right-8 z-30 bg-purple-600 text-white"
           onClick={scrollToTop}
         >
           맨 위로

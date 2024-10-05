@@ -52,7 +52,7 @@ export const GameLuckyDraw = (): JSX.Element => {
         bgColor="bg-black"
         titleContent={
           <div className="flex w-full flex-row justify-between">
-            <p className="text-2xl font-semibold text-white">껄 장비 뽑기</p>
+            <p className="text-2xl font-semibold text-white">껄 음식 뽑기</p>
             {<MiniTokenBalanceChip />}
           </div>
         }

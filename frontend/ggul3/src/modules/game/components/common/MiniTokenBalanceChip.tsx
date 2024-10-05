@@ -52,13 +52,13 @@ export const MiniTokenBalanceChip = () => {
 
   return (
     <div
-      className={`flex min-w-20 max-w-24 items-center justify-between gap-2 rounded-xl px-2 py-1 transition-colors duration-300 ${
+      className={`flex h-8 min-w-20 max-w-24 items-center justify-between gap-2 rounded-xl px-2 py-1 transition-colors duration-300 ${
         highlight ? 'bg-yellow-400' : 'bg-primary-200'
       }`}
     >
       <div className="h-6 w-6 rounded-full bg-white text-center">ㄲ</div>
-      <div className="min-w-10 text-white">
-        {isLoading ? '0000' : displayedBalance}
+      <div className="min-w-10 text-right text-white">
+        {isLoading ? '0' : displayedBalance}
       </div>
     </div>
   );

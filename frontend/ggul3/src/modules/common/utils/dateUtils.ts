@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 export const toYYMDhm_ko = (date: string) => {
   return dayjs(date).format('YY년 M월 D일  H시 m분');
@@ -31,17 +33,23 @@ export const formatCountdown = ({
   return `${padZero(days)}:${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
 };
 
-export const formatToRelativeTime = (dateString: string) => {
-  const date = dayjs(dateString);
-  const now = dayjs();
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
+export const formatToRelativeTime = (dateString: string | undefined) => {
+  const date = dayjs(dateString).tz('Asia/Seoul');
+  const now = dayjs().tz('Asia/Seoul');
+  // console.log('now:', now);
+  // console.log('dateString:', dateString);
+
+  const diffSeconds = now.diff(date, 'second');
   const diffMinutes = now.diff(date, 'minute');
   const diffHours = now.diff(date, 'hour');
   const diffDays = now.diff(date, 'day');
   const diffMonths = now.diff(date, 'month');
   const diffYears = now.diff(date, 'year');
 
-  if (diffMinutes < 1) return '방금';
+  if (diffSeconds < 60) return `${diffSeconds}초 전`;
   if (diffMinutes < 60) return `${diffMinutes}분 전`;
   if (diffHours < 24) return `${diffHours}시간 전`;
   if (diffDays < 30) return `${diffDays}일 전`;

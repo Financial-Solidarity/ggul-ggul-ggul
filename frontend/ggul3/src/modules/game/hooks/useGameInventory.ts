@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 import { EquipmentNFTDTO } from '../@types';
 import {
@@ -11,9 +12,11 @@ import {
 
 export const useGameInventory = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
+  const [isLoadingEquip, setIsLoadingEquip] = useState(false);
+  const [isLoadingUnequip, setIsLoadingUnequip] = useState(false);
   const [selectedEquipmentNft, setSelectedEquipmentNft] = useState<
     EquipmentNFTDTO | undefined
-  >(undefined);
+  >();
   const [activeGradeIndex, setActiveGradeIndex] =
     useState<keyof typeof powerRanges>(0);
 
@@ -51,44 +54,52 @@ export const useGameInventory = () => {
     setOpen(true);
   }, []);
 
-  // 장비 장착을 처리하는 함수
+  // 장비 장착 핸들러
   const handleEquip = () => {
     if (!selectedEquipmentNft) return;
+    setIsLoadingEquip(true); // 스피너 시작
 
     equipEquipment(
       { ipfsCID: selectedEquipmentNft.ipfsCID },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['equippedEquipment'] });
-          queryClient.invalidateQueries({
-            queryKey: ['equipmentList'],
-          });
+          queryClient.invalidateQueries({ queryKey: ['equipmentList'] });
           setOpen(false);
+          setIsLoadingEquip(false); // 스피너 중지
+
+          toast.success('모인 껄을 수령했어요!');
+          toast.success('새로운 게임이 시작되었어요!');
 
           scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
         },
         onError: (error) => {
           console.error('장비 장착 오류:', error);
+          setIsLoadingEquip(false); // 스피너 중지
         },
       },
     );
   };
 
+  // 장비 해제 핸들러
   const handleUnequip = () => {
     if (!equippedNft) return;
+    setIsLoadingUnequip(true); // 스피너 시작
+
     unequipEquipment(
       { ipfsCID: equippedNft.ipfsCID },
       {
         onSuccess: () => {
-          // 캐시 무효화 후 강제 재요청
           queryClient.setQueryData(['equippedEquipment'], null);
-          queryClient.invalidateQueries({
-            queryKey: ['equipmentList'],
-          });
+          queryClient.invalidateQueries({ queryKey: ['equipmentList'] });
           setOpen(false);
+          setIsLoadingUnequip(false); // 스피너 중지
+
+          toast.success('모인 껄을 수령했어요!');
         },
         onError: (error) => {
           console.error('장비 해제 오류:', error);
+          setIsLoadingUnequip(false); // 스피너 중지
         },
       },
     );
@@ -109,5 +120,7 @@ export const useGameInventory = () => {
     openSheet,
     handleEquip,
     handleUnequip,
+    isLoadingEquip,
+    isLoadingUnequip,
   };
 };

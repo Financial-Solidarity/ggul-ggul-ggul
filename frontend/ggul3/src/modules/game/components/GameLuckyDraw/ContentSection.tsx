@@ -34,19 +34,18 @@ export const ContentSection = ({
         {(step === 'drawed' || step === 'minting') && (
           <EquipmentInfoDisplay equipment={equipment} step={step} />
         )}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
           <div className="flex w-full flex-col items-center justify-center gap-12">
             {step !== 'minted' && <RandomNumber />}
           </div>
         </div>
 
-        {/* Process info section with grade-based color */}
-        <div className="PROCESS-INFO absolute -bottom-12 left-1/2 flex w-full -translate-x-1/2 items-center justify-center">
+        <div className="PROCESS-INFO absolute -bottom-16 left-1/2 flex w-full -translate-x-1/2 items-center justify-center">
           {(step === 'minting' || step === 'minted') && (
             <>
               {step === 'minting' && (
                 <div
-                  className={`animate-fadeIn text-2xl font-semibold text-white`}
+                  className={`animate-fadeIn text-center text-2xl font-semibold text-white`}
                 >
                   <span
                     style={{
@@ -60,7 +59,7 @@ export const ContentSection = ({
               )}
               {step === 'minted' && (
                 <div
-                  className={`animate-fadeIn text-2xl font-semibold text-white`}
+                  className={`animate-fadeIn text-center text-2xl font-semibold text-white`}
                 >
                   <span
                     style={{

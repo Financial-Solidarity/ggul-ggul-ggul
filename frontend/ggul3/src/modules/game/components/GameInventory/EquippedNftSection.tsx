@@ -23,7 +23,7 @@ export const EquippedNftSection = ({
       <EquipmentNftInfo equipmentNft={equippedNft} />
     ) : (
       // 장착된 NFT가 없는 경우
-      <div className="flex h-36 w-36 items-center justify-center rounded-full border-2 border-dashed border-gray-400">
+      <div className="flex h-36 w-36 animate-popIn items-center justify-center rounded-full border-2 border-dashed border-gray-400">
         <p className="text-2xl font-semibold text-gray-400">텅</p>
       </div>
     )}

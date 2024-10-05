@@ -23,7 +23,7 @@ export const GameMarketSellCreate = () => {
 
   const equipmentNft: EquipmentNFTDTO = nftInfo;
 
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(100);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -52,7 +52,7 @@ export const GameMarketSellCreate = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate(-2);
   };
 
   const handleGoToMarket = () => {
@@ -77,7 +77,9 @@ export const GameMarketSellCreate = () => {
         {isSuccess ? (
           <div className="flex flex-col items-center justify-center">
             <SuccessLottie />
-            <p className="mt-4 text-2xl font-semibold text-white">판매 성공!</p>
+            <p className="mt-4 text-2xl font-semibold text-white">
+              판매글을 올렸어요!
+            </p>
             <div className="mt-8 flex gap-4">
               <Button
                 className="bg-purple-600 text-white"
@@ -98,7 +100,7 @@ export const GameMarketSellCreate = () => {
             </p>
             <Button
               className="mt-8 bg-gray-600 text-white"
-              onPress={handleGoBack}
+              onClick={handleGoBack}
             >
               돌아가기
             </Button>
@@ -136,22 +138,22 @@ export const GameMarketSellCreate = () => {
                 <p className="mb-2 text-purple-400">판매 가격 설정</p>
                 <Slider
                   color="primary"
-                  maxValue={1000}
-                  minValue={0}
-                  step={50}
+                  maxValue={10000}
+                  minValue={100}
+                  step={100}
                   value={price}
                   onChange={(value) => setPrice(value as number)}
                 />
                 <div className="mt-2 text-center text-white">{price} 껄</div>
               </div>
             </div>
-            <button
+            <Button
               className="mt-4 w-full rounded-lg bg-purple-600 py-3 text-white"
               disabled={isLoading}
               onClick={handleRegisterSell}
             >
-              {isLoading ? '등록 중' : 'NFT 음식 판매 등록하기'}
-            </button>
+              {isLoading ? '등록 중' : '음식 판매글 등록하기'}
+            </Button>
           </div>
         )}
       </PageContainer>

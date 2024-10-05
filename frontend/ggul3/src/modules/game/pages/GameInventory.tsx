@@ -28,6 +28,8 @@ export const GameInventory = (): JSX.Element => {
     openSheet,
     handleEquip,
     handleUnequip,
+    isLoadingEquip,
+    isLoadingUnequip, // 추가된 상태
   } = useGameInventory();
 
   useEffect(() => {
@@ -60,6 +62,8 @@ export const GameInventory = (): JSX.Element => {
 
         <NftDetailSheet
           equippedNft={equippedNft}
+          isLoadingEquip={isLoadingEquip}
+          isLoadingUnequip={isLoadingUnequip}
           isOpen={isOpen}
           selectedEquipmentNft={selectedEquipmentNft}
           onClose={() => setOpen(false)}

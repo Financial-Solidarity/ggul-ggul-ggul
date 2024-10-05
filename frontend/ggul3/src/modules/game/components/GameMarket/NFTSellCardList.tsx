@@ -1,7 +1,7 @@
 import { Card, CardBody, Button, Image } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
-import { MarketItemDTO } from '@/modules/game/@types';
+import { HexCodesByGrade, MarketItemDTO } from '@/modules/game/@types';
 import { PathNames } from '@/router';
 
 interface NFTSellCardListProps {
@@ -35,18 +35,34 @@ export const NFTSellCardList: React.FC<NFTSellCardListProps> = ({
           <Card
             key={marketItem.marketId}
             isHoverable
-            className="relative bg-gradient-to-tr from-primary-500 to-primary-900 py-2 text-white"
+            className="relative h-56 bg-gradient-to-tr from-primary-500 to-primary-900 py-2 text-white"
           >
             <CardBody>
-              <p className="font-semibold">{marketItem.title}</p>
-              <div className="mt-2 flex items-center justify-between">
-                <span>껄 {marketItem.price}</span>
+              <div className="flex w-full justify-between">
+                <p className="mb-4 text-lg font-semibold">{marketItem.title}</p>
+                <div className="CHIPS-INFO mt-2 flex flex-col items-end justify-between gap-2">
+                  <div className="POWER-CHIP min-w-8 rounded-full bg-primary-600 px-2 py-1 text-sm">
+                    <div>{marketItem?.power} 맛도리</div>
+                  </div>
+                  <div
+                    className={`PREICE-CHIP flex h-7 min-w-14 max-w-24 items-center justify-between gap-2 rounded-xl bg-primary-600 px-2 py-1`}
+                  >
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-center font-semibold text-primary-600">
+                      ㄲ
+                    </div>
+                    <div className="min-w-4 text-sm text-white">
+                      {marketItem.price}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className={`flex h-28 w-28 items-center justify-center`}>
+
+              <div className={`relative mt-8 flex items-center justify-center`}>
                 <div
-                  className={`absolute left-1/2 h-28 w-28 -translate-x-1/2 animate-popIn rounded-full bg-primary-400`}
+                  className={`absolute h-36 w-36 animate-popIn rounded-full`}
+                  style={{ backgroundColor: HexCodesByGrade[marketItem.grade] }}
                 />
-                <div className="IMAGE-WRAPPER absolute left-1/2 flex -translate-x-1/2 animate-fadeIn items-center justify-center">
+                <div className="IMAGE-WRAPPER absolute flex animate-fadeIn items-center justify-center">
                   <Image
                     className="animate-floating"
                     src={marketItem.imageUrl}

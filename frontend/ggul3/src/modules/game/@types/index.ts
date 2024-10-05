@@ -155,7 +155,7 @@ export interface GetTokenBalanceResponse {
 // 현재 누적 얻을 수 있는 껄 조회
 export interface GetReceivableTokenResponse {
   receivableToken: number;
-  lastReceivedAt: string;
+  lastReceiveAt: string;
 }
 
 // ============ 컬러 코드 정의 ============

@@ -101,7 +101,7 @@ export const EquipmentNftInfo = ({
       {/* 타이틀 영역 */}
       {showTitle && (
         <p
-          className="text-center text-2xl font-semibold"
+          className="text-center text-2xl font-bold"
           style={{ color: hexCode }}
         >
           {`${equipmentNft?.equipment.adjective} ${equipmentNft?.equipment.name}`}

@@ -1,7 +1,12 @@
-import { useLocation, useParams } from 'react-router-dom';
-import { Button, Image } from '@nextui-org/react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Button, Image, Tooltip, Spinner } from '@nextui-org/react';
+import { toast } from 'react-hot-toast';
+import { useState } from 'react';
 
 import { EquipmentNftInfo } from '../components/common/EquipmentNftInfo';
+import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip';
+import { SuccessLottie } from '../components/common/Lotties/SuccessLottie';
+import { FailLottie } from '../components/common/Lotties/FailLottie';
 
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
@@ -10,6 +15,7 @@ import { formatToRelativeTime } from '@/modules/common/utils/dateUtils';
 import {
   useMarketItemDetailQuery,
   useBuyEquipmentMutation,
+  useTokenBalanceQuery,
 } from '@/modules/game/queries';
 
 export const GameMarketSellDetail = (): JSX.Element => {
@@ -17,7 +23,14 @@ export const GameMarketSellDetail = (): JSX.Element => {
   const { state } = useLocation();
   const { marketId: paramMarketId } = useParams<{ marketId: string }>();
 
-  // state로부터 marketId 가져오기, 없으면 paramMarketId 사용
+  const navigate = useNavigate();
+  const [isLoadingBuy, setIsLoadingBuy] = useState(false);
+  const [isBuySuccessful, setIsBuySuccessful] = useState<boolean | null>(null);
+
+  const handleGoBack = () => {
+    navigate('/game/market', { replace: true });
+  };
+
   const marketId = state?.marketId || paramMarketId;
 
   const {
@@ -26,23 +39,36 @@ export const GameMarketSellDetail = (): JSX.Element => {
     isError,
   } = useMarketItemDetailQuery(marketId as string);
 
-  // 판매 글 구매 뮤테이션 훅
+  const { data: tokenData } = useTokenBalanceQuery();
+  const userTokenBalance = tokenData?.balance ?? 0;
+
   const { mutate: buyEquipment } = useBuyEquipmentMutation();
 
   const handleBuy = () => {
+    if (!canAfford) {
+      toast.error('가진 껄이 부족하여 구매할 수 없어요.');
+
+      return;
+    }
+
+    setIsLoadingBuy(true);
+
     buyEquipment(marketId as string, {
       onSuccess: () => {
-        // 성공적으로 구매 시 처리 로직
-        alert('NFT 구매가 완료되었습니다!');
+        setIsBuySuccessful(true);
+        toast.success('NFT 구매가 완료되었습니다!');
       },
       onError: (error) => {
+        setIsBuySuccessful(false);
         console.error('구매 오류:', error);
-        alert('구매에 실패하였습니다.');
+        toast.error('구매에 실패하였습니다.');
+      },
+      onSettled: () => {
+        setIsLoadingBuy(false);
       },
     });
   };
 
-  // 로딩 및 에러 처리
   if (isLoading)
     return <div className="text-center text-white">로딩 중...</div>;
   if (isError || !marketDetail)
@@ -52,11 +78,33 @@ export const GameMarketSellDetail = (): JSX.Element => {
       </div>
     );
 
+  const canAfford = userTokenBalance >= marketDetail.price;
+
+  // Handle the result screen based on the purchase outcome
+  if (isBuySuccessful !== null) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        {isBuySuccessful ? <SuccessLottie /> : <FailLottie />}
+        <p
+          className={`mt-4 text-2xl font-semibold ${isBuySuccessful ? 'text-white' : 'text-red-500'}`}
+        >
+          {isBuySuccessful ? '구매에 성공했어요!' : '구매에 실패했어요!'}
+        </p>
+        <Button className="mt-8 bg-gray-600 text-white" onClick={handleGoBack}>
+          돌아가기
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <PageContainer activePaddingX={false} bgColor="bg-black">
       {/* 상단 영역 */}
       <div className="relative h-1/2 bg-gradient-to-br from-purple-400 to-purple-800 p-4">
-        <BackButton circular />
+        <div className="flex w-full items-center justify-between">
+          <BackButton circular />
+          <MiniTokenBalanceChip />
+        </div>
         <div className="flex flex-col items-center">
           {/* 이미지 영역 */}
           <EquipmentNftInfo equipmentNft={marketDetail.equipmentNFT} />
@@ -64,7 +112,7 @@ export const GameMarketSellDetail = (): JSX.Element => {
       </div>
 
       {/* 하단 영역 */}
-      <div className="relative flex h-1/2 flex-col rounded-t-3xl bg-black px-4 py-6">
+      <div className="relative flex h-1/2 flex-col justify-between rounded-t-3xl bg-black px-4 py-6">
         {/* 판매자 정보 */}
         <div className="absolute -top-10 left-1/2 flex -translate-x-1/2 flex-col items-center justify-center gap-2 text-center text-default-400">
           <div className="USER-AVATAR flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-300">
@@ -110,12 +158,22 @@ export const GameMarketSellDetail = (): JSX.Element => {
         </div>
 
         {/* 구매 버튼 */}
-        <Button
-          className="mt-4 h-12 w-full bg-primary-600 text-white"
-          onClick={handleBuy}
+        <Tooltip
+          color="default"
+          content="가진 껄이 부족해요"
+          isOpen={!canAfford}
+          showArrow={true}
         >
-          NFT 구매하기
-        </Button>
+          <Button
+            className={`mt-4 h-12 w-full text-white ${
+              canAfford ? 'bg-primary-600' : 'bg-default-700'
+            }`}
+            disabled={!canAfford || isLoadingBuy}
+            onClick={handleBuy}
+          >
+            {isLoadingBuy ? <Spinner color="white" /> : 'NFT 음식 구매하기'}
+          </Button>
+        </Tooltip>
       </div>
     </PageContainer>
   );

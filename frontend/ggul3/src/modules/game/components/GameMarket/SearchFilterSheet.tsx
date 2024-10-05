@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Sheet } from 'react-modal-sheet';
-import { Input, Button, Tabs, Tab, Slider } from '@nextui-org/react';
+import { Button, Tabs, Tab, Slider } from '@nextui-org/react';
 
+import { useEquipmentNamesQuery } from '../../queries';
 import { MarketStatus } from '../../@types';
 
 interface SearchFilterSheetProps {
@@ -23,19 +24,21 @@ export const SearchFilterSheet = ({
   onClose,
   onSearch,
 }: SearchFilterSheetProps) => {
-  const [name, setName] = useState('');
+  const { data: equipmentNames = [] } = useEquipmentNamesQuery();
+  const [selectedName, setSelectedName] = useState<string | undefined>();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [grade, setGrade] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000);
+  const [maxPrice, setMaxPrice] = useState(10000);
 
   // grade에 따른 power 범위 설정
   const gradePowerRanges = [
     { min: 0, max: 999 }, // 전체
-    { min: 1, max: 200 }, // 0등급
-    { min: 201, max: 400 }, // 1등급
-    { min: 401, max: 600 }, // 2등급
-    { min: 601, max: 800 }, // 3등급
-    { min: 801, max: 999 }, // 4등급
+    { min: 801, max: 999 },
+    { min: 601, max: 800 },
+    { min: 401, max: 600 },
+    { min: 201, max: 400 },
+    { min: 1, max: 200 },
   ];
 
   const handleSearch = () => {
@@ -44,7 +47,7 @@ export const SearchFilterSheet = ({
     const maxPower = grade === 0 ? undefined : selectedGrade.max;
 
     onSearch({
-      name: name || undefined,
+      name: selectedName || undefined,
       minPower,
       maxPower,
       minPrice,
@@ -66,17 +69,51 @@ export const SearchFilterSheet = ({
       <Sheet.Container className="!bg-default-900 px-4">
         <Sheet.Header />
         <Sheet.Content className="mb-8 mt-12">
-          <div className="space-y-4 px-4 pb-12">
-            <Input
-              fullWidth
-              className="bg-gray-800 text-white"
-              placeholder="이름으로 검색"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+          <div className="flex flex-col justify-between space-y-4 px-4 pb-12">
+            <div className="relative">
+              <p className="mb-2 text-sm font-semibold text-primary-300">
+                음식 선택
+              </p>
+              <Button
+                fullWidth
+                className="bg-white capitalize text-black"
+                variant="bordered"
+                onPress={() => setIsDropdownOpen((prev) => !prev)}
+              >
+                {selectedName || '전체'}
+              </Button>
+              {isDropdownOpen && (
+                <div className="absolute z-50 mt-1 max-h-60 w-full animate-fadeIn overflow-y-auto rounded-md bg-white shadow-lg">
+                  <div
+                    className="cursor-pointer p-2 hover:bg-gray-200"
+                    onClick={() => {
+                      setSelectedName(undefined);
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    전체
+                  </div>
+                  {equipmentNames.map((name) => (
+                    <div
+                      key={name}
+                      className="cursor-pointer p-2 hover:bg-gray-200"
+                      onClick={() => {
+                        setSelectedName(name);
+                        setIsDropdownOpen(false);
+                      }}
+                    >
+                      {name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* 등급 선택 탭 */}
             <div className="mt-4">
-              <p className="mb-2 text-white">등급 선택 (Grade)</p>
+              <p className="mb-2 text-sm font-semibold text-primary-300">
+                등급 선택
+              </p>
               <Tabs
                 aria-label="NFT Grade Filter"
                 className="flex w-full overflow-x-auto whitespace-nowrap"
@@ -94,11 +131,13 @@ export const SearchFilterSheet = ({
 
             {/* 가격 범위 설정 */}
             <div>
-              <p className="mb-2 text-white">가격 범위 (ㄲ)</p>
+              <p className="mb-2 text-sm font-semibold text-primary-300">
+                가격 범위
+              </p>
               <Slider
                 defaultValue={[minPrice, maxPrice]}
-                maxValue={1000}
-                step={50}
+                maxValue={10000}
+                step={100}
                 onChange={(value) => {
                   if (Array.isArray(value)) {
                     setMinPrice(value[0]);
@@ -106,16 +145,15 @@ export const SearchFilterSheet = ({
                   }
                 }}
               />
-              <div className="flex justify-between">
-                <span className="text-white">최소: ㄲ {minPrice}</span>
-                <span className="text-white">최대: ㄲ {maxPrice}</span>
+              <div className="flex justify-between px-2">
+                <span className="text-sm text-primary-100">{minPrice}</span>
+                <span className="text-sm text-primary-100">{maxPrice}</span>
               </div>
             </div>
-
             <Button
               fullWidth
-              className="mt-4 bg-purple-600"
-              onPress={handleSearch}
+              className="bg-primary-500 font-semibold text-white"
+              onClick={handleSearch}
             >
               검색하기
             </Button>
