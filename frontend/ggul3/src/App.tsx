@@ -6,15 +6,13 @@ import { BottomBar } from './modules/common/components/Layouts/BottomBar';
 import { Provider } from './provider';
 import { useSocket } from './modules/common/hooks/useSocket';
 import { useUserStore } from './modules/common/store/userStore';
+import { JustifyModal } from './modules/challenge/components/chat/JustifyModal';
 
 function App() {
   const { connect } = useSocket();
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
-    console.log(
-      'socket endpoint : ' + import.meta.env.VITE_SOCKET_CONNECT_ENDPOINT,
-    );
     if (!user) return;
     connect();
   }, [user]);
@@ -26,6 +24,7 @@ function App() {
         <BottomBar />
       </div>
       <Toaster />
+      <JustifyModal />
     </Provider>
   );
 }
