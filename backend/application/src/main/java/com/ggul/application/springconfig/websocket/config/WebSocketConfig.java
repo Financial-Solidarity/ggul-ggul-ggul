@@ -23,8 +23,10 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
     public void configureStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
+                .setAllowedOrigins("*");
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
+                .setAllowedOrigins("*")
                 .withSockJS();
     }
 
