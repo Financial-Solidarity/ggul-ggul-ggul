@@ -54,10 +54,10 @@ export const LoginForm = ({
       setUser(userData);
       setIsLoggedIn(true);
 
+      navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
+
       //fcm 등록
       await requestPermission();
-
-      navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
     } catch (error) {
       window.alert('[login] catch error.');
     }
