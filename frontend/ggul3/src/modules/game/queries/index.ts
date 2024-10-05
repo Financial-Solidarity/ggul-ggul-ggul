@@ -40,10 +40,21 @@ import {
 
 // 장착된 장비 조회 쿼리 훅
 export const useEquippedEquipmentQuery =
-  (): UseQueryResult<GetEquippedEquipmentResponse> => {
+  (): UseQueryResult<GetEquippedEquipmentResponse | null> => {
     return useQuery({
       queryKey: ['equippedEquipment'],
-      queryFn: getEquippedEquipment,
+      queryFn: async () => {
+        // 데이터를 가져오면서 에러를 직접 핸들링
+        try {
+          return await getEquippedEquipment();
+        } catch (error) {
+          console.error('장착된 장비 조회 에러:', error);
+
+          return null; // 에러 발생 시 null 반환
+        }
+      },
+      retry: false, // 에러 발생 시 재시도를 비활성화 (필요에 따라 변경 가능)
+      staleTime: 1000 * 60 * 5, // 데이터가 얼마나 오래 사용될 수 있는지 설정 (옵션)
     });
   };
 

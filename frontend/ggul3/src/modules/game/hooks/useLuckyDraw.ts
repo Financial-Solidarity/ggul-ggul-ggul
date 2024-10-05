@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
+import { useTokenBalanceQuery } from '../queries'; // 토큰 밸런스 쿼리 추가
 import { EquipmentDTO, EquipmentNFTDTO } from '../@types';
 import { drawEquipment, mintEquipment } from '../apis';
 
@@ -41,6 +42,8 @@ export const useLuckyDrawActions = ({
   onClickLuckyDrawButton: () => Promise<void>;
   onClickMintButton: (equipment: EquipmentDTO) => Promise<void>;
 } => {
+  const { refetch: refetchTokenBalance } = useTokenBalanceQuery();
+
   const onClickLuckyDrawButton = async () => {
     startDrawing();
 
@@ -49,6 +52,8 @@ export const useLuckyDrawActions = ({
     setTimeout(() => {
       setEquipment(response);
       stopDrawing(response.power);
+
+      refetchTokenBalance();
     }, 500);
   };
 
@@ -62,6 +67,9 @@ export const useLuckyDrawActions = ({
     setTimeout(() => {
       setNft(response);
       stopMinting();
+
+      // NFT 발행 후 토큰 밸런스 갱신
+      refetchTokenBalance();
     }, 1000);
   };
 
