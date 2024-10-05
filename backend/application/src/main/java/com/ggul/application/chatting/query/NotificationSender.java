@@ -3,6 +3,7 @@ package com.ggul.application.chatting.query;
 import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.chatting.domain.Chatting;
 import com.ggul.application.chatting.domain.repository.ChattingRoomParticipantRepository;
+import com.ggul.application.fcmtoken.domain.FcmToken;
 import com.ggul.application.fcmtoken.infra.FirebaseCloudMessageService;
 import com.google.firebase.messaging.MulticastMessage;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,10 @@ public class NotificationSender {
         List<ChallengeParticipant> participants = chattingRoomParticipantRepository.findAllChallengeParticipantByChattingRoomId(chatting.getChattingRoom().getId());
         List<MulticastMessage> messages = new ArrayList<>();
         participants.forEach(participant -> {
-            if(participant.getUser().getFcmTokens().size() != 0) {
-                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(participant.getUser().getFcmTokens(), chatting.getParticipant().getNickname(), content,
-                        type, Map.of(), false);
+            List<FcmToken> fcmTokens = participant.getUser().getFcmTokens().stream().filter(fcmToken -> !fcmToken.getIsForeground()).toList();
+            if(!fcmTokens.isEmpty()) {
+                MulticastMessage multicastMessage = FirebaseCloudMessageService.generateMulticastMessage(fcmTokens, chatting.getParticipant().getNickname(), content,
+                        type, Map.of());
                 messages.add(multicastMessage);
             }
         });

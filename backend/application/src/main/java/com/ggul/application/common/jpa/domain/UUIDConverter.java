@@ -9,7 +9,7 @@ import java.util.UUID;
 public class UUIDConverter implements AttributeConverter<String, UUID> {
     @Override
     public UUID convertToDatabaseColumn(String string) {
-        if(string == null || string.isEmpty()){
+        if(string == null || string.isEmpty()) {
             return null;
         }
         return UUID.fromString(string);

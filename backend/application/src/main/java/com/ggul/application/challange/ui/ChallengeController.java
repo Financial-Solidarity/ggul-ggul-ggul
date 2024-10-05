@@ -12,6 +12,7 @@ import com.ggul.application.challange.ui.dto.ChallengeParticipantView;
 import com.ggul.application.challange.ui.dto.ChallengeView;
 import com.ggul.application.chatting.application.ChattingRoomJoinService;
 import com.ggul.application.common.domain.password.Password;
+import com.ggul.application.payment.query.ConsumptionLogFindService;
 import com.ggul.application.springconfig.security.service.UserLoginContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,7 @@ public class ChallengeController {
     private final ChallengeParticipantFindService challengeParticipantFindService;
     private final ChattingRoomJoinService chattingRoomJoinService;
     private final ChallengeTeamChangeService challengeTeamChangeService;
+    private final ConsumptionLogFindService consumptionLogFindService;
 
     @PostMapping()
     public ResponseEntity<?> challengeCreate(@RequestBody ChallengeRegisterRequest request, @AuthenticationPrincipal UserLoginContext context) {
@@ -89,5 +91,10 @@ public class ChallengeController {
     @GetMapping("/now")
     public ResponseEntity<?> getNowChallenge(@AuthenticationPrincipal UserLoginContext context) {
         return ResponseEntity.ok(challengeFindService.getNowChallenge(context.getUserId()));
+    }
+
+    @GetMapping("/{challengeId}/consumptions")
+    public ResponseEntity<?> getConsumptionLog(@PathVariable("challengeId")UUID challengeId) {
+        return ResponseEntity.ok(consumptionLogFindService.findAllByChallengeId(challengeId));
     }
 }

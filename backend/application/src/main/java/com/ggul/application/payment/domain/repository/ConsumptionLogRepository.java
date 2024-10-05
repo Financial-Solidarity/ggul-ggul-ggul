@@ -1,5 +1,8 @@
 package com.ggul.application.payment.domain.repository;
 
+import com.ggul.application.challange.domain.ChallengeParticipant;
+import com.ggul.application.ggul.domain.GgulLog;
+import com.ggul.application.payment.domain.ProductCategory;
 import com.ggul.application.payment.ui.dto.ConsumptionChartView;
 import com.ggul.application.payment.domain.ConsumptionLog;
 import com.ggul.application.payment.ui.dto.ConsumptionLogView;
@@ -32,4 +35,21 @@ public interface ConsumptionLogRepository extends JpaRepository<ConsumptionLog, 
             "GROUP BY cl.productCategory.name")
     List<ConsumptionChartView> findByUserAndCreatedAtBetweenGroupByProductCategoryName(@Param("userId") UUID userId, @Param("startedAt") LocalDateTime startedAt, @Param("endedAt") LocalDateTime endedAt);
 
+    public interface ParticipantAndConsumptionLog {
+        ChallengeParticipant getParticipant();
+        ConsumptionLog getConsumptionLog();
+        ProductCategory getProductCategory();
+        GgulLog getGgulLog();
+    }
+
+    @Query("SELECT cp as participant, cl as consumptionLog, pc as productCategory, gl as ggulLog " +
+            "FROM ConsumptionLog cl " +
+                "JOIN User u ON cl.user = u " +
+                "JOIN ChallengeParticipant cp ON cp.user = u AND cp.isDeleted = false " +
+                "JOIN ProductCategory pc ON cl.productCategory = pc " +
+                "LEFT JOIN GgulLog gl ON cl.ggulLog = gl " +
+            "WHERE cp.challenge.id = :challengeId " +
+                "AND cl.createdAt BETWEEN cp.challenge.startedAt AND cp.challenge.endedAt " +
+            "ORDER BY cl.createdAt DESC")
+    List<ParticipantAndConsumptionLog> findAllByChallenge_Id(@Param("challengeId")UUID challengeId);
 }

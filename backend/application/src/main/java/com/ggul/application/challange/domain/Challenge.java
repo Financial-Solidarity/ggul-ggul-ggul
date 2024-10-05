@@ -16,6 +16,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @SuperBuilder
@@ -87,7 +88,7 @@ public class Challenge extends SoftDeleteEntity {
     }
 
     public boolean isOwner(User user) {
-        return owner.equals(user);
+        return Objects.equals(owner.getId(), user.getId());
     }
 
     public void ready() {
