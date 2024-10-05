@@ -1,11 +1,12 @@
-package com.ggul.application.backdoor.wallet;
+package com.ggul.application.admin.ui;
 
-import com.ggul.application.backdoor.wallet.in.TokenGenerateRequestBD;
-import com.ggul.application.backdoor.wallet.in.TokenGrantRequestBD;
+import com.ggul.application.admin.ui.request.AdminTokenGenerateRequest;
+import com.ggul.application.admin.ui.request.AdminTokenGrantRequest;
+import com.ggul.application.application.application.ApplicationService;
+import com.ggul.application.application.application.dto.ApplicationRegisterDto;
 import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
 import com.ggul.application.wallet.application.TokenService;
-import com.ggul.application.wallet.application.WalletGenerateService;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
 import com.ggul.application.wallet.exception.ContractInsufficientTokenException;
@@ -16,14 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
 
 @RestController
-@RequestMapping("/backdoor/wallets")
+@RequestMapping("/admin")
 @AllArgsConstructor
-public class WalletBackdoor {
-
+public class AdminController {
+    private final TokenService tokenService;
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
-    private final TokenService tokenService;
-    private final WalletGenerateService walletGenerateService;
+    private final ApplicationService applicationService;
 
     @GetMapping("/users/{email}/tokens")
     public ResponseEntity<?> getToken(@PathVariable String email){
@@ -33,7 +33,7 @@ public class WalletBackdoor {
     }
 
     @PostMapping("/users/tokens/grant")
-    public ResponseEntity<?> grantToken(@RequestBody TokenGrantRequestBD request) throws ContractInsufficientTokenException {
+    public ResponseEntity<?> grantToken(@RequestBody AdminTokenGrantRequest request) throws ContractInsufficientTokenException {
         User user = userRepository.findByUsername(request.getEmail()).orElseThrow(() -> new RuntimeException("사용자 없음"));
         Wallet wallet = walletRepository.findByUser(user).orElseThrow(() -> new RuntimeException("지갑 없음"));
         try{
@@ -45,7 +45,13 @@ public class WalletBackdoor {
     }
 
     @PostMapping("/tokens/generate")
-    public ResponseEntity<?> generateToken(@RequestBody TokenGenerateRequestBD request){
+    public ResponseEntity<?> generateToken(@RequestBody AdminTokenGenerateRequest request){
         return ResponseEntity.ok().body(tokenService.generateTokens(BigInteger.valueOf(request.getQuantity())));
+    }
+
+    @PostMapping("/applications")
+    public ResponseEntity<?> registerApplication(@ModelAttribute ApplicationRegisterDto dto){
+        applicationService.registerApplication(dto);
+        return ResponseEntity.ok().body(null);
     }
 }

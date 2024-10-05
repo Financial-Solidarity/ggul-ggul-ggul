@@ -140,7 +140,7 @@ public class SecurityConfig {
         });
 
 
-        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**", "/backdoor/**", "/health-check").permitAll()
+        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/auth/**", "/admin/**", "/health-check").permitAll()
                 .anyRequest().authenticated());
         http.addFilterAt(jsonLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 //        http.addFilterBefore(new CorsFilter(), JsonLoginAuthenticationFilter.class);

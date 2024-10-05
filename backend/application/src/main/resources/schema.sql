@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS application_history;
+DROP TABLE IF EXISTS application;
 DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS market_deal;
 DROP TABLE IF EXISTS market;
@@ -237,6 +239,28 @@ CREATE TABLE game
     last_received_at      DATETIME NOT NULL
 );
 
+CREATE TABLE application (
+     application_id BIGINT PRIMARY KEY NOT NULL,
+     title VARCHAR(40),
+     image_url VARCHAR(200),
+     probability DOUBLE,
+     price BIGINT,
+     max_winner_count BIGINT,
+     status VARCHAR(16),
+     created_at DATETIME
+);
+
+CREATE TABLE application_history (
+     application_history_id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+     user_id BINARY(16),
+     application_id BIGINT,
+     transaction_hash VARCHAR(200),
+     is_success BOOL,
+     nonce BIGINT,
+     created_at DATETIME,
+     FOREIGN KEY (user_id) REFERENCES user(user_id),
+     FOREIGN KEY (application_id) REFERENCES application(application_id)
+);
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
 VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡1', null, now()),
