@@ -1,4 +1,4 @@
-import { Chat, ChattingRoomGroupDTO } from '@types';
+import { Chat, ChattingRoomGroupDTO, JustifyRequestBody } from '@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
@@ -29,5 +29,13 @@ export const getPreviousChattingList = (chattingRoomId: string) => {
   return _axios<Chat[]>({
     url: `chat/${chattingRoomId}/before`,
     method: 'GET',
+  });
+};
+
+export const justify = (data: JustifyRequestBody) => {
+  return _axios<void>({
+    url: 'chat/justification',
+    method: 'POST',
+    data,
   });
 };

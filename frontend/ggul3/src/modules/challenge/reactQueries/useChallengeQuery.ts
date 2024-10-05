@@ -10,6 +10,7 @@ import {
   GetChallengeDetailResponse,
   getChattingRooomIdsResponse,
   GetParticipatingChallengeResponse,
+  JustifyRequestBody,
   Pageable,
   ParticipantDTO,
 } from '@types';
@@ -28,6 +29,7 @@ import {
   joinChallenge,
   startChallenge,
 } from '../apis/waitingroom';
+import { justify } from '../apis/chattingroom';
 
 import { QUERY_KEYS } from '@/modules/common/constants';
 
@@ -136,5 +138,11 @@ export const useGetParticipatingChallenge = () => {
     queryKey: [QUERY_KEYS.PARTICIPARING_CHALLENGE],
     queryFn: () => getParticipatingChallenge(),
     initialData: null,
+  });
+};
+
+export const useJustify = () => {
+  return useMutation<void, ErrorDTO, JustifyRequestBody>({
+    mutationFn: (data) => justify(data),
   });
 };

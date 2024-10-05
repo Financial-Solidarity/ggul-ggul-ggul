@@ -87,7 +87,9 @@ export const CretaeChallengePage = () => {
       budgetCap,
     })
       .then((res) => {
-        navigate(`/challenge/waiting-room/${res.challengeId}`);
+        navigate(`/challenge/waiting-room/${res.challengeId}`, {
+          replace: true,
+        });
       })
       .catch((err: ErrorDTO) => {});
   };

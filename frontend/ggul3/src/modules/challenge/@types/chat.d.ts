@@ -39,4 +39,9 @@ declare module '@types' {
     category: string;
     balance: number;
   }
+
+  export interface JustifyRequestBody {
+    chattingId: string;
+    content: string;
+  }
 }
