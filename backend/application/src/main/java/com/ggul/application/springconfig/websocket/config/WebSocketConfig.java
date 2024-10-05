@@ -22,7 +22,7 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
     @Override
     public void configureStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
-                .addInterceptors(new HttpSessionHandshakeInterceptor())
+                .addInterceptors(new HttpSessionHandshakeInterceptor());
 //                .setAllowedOrigins("http://localhost:5173", "https://ggul3.kro.kr");
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
