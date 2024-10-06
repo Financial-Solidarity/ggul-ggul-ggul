@@ -1,15 +1,14 @@
 import { QrCodeIcon } from '@heroicons/react/24/outline';
 import { Card, CardBody } from '@nextui-org/card';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { PathNames } from '@/router';
 
 export const QrButton = () => {
   const navigate = useNavigate();
 
-  const [visible, setVisible] = useState<boolean>(false);
-
   return (
-    <div onClick={() => navigate('/account-book/qr-code')}>
+    <div onClick={() => navigate(PathNames.ACCOUNT_BOOK.QR_CODE.path)}>
       <Card className="flex bg-slate-300 text-black">
         <CardBody>
           <div className="flex content-center items-center justify-between">
