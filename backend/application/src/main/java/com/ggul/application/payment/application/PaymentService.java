@@ -35,7 +35,7 @@ public class PaymentService {
         User user = userRepository.getReferenceById(sessionId);
         ProductCategory productCategory = productCategoryRepository.getReferenceById(paymentRequest.getCategoryId());
 
-        WalletHistory history = walletService.registerWalletHistory(sessionId, paymentRequest.getSpendGgulToken().longValue(), Category.CONSUMPTION);
+        WalletHistory history = walletService.registerWalletHistory(sessionId, false, paymentRequest.getSpendGgulToken().longValue(), Category.PAYMENT);
 
         ConsumptionLog consumptionLog = ConsumptionLog.create(paymentRequest, history, newRequiredMoney, user, productCategory);
 

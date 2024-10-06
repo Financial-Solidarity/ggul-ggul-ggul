@@ -10,6 +10,8 @@ import com.ggul.application.game.domain.Game;
 import com.ggul.application.game.domain.GameRepository;
 import com.ggul.application.game.exception.GameNotFoundException;
 import com.ggul.application.wallet.application.TokenService;
+import com.ggul.application.wallet.application.WalletService;
+import com.ggul.application.wallet.domain.Category;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
 import com.ggul.application.wallet.exception.ContractInsufficientTokenException;
@@ -34,6 +36,7 @@ public class GameService {
     private final WalletRepository walletRepository;
     private final GameRepository gameRepository;
     private final TokenizedEquipmentRepository tokenizedEquipmentRepository;
+    private final WalletService walletService;
 
     /**
      * 획득할 수 있는 토큰 정보 조회
@@ -76,6 +79,8 @@ public class GameService {
 
         long leftTime = getSecondDuration(game) % gameConfig.getTerm();
         game.changeLastReceiveAt(LocalDateTime.now().minusSeconds(leftTime));
+
+        walletService.registerWalletHistory(userId, true, receivableToken, Category.GAME);
     }
 
     private Long getSecondDuration(Game game){

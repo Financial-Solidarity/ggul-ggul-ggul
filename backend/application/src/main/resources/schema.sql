@@ -187,6 +187,7 @@ CREATE TABLE wallet_history (
     quantity BIGINT NOT NULL,
     category VARCHAR(32) NOT NULL,
     created_at DATETIME NOT NULL,
+    is_positive BOOL NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
