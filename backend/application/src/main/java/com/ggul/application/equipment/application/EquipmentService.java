@@ -11,6 +11,8 @@ import com.ggul.application.game.application.GameService;
 import com.ggul.application.game.domain.Game;
 import com.ggul.application.game.domain.GameRepository;
 import com.ggul.application.user.domain.UserRepository;
+import com.ggul.application.wallet.application.WalletService;
+import com.ggul.application.wallet.domain.Category;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
 import com.ggul.application.wallet.exception.WalletNotFoundException;
@@ -37,6 +39,7 @@ public class EquipmentService {
     private final EquipmentRepository equipmentRepository;
     private final EquipmentItemRepository equipmentItemRepository;
     private final TokenizedEquipmentRepository tokenizedEquipmentRepository;
+    private final WalletService walletService;
 
     /**
      * Equipment 뽑기
@@ -61,6 +64,8 @@ public class EquipmentService {
                 .transactionHash(result.getTransactionHash())
                 .minted(false)
                 .build());
+
+        walletService.registerWalletHistory(userId, equipmentDrawService.getDrawCost(), Category.EQUIPMENT_DRAW);
 
         return EquipmentInfo.from(equipment);
     }

@@ -9,6 +9,8 @@ import com.ggul.application.common.util.ListUtils;
 import com.ggul.application.image.infra.s3.exception.ImageUploadFailException;
 import com.ggul.application.image.infra.s3.upload.S3Uploader;
 import com.ggul.application.user.domain.UserRepository;
+import com.ggul.application.wallet.application.WalletService;
+import com.ggul.application.wallet.domain.Category;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
 import com.ggul.application.wallet.exception.WalletNotFoundException;
@@ -32,6 +34,7 @@ public class ApplicationService {
     private final WalletRepository walletRepository;
     private final UserRepository userRepository;
     private final ApplicationHistoryRepository applicationHistoryRepository;
+    private final WalletService walletService;
 
     /**
      * 응모 등록
@@ -85,6 +88,8 @@ public class ApplicationService {
 
         if(result.getIsSuccess() && result.getRemainingWinnerCount() == 0)
             application.changeStatus(Status.CLOSE);
+
+        walletService.registerWalletHistory(userId, application.getPrice(), Category.APPLICATION);
         return result;
     }
 

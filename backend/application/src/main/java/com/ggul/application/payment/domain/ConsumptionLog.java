@@ -2,9 +2,9 @@ package com.ggul.application.payment.domain;
 
 import com.ggul.application.common.jpa.domain.BaseEntity;
 import com.ggul.application.common.jpa.domain.UUIDv7;
-import com.ggul.application.ggul.domain.GgulLog;
 import com.ggul.application.payment.application.dto.PaymentRequest;
 import com.ggul.application.user.domain.User;
+import com.ggul.application.wallet.domain.WalletHistory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,9 +38,9 @@ public class ConsumptionLog extends BaseEntity {
     @Column(name = "consumption_balance")
     private Integer balance;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ggul_log_id")
-    private GgulLog ggulLog;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wallet_history_id")
+    private WalletHistory walletHistory;
 
     @Column(name = "product_name")
     private String productName;
@@ -49,14 +49,14 @@ public class ConsumptionLog extends BaseEntity {
     private String market;
 
 
-    public static ConsumptionLog create(PaymentRequest paymentRequest, GgulLog ggulLog, Integer newRequiredMoney, User user, ProductCategory productCategory) {
+    public static ConsumptionLog create(PaymentRequest paymentRequest, WalletHistory walletHistory, Integer newRequiredMoney, User user, ProductCategory productCategory) {
         return ConsumptionLog.builder()
                 .balance(newRequiredMoney)
                 .user(user)
                 .market(paymentRequest.getMarket())
                 .productName(paymentRequest.getProductName())
                 .productCategory(productCategory)
-                .ggulLog(ggulLog)
+                .walletHistory(walletHistory)
                 .build();
     }
 }

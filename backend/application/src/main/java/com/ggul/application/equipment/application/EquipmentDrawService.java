@@ -65,6 +65,10 @@ public class EquipmentDrawService {
         return EquipmentDrawResult.of(tr.getTransactionHash(), EquipmentDrawContract.getDrawResultEvents(tr).get(0));
     }
 
+    public Long getDrawCost(){
+        return DRAW_COST.longValue();
+    }
+
     private BigInteger seedGenerator(){
         return BigInteger.valueOf((long) (Math.random()*Integer.MAX_VALUE));
     }

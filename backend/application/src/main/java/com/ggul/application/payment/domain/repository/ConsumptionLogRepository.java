@@ -1,11 +1,11 @@
 package com.ggul.application.payment.domain.repository;
 
 import com.ggul.application.challange.domain.ChallengeParticipant;
-import com.ggul.application.ggul.domain.GgulLog;
 import com.ggul.application.payment.domain.ProductCategory;
 import com.ggul.application.payment.ui.dto.ConsumptionChartView;
 import com.ggul.application.payment.domain.ConsumptionLog;
 import com.ggul.application.payment.ui.dto.ConsumptionLogView;
+import com.ggul.application.wallet.domain.WalletHistory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,9 +18,9 @@ import java.util.UUID;
 
 public interface ConsumptionLogRepository extends JpaRepository<ConsumptionLog, UUID> {
 
-    @Query("SELECT new com.ggul.application.payment.ui.dto.ConsumptionLogView(cl.productName, cl.createdAt, cl.balance, pc.name, cl.market, gl.num) " +
+    @Query("SELECT new com.ggul.application.payment.ui.dto.ConsumptionLogView(cl.productName, cl.createdAt, cl.balance, pc.name, cl.market, wh.quantity) " +
             "FROM ConsumptionLog cl " +
-                "JOIN GgulLog gl ON cl.ggulLog = gl " +
+                "JOIN WalletHistory wh ON cl.walletHistory = wh " +
                 "JOIN ProductCategory pc ON cl.productCategory = pc " +
             "WHERE cl.user.id = :userId " +
                 "AND cl.createdAt BETWEEN :startedAt AND :endedAt " +
@@ -39,15 +39,15 @@ public interface ConsumptionLogRepository extends JpaRepository<ConsumptionLog, 
         ChallengeParticipant getParticipant();
         ConsumptionLog getConsumptionLog();
         ProductCategory getProductCategory();
-        GgulLog getGgulLog();
+        WalletHistory getWalletHistory();
     }
 
-    @Query("SELECT cp as participant, cl as consumptionLog, pc as productCategory, gl as ggulLog " +
+    @Query("SELECT cp as participant, cl as consumptionLog, pc as productCategory, wh as walletHistory " +
             "FROM ConsumptionLog cl " +
                 "JOIN User u ON cl.user = u " +
                 "JOIN ChallengeParticipant cp ON cp.user = u AND cp.isDeleted = false " +
                 "JOIN ProductCategory pc ON cl.productCategory = pc " +
-                "LEFT JOIN GgulLog gl ON cl.ggulLog = gl " +
+                "LEFT JOIN WalletHistory wh ON cl.walletHistory = wh " +
             "WHERE cp.challenge.id = :challengeId " +
                 "AND cl.createdAt BETWEEN cp.challenge.startedAt AND cp.challenge.endedAt " +
             "ORDER BY cl.createdAt DESC")

@@ -4,6 +4,7 @@ import com.ggul.application.common.infra.blockchain.EthereumCall;
 import com.ggul.application.common.infra.blockchain.config.Web3jConfig;
 import com.ggul.application.wallet.exception.ContractInsufficientTokenException;
 import com.ggul.application.wallet.exception.TokenGrantFailureException;
+import com.ggul.application.wallet.exception.WalletInsufficientTokenException;
 import com.ggul.application.wallet.infra.TokenContract;
 import com.ggul.application.common.infra.blockchain.exception.ERC20InsufficientBalanceException;
 import lombok.AllArgsConstructor;
@@ -62,6 +63,11 @@ public class TokenService {
         throw new TokenGrantFailureException();
     }
 
+    /**
+     * 토큰 지급 재시도
+     * @param address 지급할 Wallet 주소
+     * @param quantity 지급할 Token 수량
+     */
     public void retryGrantToken(String address, BigInteger quantity) {
         generateTokens(quantity);
         try{
@@ -71,10 +77,20 @@ public class TokenService {
         }
     }
 
+    /**
+     * 토큰 사용
+     * @param address 사용할 Wallet 주소
+     * @param quantity 사용할 Token 수량
+     */
+    public void useToken(String address, BigInteger quantity) {
+        if(getBalance(address).longValue() < quantity.longValue())
+            throw new WalletInsufficientTokenException();
+        handleException(call(adminTokenContract.useToken(address, quantity)));
+    }
+
     private BigInteger getUnusedTokens() {
         EthereumCall<BigInteger> ec = call(adminTokenContract.balanceOf(web3jConfig.getAddress()));
         return handleException(ec);
     }
-
 
 }
