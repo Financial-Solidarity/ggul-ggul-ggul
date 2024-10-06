@@ -20,7 +20,8 @@ export const GameLuckyDraw = (): JSX.Element => {
   useSetBottomBar({ active: false });
   const navigate = useNavigate();
 
-  const { equipment, setEquipment, setNft, reset } = useGameLuckyDrawState();
+  const { equipment, setEquipment, nft, setNft, reset } =
+    useGameLuckyDrawState();
   const { step, startDrawing, stopDrawing, startMinting, stopMinting } =
     useLuckyDrawStore();
   const { onClickLuckyDrawButton, onClickMintButton } = useLuckyDrawActions({
@@ -57,7 +58,12 @@ export const GameLuckyDraw = (): JSX.Element => {
           </div>
         }
       >
-        <ContentSection equipment={equipment} navigate={navigate} step={step} />
+        <ContentSection
+          equipment={equipment}
+          navigate={navigate}
+          nft={nft}
+          step={step}
+        />
         <ActionButtons
           equipment={equipment}
           step={step}

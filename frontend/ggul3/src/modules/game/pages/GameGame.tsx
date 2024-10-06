@@ -31,33 +31,25 @@ export const GameGame = () => {
     navigate(`${PathNames.GAME.INVENTORY.path}`);
   };
 
-  // +N 애니메이션 상태
   const [animationAmount, setAnimationAmount] = useState(0);
   const [showAnimation, setShowAnimation] = useState(false);
 
-  // 버튼의 수령 가능한 토큰 상태
   const [displayedReceivableToken, setDisplayedReceivableToken] = useState(0);
   const [buttonHighlight, setButtonHighlight] = useState(false);
   const previousReceivableToken = useRef(displayedReceivableToken);
 
-  // 스피너 상태
   const [isReceiving, setIsReceiving] = useState(false);
 
-  // 장착된 장비 조회 쿼리 훅 사용
   const { data: equippedEquipment, error: equippedError } =
     useEquippedEquipmentQuery();
 
-  // 껄 수령 가능 토큰 조회
   const { data: receivableTokenData, refetch: refetchReceivableToken } =
     useReceivableTokenAmountQuery();
 
-  // 껄 수령 뮤테이션 훅 사용
   const receiveTokenMutation = useReceiveTokenMutation();
 
-  // 토큰 밸런스 조회 훅
   const { refetch: refetchTokenBalance } = useTokenBalanceQuery();
 
-  // 5초마다 수령 가능한 껄 조회
   useEffect(() => {
     const interval = setInterval(() => {
       refetchReceivableToken();
@@ -66,7 +58,6 @@ export const GameGame = () => {
     return () => clearInterval(interval);
   }, [refetchReceivableToken]);
 
-  // 껄 수령 버튼 클릭 핸들러
   const handleReceiveToken = () => {
     setIsReceiving(true);
     receiveTokenMutation.mutate(undefined, {
@@ -78,23 +69,13 @@ export const GameGame = () => {
       },
       onError: (error) => {
         setIsReceiving(false);
-        console.error(error);
         toast.error('껄 수령에 실패하였습니다.');
       },
     });
   };
 
-  // 수령 가능 토큰 변화 시 애니메이션 처리
   useEffect(() => {
     const receivableToken = receivableTokenData?.receivableToken ?? 0;
-
-    // 상태 변경 확인을 위한 디버깅용 로그
-    console.log(
-      'Current:',
-      previousReceivableToken.current,
-      'New:',
-      receivableToken,
-    );
 
     if (previousReceivableToken.current !== receivableToken) {
       setButtonHighlight(true);
@@ -118,26 +99,21 @@ export const GameGame = () => {
         });
       }, 20);
 
-      // 일정 시간 후 강조 효과를 종료
       setTimeout(() => setButtonHighlight(false), 500);
 
-      // 수령 가능한 토큰이 증가하는 경우에만 +N 애니메이션을 트리거
       if (receivableToken > previousReceivableToken.current) {
         const amountGained = receivableToken - previousReceivableToken.current;
 
         setAnimationAmount(amountGained);
         setShowAnimation(true);
 
-        // 일정 시간 후 애니메이션 숨김 처리
         setTimeout(() => setShowAnimation(false), 1000);
       }
 
-      // 이전 수령 가능한 토큰 업데이트
       previousReceivableToken.current = receivableToken;
     }
   }, [receivableTokenData]);
 
-  // 장착된 장비가 없는 경우 처리
   if (equippedError || !equippedEquipment) {
     return (
       <PageContainer

@@ -23,7 +23,6 @@ export const useGameInventory = () => {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
 
-  // `activeGradeIndex`에 따른 `minPower`와 `maxPower` 설정
   const powerRanges = {
     0: { minPower: 800, maxPower: 999 },
     1: { minPower: 600, maxPower: 799 },
@@ -34,30 +33,26 @@ export const useGameInventory = () => {
 
   const { minPower, maxPower } = powerRanges[activeGradeIndex];
 
-  // 보유한 장비 리스트 조회 쿼리
   const { data: equipmentList = [], isLoading: isNftsLoading } =
     useEquipmentListQuery(minPower, maxPower);
 
-  // 장착된 장비 조회 쿼리
   const { data: equippedNft, isLoading: isEquippedLoading } =
     useEquippedEquipmentQuery();
 
-  // 장비 장착을 위한 뮤테이션 훅
   const { mutate: equipEquipment } = useEquipEquipmentMutation();
 
-  // 장비 해제를 위한 뮤테이션 훅
   const { mutate: unequipEquipment } = useUnequipEquipmentMutation();
 
-  // 상세 정보를 열기 위한 함수
   const openSheet = useCallback((equipmentNft: EquipmentNFTDTO) => {
     setSelectedEquipmentNft(equipmentNft);
     setOpen(true);
   }, []);
 
-  // 장비 장착 핸들러
   const handleEquip = () => {
     if (!selectedEquipmentNft) return;
-    setIsLoadingEquip(true); // 스피너 시작
+    setIsLoadingEquip(true);
+
+    const isChangingEquipment = equippedNft !== null;
 
     equipEquipment(
       { ipfsCID: selectedEquipmentNft.ipfsCID },
@@ -66,25 +61,26 @@ export const useGameInventory = () => {
           queryClient.invalidateQueries({ queryKey: ['equippedEquipment'] });
           queryClient.invalidateQueries({ queryKey: ['equipmentList'] });
           setOpen(false);
-          setIsLoadingEquip(false); // 스피너 중지
+          setIsLoadingEquip(false);
 
-          toast.success('모인 껄을 수령했어요!');
+          if (isChangingEquipment) {
+            toast.success('모인 껄을 수령했어요!');
+          }
           toast.success('새로운 게임이 시작되었어요!');
 
           scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
         },
         onError: (error) => {
           console.error('장비 장착 오류:', error);
-          setIsLoadingEquip(false); // 스피너 중지
+          setIsLoadingEquip(false);
         },
       },
     );
   };
 
-  // 장비 해제 핸들러
   const handleUnequip = () => {
     if (!equippedNft) return;
-    setIsLoadingUnequip(true); // 스피너 시작
+    setIsLoadingUnequip(true);
 
     unequipEquipment(
       { ipfsCID: equippedNft.ipfsCID },
@@ -93,13 +89,13 @@ export const useGameInventory = () => {
           queryClient.setQueryData(['equippedEquipment'], null);
           queryClient.invalidateQueries({ queryKey: ['equipmentList'] });
           setOpen(false);
-          setIsLoadingUnequip(false); // 스피너 중지
+          setIsLoadingUnequip(false);
 
           toast.success('모인 껄을 수령했어요!');
         },
         onError: (error) => {
           console.error('장비 해제 오류:', error);
-          setIsLoadingUnequip(false); // 스피너 중지
+          setIsLoadingUnequip(false);
         },
       },
     );

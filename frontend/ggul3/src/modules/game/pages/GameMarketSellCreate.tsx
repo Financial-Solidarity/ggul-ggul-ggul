@@ -45,9 +45,7 @@ export const GameMarketSellCreate = () => {
       onSuccess: () => {
         setIsSuccess(true);
       },
-      onError: (error) => {
-        // setErrorMessage(error || '알 수 없는 오류 발생');
-      },
+      onError: (error) => {},
     });
   };
 

@@ -29,7 +29,7 @@ export const GameInventory = (): JSX.Element => {
     handleEquip,
     handleUnequip,
     isLoadingEquip,
-    isLoadingUnequip, // 추가된 상태
+    isLoadingUnequip,
   } = useGameInventory();
 
   useEffect(() => {

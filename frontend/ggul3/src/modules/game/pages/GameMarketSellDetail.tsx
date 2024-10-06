@@ -1,5 +1,16 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Button, Image, Tooltip, Spinner } from '@nextui-org/react';
+import {
+  Button,
+  Image,
+  Tooltip,
+  Spinner,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from '@nextui-org/react';
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 
@@ -16,6 +27,7 @@ import {
   useMarketItemDetailQuery,
   useBuyEquipmentMutation,
   useTokenBalanceQuery,
+  useCancelMarketSaleMutation,
 } from '@/modules/game/queries';
 
 export const GameMarketSellDetail = (): JSX.Element => {
@@ -25,7 +37,10 @@ export const GameMarketSellDetail = (): JSX.Element => {
 
   const navigate = useNavigate();
   const [isLoadingBuy, setIsLoadingBuy] = useState(false);
+  const [isLoadingCancel, setIsLoadingCancel] = useState(false);
   const [isBuySuccessful, setIsBuySuccessful] = useState<boolean | null>(null);
+
+  const { isOpen: isCancelModalOpen, onOpen, onClose } = useDisclosure();
 
   const handleGoBack = () => {
     navigate('/game/market', { replace: true });
@@ -43,6 +58,16 @@ export const GameMarketSellDetail = (): JSX.Element => {
   const userTokenBalance = tokenData?.balance ?? 0;
 
   const { mutate: buyEquipment } = useBuyEquipmentMutation();
+  const { mutate: cancelMarketSale } = useCancelMarketSaleMutation();
+
+  const sessionData = localStorage.getItem('session');
+  const loggedInUserName = sessionData
+    ? JSON.parse(sessionData).state.user.username
+    : '';
+
+  // 내 판매글인지 판별
+  const isMyPost = marketDetail?.seller.username === loggedInUserName;
+  const isCompleted = marketDetail?.status === 'COMPLETED';
 
   const handleBuy = () => {
     if (!canAfford) {
@@ -69,6 +94,25 @@ export const GameMarketSellDetail = (): JSX.Element => {
     });
   };
 
+  const handleCancelSale = () => {
+    setIsLoadingCancel(true);
+
+    cancelMarketSale(marketId as string, {
+      onSuccess: () => {
+        toast.success('판매글을 삭제했어요.');
+        handleGoBack(); // 판매 취소 성공 시 뒤로가기
+      },
+      onError: (error) => {
+        console.error('판매 취소 오류:', error);
+        toast.error('판매 취소에 실패하였습니다.');
+      },
+      onSettled: () => {
+        setIsLoadingCancel(false);
+        onClose(); // 모달 닫기
+      },
+    });
+  };
+
   if (isLoading)
     return <div className="text-center text-white">로딩 중...</div>;
   if (isError || !marketDetail)
@@ -80,10 +124,9 @@ export const GameMarketSellDetail = (): JSX.Element => {
 
   const canAfford = userTokenBalance >= marketDetail.price;
 
-  // Handle the result screen based on the purchase outcome
   if (isBuySuccessful !== null) {
     return (
-      <div className="flex h-full flex-col items-center justify-center">
+      <div className="flex h-full flex-col items-center justify-center bg-black">
         {isBuySuccessful ? <SuccessLottie /> : <FailLottie />}
         <p
           className={`mt-4 text-2xl font-semibold ${isBuySuccessful ? 'text-white' : 'text-red-500'}`}
@@ -157,23 +200,101 @@ export const GameMarketSellDetail = (): JSX.Element => {
           </div>
         </div>
 
-        {/* 구매 버튼 */}
-        <Tooltip
-          color="default"
-          content="가진 껄이 부족해요"
-          isOpen={!canAfford}
-          showArrow={true}
-        >
-          <Button
-            className={`mt-4 h-12 w-full text-white ${
-              canAfford ? 'bg-primary-600' : 'bg-default-700'
-            }`}
-            disabled={!canAfford || isLoadingBuy}
-            onClick={handleBuy}
+        {/* 구매자 정보 및 판매 완료 시각 표시 */}
+        {isCompleted && (
+          <div className="mt-4 flex w-full flex-col gap-2 rounded-lg bg-default-900 px-2 py-4 text-white">
+            <div className="text-sm">
+              <span className="font-semibold text-primary-300">구매자:</span>{' '}
+              {marketDetail.buyer?.nickname}
+            </div>
+            <div className="text-sm">
+              <span className="font-semibold text-primary-300">
+                판매 완료 시간:
+              </span>{' '}
+              {marketDetail.completedAt
+                ? formatToRelativeTime(marketDetail.completedAt)
+                : 'N/A'}
+            </div>
+          </div>
+        )}
+
+        {/* 내 판매글일 경우 판매 취소 버튼, 아니면 구매 버튼 */}
+        {isMyPost ? (
+          isCompleted ? (
+            <Button
+              disabled
+              className="mt-4 h-12 w-full bg-default-700 text-white"
+            >
+              판매 완료
+            </Button>
+          ) : (
+            <>
+              {/* 판매 취소 버튼 */}
+              <Button
+                className="mt-4 h-12 w-full bg-red-600 text-white"
+                onClick={onOpen}
+              >
+                {isLoadingCancel ? <Spinner color="white" /> : '판매 취소하기'}
+              </Button>
+
+              {/* 판매 취소 모달 */}
+              <Modal
+                backdrop="blur"
+                isOpen={isCancelModalOpen}
+                placement="center"
+                onClose={onClose}
+              >
+                <ModalContent>
+                  {() => (
+                    <>
+                      <ModalHeader>판매 취소</ModalHeader>
+                      <ModalBody>
+                        <p>정말 판매를 취소할까요?</p>
+                        <p>
+                          판매 취소 시 해당 NFT는 다시 보유 목록에 추가됩니다.
+                        </p>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          color="danger"
+                          disabled={isLoadingCancel}
+                          onClick={handleCancelSale}
+                        >
+                          {isLoadingCancel ? (
+                            <Spinner color="white" />
+                          ) : (
+                            '네, 취소합니다'
+                          )}
+                        </Button>
+                        <Button onClick={onClose}>
+                          아니요, 계속 판매합니다
+                        </Button>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
+            </>
+          )
+        ) : (
+          // 구매 버튼 (내 판매글이 아닐 때만 표시)
+          <Tooltip
+            color="default"
+            content="가진 껄이 부족해요"
+            isOpen={!canAfford}
+            showArrow={true}
           >
-            {isLoadingBuy ? <Spinner color="white" /> : 'NFT 음식 구매하기'}
-          </Button>
-        </Tooltip>
+            <Button
+              className={`mt-4 h-12 w-full text-white ${
+                canAfford ? 'bg-primary-600' : 'bg-default-700'
+              }`}
+              disabled={!canAfford || isLoadingBuy}
+              onClick={handleBuy}
+            >
+              {isLoadingBuy ? <Spinner color="white" /> : 'NFT 음식 구매하기'}
+            </Button>
+          </Tooltip>
+        )}
       </div>
     </PageContainer>
   );

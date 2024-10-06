@@ -2,12 +2,6 @@ import { messaging } from '../../../config/firebaseConfig.js';
 
 import { postFcmToken } from '@/modules/user/apis/login.js';
 
-// export const useFcmRegistration = () => {
-//   //   useEffect(() => {
-//   // requestPermission();
-//   //   }, []);
-// };
-
 export const requestPermission = async () => {
   const permission = await Notification.requestPermission();
 

@@ -5,6 +5,8 @@ import { Button, Tabs, Tab, Slider } from '@nextui-org/react';
 import { useEquipmentNamesQuery } from '../../queries';
 import { MarketStatus } from '../../@types';
 
+export type FilterableMarketStatus = Exclude<MarketStatus, 'CANCELED'>;
+
 interface SearchFilterSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -15,14 +17,16 @@ interface SearchFilterSheetProps {
     minPrice?: number;
     maxPrice?: number;
     own?: 'true' | 'false';
-    status: MarketStatus;
+    status?: FilterableMarketStatus;
   }) => void;
+  isMyPost: boolean;
 }
 
 export const SearchFilterSheet = ({
   isOpen,
   onClose,
   onSearch,
+  isMyPost,
 }: SearchFilterSheetProps) => {
   const { data: equipmentNames = [] } = useEquipmentNamesQuery();
   const [selectedName, setSelectedName] = useState<string | undefined>();
@@ -30,10 +34,11 @@ export const SearchFilterSheet = ({
   const [grade, setGrade] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000);
+  const [marketStatus, setMarketStatus] =
+    useState<FilterableMarketStatus>('PENDING');
 
-  // grade에 따른 power 범위 설정
   const gradePowerRanges = [
-    { min: 0, max: 999 }, // 전체
+    { min: 0, max: 999 },
     { min: 801, max: 999 },
     { min: 601, max: 800 },
     { min: 401, max: 600 },
@@ -52,8 +57,8 @@ export const SearchFilterSheet = ({
       maxPower,
       minPrice,
       maxPrice,
-      own: 'false',
-      status: 'PENDING',
+      own: isMyPost ? 'true' : 'false',
+      status: isMyPost ? marketStatus : 'PENDING',
     });
     onClose();
   };
@@ -70,6 +75,7 @@ export const SearchFilterSheet = ({
         <Sheet.Header />
         <Sheet.Content className="mb-8 mt-12">
           <div className="flex flex-col justify-between space-y-4 px-4 pb-12">
+            {/* 음식 선택 */}
             <div className="relative">
               <p className="mb-2 text-sm font-semibold text-primary-300">
                 음식 선택
@@ -128,6 +134,27 @@ export const SearchFilterSheet = ({
                 <Tab key="5" title="매우 흔함" />
               </Tabs>
             </div>
+
+            {/* 내 판매글 탭일 경우에만 상태 필터링 탭 렌더링 */}
+            {isMyPost && (
+              <div className="mt-4">
+                <p className="mb-2 text-sm font-semibold text-primary-300">
+                  판매 상태
+                </p>
+                <Tabs
+                  fullWidth
+                  aria-label="Market Status Filter"
+                  className="flex w-full overflow-x-auto whitespace-nowrap"
+                  selectedKey={marketStatus}
+                  onSelectionChange={(key) =>
+                    setMarketStatus(key as FilterableMarketStatus)
+                  }
+                >
+                  <Tab key="PENDING" title="판매중" />
+                  <Tab key="COMPLETED" title="판매 완료" />
+                </Tabs>
+              </div>
+            )}
 
             {/* 가격 범위 설정 */}
             <div>
