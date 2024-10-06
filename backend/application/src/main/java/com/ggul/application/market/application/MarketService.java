@@ -96,7 +96,6 @@ public class MarketService {
                 .market(market)
                 .build());
 
-        walletService.registerWalletHistory(dto.getUserId(), dto.getPrice(), Category.MARKET);
         return market.getId();
     }
 
@@ -126,6 +125,9 @@ public class MarketService {
         market.changeStatus(com.ggul.application.market.domain.Status.COMPLETED);
         market.initBuyer(userRepository.getReferenceById(userId));
         market.initCompletedAt();
+
+        walletService.registerWalletHistory(market.getSeller().getId(), true, market.getPrice(), Category.MARKET);
+        walletService.registerWalletHistory(market.getBuyer().getId(), false, market.getPrice(), Category.MARKET);
     }
 
     /**

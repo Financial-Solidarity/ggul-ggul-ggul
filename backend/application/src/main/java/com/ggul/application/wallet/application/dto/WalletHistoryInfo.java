@@ -15,12 +15,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class WalletHistoryInfo {
     private Long quantity;
+    private Boolean isPositive;
     private Category category;
     private LocalDateTime createdAt;
 
     public static WalletHistoryInfo from(WalletHistory history){
         return WalletHistoryInfo.builder()
                 .quantity(history.getQuantity())
+                .isPositive(history.getIsPositive())
                 .category(history.getCategory())
                 .createdAt(history.getCreatedAt())
                 .build();

@@ -50,17 +50,19 @@ public class WalletService {
 
     /**
      * 토큰 사용 내역 기록
-     * @param userId Token 사용한 User Id
+     * @param userId Token 증감을 기록할 User Id
+     * @param isPositive 증감 여부
      * @param quantity Token 사용량
      * @param category 사용 범주
      * @return WalletHistory 영속 Entity
      */
     @Transactional
-    public WalletHistory registerWalletHistory(UUID userId, Long quantity, Category category) {
+    public WalletHistory registerWalletHistory(UUID userId, Boolean isPositive, Long quantity, Category category) {
         return walletHistoryRepository.save(WalletHistory.builder()
                 .user(userRepository.getReferenceById(userId))
                 .quantity(quantity)
                 .category(category)
+                .isPositive(isPositive)
                 .build());
     }
 

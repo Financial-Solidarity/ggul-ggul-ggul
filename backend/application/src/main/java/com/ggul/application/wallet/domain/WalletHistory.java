@@ -35,6 +35,9 @@ public class WalletHistory {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "is_positive")
+    private Boolean isPositive;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
