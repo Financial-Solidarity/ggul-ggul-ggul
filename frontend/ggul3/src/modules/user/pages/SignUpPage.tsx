@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
-
 import { SignUpForm, SignUpSuccess, SignUpVerifyEmail } from '../components';
 import { useSignUpStore } from '../store/signUpStore';
 
-import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
+import { useHideAndRestoreBottomBar } from '@/modules/common/hooks/useHideAndRestoreBottomBar';
 
 export const SignUpPage = () => {
   const {
@@ -25,16 +23,7 @@ export const SignUpPage = () => {
     validatePasswordCheck,
   } = useSignUpStore();
 
-  const { setActive } = useBottomBarStore();
-
-  // BottomBar 숨기기
-  useEffect(() => {
-    setActive(false);
-
-    return () => {
-      setActive(true);
-    };
-  }, []);
+  useHideAndRestoreBottomBar();
 
   if (step === 'sign up') {
     return (

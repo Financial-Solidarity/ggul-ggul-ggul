@@ -4,12 +4,10 @@ import {
   UserBoldSpan,
   UserButton,
   UserFormStyleBox,
-  UserLink,
   UserLogo,
 } from '../../components';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
-import { PathNames } from '@/router';
 
 export const SignUpSuccess = () => {
   return (
@@ -26,9 +24,6 @@ export const SignUpSuccess = () => {
           </UserBoldParagraph>
         </UserBoldParagraphBox>
         <UserButton>계좌 연동하기</UserButton>
-        <UserLink to={PathNames.ACCOUNT_BOOK.MAIN.path} type="gray">
-          다음에 할게요
-        </UserLink>
       </UserFormStyleBox>
     </PageContainer>
   );

@@ -12,9 +12,11 @@ import {
   UserFormStyleBox,
   UserInputBox,
 } from '../../components';
+import { login } from '../../apis/login';
 
 import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import { createBankApi } from '@/modules/common/apis/bankApis';
 
 interface SignUpVerifyEmailProps {
   email: string;
@@ -41,8 +43,12 @@ export const SignUpVerifyEmail = ({
         return;
       }
 
-      // form 전달하고 회원가입 성공 시 success 페이지로 이동
       await signUp({ email, nickname, password });
+      await login({ email, password }); // 로그인 해야만 계좌 API 생성 가능함.
+      await createBankApi(); // 계정과 일치하는 은행 API 생성
+
+      // 그렇다면 createBankApi() 함수 실행 실패 시,
+      // 회원가입을 탈퇴해야 하는가?? 더 나은 방법 없을까요??
 
       setStep('success');
     } catch (error) {
