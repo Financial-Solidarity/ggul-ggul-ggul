@@ -64,7 +64,7 @@ export const NftDetailSheet = ({
                 className="h-12 bg-default-600 text-white"
                 onClick={() => navigate(PathNames.GAME.MARKET.path)}
               >
-                판매중인 장비 보러가기
+                판매중인 NFT 보러가기
               </Button>
             ) : isEquipped ? (
               <Button
