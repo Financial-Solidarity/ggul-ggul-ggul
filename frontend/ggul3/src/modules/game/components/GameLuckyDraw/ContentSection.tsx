@@ -33,27 +33,7 @@ export const ContentSection = ({
     <div className="CONTENT-SECTION flex h-3/5 w-full flex-col items-center justify-center">
       <div className="EQUIPMENT-BOX relative mt-24 flex h-full w-full flex-col items-center">
         {step === 'init' && <Image src={ServingLid} width={180} />}
-        {step === 'minted' && nft && (
-          <>
-            <MintedEquipmentCard
-              equipment={nft.equipment}
-              onCardClick={() => {}}
-            />
-            <div className="absolute right-10 top-3">
-              <Button
-                fullWidth
-                as="a"
-                className="mt-4 animate-popIn bg-secondary-600 font-semibold text-black"
-                href={nft.nftUrl}
-                rel="noopener noreferrer"
-                target="_blank"
-                variant="flat"
-              >
-                NFT 확인
-              </Button>
-            </div>
-          </>
-        )}
+        {step === 'minted' && nft && <MintedEquipmentCard equipment={nft} />}
         {step === 'drawing' && <CookingLottie />}
         {(step === 'drawed' || step === 'minting') && (
           <EquipmentInfoDisplay equipment={equipment} step={step} />

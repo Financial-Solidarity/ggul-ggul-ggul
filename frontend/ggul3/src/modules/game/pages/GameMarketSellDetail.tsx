@@ -29,6 +29,7 @@ import {
   useTokenBalanceQuery,
   useCancelMarketSaleMutation,
 } from '@/modules/game/queries';
+import { PathNames } from '@/router';
 
 export const GameMarketSellDetail = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });
@@ -41,6 +42,11 @@ export const GameMarketSellDetail = (): JSX.Element => {
   const [isBuySuccessful, setIsBuySuccessful] = useState<boolean | null>(null);
 
   const { isOpen: isCancelModalOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isTokenModalOpen,
+    onOpen: openTokenModal,
+    onClose: closeTokenModal,
+  } = useDisclosure();
 
   const handleGoBack = () => {
     navigate('/game/market', { replace: true });
@@ -71,7 +77,11 @@ export const GameMarketSellDetail = (): JSX.Element => {
 
   const handleBuy = () => {
     if (!canAfford) {
+      // Toast 알림
       toast.error('가진 껄이 부족하여 구매할 수 없어요.');
+
+      // 모달 열기
+      openTokenModal();
 
       return;
     }
@@ -158,14 +168,14 @@ export const GameMarketSellDetail = (): JSX.Element => {
       <div className="relative flex h-1/2 flex-col justify-between rounded-t-3xl bg-black px-4 py-6">
         {/* 판매자 정보 */}
         <div className="absolute -top-10 left-1/2 flex -translate-x-1/2 flex-col items-center justify-center gap-2 text-center text-default-400">
-          <div className="USER-AVATAR flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-300">
+          <div className="USER-AVATAR flex h-20 w-20 items-center justify-center overflow-hidden rounded-full">
             <Image
               alt="seller avatar"
               className="rounded-full object-cover"
               fallbackSrc="/placeholder-avatar.png"
-              height={64}
+              height={75}
               src={marketDetail.seller.profileImg}
-              width={64}
+              width={75}
             />
           </div>
           <p className="text-lg font-semibold">
@@ -288,7 +298,7 @@ export const GameMarketSellDetail = (): JSX.Element => {
               className={`mt-4 h-12 w-full text-white ${
                 canAfford ? 'bg-primary-600' : 'bg-default-700'
               }`}
-              disabled={!canAfford || isLoadingBuy}
+              disabled={isLoadingBuy}
               onClick={handleBuy}
             >
               {isLoadingBuy ? <Spinner color="white" /> : 'NFT 음식 구매하기'}
@@ -296,6 +306,68 @@ export const GameMarketSellDetail = (): JSX.Element => {
           </Tooltip>
         )}
       </div>
+
+      {/* 토큰 부족 안내 모달 */}
+      <Modal
+        backdrop="blur"
+        isOpen={isTokenModalOpen}
+        placement="center"
+        onClose={closeTokenModal}
+      >
+        <ModalContent>
+          {() => (
+            <>
+              <ModalHeader>껄은 어떻게 얻을 수 있을까요?</ModalHeader>
+              <ModalBody>
+                <div className="flex flex-col gap-4">
+                  <p>
+                    <span className="font-semibold text-success">
+                      소비 줄이기 챌린지
+                    </span>{' '}
+                    플레이를 통해 껄을 얻을 수 있습니다.
+                  </p>
+                  <p>
+                    <span className="font-semibold text-primary">
+                      방치형 껄 키우기 게임
+                    </span>
+                    을 통해 껄을 얻을 수 있어요! NFT 음식을 뽑거나 구매 후,
+                    장착하면 게임이 시작돼요.
+                  </p>
+                </div>
+              </ModalBody>
+              <ModalFooter className="flex flex-col gap-2">
+                <div className="flex w-full justify-between gap-3">
+                  <Button
+                    fullWidth
+                    color="success"
+                    onClick={() => {
+                      navigate(PathNames.CHALLENGE.MAIN.path);
+                    }}
+                  >
+                    챌린지 하러가기
+                  </Button>
+                  <Button
+                    fullWidth
+                    color="primary"
+                    onClick={() => {
+                      navigate(PathNames.GAME.MAIN.path);
+                    }}
+                  >
+                    껄 키우기 하러가기
+                  </Button>
+                </div>
+                <Button
+                  fullWidth
+                  className="bg-default-700 text-white"
+                  onClick={closeTokenModal}
+                >
+                  알겠습니다
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </PageContainer>
   );
 };

@@ -1,10 +1,10 @@
 import { Input, Slider, Button } from '@nextui-org/react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 import { EquipmentNftInfoRow } from '../components/common/EquipmentNftInfoRow';
 import { SuccessLottie } from '../components/common/Lotties/SuccessLottie';
-import { FailLottie } from '../components/common/Lotties/FailLottie';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -27,13 +27,56 @@ export const GameMarketSellCreate = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState({
+    price: '',
+    title: '',
+    description: '',
+    nft: '',
+  });
 
   const { mutate: registerSellNFT, status } = useRegisterSellNFTMutation();
 
   const isLoading = status === 'pending';
 
+  // 유효성 검사 함수
+  const validateForm = () => {
+    let errors = {
+      price: '',
+      title: '',
+      description: '',
+      nft: '',
+    };
+    let isValid = true;
+
+    if (!equipmentNft?.ipfsCID) {
+      errors.nft = '유효한 NFT가 아닙니다.';
+      isValid = false;
+    }
+    if (!title.trim()) {
+      errors.title = '판매글 제목을 입력해주세요.';
+      isValid = false;
+    }
+    if (!description.trim()) {
+      errors.description = '판매글 설명을 입력해주세요.';
+      isValid = false;
+    }
+    if (price < 100 || price > 10000) {
+      errors.price = '가격은 100~10000 사이의 값이어야 합니다.';
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+
+    return isValid;
+  };
+
   const handleRegisterSell = () => {
+    if (!validateForm()) {
+      toast.error('입력 정보를 확인해주세요.');
+
+      return;
+    }
+
     const sellNftData: RegisterSellNFTRequest = {
       ipfsCID: equipmentNft.ipfsCID,
       title,
@@ -45,7 +88,9 @@ export const GameMarketSellCreate = () => {
       onSuccess: () => {
         setIsSuccess(true);
       },
-      onError: (error) => {},
+      onError: (error) => {
+        toast.error('판매 등록에 실패하였습니다.');
+      },
     });
   };
 
@@ -90,19 +135,6 @@ export const GameMarketSellCreate = () => {
               </Button>
             </div>
           </div>
-        ) : errorMessage ? (
-          <div className="flex flex-col items-center justify-center">
-            <FailLottie />
-            <p className="mt-4 text-2xl font-semibold text-red-500">
-              판매 실패: {errorMessage}
-            </p>
-            <Button
-              className="mt-8 bg-gray-600 text-white"
-              onClick={handleGoBack}
-            >
-              돌아가기
-            </Button>
-          </div>
         ) : (
           <div className="flex h-full flex-col justify-between pb-4">
             <div className="text-default-400">
@@ -112,6 +144,9 @@ export const GameMarketSellCreate = () => {
               {equipmentNft && (
                 <div className="my-8">
                   <EquipmentNftInfoRow equipmentNft={equipmentNft} />
+                  {formErrors.nft && (
+                    <p className="text-sm text-danger-400">{formErrors.nft}</p>
+                  )}
                 </div>
               )}
               <div className="">
@@ -120,8 +155,17 @@ export const GameMarketSellCreate = () => {
                   fullWidth
                   placeholder="무언가 입력해주세요."
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    if (formErrors.title)
+                      setFormErrors({ ...formErrors, title: '' });
+                  }}
                 />
+                {formErrors.title && (
+                  <p className="ml-1 mt-1 text-sm text-danger-400">
+                    {formErrors.title}
+                  </p>
+                )}
               </div>
               <div className="">
                 <p className="mb-2 text-purple-400">판매글 설명</p>
@@ -129,8 +173,17 @@ export const GameMarketSellCreate = () => {
                   fullWidth
                   placeholder="무언가를 입력해주세요."
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                    if (formErrors.description)
+                      setFormErrors({ ...formErrors, description: '' });
+                  }}
                 />
+                {formErrors.description && (
+                  <p className="ml-1 mt-1 text-sm text-danger-400">
+                    {formErrors.description}
+                  </p>
+                )}
               </div>
               <div className="mb-6">
                 <p className="mb-2 text-purple-400">판매 가격 설정</p>
@@ -140,13 +193,22 @@ export const GameMarketSellCreate = () => {
                   minValue={100}
                   step={100}
                   value={price}
-                  onChange={(value) => setPrice(value as number)}
+                  onChange={(value) => {
+                    setPrice(value as number);
+                    if (formErrors.price)
+                      setFormErrors({ ...formErrors, price: '' });
+                  }}
                 />
                 <div className="mt-2 text-center text-white">{price} 껄</div>
+                {formErrors.price && (
+                  <p className="ml-1 text-sm text-danger-400">
+                    {formErrors.price}
+                  </p>
+                )}
               </div>
             </div>
             <Button
-              className="mt-4 w-full rounded-lg bg-purple-600 py-3 text-white"
+              className="mt-4 h-12 w-full rounded-xl bg-primary-600 py-3 font-bold text-white"
               disabled={isLoading}
               onClick={handleRegisterSell}
             >

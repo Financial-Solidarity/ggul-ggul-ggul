@@ -73,6 +73,7 @@ export const useGameInventory = () => {
         onError: (error) => {
           console.error('장비 장착 오류:', error);
           setIsLoadingEquip(false);
+          toast.error('NFT를 장착하는데 실패했어요.');
         },
       },
     );
@@ -95,6 +96,7 @@ export const useGameInventory = () => {
         },
         onError: (error) => {
           console.error('장비 해제 오류:', error);
+          toast.error('NFT를 해제하는데 실패했어요.');
           setIsLoadingUnequip(false);
         },
       },

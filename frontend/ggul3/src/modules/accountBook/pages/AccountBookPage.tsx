@@ -8,8 +8,11 @@ import burnMoney from '@/assets/images/burn-money.png';
 import financeChart from '@/assets/images/finance-chart.png';
 import { PathNames } from '@/router';
 import { NavTitle } from '@/modules/common/components';
+import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const AccountBookPage = () => {
+  useSetBottomBar({ active: true, isDarkMode: false });
+
   return (
     <>
       <TopBar
