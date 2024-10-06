@@ -1,5 +1,5 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
@@ -23,6 +23,7 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSocket } from '@/modules/common/hooks/useSocket';
+import { PathNames } from '@/router';
 
 export const WaitingRoomPage = () => {
   useSetBottomBar({ active: false });
@@ -35,6 +36,8 @@ export const WaitingRoomPage = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
+
+  const navigate = useNavigate();
 
   // 스크롤이 수동으로 이동될 때 자동 스크롤 비활성화
   const handleScroll = () => {
@@ -51,6 +54,7 @@ export const WaitingRoomPage = () => {
 
   const {
     data: { competitionType },
+    error: challengeDetailError,
   } = useGetChallengeDetail(challengeId!);
   const {
     data: { lobbyChattingRoomId },
@@ -89,6 +93,14 @@ export const WaitingRoomPage = () => {
       bottomRef.current?.scrollIntoView();
     }
   }, [socketChattingList]);
+
+  useEffect(() => {
+    if (!challengeDetailError) return;
+    if (challengeDetailError.status === 'C001') {
+      alert('존재하지 않는 챌린지입니다.');
+      navigate(PathNames.CHALLENGE.MAIN.path);
+    }
+  }, [challengeDetailError]);
 
   return (
     <>
