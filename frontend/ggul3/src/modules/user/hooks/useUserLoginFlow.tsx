@@ -5,7 +5,12 @@ import { getUserData } from '@/modules/common/apis/userApis';
 import { requestPermission } from '@/modules/common/hooks/useFcmRegistration';
 import { PathNames } from '@/router';
 import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
-import { getMainBankAccount } from '@/modules/common/apis/bankApis';
+import {
+  createAllBankAccounts,
+  createBankApi,
+  getAllBankAccounts,
+  getMainBankAccount,
+} from '@/modules/common/apis/bankApis';
 
 /**
  * 로그인 후 실행되는 흐름을 정의한 커스텀 훅
@@ -22,12 +27,22 @@ export const useUserLoginFlow = () => {
     const userData = await getUserData();
     const mainBankAccount = await getMainBankAccount();
 
+    console.log('mainBankAccount', mainBankAccount);
     // 유저 데이터 상태에 저장
     setUser(userData);
     setIsLoggedIn(true);
 
-    if (mainBankAccount === '') {
+    if (mainBankAccount === null) {
       setBankAccount(null);
+
+      // 은행 API 생성
+      await createBankApi();
+      const bankAccounts = await getAllBankAccounts();
+
+      // 조회되는 계좌가 없는 경우 계좌 생성
+      if (!bankAccounts) {
+        await createAllBankAccounts();
+      }
     } else {
       setBankAccount(mainBankAccount);
     }

@@ -1,4 +1,4 @@
-import { BankAccountDTO } from '@types';
+import { AccountItemDTO } from '@types';
 
 import { _axios } from '@/modules/common/utils/axios';
 
@@ -14,12 +14,23 @@ export const createBankApi = () => {
 };
 
 /**
- * (회원가입 시) 모든 계좌를 조회합니다.
+ * 모든 계좌를 생성합니다.
+ * @returns {Promise<void>}
+ */
+export const createAllBankAccounts = () => {
+  return _axios<AccountItemDTO[]>({
+    method: 'POST',
+    url: `account/demand-deposits/accounts`,
+  });
+};
+
+/**
+ * 모든 계좌를 조회합니다.
  * @returns {Promise<void>}
  */
 export const getAllBankAccounts = () => {
-  return _axios({
-    method: 'POST',
+  return _axios<AccountItemDTO[]>({
+    method: 'GET',
     url: `account/demand-deposits/accounts`,
   });
 };
@@ -29,8 +40,20 @@ export const getAllBankAccounts = () => {
  * @returns {Promise<void>}
  */
 export const getMainBankAccount = () => {
-  return _axios<BankAccountDTO | null | ''>({
+  return _axios<AccountItemDTO | null>({
     method: 'GET',
+    url: `account/demand-deposits/primary`,
+  });
+};
+
+/**
+ * 주 계좌를 변경합니다.
+ * @returns {Promise<void>}
+ */
+export const setMainBankAccount = (accountNo: string) => {
+  return _axios({
+    method: 'POST',
     url: `/account/demand-deposits/primary`,
+    data: { accountNo },
   });
 };

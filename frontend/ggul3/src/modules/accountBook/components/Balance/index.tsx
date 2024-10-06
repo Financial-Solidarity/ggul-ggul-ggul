@@ -6,13 +6,14 @@ import { Link } from 'react-router-dom';
 import { SmallText, ToggleBalanceVisibilityButton } from '../../components';
 
 import { PathNames } from '@/router';
+import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
 
 export const Balance = () => {
+  const { bankAccount } = useBankAccountStore();
+
   const [isMoneyVisible, setIsMoneyVisible] = useState<boolean>(false);
 
-  const hasAccount = false;
-
-  if (!hasAccount) {
+  if (!bankAccount) {
     return (
       <Link to={PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path}>
         <Card className="flex cursor-pointer bg-primary-200 text-center text-white hover:bg-primary-400">
@@ -36,7 +37,7 @@ export const Balance = () => {
     );
   }
 
-  if (hasAccount) {
+  if (bankAccount) {
     return (
       <Card className="flex bg-primary text-center text-white">
         <CardHeader className="flex justify-between">
@@ -54,14 +55,16 @@ export const Balance = () => {
         <CardBody className="text-center">
           <div className="text-2xl">
             {isMoneyVisible ? (
-              '12,345,678,910,111 원'
+              bankAccount.accountBalance.toLocaleString() + ' 원'
             ) : (
               <p className="text-gray-300">금액 숨김</p>
             )}
           </div>
         </CardBody>
         <CardFooter className="justify-center">
-          <SmallText>연동 계좌번호 {'123-******-***789'}</SmallText>
+          <SmallText>
+            {bankAccount.bankName} : {bankAccount.accountNo}
+          </SmallText>
           <BsCopy className="ml-2 w-3" />
         </CardFooter>
       </Card>

@@ -14,15 +14,18 @@ import { useUserStore } from '@/modules/common/store/userStore';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { PathNames } from '@/router';
 import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
+import { getMainBankAccount } from '@/modules/common/apis/bankApis';
+import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
 
 export const NoticeRequireBankAccount = () => {
   const navigate = useNavigate();
 
   const { logout } = useUserStore();
   const { setActive } = useBottomBarStore();
+  const { setBankAccount } = useBankAccountStore();
 
   // 계좌 연동 페이지로 이동
-  const handleClickConnectBankAccount = () => {
+  const handleClickConnectBankAccount = async () => {
     navigate(PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path);
   };
 
@@ -33,7 +36,15 @@ export const NoticeRequireBankAccount = () => {
   };
 
   useEffect(() => {
-    setActive(false);
+    const fetchMainBankAccount = async () => {
+      const mainBankAccount = await getMainBankAccount();
+
+      if (mainBankAccount) {
+        setBankAccount(mainBankAccount);
+      }
+    };
+
+    fetchMainBankAccount();
   }, []);
 
   return (

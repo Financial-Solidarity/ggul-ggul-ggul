@@ -1,9 +1,9 @@
-import { BankAccountDTO } from '@types';
+import { AccountItemDTO } from '@types';
 import { create } from 'zustand';
 
 interface BankAccountState {
-  bankAccount: BankAccountDTO | null;
-  setBankAccount: (bankAccount: BankAccountDTO | null) => void;
+  bankAccount: AccountItemDTO | null;
+  setBankAccount: (bankAccount: AccountItemDTO | null) => void;
 }
 
 export const useBankAccountStore = create<BankAccountState>((set) => ({

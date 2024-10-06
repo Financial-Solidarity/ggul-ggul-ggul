@@ -403,7 +403,6 @@ export const router = createBrowserRouter([
   },
 ]);
 
-// 인가된 사용자만 접근 가능한 경로로 설정
 function PublicRoute({ element }: { element: ReactNode }) {
   const { isLoggedIn } = useUserStore();
   const { bankAccount } = useBankAccountStore();
@@ -412,14 +411,13 @@ function PublicRoute({ element }: { element: ReactNode }) {
     return <Navigate replace to={PathNames.MYPAGE.MAIN.path} />;
   }
 
-  if (bankAccount === null) {
+  if (isLoggedIn && bankAccount === null) {
     return <Navigate replace to={PathNames.NOTICE_REQUIRE_ACCOUNT.path} />;
   }
 
   return <>{element}</>;
 }
 
-// 인가된 사용자만 접근 가능한 경로로 설정
 function RequiredRoute({ element }: { element: ReactNode }) {
   const { isLoggedIn } = useUserStore();
   const { bankAccount } = useBankAccountStore();
