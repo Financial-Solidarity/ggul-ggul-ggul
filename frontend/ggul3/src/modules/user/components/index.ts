@@ -6,7 +6,6 @@ export * from './UserLink';
 export * from './UserLogo';
 export * from './SignUpForm';
 export * from './SignUpVerifyEmail';
-export * from './SignUpSuccess';
 export * from './LoginForm';
 export * from './FindPasswordWithEmail';
 export * from './FindPasswordVerification';

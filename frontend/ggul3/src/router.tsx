@@ -25,6 +25,7 @@ import {
   AccountBookPage,
   AccountBookStatisticsPage,
   ConnectAccountPage,
+  NoticeRequireBankAccount,
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
@@ -80,8 +81,9 @@ export interface PathNames {
     CHANGE_USER_INFO: Path;
   };
   LOGIN: Path;
-  SIGHUP: Path;
+  SIGNUP: Path;
   CHANGE_PASSWORD: Path;
+  NOTICE_REQUIRE_ACCOUNT: Path;
 }
 
 // PathNames 구조화
@@ -208,13 +210,17 @@ export const PathNames: PathNames = {
     path: '/login',
     name: '로그인',
   },
-  SIGHUP: {
+  SIGNUP: {
     path: '/signup',
     name: '로그인',
   },
   CHANGE_PASSWORD: {
     path: '/change-password',
     name: '로그인',
+  },
+  NOTICE_REQUIRE_ACCOUNT: {
+    path: '/account-book/require-account',
+    name: '계좌 연결 필요 안내',
   },
 };
 
@@ -300,12 +306,16 @@ const loginRoutes: RouteObject[] = [
     path: PathNames.LOGIN.path,
     element: <LoginPage />,
   },
+  {
+    path: PathNames.SIGNUP.path,
+    element: <SignUpPage />,
+  },
 ];
 
-const sighUpRoutes: RouteObject[] = [
+const noticeRoutes: RouteObject[] = [
   {
-    path: PathNames.SIGHUP.path,
-    element: <SignUpPage />,
+    path: PathNames.NOTICE_REQUIRE_ACCOUNT.path,
+    element: <NoticeRequireBankAccount />,
   },
 ];
 
@@ -359,9 +369,8 @@ const gameRoutes: RouteObject[] = [
 ];
 
 // 비인가 사용자가 접근 가능한 경로
-const publicRoutes: RouteObject[] = [...sighUpRoutes];
-// 인가된 사용자가 로그인 페이지로 접근할 경우
-const restrictForUserRoutes: RouteObject[] = [...loginRoutes];
+const publicRoutes: RouteObject[] = [...loginRoutes];
+const requireRoutes: RouteObject[] = [...noticeRoutes];
 // 인가 된 사용자만 접근 가능한 경로
 const privateRoutes: RouteObject[] = [
   ...challengeRoutes,
@@ -378,10 +387,13 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <></>,
     children: [
-      ...publicRoutes,
-      ...restrictForUserRoutes.map((route) => ({
+      ...publicRoutes.map((route) => ({
         ...route,
-        element: <RestrictForUserRoutes element={route.element} />,
+        element: <PublicRoute element={route.element} />,
+      })),
+      ...requireRoutes.map((route) => ({
+        ...route,
+        element: <RequiredRoute element={route.element} />,
       })),
       ...privateRoutes.map((route) => ({
         ...route,
@@ -392,28 +404,61 @@ export const router = createBrowserRouter([
 ]);
 
 // 인가된 사용자만 접근 가능한 경로로 설정
-function PrivateRoute({ element }: { element: ReactNode }) {
+function PublicRoute({ element }: { element: ReactNode }) {
+  const { isLoggedIn } = useUserStore();
+  const { bankAccount } = useBankAccountStore();
+
+  if (isLoggedIn) {
+    return <Navigate replace to={PathNames.MYPAGE.MAIN.path} />;
+  }
+
+  if (bankAccount === null) {
+    return <Navigate replace to={PathNames.NOTICE_REQUIRE_ACCOUNT.path} />;
+  }
+
+  return <>{element}</>;
+}
+
+// 인가된 사용자만 접근 가능한 경로로 설정
+function RequiredRoute({ element }: { element: ReactNode }) {
   const { isLoggedIn } = useUserStore();
   const { bankAccount } = useBankAccountStore();
 
   if (!isLoggedIn) {
     return <Navigate replace to={PathNames.LOGIN.path} />;
   }
-  // (서버 오류로 보류)
-  // else if (bankAccount === null) {
-  //   return <Navigate replace to={PathNames.SIGHUP.path} />;
-  // }
-  else {
-    return element;
+
+  if (bankAccount) {
+    return <Navigate replace to={PathNames.MYPAGE.MAIN.path} />;
   }
+
+  return <>{element}</>;
 }
 
-function RestrictForUserRoutes({ element }: { element: ReactNode }) {
+function PrivateRoute({ element }: { element: ReactNode }) {
   const { isLoggedIn } = useUserStore();
+  const { bankAccount } = useBankAccountStore();
 
-  if (isLoggedIn) {
-    return <Navigate replace to="/mypage" />;
-  } else {
-    return element;
+  // 허용할 경로 리스트
+  const allowedPaths = [
+    PathNames.NOTICE_REQUIRE_ACCOUNT.path,
+    PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path,
+  ];
+
+  const currentPath = window.location.pathname;
+
+  if (!isLoggedIn) {
+    return <Navigate replace to={PathNames.LOGIN.path} />;
   }
+
+  // 계좌 연동이 안된 사용자는 특정 경로에 접근할 수 없음
+  if (
+    isLoggedIn &&
+    bankAccount === null &&
+    !allowedPaths.includes(currentPath)
+  ) {
+    return <Navigate replace to={PathNames.NOTICE_REQUIRE_ACCOUNT.path} />;
+  }
+
+  return <>{element}</>;
 }

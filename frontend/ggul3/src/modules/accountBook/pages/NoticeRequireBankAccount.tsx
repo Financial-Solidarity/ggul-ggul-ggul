@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import {
   UserBoldParagraph,
@@ -7,15 +8,18 @@ import {
   UserButton,
   UserFormStyleBox,
   UserLogo,
-} from '../../components';
+} from '../../user/components';
 
 import { useUserStore } from '@/modules/common/store/userStore';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { PathNames } from '@/router';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
-export const SignUpSuccess = () => {
+export const NoticeRequireBankAccount = () => {
   const navigate = useNavigate();
+
   const { logout } = useUserStore();
+  const { setActive } = useBottomBarStore();
 
   // 계좌 연동 페이지로 이동
   const handleClickConnectBankAccount = () => {
@@ -27,6 +31,10 @@ export const SignUpSuccess = () => {
     logout();
     navigate(PathNames.LOGIN.path);
   };
+
+  useEffect(() => {
+    setActive(false);
+  }, []);
 
   return (
     <PageContainer>

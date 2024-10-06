@@ -69,7 +69,7 @@ export const LoginForm = ({
         </UserInputBox>
 
         <UserButton>로그인</UserButton>
-        <UserLink to={PathNames.SIGHUP.path} type="bold">
+        <UserLink to={PathNames.SIGNUP.path} type="bold">
           <UserBoldSpan>껄껄껄</UserBoldSpan>
           회원가입
         </UserLink>

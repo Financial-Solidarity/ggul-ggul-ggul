@@ -10,6 +10,7 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const ConnectAccountPage = () => {
   const {
@@ -26,14 +27,21 @@ export const ConnectAccountPage = () => {
     handleClickAccount,
   } = useConnectStore();
 
+  const { setActive } = useBottomBarStore();
+
   useEffect(() => {
+    setActive(false);
     setCurrentAccount({
-      id: 11,
-      name: '농협',
-      accountNo: '110-1851-4567',
+      id: -1,
+      name: '현재 연결된 계좌가 없습니다.',
+      accountNo: '',
     });
 
     setAccountList(accountList);
+
+    return () => {
+      setActive(true);
+    };
   }, []);
 
   return (

@@ -29,7 +29,7 @@ export const getAllBankAccounts = () => {
  * @returns {Promise<void>}
  */
 export const getMainBankAccount = () => {
-  return _axios<BankAccountDTO | null>({
+  return _axios<BankAccountDTO | null | ''>({
     method: 'GET',
     url: `/account/demand-deposits/primary`,
   });

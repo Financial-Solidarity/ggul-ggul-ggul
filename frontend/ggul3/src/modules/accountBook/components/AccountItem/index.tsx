@@ -24,7 +24,7 @@ export const AccountItem = ({
         <div className="flex">
           <p className="mr-1 text-xl font-medium">{account.name}</p>
           <p className="self-end text-xs text-gray-500">
-            {account.accountNo.slice(0, 8) + '****'}
+            {account.accountNo.slice(0, 8) + (account.id == -1 ? '' : '****')}
           </p>
         </div>
         {handleClickAccount &&
