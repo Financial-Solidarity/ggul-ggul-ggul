@@ -1,5 +1,5 @@
 import { Sheet } from 'react-modal-sheet';
-import { Button } from '@nextui-org/react';
+import { Button, Spinner } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
 import { EquipmentNFTDTO } from '../../@types';
@@ -11,10 +11,12 @@ import { PathNames } from '@/router';
 interface NftDetailSheetProps {
   isOpen: boolean;
   selectedEquipmentNft?: EquipmentNFTDTO;
-  equippedNft?: EquipmentNFTDTO;
+  equippedNft?: EquipmentNFTDTO | null;
   onClose: () => void;
   onEquip: () => void;
   onUnequip: () => void;
+  isLoadingEquip: boolean;
+  isLoadingUnequip: boolean;
 }
 
 export const NftDetailSheet = ({
@@ -24,6 +26,8 @@ export const NftDetailSheet = ({
   onClose,
   onEquip,
   onUnequip,
+  isLoadingEquip,
+  isLoadingUnequip,
 }: NftDetailSheetProps) => {
   const navigate = useNavigate();
   const { handleCancelSale } = useGameMarketData(10);
@@ -55,38 +59,28 @@ export const NftDetailSheet = ({
           </div>
           <div className="mt-4 flex w-full flex-row gap-3">
             {isSelling ? (
-              <>
-                <Button
-                  fullWidth
-                  className="h-12 bg-red-500 text-white"
-                  onPress={() =>
-                    handleCancelSale(selectedEquipmentNft?.ipfsCID)
-                  }
-                >
-                  판매 취소하기
-                </Button>
-                <Button
-                  fullWidth
-                  className="h-12 bg-blue-500 text-white"
-                  onPress={() => navigate(PathNames.GAME.MARKET.path)}
-                >
-                  판매중인 장비 보러가기
-                </Button>
-              </>
+              <Button
+                fullWidth
+                className="h-12 bg-default-600 text-white"
+                onClick={() => navigate(PathNames.GAME.MARKET.path)}
+              >
+                판매중인 NFT 보러가기
+              </Button>
             ) : isEquipped ? (
               <Button
                 fullWidth
                 className="h-12 bg-red-500 text-white"
-                onPress={onUnequip}
+                onClick={onUnequip}
               >
-                장착 해제하기
+                {isLoadingUnequip ? <Spinner color="white" /> : '장착 해제하기'}
               </Button>
             ) : (
               <>
                 <Button
                   fullWidth
                   className="h-12 bg-default-500 text-white"
-                  onPress={handleSellNft}
+                  disabled={isLoadingEquip}
+                  onClick={handleSellNft}
                 >
                   NFT 판매하기
                 </Button>
@@ -94,9 +88,9 @@ export const NftDetailSheet = ({
                   fullWidth
                   className="h-12"
                   color="primary"
-                  onPress={onEquip}
+                  onClick={onEquip}
                 >
-                  NFT 장착하기
+                  {isLoadingEquip ? <Spinner color="white" /> : 'NFT 장착하기'}
                 </Button>
               </>
             )}

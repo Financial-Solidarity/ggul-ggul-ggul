@@ -24,7 +24,7 @@ export const ActionButtons = ({
           style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
           onClick={onClickLuckyDrawButton}
         >
-          장비 뽑기
+          음식 뽑기
         </Button>
       )}
       {step === 'drawed' && (
@@ -41,7 +41,7 @@ export const ActionButtons = ({
             style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
             onClick={() => onClickMintButton(equipment as EquipmentDTO)}
           >
-            NFT 장비 조리하기
+            NFT 음식 조리하기
           </Button>
         </div>
       )}
@@ -51,7 +51,7 @@ export const ActionButtons = ({
           style={{ boxShadow: '0px 10px 20px rgba(192, 124, 255, 0.3)' }}
           onClick={onClickLuckyDrawButton}
         >
-          장비 뽑기
+          음식 뽑기
         </Button>
       )}
     </div>

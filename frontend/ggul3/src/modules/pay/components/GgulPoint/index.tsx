@@ -46,7 +46,7 @@ export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
         <p className="text-2xl">{`2,450`} P</p>
       </CardBody>
       <CardFooter className="flex flex-col items-start">
-        <SmallText>껄을 이용하여 유니크한 장비를 뽑거나</SmallText>
+        <SmallText>껄을 이용하여 유니크한 음식을 뽑거나</SmallText>
         <SmallText>실물 상품에 응모해보세요!</SmallText>
       </CardFooter>
     </Card>

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button, Tabs, Tab } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
 import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip';
@@ -22,6 +22,7 @@ export const GameMarket = (): JSX.Element => {
   const pageContainerRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<HTMLDivElement | null>(null);
   const [isSheetOpen, setSheetOpen] = useState(false);
+  const [own, setOwn] = useState<'true' | 'false'>('false');
 
   const {
     sellNftList,
@@ -32,6 +33,11 @@ export const GameMarket = (): JSX.Element => {
     setPageNumber,
     hasError,
   } = useGameMarketData(pageSize);
+
+  useEffect(() => {
+    // 최초 렌더링 시 '다른 사람들의 판매글' 검색
+    handleSearch({ status: 'PENDING' });
+  }, [own]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
@@ -55,9 +61,9 @@ export const GameMarket = (): JSX.Element => {
     maxPrice?: number;
     minPower?: number;
     maxPower?: number;
-    own?: 'true' | 'false';
+    status?: 'PENDING' | 'COMPLETED';
   }) => {
-    setSearchCriteria(criteria);
+    setSearchCriteria({ ...criteria, own });
     setPageNumber(0);
     setSellNftList([]);
   };
@@ -79,6 +85,20 @@ export const GameMarket = (): JSX.Element => {
           </div>
         }
       >
+        {/* Tabs 추가 */}
+        <Tabs
+          fullWidth
+          color="primary"
+          selectedKey={own}
+          onSelectionChange={(key) => {
+            setOwn(key as 'true' | 'false');
+            handleSearch({});
+          }}
+        >
+          <Tab key="false" className="w-full" title="다른 사람들의 판매글" />
+          <Tab key="true" className="w-full" title="내 판매글" />
+        </Tabs>
+
         <div className="mt-4">
           <Input
             fullWidth
@@ -108,13 +128,14 @@ export const GameMarket = (): JSX.Element => {
         </div>
 
         <Button
-          className="fixed bottom-20 right-8 bg-purple-600 text-white"
+          className="fixed bottom-20 right-8 z-30 bg-purple-600 text-white"
           onClick={scrollToTop}
         >
           맨 위로
         </Button>
 
         <SearchFilterSheet
+          isMyPost={own === 'true'}
           isOpen={isSheetOpen}
           onClose={() => setSheetOpen(false)}
           onSearch={handleSearch}

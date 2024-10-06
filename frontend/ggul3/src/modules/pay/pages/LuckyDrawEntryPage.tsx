@@ -9,7 +9,6 @@ import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
-
 export const LuckyDrawEntryPage = () => {
   return (
     <>

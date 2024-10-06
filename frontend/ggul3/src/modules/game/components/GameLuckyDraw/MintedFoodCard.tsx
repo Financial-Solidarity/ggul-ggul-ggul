@@ -19,17 +19,13 @@ export const MintedEquipmentCard = ({
 
   return (
     <div
-      className="NFT-CARD-CONTAINER h-70 w-56 rounded-2xl bg-primary-600 p-4 pb-2"
+      className="NFT-CARD-CONTAINER h-70 w-56 rounded-2xl bg-primary-600 p-4 pb-4"
       onClick={() => onCardClick(equipment)}
     >
-      <p className="text-xl font-semibold text-white">{equipment.name}</p>
+      <p className="text-xl font-semibold text-white">{`${equipment?.adjective} ${equipment?.name}`}</p>
       <div className="flex h-48 w-full items-center justify-center">
         <div
-          className="CIRCULAR-BACKGROUND"
-          style={{ backgroundColor: hexCode }}
-        />
-        <div
-          className="h-30 w-30 animate-popIn rounded-full"
+          className="h-28 w-28 animate-popIn rounded-full"
           style={{ backgroundColor: hexCode }}
         />
         <ConfettieLottie />
