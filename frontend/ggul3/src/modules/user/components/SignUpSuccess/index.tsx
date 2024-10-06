@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
   UserBoldParagraph,
   UserBoldParagraphBox,
@@ -7,9 +9,25 @@ import {
   UserLogo,
 } from '../../components';
 
+import { useUserStore } from '@/modules/common/store/userStore';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import { PathNames } from '@/router';
 
 export const SignUpSuccess = () => {
+  const navigate = useNavigate();
+  const { logout } = useUserStore();
+
+  // 계좌 연동 페이지로 이동
+  const handleClickConnectBankAccount = () => {
+    navigate(PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path);
+  };
+
+  // 로그아웃
+  const handleClickLogoutButton = () => {
+    logout();
+    navigate(PathNames.LOGIN.path);
+  };
+
   return (
     <PageContainer>
       <UserFormStyleBox>
@@ -23,7 +41,12 @@ export const SignUpSuccess = () => {
             <UserBoldSpan>계좌를 연결</UserBoldSpan>해야 합니다.
           </UserBoldParagraph>
         </UserBoldParagraphBox>
-        <UserButton>계좌 연동하기</UserButton>
+        <UserButton onClick={handleClickConnectBankAccount}>
+          계좌 연동하기
+        </UserButton>
+        <UserButton color="default" onClick={handleClickLogoutButton}>
+          로그아웃
+        </UserButton>
       </UserFormStyleBox>
     </PageContainer>
   );

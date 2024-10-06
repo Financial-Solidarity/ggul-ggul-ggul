@@ -1,5 +1,4 @@
 import { FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { login } from '../../apis/login';
 import {
@@ -11,12 +10,10 @@ import {
   UserLink,
   UserLogo,
 } from '../../components';
+import { useUserLoginFlow } from '../../hooks/useUserLoginFlow';
 
 import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
-import { useUserStore } from '@/modules/common/store/userStore';
-import { getUserData } from '@/modules/common/apis/userApis';
-import { requestPermission } from '@/modules/common/hooks/useFcmRegistration';
 
 interface LoginFormProps {
   email: string;
@@ -37,27 +34,14 @@ export const LoginForm = ({
   setPassword,
   validateEmail,
 }: LoginFormProps) => {
-  const navigate = useNavigate();
-
-  const { setUser, setIsLoggedIn } = useUserStore();
+  const { executeAfterLoginFlow } = useUserLoginFlow();
 
   const handleSubmitLogin = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
       await login({ email, password });
-
-      // 유저 데이터 가져오기
-      const userData = await getUserData();
-
-      // 유저 데이터 상태에 저장
-      setUser(userData);
-      setIsLoggedIn(true);
-
-      navigate(PathNames.ACCOUNT_BOOK.MAIN.path);
-
-      //fcm 등록
-      await requestPermission();
+      await executeAfterLoginFlow();
     } catch (error) {
       window.alert('[login] catch error.');
     }

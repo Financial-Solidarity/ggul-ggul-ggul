@@ -1,3 +1,5 @@
+import { BankAccountDTO } from '@types';
+
 import { _axios } from '@/modules/common/utils/axios';
 
 /**
@@ -19,5 +21,16 @@ export const getAllBankAccounts = () => {
   return _axios({
     method: 'POST',
     url: `account/demand-deposits/accounts`,
+  });
+};
+
+/**
+ * 주 계좌를 조회합니다.
+ * @returns {Promise<void>}
+ */
+export const getMainBankAccount = () => {
+  return _axios<BankAccountDTO | null>({
+    method: 'GET',
+    url: `/account/demand-deposits/primary`,
   });
 };

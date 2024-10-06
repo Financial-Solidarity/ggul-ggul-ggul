@@ -34,6 +34,7 @@ import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoom
 import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
 import { useUserStore } from './modules/common/store/userStore';
 import { ChangePasswordPage } from './modules/myPage/pages';
+import { useBankAccountStore } from './modules/common/store/useBankAccountStore';
 
 export interface Path {
   path: string;
@@ -299,6 +300,9 @@ const loginRoutes: RouteObject[] = [
     path: PathNames.LOGIN.path,
     element: <LoginPage />,
   },
+];
+
+const sighUpRoutes: RouteObject[] = [
   {
     path: PathNames.SIGHUP.path,
     element: <SignUpPage />,
@@ -355,8 +359,8 @@ const gameRoutes: RouteObject[] = [
 ];
 
 // 비인가 사용자가 접근 가능한 경로
-const publicRoutes: RouteObject[] = [];
-// 인가된 사용자가 접근할 경우 mypage로 리다이렉트 경로
+const publicRoutes: RouteObject[] = [...sighUpRoutes];
+// 인가된 사용자가 로그인 페이지로 접근할 경우
 const restrictForUserRoutes: RouteObject[] = [...loginRoutes];
 // 인가 된 사용자만 접근 가능한 경로
 const privateRoutes: RouteObject[] = [
@@ -390,10 +394,16 @@ export const router = createBrowserRouter([
 // 인가된 사용자만 접근 가능한 경로로 설정
 function PrivateRoute({ element }: { element: ReactNode }) {
   const { isLoggedIn } = useUserStore();
+  const { bankAccount } = useBankAccountStore();
 
   if (!isLoggedIn) {
-    return <Navigate replace to="/login" />;
-  } else {
+    return <Navigate replace to={PathNames.LOGIN.path} />;
+  }
+  // (서버 오류로 보류)
+  // else if (bankAccount === null) {
+  //   return <Navigate replace to={PathNames.SIGHUP.path} />;
+  // }
+  else {
     return element;
   }
 }
