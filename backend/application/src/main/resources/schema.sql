@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS primary_account;
+DROP TABLE IF EXISTS consumption_log;
 DROP TABLE IF EXISTS ggul_log;
 DROP TABLE IF EXISTS application_history;
 DROP TABLE IF EXISTS application;
@@ -16,7 +17,6 @@ DROP TABLE IF EXISTS challenge_participant;
 DROP TABLE IF EXISTS challenge;
 DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS fcm_token;
-DROP TABLE IF EXISTS consumption_log;
 DROP TABLE IF EXISTS wallet_history;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS user;
