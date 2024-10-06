@@ -7,9 +7,7 @@ import com.ggul.application.springconfig.security.handler.CustomAuthEntryPoint;
 import com.ggul.application.springconfig.security.handler.JsonAuthFailureHandler;
 import com.ggul.application.springconfig.security.handler.JsonAuthSuccessHandler;
 import com.ggul.application.springconfig.security.provider.JsonLoginAuthenticationProvider;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,9 +42,6 @@ public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
-
-    @Value("${server.servlet.session.cookie.name:SESSION}")
-    private String sessionCookieName;
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -132,7 +127,7 @@ public class SecurityConfig {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.anonymous(AbstractHttpConfigurer::disable);
-//        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         AuthenticationManager authenticationManager = authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
 
         ProviderManager p = (ProviderManager) authenticationManager;

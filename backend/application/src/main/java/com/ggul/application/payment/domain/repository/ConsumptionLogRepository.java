@@ -51,5 +51,15 @@ public interface ConsumptionLogRepository extends JpaRepository<ConsumptionLog, 
             "WHERE cp.challenge.id = :challengeId " +
                 "AND cl.createdAt BETWEEN cp.challenge.startedAt AND cp.challenge.endedAt " +
             "ORDER BY cl.createdAt DESC")
-    List<ParticipantAndConsumptionLog> findAllByChallenge_Id(@Param("challengeId")UUID challengeId);
+    List<ParticipantAndConsumptionLog> findAllByChallenge_IdFetchAll(@Param("challengeId")UUID challengeId);
+
+
+    @Query("SELECT cl as consumptionLog, cp as challengeParticipant " +
+            "FROM ConsumptionLog cl " +
+                "JOIN User u ON cl.user = u " +
+                "JOIN ChallengeParticipant cp ON cp.user = u AND cp.isDeleted = false " +
+            "WHERE cp.challenge.id = :challengeId " +
+            "AND cl.createdAt BETWEEN cp.challenge.startedAt AND cp.challenge.endedAt " +
+            "ORDER BY cl.createdAt DESC")
+    List<ParticipantAndConsumptionLog> findAllByChallenge_Id(UUID challengeId);
 }

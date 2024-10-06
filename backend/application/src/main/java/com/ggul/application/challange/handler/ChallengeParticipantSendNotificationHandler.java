@@ -1,10 +1,11 @@
-package com.ggul.application.challange.query;
+package com.ggul.application.challange.handler;
 
 import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.challange.domain.ChallengeParticipantType;
 import com.ggul.application.challange.domain.CompetitionType;
 import com.ggul.application.challange.domain.repository.ChallengeParticipantRepository;
 import com.ggul.application.challange.event.ChallengeDestroyedEvent;
+import com.ggul.application.challange.event.ChallengeEndedEvent;
 import com.ggul.application.challange.event.ChallengeReadiedEvent;
 import com.ggul.application.challange.event.ChallengeStartedEvent;
 import com.ggul.application.notification.application.NotificationSendService;
@@ -33,6 +34,18 @@ public class ChallengeParticipantSendNotificationHandler {
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sendNotification(ChallengeStartedEvent event) {
+        List<ChallengeParticipant> participants = challengeParticipantRepository.findAllByChallenge_Id(event.getChallengeId());
+        Map<String, String> notificationBody = new HashMap<>();
+        setChallengeId(notificationBody, event.getChallengeId());
+
+        List<Notification> notifications = participants.stream().map(participant -> notificationBuilder(participant.getUser(), NotificationDataSet.CHALLENGE_START, notificationBody)).toList();
+        notificationSendService.sendAllAndPersist(notifications);
+    }
+
+    @Async
+    @TransactionalEventListener
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void sendNotification(ChallengeEndedEvent event) {
         List<ChallengeParticipant> participants = challengeParticipantRepository.findAllByChallenge_Id(event.getChallengeId());
         Map<String, String> notificationBody = new HashMap<>();
         setChallengeId(notificationBody, event.getChallengeId());
@@ -88,6 +101,7 @@ public class ChallengeParticipantSendNotificationHandler {
         CHALLENGE_READY("챌린지 시작 준비 완료", "챌린지가 시작 준비 되었습니다!", NotificationType.CHALLENGE_READY),
         CHALLENGE_DESTROYED("챌린지 팀원 부족", "챌린지가 시작되지 못했습니다.", NotificationType.CHALLENGE_DESTROYED),
         CHALLENGE_START("챌린지 시작", "챌린지가 시작되었습니다!", NotificationType.CHALLENGE_START),
+        CHALLENGE_ENDED("챌린지 끝", "챌린지가 끝났습니다!", NotificationType.CHALLENGE_START),
         ;
         private final String title;
         private final String body;

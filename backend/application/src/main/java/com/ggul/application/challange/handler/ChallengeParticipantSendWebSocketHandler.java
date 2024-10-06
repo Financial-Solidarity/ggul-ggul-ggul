@@ -1,5 +1,5 @@
 
-package com.ggul.application.challange.query;
+package com.ggul.application.challange.handler;
 
 import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.challange.domain.repository.ChallengeParticipantRepository;
