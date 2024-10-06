@@ -19,7 +19,7 @@ import {
   QrPayPage,
   WalletPage,
 } from './modules/pay/pages';
-import { FindPasswordPage, LoginPage, SignUpPage } from './modules/user/pages';
+import { LoginPage, SignUpPage } from './modules/user/pages';
 import {
   AccountBookHistoryPage,
   AccountBookPage,
@@ -33,6 +33,7 @@ import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoom
 import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
 import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
 import { useUserStore } from './modules/common/store/userStore';
+import { ChangePasswordPage } from './modules/myPage/pages';
 
 export interface Path {
   path: string;
@@ -79,7 +80,7 @@ export interface PathNames {
   };
   LOGIN: Path;
   SIGHUP: Path;
-  FIND_PASSWORD: Path;
+  CHANGE_PASSWORD: Path;
 }
 
 // PathNames 구조화
@@ -210,8 +211,8 @@ export const PathNames: PathNames = {
     path: '/signup',
     name: '로그인',
   },
-  FIND_PASSWORD: {
-    path: '/find-password',
+  CHANGE_PASSWORD: {
+    path: '/change-password',
     name: '로그인',
   },
 };
@@ -302,16 +303,16 @@ const loginRoutes: RouteObject[] = [
     path: PathNames.SIGHUP.path,
     element: <SignUpPage />,
   },
-  {
-    path: PathNames.FIND_PASSWORD.path,
-    element: <FindPasswordPage />,
-  },
 ];
 
 const myPageRoutes: RouteObject[] = [
   {
     path: PathNames.MYPAGE.MAIN.path,
     element: <MyPage />,
+  },
+  {
+    path: PathNames.CHANGE_PASSWORD.path,
+    element: <ChangePasswordPage />,
   },
 ];
 
@@ -353,10 +354,11 @@ const gameRoutes: RouteObject[] = [
   },
 ];
 
-// 비인가 사용자도 접근 가능한 경로
-const publicRoutes: RouteObject[] = [...loginRoutes];
-
-// 인가된 사용자만 접근 가능한 경로
+// 비인가 사용자가 접근 가능한 경로
+const publicRoutes: RouteObject[] = [];
+// 인가된 사용자가 접근할 경우 mypage로 리다이렉트 경로
+const restrictForUserRoutes: RouteObject[] = [...loginRoutes];
+// 인가 된 사용자만 접근 가능한 경로
 const privateRoutes: RouteObject[] = [
   ...challengeRoutes,
   ...payRoutes,
@@ -372,10 +374,11 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <></>,
     children: [
-      // 비인가 사용자도 접근 가능한 경로
       ...publicRoutes,
-
-      // 인가 된 사용자만 접근 가능한 경로
+      ...restrictForUserRoutes.map((route) => ({
+        ...route,
+        element: <RestrictForUserRoutes element={route.element} />,
+      })),
       ...privateRoutes.map((route) => ({
         ...route,
         element: <PrivateRoute element={route.element} />,
@@ -390,6 +393,16 @@ function PrivateRoute({ element }: { element: ReactNode }) {
 
   if (!isLoggedIn) {
     return <Navigate replace to="/login" />;
+  } else {
+    return element;
+  }
+}
+
+function RestrictForUserRoutes({ element }: { element: ReactNode }) {
+  const { isLoggedIn } = useUserStore();
+
+  if (isLoggedIn) {
+    return <Navigate replace to="/mypage" />;
   } else {
     return element;
   }
