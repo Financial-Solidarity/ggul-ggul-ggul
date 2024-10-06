@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { EquipmentNFTDTO } from '../../@types';
 import { EquipmentNftInfo } from '../common/EquipmentNftInfo';
-import { useGameMarketData } from '../../hooks/useGameMarketData';
 
 import { PathNames } from '@/router';
 
@@ -22,7 +21,6 @@ interface NftDetailSheetProps {
 export const NftDetailSheet = ({
   isOpen,
   selectedEquipmentNft,
-  equippedNft,
   onClose,
   onEquip,
   onUnequip,
@@ -30,7 +28,6 @@ export const NftDetailSheet = ({
   isLoadingUnequip,
 }: NftDetailSheetProps) => {
   const navigate = useNavigate();
-  const { handleCancelSale } = useGameMarketData(10);
 
   const handleSellNft = () => {
     navigate(PathNames.GAME.SELL_CREATE.path, {

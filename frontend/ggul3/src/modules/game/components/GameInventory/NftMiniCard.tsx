@@ -18,7 +18,7 @@ export const NftMiniCard = ({
   return (
     <Card
       isPressable
-      className={`h-24 transition-shadow hover:shadow-lg ${
+      className={`h-24 animate-popIn transition-shadow hover:shadow-lg ${
         isEquipped ? 'border-2 border-blue-500' : 'bg-default-700'
       }`}
       radius="lg"

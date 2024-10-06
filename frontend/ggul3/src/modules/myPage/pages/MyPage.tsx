@@ -15,10 +15,13 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { useUserStore } from '@/modules/common/store/userStore';
 
 export const MyPage = () => {
   const { user } = useUserStore();
+
+  useSetBottomBar({ active: true, isDarkMode: false });
 
   return (
     <>

@@ -53,18 +53,18 @@ export const EquipmentNftInfo = ({
           <Button
             fullWidth
             as="a"
-            className="absolute -right-12 top-28 w-max animate-popIn bg-secondary-600 font-semibold text-black"
+            className="absolute -right-12 top-28 w-max animate-popIn bg-secondary-600 text-xs font-bold text-black"
             href={equipmentNft?.equipment.transactionUrl}
             rel="noopener noreferrer"
             target="_blank"
           >
-            블록 로그
+            블록체인 로그
           </Button>
         ) : (
           <Button
             fullWidth
             as="a"
-            className="absolute -right-12 top-28 w-max animate-popIn bg-secondary-600 font-semibold text-black"
+            className="absolute -right-12 top-28 w-max animate-popIn bg-secondary-600 font-bold text-black"
             href={equipmentNft?.nftUrl}
             rel="noopener noreferrer"
             target="_blank"
