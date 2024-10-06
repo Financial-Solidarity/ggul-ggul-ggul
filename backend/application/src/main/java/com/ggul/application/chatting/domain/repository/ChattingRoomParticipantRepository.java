@@ -3,6 +3,7 @@ package com.ggul.application.chatting.domain.repository;
 import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.chatting.domain.ChattingRoomParticipant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,4 +23,7 @@ public interface ChattingRoomParticipantRepository extends JpaRepository<Chattin
     Optional<ChallengeParticipant> findByChattingRoomIdAndUserId(@Param("chattingRoomId") UUID chattingRoomId, @Param("userId") UUID userId);
 
     Optional<ChattingRoomParticipant> findByChattingRoom_IdAndChallengeParticipant_User_Id(UUID chattingRoomId, UUID userId);
+
+    @Modifying
+    void deleteAllByChallengeParticipant_Id(UUID challengeParticipantId);
 }
