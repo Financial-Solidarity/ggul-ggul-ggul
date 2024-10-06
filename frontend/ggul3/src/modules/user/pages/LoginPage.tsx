@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
+
 import { LoginForm } from '../components';
 import { useLoginStore } from '../store/loginStore';
+
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const LoginPage = () => {
   const {
@@ -10,6 +14,17 @@ export const LoginPage = () => {
     setPassword,
     validateEmail,
   } = useLoginStore();
+
+  const { setActive } = useBottomBarStore();
+
+  // BottomBar 숨기기
+  useEffect(() => {
+    setActive(false);
+
+    return () => {
+      setActive(true);
+    };
+  }, []);
 
   return (
     <LoginForm

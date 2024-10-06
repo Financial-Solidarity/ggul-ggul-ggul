@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
+
 import { SignUpForm, SignUpSuccess, SignUpVerifyEmail } from '../components';
 import { useSignUpStore } from '../store/signUpStore';
+
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const SignUpPage = () => {
   const {
@@ -20,6 +24,17 @@ export const SignUpPage = () => {
     validateEmail,
     validatePasswordCheck,
   } = useSignUpStore();
+
+  const { setActive } = useBottomBarStore();
+
+  // BottomBar 숨기기
+  useEffect(() => {
+    setActive(false);
+
+    return () => {
+      setActive(true);
+    };
+  }, []);
 
   if (step === 'sign up') {
     return (

@@ -83,9 +83,7 @@ export const LoginForm = ({
             value={password}
           />
         </UserInputBox>
-        <UserLink to={PathNames.FIND_PASSWORD.path} type="gray">
-          비밀번호를 잊으셨나요?
-        </UserLink>
+
         <UserButton>로그인</UserButton>
         <UserLink to={PathNames.SIGHUP.path} type="bold">
           <UserBoldSpan>껄껄껄</UserBoldSpan>
