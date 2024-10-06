@@ -208,6 +208,8 @@ src/main/resources/application-secret.yml
 src/main/resources/firebase-secret-key.json
 src/main/resources/application-blockchain.yml
 
+src/main/resources/pem/*.pem
+
 .idea
 .gradle
 build/

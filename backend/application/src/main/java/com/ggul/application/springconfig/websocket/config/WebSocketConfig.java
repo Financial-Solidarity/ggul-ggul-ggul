@@ -22,11 +22,11 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
     @Override
     public void configureStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
-                .setAllowedOriginPatterns("https://ggul3.kro.kr", "http://localhost:5173") // 복수의 Origin 패턴 설정
+                .setAllowedOriginPatterns("https://ggul3.kro.kr", "http://localhost:5173", "http://localhost:4173") // 복수의 Origin 패턴 설정
                 .addInterceptors(new HttpSessionHandshakeInterceptor());
 
         registry.addEndpoint("/stomp/connection") // ex ) ws://localhost:8080/stomp/chat
-                .setAllowedOriginPatterns("https://ggul3.kro.kr", "http://localhost:5173") // 복수의 Origin 패턴 설정
+                .setAllowedOriginPatterns("https://ggul3.kro.kr", "http://localhost:5173", "http://localhost:4173") // 복수의 Origin 패턴 설정
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
                 .withSockJS();
     }

@@ -2,6 +2,7 @@ package com.ggul.application.equipment.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ public interface TokenizedEquipmentRepository extends JpaRepository<TokenizedEqu
            JOIN FETCH e.item
            WHERE t.owner.id = :userId AND t.status = :status
            """)
-    Optional<TokenizedEquipment> findByUserIdAndStatusUsingFetchAll(UUID userId, Status status);
+    Optional<TokenizedEquipment> findByUserIdAndStatusUsingFetchAll(@Param("userId") UUID userId, Status status);
 
     @Query("""
            SELECT t
@@ -25,7 +26,7 @@ public interface TokenizedEquipmentRepository extends JpaRepository<TokenizedEqu
            JOIN FETCH e.item
            WHERE t.owner.id = :userId AND t.equipment.power BETWEEN :minPower AND :maxPower
            """)
-    List<TokenizedEquipment> findByUserIdAndEquipmentPowerBetweenUsingFetchAll(UUID userId, Long minPower, Long maxPower);
+    List<TokenizedEquipment> findByUserIdAndEquipmentPowerBetweenUsingFetchAll(@Param("userId")UUID userId, Long minPower, Long maxPower);
 
     Optional<TokenizedEquipment> findByIpfsCID(String ipfsCID);
     @Query("""
@@ -33,5 +34,5 @@ public interface TokenizedEquipmentRepository extends JpaRepository<TokenizedEqu
            FROM TokenizedEquipment t
            WHERE t.owner.id = :userId AND t.status = :status
            """)
-    Optional<TokenizedEquipment> findByUserIdAndStatus(UUID userId, Status status);
+    Optional<TokenizedEquipment> findByUserIdAndStatus(@Param("userId") UUID userId, Status status);
 }

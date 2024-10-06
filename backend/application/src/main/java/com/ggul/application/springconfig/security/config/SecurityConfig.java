@@ -101,16 +101,16 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // 와일드카드 대신 특정 출처만 허용
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:4173"));
 
         // 허용할 HTTP 메서드 설정
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
         // 허용할 HTTP 헤더 설정
-        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedHeaders(List.of("Origin", "Access-Control-Allow-Origin", "Content-Type", "Accept", "Authorization", "Access", "X-Accel-Buffering", "Connection", "Access-Control-Allow-Credentials", "ngrok-skip-browser-warning", "Cookies", "set-Cookies"));
 
         // 특정 헤더를 노출 (필요한 경우)
-        config.setExposedHeaders(List.of());
+        config.setExposedHeaders(List.of("Origin", "Access-Control-Allow-Origin", "Content-Type", "Accept", "Authorization", "Access", "X-Accel-Buffering", "Connection", "Access-Control-Allow-Credentials", "ngrok-skip-browser-warning", "Cookies", "set-Cookies"));
 
         // 자격 증명(쿠키, 인증 정보 등)을 허용할 경우 true로 설정
         config.setAllowCredentials(true);
