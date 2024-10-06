@@ -65,7 +65,7 @@ public class EquipmentService {
                 .minted(false)
                 .build());
 
-        walletService.registerWalletHistory(userId, equipmentDrawService.getDrawCost(), Category.EQUIPMENT_DRAW);
+        walletService.registerWalletHistory(userId, false, equipmentDrawService.getDrawCost(), Category.EQUIPMENT_DRAW);
 
         return EquipmentInfo.from(equipment);
     }

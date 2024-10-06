@@ -89,7 +89,7 @@ public class ApplicationService {
         if(result.getIsSuccess() && result.getRemainingWinnerCount() == 0)
             application.changeStatus(Status.CLOSE);
 
-        walletService.registerWalletHistory(userId, application.getPrice(), Category.APPLICATION);
+        walletService.registerWalletHistory(userId, false, application.getPrice(), Category.APPLICATION);
         return result;
     }
 
