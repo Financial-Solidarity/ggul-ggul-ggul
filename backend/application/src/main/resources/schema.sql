@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS primary_account;
+DROP TABLE IF EXISTS ggul_log;
 DROP TABLE IF EXISTS application_history;
 DROP TABLE IF EXISTS application;
 DROP TABLE IF EXISTS game;
@@ -15,7 +17,7 @@ DROP TABLE IF EXISTS challenge;
 DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS fcm_token;
 DROP TABLE IF EXISTS consumption_log;
-DROP TABLE IF EXISTS ggul_log;
+DROP TABLE IF EXISTS wallet_history;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS account;
@@ -126,16 +128,6 @@ CREATE TABLE category
     category_name       VARCHAR(40) NOT NULL
 );
 
-
-CREATE TABLE ggul_log
-(
-    ggul_log_id BINARY(16) NOT NULL PRIMARY KEY,
-    user_id     BINARY(16) NOT NULL,
-    ggul_num    INTEGER    NOT NULL,
-    created_at  DATETIME   NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user (user_id)
-);
-
 CREATE TABLE equipment_item (
     equipment_item_id BIGINT NOT NULL PRIMARY KEY,
     name VARCHAR(40) NOT NULL,
@@ -189,6 +181,14 @@ CREATE TABLE market_deal (
     FOREIGN KEY (market_id) REFERENCES market(market_id)
 );
 
+CREATE TABLE wallet_history (
+    wallet_history_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BINARY(16) NOT NULL,
+    quantity BIGINT NOT NULL,
+    category VARCHAR(32) NOT NULL,
+    created_at DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
 
 CREATE TABLE consumption_log
 (
@@ -199,10 +199,10 @@ CREATE TABLE consumption_log
     consumption_balance INT         NOT NULL,
     product_name        VARCHAR(40) NOT NULL,
     consumption_market  VARCHAR(50) NOT NULL,
-    ggul_log_id         BINARY(16),
+    wallet_history_id         BIGINT,
     FOREIGN KEY (user_id) REFERENCES user (user_id),
     FOREIGN KEY (product_category_id) REFERENCES category (product_category_id),
-    FOREIGN KEY (ggul_log_id) REFERENCES ggul_log (ggul_log_id)
+    FOREIGN KEY (wallet_history_id) REFERENCES wallet_history (wallet_history_id)
 );
 
 CREATE TABLE chatting
@@ -267,7 +267,6 @@ CREATE TABLE primary_account
     user_id               BINARY(16)             NOT NULL,
     account_no            VARCHAR(40)            NOT NULL
 );
-
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
 VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡1', null, now()),

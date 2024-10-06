@@ -14,7 +14,6 @@ public enum WalletExceptionConstants implements ErrorCodeDefinition {
     TOKEN_GRANT_FAILURE("토큰 지급에 실패했습니다.", "W004", HttpStatus.INTERNAL_SERVER_ERROR),
     WALLET_GENERATE_FAILURE("지갑 생성에 실패했습니다.", "W005", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
-
     private final String message;
     private final String statusCode;
     private final HttpStatus httpStatus;

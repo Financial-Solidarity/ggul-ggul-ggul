@@ -17,5 +17,5 @@ public class ConsumptionLogView {
     private Integer money;
     private String label;
     private String market;
-    private Integer spendGgulToken;
+    private Long spendGgulToken;
 }

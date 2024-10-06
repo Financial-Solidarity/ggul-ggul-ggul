@@ -18,6 +18,8 @@ import com.ggul.application.market.exception.MarketNotFoundException;
 import com.ggul.application.market.exception.MarketNotSellerException;
 import com.ggul.application.market.application.dto.MarketListElement;
 import com.ggul.application.user.domain.UserRepository;
+import com.ggul.application.wallet.application.WalletService;
+import com.ggul.application.wallet.domain.Category;
 import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
 import com.ggul.application.wallet.exception.WalletNotFoundException;
@@ -40,6 +42,7 @@ public class MarketService {
     private final MarketRepository marketRepository;
     private final UserRepository userRepository;
     private final MarketDealRepository marketDealRepository;
+    private final WalletService walletService;
 
     /**
      * Market에 등록된 Equipment 판매 글 상세 조회
@@ -92,6 +95,8 @@ public class MarketService {
                 .dealNo(result.getDealNo())
                 .market(market)
                 .build());
+
+        walletService.registerWalletHistory(dto.getUserId(), dto.getPrice(), Category.MARKET);
         return market.getId();
     }
 

@@ -37,7 +37,7 @@ public class ConsumptionLogFindService {
                 ChallengeConsumptionView.builder()
                         .consumptionLog(participantAndConsumptionLog.getConsumptionLog())
                         .category(participantAndConsumptionLog.getProductCategory())
-                        .ggulLog(participantAndConsumptionLog.getGgulLog())
+                        .walletHistory(participantAndConsumptionLog.getWalletHistory())
                         .challengeParticipant(participantAndConsumptionLog.getParticipant())
                         .build()
         ).toList();

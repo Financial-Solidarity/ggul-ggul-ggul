@@ -10,6 +10,9 @@ import com.ggul.application.payment.event.PaymentCompletedEvent;
 import com.ggul.application.payment.ui.dto.PaymentRequestResponseView;
 import com.ggul.application.user.domain.User;
 import com.ggul.application.user.domain.UserRepository;
+import com.ggul.application.wallet.application.WalletService;
+import com.ggul.application.wallet.domain.Category;
+import com.ggul.application.wallet.domain.WalletHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +25,19 @@ public class PaymentService {
     private final ConsumptionLogRepository consumptionLogRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final UserRepository userRepository;
+    private final WalletService walletService;
 
     @Transactional
     public PaymentRequestResponseView payment(PaymentRequest paymentRequest, UUID sessionId) {
         //TODO : Account를 가져오고, Account의 금액 조회하고 Account 결제하기.
-        //TODO : GGUL 코인 조회하고, GGUL 코인을 가지고 결제하기. GGUL 코인은 master account로 전송.
+        walletService.useToken(sessionId, paymentRequest.getSpendGgulToken().longValue());
         Integer newRequiredMoney = paymentRequest.getRequiredMoney() - paymentRequest.getSpendGgulToken();
         User user = userRepository.getReferenceById(sessionId);
         ProductCategory productCategory = productCategoryRepository.getReferenceById(paymentRequest.getCategoryId());
 
-        // TODO : GGUL Log 생성하는 로직 필요
-        ConsumptionLog consumptionLog = ConsumptionLog.create(paymentRequest, null, newRequiredMoney, user, productCategory);
+        WalletHistory history = walletService.registerWalletHistory(sessionId, paymentRequest.getSpendGgulToken().longValue(), Category.CONSUMPTION);
+
+        ConsumptionLog consumptionLog = ConsumptionLog.create(paymentRequest, history, newRequiredMoney, user, productCategory);
 
         ConsumptionLog save = consumptionLogRepository.save(consumptionLog);
         Events.raise(new PaymentCompletedEvent(save.getId(), user.getId(), newRequiredMoney, paymentRequest.getProductName(), paymentRequest.getMarket(), productCategory.getName()));
