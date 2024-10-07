@@ -10,7 +10,6 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { EquipmentNFTDTO, RegisterSellNFTRequest } from '@/modules/game/@types';
 import { useRegisterSellNFTMutation } from '@/modules/game/queries';
 
@@ -104,11 +103,7 @@ export const GameMarketSellCreate = () => {
 
   return (
     <>
-      <TopBar
-        bgColor="bg-black"
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
+      <TopBar bgColor="bg-black" left={<BackButton />} />
       <PageContainer
         bgColor="bg-black"
         titleContent={

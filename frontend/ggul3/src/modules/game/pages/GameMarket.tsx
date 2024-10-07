@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
 import { Button, Tabs, Tab } from '@nextui-org/react';
-import { useNavigate } from 'react-router-dom';
 
 import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip';
 import { NFTSellCardList } from '../components/GameMarket/NFTSellCardList';
@@ -11,12 +10,10 @@ import { NothingLottie } from '../components/common/Lotties/NothingLottie';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const GameMarket = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });
-  const navigate = useNavigate();
 
   const pageSize = 4;
   const pageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -84,11 +81,7 @@ export const GameMarket = (): JSX.Element => {
 
   return (
     <>
-      <TopBar
-        bgColor="bg-black"
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
+      <TopBar bgColor="bg-black" left={<BackButton />} />
       <PageContainer
         bgColor="bg-black"
         containerRef={pageContainerRef}

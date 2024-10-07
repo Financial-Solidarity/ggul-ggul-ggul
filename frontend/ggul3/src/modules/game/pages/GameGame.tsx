@@ -16,7 +16,6 @@ import { EquipmentNftInfoRow } from '../components/common/EquipmentNftInfoRow';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import './GameGame.css';
 import Spoon from '@/assets/images/game_spoon.png';
@@ -175,11 +174,7 @@ export const GameGame = () => {
 
   return (
     <>
-      <TopBar
-        bgColor="bg-default-800"
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
+      <TopBar bgColor="bg-default-800" left={<BackButton />} />
       <PageContainer
         activePaddingX={false}
         bgColor="bg-default-800"

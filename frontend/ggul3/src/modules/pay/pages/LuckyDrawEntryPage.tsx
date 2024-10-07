@@ -7,7 +7,6 @@ import { GgulPoint } from '../components';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 export const LuckyDrawEntryPage = () => {
   return (
@@ -16,7 +15,6 @@ export const LuckyDrawEntryPage = () => {
         bgColor="bg-primary"
         center={<NavTitle color="white" title="상품 응모" />}
         left={<BackButton />}
-        right={<NotificationButton />}
       />
       <div className="z-50 shadow-md">
         <GgulPoint isNarrow remainGgulToken={2250} />

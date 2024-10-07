@@ -9,7 +9,6 @@ import * as components from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const ConnectAccountPage = () => {
   const {
@@ -41,7 +40,6 @@ export const ConnectAccountPage = () => {
       <TopBar
         center={<components.NavTitle title="계좌 연결하기" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         <div className="relative">

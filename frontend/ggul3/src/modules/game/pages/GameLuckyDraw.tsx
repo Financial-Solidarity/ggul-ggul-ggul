@@ -22,7 +22,6 @@ import { useLuckyDrawStore } from '@/modules/game/store/useLuckyDrawStore';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const GameLuckyDraw = (): JSX.Element => {
@@ -67,11 +66,7 @@ export const GameLuckyDraw = (): JSX.Element => {
 
   return (
     <>
-      <TopBar
-        bgColor="bg-black"
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
+      <TopBar bgColor="bg-black" left={<BackButton />} />
       <PageContainer
         bgColor="bg-black"
         titleContent={

@@ -5,7 +5,6 @@ import { NftLinks, TokenPossession, TokenTradingHistory } from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { NavTitle } from '@/modules/common/components';
 
@@ -41,7 +40,6 @@ export const WalletPage = () => {
         bgColor="bg-primary"
         center={<NavTitle color="white" title="전자 지갑" />}
         left={<BackButton />}
-        right={<NotificationButton />}
       />
       <WalletHeader isScrolled={isScrolled} />
       <PageContainer containerRef={pageContainerRef}>
