@@ -60,7 +60,7 @@ export interface PrizeHistory extends PageableOptions {
   pageable: Pageable;
 }
 
-export const prizeHistory = () => {
+export const getPrizeHistory = () => {
   return _axios<PrizeHistory>({
     method: 'GET',
     url: `/applications/histories`,

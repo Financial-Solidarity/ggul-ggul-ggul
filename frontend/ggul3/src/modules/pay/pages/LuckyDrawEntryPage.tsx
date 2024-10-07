@@ -4,6 +4,7 @@ import { Image } from '@nextui-org/react';
 import { useEffect } from 'react';
 import { LuckyDrawItemDTO } from '@types';
 import { useNavigate } from 'react-router-dom';
+import Lottie from 'lottie-react';
 
 import { GgulPoint } from '../components';
 import { getLuckyDrawList } from '../apis/luckyDraw';
@@ -14,6 +15,8 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import no_items from '@/assets/lotties/no_items.json';
+
 export const LuckyDrawEntryPage = () => {
   const navigate = useNavigate();
 
@@ -50,13 +53,31 @@ export const LuckyDrawEntryPage = () => {
           <div>
             <p className="mb-1 text-xl font-bold">추첨 상품</p>
             <div className="flex flex-col gap-3">
-              {luckDrawList.map((item) => (
-                <LuckyDrawItem
-                  key={item.id}
-                  luckyDrawItem={item}
-                  onClickEvent={handleClickDrawButton}
-                />
-              ))}
+              {luckDrawList ? (
+                luckDrawList.map((item) => (
+                  <LuckyDrawItem
+                    key={item.id}
+                    luckyDrawItem={item}
+                    onClickEvent={handleClickDrawButton}
+                  />
+                ))
+              ) : (
+                <div>
+                  <p>현재 응모 중인 상품이 없습니다.</p>
+                  <Lottie
+                    animationData={no_items}
+                    className="absolute right-0"
+                    loop={true}
+                    style={{
+                      width: '200px',
+                      height: '200px',
+                      top: '40%',
+                      left: '50%',
+                      transform: 'translateX(-50%) translateY(-50%)',
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
