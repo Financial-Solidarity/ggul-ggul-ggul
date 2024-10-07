@@ -8,4 +8,11 @@ declare module '@types' {
     status: string;
     createdAt: string;
   }
+
+  export interface TokenTradingHistoryItemDTO {
+    quantity: number;
+    isPositive: boolean;
+    category: string;
+    createdAt: string;
+  }
 }

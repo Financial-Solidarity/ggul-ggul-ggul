@@ -1,15 +1,24 @@
 import { Button } from '@nextui-org/button';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 import { useWalletStore } from '../../store/walletStore';
+import { getTokenTradingHistories } from '../../apis/wallet';
 
 interface GgulPointProps {
   isNarrow?: boolean;
 }
 
 export const GgulPoint = ({ isNarrow }: GgulPointProps) => {
-  const { ggulToken } = useWalletStore();
+  const { ggulToken, setTokenTradingHistories } = useWalletStore();
+
+  useEffect(() => {
+    const getTokens = async () => {
+      const { content } = await getTokenTradingHistories();
+
+      setTokenTradingHistories(content);
+    };
+  }, []);
 
   if (isNarrow) {
     return (

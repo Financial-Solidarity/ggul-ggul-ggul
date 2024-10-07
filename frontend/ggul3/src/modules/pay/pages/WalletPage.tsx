@@ -14,7 +14,7 @@ export const WalletPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const handleScroll = () => {
-    if (pageContainerRef.current && pageContainerRef.current.scrollTop > 50) {
+    if (pageContainerRef.current && pageContainerRef.current.scrollTop > 0) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);

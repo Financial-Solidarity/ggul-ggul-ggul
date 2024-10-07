@@ -7,6 +7,7 @@ import {
   PrizeHistory,
   Roulette,
 } from '../components';
+import { useWalletStore } from '../store/walletStore';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
@@ -19,8 +20,18 @@ import { NavTitle } from '@/modules/common/components';
 export const PayPage = () => {
   const { setIsDarkMode } = useBottomBarStore();
 
+  const { ggulToken, getMyGgulToken } = useWalletStore();
+
   useEffect(() => {
     setIsDarkMode(true);
+
+    const getGgulToken = async () => {
+      if (!ggulToken) {
+        await getMyGgulToken();
+      }
+    };
+
+    getGgulToken();
   }, []);
 
   return (
@@ -32,7 +43,7 @@ export const PayPage = () => {
       />
       <PageContainer>
         <div className="mb-3">
-          <GgulPoint remainGgulToken={2250} />
+          <GgulPoint />
         </div>
         <div className="mb-3">
           <QrButton />
