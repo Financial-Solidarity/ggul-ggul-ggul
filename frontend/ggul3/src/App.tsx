@@ -9,6 +9,7 @@ import { useUserStore } from './modules/common/store/userStore';
 import { JustifyModal } from './modules/challenge/components/chat/JustifyModal';
 import { messaging } from './config/firebaseConfig';
 import { PathNames } from './router';
+import { ConsumptionModal } from './modules/challenge/components/chat/ConsumptionModal';
 function App() {
   const { connect } = useSocket();
   const user = useUserStore((state) => state.user);
@@ -39,6 +40,7 @@ function App() {
       </div>
       <Toaster />
       <JustifyModal />
+      <ConsumptionModal />
     </Provider>
   );
 }
