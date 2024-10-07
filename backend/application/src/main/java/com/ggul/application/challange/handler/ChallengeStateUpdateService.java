@@ -1,9 +1,7 @@
 package com.ggul.application.challange.handler;
 
-import com.ggul.application.challange.domain.Challenge;
-import com.ggul.application.challange.domain.ChallengeParticipant;
-import com.ggul.application.challange.domain.ChallengeParticipantType;
-import com.ggul.application.challange.domain.CompetitionType;
+import com.ggul.application.challange.domain.*;
+import com.ggul.application.challange.domain.repository.ChallengeLogRepository;
 import com.ggul.application.challange.domain.repository.ChallengeRepository;
 import com.ggul.application.challange.event.ChallengeDestroyedEvent;
 import com.ggul.application.challange.event.ChallengeEndedEvent;
@@ -30,6 +28,7 @@ import java.util.*;
 @Service
 public class ChallengeStateUpdateService {
     private final ChallengeRepository challengeRepository;
+    private final ChallengeLogRepository challengeLogRepository;
     private final ConsumptionLogFindService consumptionLogFindService;
     private final WalletService walletService;
 
@@ -142,6 +141,18 @@ public class ChallengeStateUpdateService {
                     blueGgul *= teamFailure;
                 }
             }
+
+            long finalRedGgul = redGgul;
+            List<ChallengeLog> redLogs = redTeam.stream().map(member -> member.getParticipant().isWin(isRedWinner, finalRedGgul, isRedOverBudget | isBlueOverBudget)).toList();
+            long finalBlueGgul = blueGgul;
+            List<ChallengeLog> blueLogs = blueTeam.stream().map(member -> member.getParticipant().isWin(isBlueWinner, finalBlueGgul, isBlueOverBudget | isBlueOverBudget)).toList();
+            challengeLogRepository.saveAll(redLogs);
+            challengeLogRepository.saveAll(blueLogs);
+
+
+            target.end();
+            Events.raise(new ChallengeEndedEvent(target.getId()));
+
             sendGgul(redTeam, redGgul);
             sendGgul(blueTeam, blueGgul);
 
@@ -155,21 +166,35 @@ public class ChallengeStateUpdateService {
 
             long successGgul = (long) (minutesTerm * term * personalSuccess);
             long failureGgul = (long) (minutesTerm * term * personalFailure);
+            Boolean isSuccess = false;
+            List<Long> gguls = new ArrayList<>();
             for(Map.Entry<ChallengeParticipant, Integer> entry : prefixs.entrySet()) {
                 ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet userInfo = byChallengeId.stream().filter(info -> Objects.equals(entry.getKey(), info.getParticipant())).findFirst().get();
-                Wallet participantWallet = userInfo.getWallet();
+
                 long ggul = 0;
                 if(entry.getValue() > target.getBudgetCap()) {
                     ggul = successGgul;
-
+                    isSuccess = true;
                 }else {
                     ggul = failureGgul;
                 }
-                sendGgul(participantWallet, ggul);
+                gguls.add(ggul);
             }
+            List<ChallengeLog> logs = new ArrayList<>();
+            for(int i = 0 ; i < gguls.size(); i++) {
+                ChallengeParticipant participant = byChallengeId.get(i).getParticipant();
+                ChallengeLog win = participant.isWin(isSuccess, gguls.get(i), isSuccess);
+                logs.add(win);
+            }
+
+            target.end();
+            Events.raise(new ChallengeEndedEvent(target.getId()));
+            for(int i = 0 ; i < gguls.size(); i++) {
+                sendGgul(byChallengeId.get(i).getWallet(), gguls.get(i));
+            }
+
         }
-        target.end();
-        Events.raise(new ChallengeEndedEvent(target.getId()));
+
     }
 
     private void sendGgul(List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> list, Long num) {

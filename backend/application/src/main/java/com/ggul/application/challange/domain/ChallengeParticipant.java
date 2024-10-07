@@ -69,6 +69,16 @@ public class ChallengeParticipant extends SoftDeleteEntity {
         }
     }
 
+    public ChallengeLog isWin(Boolean isWin, Long ggul, Boolean isSuccess) {
+        return ChallengeLog.builder()
+                .participant(this)
+                .challenge(challenge)
+                .isLose(!isSuccess || Objects.equals(ChallengeParticipantType.PERSONAL, this.type) ? null : isWin)
+                .isSuccess(isSuccess)
+                .ggulNum(ggul.intValue())
+                .build();
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(Objects.requireNonNullElse(this.id, this));
