@@ -5,7 +5,7 @@ declare module '@types' {
     money: number;
     label: string;
     market: string;
-    spendGgulToken?: number;
+    spendGgulToken: number;
   }
 
   export interface Pageable extends PageableOptions {

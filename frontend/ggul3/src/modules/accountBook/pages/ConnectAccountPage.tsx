@@ -16,6 +16,7 @@ import {
 } from '@/modules/common/apis/bankApis';
 import { NavTitle } from '@/modules/common/components';
 import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
+import { useUserStore } from '@/modules/common/store/userStore';
 
 export const ConnectAccountPage = () => {
   const {
@@ -35,6 +36,7 @@ export const ConnectAccountPage = () => {
 
   const { setActive } = useBottomBarStore();
   const { setBankAccount } = useBankAccountStore();
+  const { setIsBankAccountPossessed } = useUserStore();
 
   const handleClickConnectAccount = async () => {
     setModalStep('connecting');
@@ -48,6 +50,7 @@ export const ConnectAccountPage = () => {
       setModalStep('connected');
       setCurrentAccount(selectedAccount);
       setBankAccount(selectedAccount);
+      setIsBankAccountPossessed(true);
     } catch {
       setModalStep('failed');
     }
@@ -62,7 +65,7 @@ export const ConnectAccountPage = () => {
       const accountListResponse = await getAllBankAccounts();
       const currentMainAccount = await getMainBankAccount();
 
-      setAccountList(accountListResponse);
+      setAccountList(accountListResponse); // REC 배열 고치면 수정
       setCurrentAccount(currentMainAccount);
     };
 

@@ -28,14 +28,12 @@ export const AccountBookPage = () => {
             buttonImageUrl={burnMoney}
             color="secondary"
             description="이번 달 지출"
-            displayValue={`224,610 원`}
             link={PathNames.ACCOUNT_BOOK.HISTORY.path}
           />
           <StatisticsButton
             buttonImageUrl={financeChart}
             color="success"
             description="항목별 소비 통계"
-            displayValue={`커피 28 회`}
             link={PathNames.ACCOUNT_BOOK.STATISTICS.path}
           />
         </div>
