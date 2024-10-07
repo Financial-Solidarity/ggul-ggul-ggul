@@ -1,5 +1,5 @@
 import { Button, Divider } from '@nextui-org/react';
-import { ArrowsRightLeftIcon } from '@heroicons/react/24/outline';
+import { ArrowsRightLeftIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { useWaitingRoomStore } from '../../store/waitingRoomStore';
 import {
@@ -62,6 +62,9 @@ export const TeamDrawer = ({
               <span className="font-bold">팀변경</span>
             </button>
           )}
+          <button onClick={onClose}>
+            <XMarkIcon className="h-7 w-7 text-default-800" />
+          </button>
         </div>
         <div className="flex w-full flex-col items-start overflow-y-auto">
           <div>
