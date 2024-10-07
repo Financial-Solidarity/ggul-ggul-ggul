@@ -29,6 +29,7 @@ public class ApplicationController {
     public ResponseEntity<?> getApplications(@AuthenticationPrincipal UserLoginContext context,
                                              @RequestParam(required = false) String order,
                                              @RequestParam(required = false, defaultValue = "false") Boolean asc,
+                                             @RequestParam(required = false) Boolean success,
                                              @RequestParam(required = false) String status,
                                              @RequestParam(required = false) Boolean own,
                                              Pageable pageable){
@@ -36,6 +37,7 @@ public class ApplicationController {
                 .userId(context.getUserId())
                 .order(order)
                 .asc(asc)
+                .success(success)
                 .status(status != null ? Status.valueOf(status) : null)
                 .own(own)
                 .pageable(pageable)
