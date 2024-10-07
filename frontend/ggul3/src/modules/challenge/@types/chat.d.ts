@@ -1,6 +1,48 @@
 declare module '@types' {
   export type Chat = CommonChatDTO | JustificationChatDTO | SpendChatDTO;
 
+  export type SocketChat =
+    | SocketCommontChatDTO
+    | SocketJustificationChatDTO
+    | SocketSpendChatDTO;
+
+  export interface SocketCommontChatDTO {
+    type: 'COMMON';
+    data: {
+      challengeId: string;
+      chattingRoomId: string;
+      chattingId: string;
+      content: string;
+      sentAt: string;
+      profile: Profile;
+    };
+  }
+  export interface SocketSpendChatDTO {
+    type: 'SPEND';
+    data: {
+      challengeId: string;
+      chattingRoomId: string;
+      chattingId: string;
+      consumption: Consumption;
+
+      sentAt: string;
+      profile: Profile;
+    };
+  }
+
+  export interface SocketJustificationChatDTO {
+    type: 'JUSTIFICATION';
+    data: {
+      challengeId: string;
+      chattingRoomId: string;
+      chattingId: string;
+      content: string;
+      consumption: Consumption;
+      sentAt: string;
+      profile: Profile;
+    };
+  }
+
   export interface CommonChatDTO {
     type: 'COMMON';
     chattingId: string;

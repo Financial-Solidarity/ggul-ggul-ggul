@@ -6,4 +6,5 @@ export const QUERY_KEYS = {
   RECENT_CHATTING: 'recentChatting',
   PREVIOUS_CHATTING: 'previousChatting',
   PARTICIPARING_CHALLENGE: 'participatingChallenge',
+  CONSUMPTION: 'consumption',
 } as const;
