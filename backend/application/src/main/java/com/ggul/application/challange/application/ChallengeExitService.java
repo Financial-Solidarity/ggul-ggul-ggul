@@ -1,4 +1,4 @@
-package com.ggul.application.challange.application.schedule;
+package com.ggul.application.challange.application;
 
 import com.ggul.application.challange.application.dto.ChallengeExitRequest;
 import com.ggul.application.challange.domain.Challenge;

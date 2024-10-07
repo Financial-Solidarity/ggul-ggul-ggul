@@ -106,4 +106,18 @@ public class WalletService {
             tokenService.retryGrantToken(wallet.getAddress(), BigInteger.valueOf(quantity));
         }
     }
+
+    /**
+     * 토큰 지급
+     * @param wallet 지급받을 wallet
+     * @param quantity Token 지급량
+     */
+    @Transactional
+    public void grantTokens(Wallet wallet, Long quantity){
+        try{
+            tokenService.grantTokens(wallet.getAddress(), BigInteger.valueOf(quantity));
+        } catch (ContractInsufficientTokenException e) {
+            tokenService.retryGrantToken(wallet.getAddress(), BigInteger.valueOf(quantity));
+        }
+    }
 }
