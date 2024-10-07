@@ -2,15 +2,15 @@ import { ModalBody } from '@nextui-org/react';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import Lottie from 'lottie-react';
 
-import * as SmallText from '../SmallText';
 import { AccountModalProps } from '../../@types/accountModal';
+import { SmallText } from '../SmallText';
 
 import { UserBoldSpan } from '@/modules/user/components';
 import loading_dots from '@/assets/lotties/loading_dots.json';
 
 type ConnectingAccountProps = Pick<
   AccountModalProps,
-  'currentAccount' | 'selectedAccount'
+  'currentAccount' | 'selectedAccount' | 'setModalStep'
 >;
 
 export const ConnectingAccount = ({
@@ -35,15 +35,15 @@ export const ConnectingAccount = ({
       </div>
       <div className="flex items-center text-xl">
         <UserBoldSpan>
-          {currentAccount.name}
-          <SmallText.SmallText>{currentAccount.accountNo}</SmallText.SmallText>
+          {currentAccount.bankName}
+          <SmallText>{currentAccount.accountNo}</SmallText>
         </UserBoldSpan>
         <div className="px-4">
           <ChevronRightIcon className="w-4" />
         </div>
         <UserBoldSpan>
-          {selectedAccount.name}
-          <SmallText.SmallText>{currentAccount.accountNo}</SmallText.SmallText>
+          {selectedAccount.bankName}
+          <SmallText>{currentAccount.accountNo}</SmallText>
         </UserBoldSpan>
       </div>
     </ModalBody>

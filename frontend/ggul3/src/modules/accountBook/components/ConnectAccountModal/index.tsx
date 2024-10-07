@@ -1,4 +1,5 @@
 import { Modal, ModalContent } from '@nextui-org/react';
+import { AccountItemDTO } from '@types';
 
 import {
   ConnectedAccount,
@@ -12,16 +13,8 @@ interface ConnectAccountModalProps {
   setConnectModalOpen: (isOpen: boolean) => void;
   setModalStep: (step: 'connecting' | 'connected' | 'failed') => void;
   initializeModalStates: () => void;
-  currentAccount: {
-    id: number;
-    name: string;
-    accountNo: string;
-  };
-  selectedAccount: {
-    id: number;
-    name: string;
-    accountNo: string;
-  };
+  currentAccount: AccountItemDTO | null;
+  selectedAccount: AccountItemDTO | null;
 }
 
 export const ConnectAccountModal = ({
@@ -33,6 +26,10 @@ export const ConnectAccountModal = ({
   setModalStep,
   initializeModalStates,
 }: ConnectAccountModalProps) => {
+  if (!currentAccount || !selectedAccount) {
+    return null;
+  }
+
   return (
     <Modal
       isDismissable={false}

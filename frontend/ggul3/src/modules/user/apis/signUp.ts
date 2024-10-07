@@ -29,6 +29,12 @@ export const requestEmailVerification = ({ email }: { email: string }) => {
   });
 };
 
+/**
+ * 이메일 인증번호를 검증합니다.
+ * @param email 이메일
+ * @param number 인증번호
+ * @returns {Promise<{ isValid: boolean }>}
+ */
 export const verifyEmail = ({ email, number }: VerifyEmail) => {
   return _axios<{ isValid: boolean }>({
     method: 'POST',

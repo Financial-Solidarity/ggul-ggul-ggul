@@ -1,17 +1,31 @@
 import { Button } from '@nextui-org/button';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
+
+import { useWalletStore } from '../../store/walletStore';
+import { getTokenTradingHistories } from '../../apis/wallet';
 
 interface GgulPointProps {
   isNarrow?: boolean;
-  remainGgulToken: number;
 }
 
-export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
+export const GgulPoint = ({ isNarrow }: GgulPointProps) => {
+  const { ggulToken, setTokenTradingHistories } = useWalletStore();
+
+  useEffect(() => {
+    const getTokens = async () => {
+      const { content } = await getTokenTradingHistories();
+
+      setTokenTradingHistories(content);
+    };
+
+    getTokens();
+  }, []);
+
   if (isNarrow) {
     return (
       <Card
-        className="flex bg-primary py-1 text-white"
+        className="bfg flex bg-primary py-1 text-white duration-200 ease-linear hover:bg-opacity-70"
         radius="none"
         shadow="sm"
       >
@@ -21,7 +35,7 @@ export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
               <div>
                 <SmallText>GGUL TOKEN</SmallText>
               </div>
-              <p className="text-2xl">{remainGgulToken} P</p>
+              <p className="text-2xl">{ggulToken} P</p>
             </div>
             <div className="flex">
               <ToggleBalanceVisibilityButton />
@@ -33,7 +47,7 @@ export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
   }
 
   return (
-    <Card className="flex min-h-40 bg-success py-1 text-white">
+    <Card className="flex min-h-40 bg-success py-1 text-white duration-200 ease-linear hover:bg-opacity-70">
       <CardHeader className="flex justify-between">
         <div>
           <SmallText>GGUL TOKEN</SmallText>
@@ -43,7 +57,7 @@ export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
         </div>
       </CardHeader>
       <CardBody className="py-0">
-        <p className="text-2xl">{`2,450`} P</p>
+        <p className="text-2xl">{ggulToken} P</p>
       </CardBody>
       <CardFooter className="flex flex-col items-start">
         <SmallText>껄을 이용하여 유니크한 음식을 뽑거나</SmallText>

@@ -2,10 +2,10 @@ import {
   FindPasswordVerification,
   FindPasswordWithEmail,
   SetNewPassword,
-} from '../components';
-import { useFindPasswordStore } from '../store/findPasswordStore';
+} from '../../user/components';
+import { useFindPasswordStore } from '../../user/store/findPasswordStore';
 
-export const FindPasswordPage = () => {
+export const ChangePasswordPage = () => {
   const {
     step,
     email,

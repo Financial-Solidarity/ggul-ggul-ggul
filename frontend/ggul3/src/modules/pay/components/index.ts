@@ -11,3 +11,5 @@ export * from './WalletHeader';
 export * from './PrizeHistoryItem';
 export * from './ItemInfo';
 export * from './PaymentSlideBar';
+export * from './PrizeSubject';
+export * from './LuckyDrawResultModal';

@@ -1,5 +1,4 @@
 import { Button, ModalBody } from '@nextui-org/react';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
 import { AccountModalProps } from '../../@types/accountModal';
@@ -32,17 +31,10 @@ export const ConnectedAccount = ({
       <div className="relative flex">
         <span>계좌가 성공적으로 연동되었습니다!</span>
       </div>
-      <div className="flex items-center text-xl">
+      <div className="flex items-center text-center text-xl">
         <UserBoldSpan>
-          {currentAccount.name}
+          {currentAccount.bankName}
           <SmallText>{currentAccount.accountNo}</SmallText>
-        </UserBoldSpan>
-        <div className="px-4">
-          <ChevronRightIcon className="w-4" />
-        </div>
-        <UserBoldSpan>
-          {selectedAccount.name}
-          <SmallText>{selectedAccount.accountNo}</SmallText>
         </UserBoldSpan>
       </div>
       <Button

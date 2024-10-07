@@ -1,5 +1,9 @@
-import { SignUpForm, SignUpSuccess, SignUpVerifyEmail } from '../components';
+import { useEffect } from 'react';
+
+import { SignUpForm, SignUpVerifyEmail } from '../components';
 import { useSignUpStore } from '../store/signUpStore';
+
+import { useHideAndRestoreBottomBar } from '@/modules/common/hooks/useHideAndRestoreBottomBar';
 
 export const SignUpPage = () => {
   const {
@@ -20,6 +24,12 @@ export const SignUpPage = () => {
     validateEmail,
     validatePasswordCheck,
   } = useSignUpStore();
+
+  useHideAndRestoreBottomBar();
+
+  useEffect(() => {
+    setStep('sign up');
+  }, []);
 
   if (step === 'sign up') {
     return (
@@ -52,9 +62,5 @@ export const SignUpPage = () => {
         setStep={setStep}
       />
     );
-  }
-
-  if (step === 'success') {
-    return <SignUpSuccess />;
   }
 };

@@ -19,12 +19,13 @@ import {
   QrPayPage,
   WalletPage,
 } from './modules/pay/pages';
-import { FindPasswordPage, LoginPage, SignUpPage } from './modules/user/pages';
+import { LoginPage, SignUpPage } from './modules/user/pages';
 import {
   AccountBookHistoryPage,
   AccountBookPage,
   AccountBookStatisticsPage,
   ConnectAccountPage,
+  NoticeRequireBankAccount,
 } from './modules/accountBook/pages';
 import { WaitingRoomPage } from './modules/challenge/pages/WaitingRoomPage';
 import { ChattingRoomListPage } from './modules/challenge/pages/ChattingRoomListPage';
@@ -33,6 +34,9 @@ import { SoloChattingRoomPage } from './modules/challenge/pages/SoloChattingRoom
 import { TeamChattingRoomPage } from './modules/challenge/pages/TeamChattingRoomPage';
 import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRoomPage';
 import { useUserStore } from './modules/common/store/userStore';
+import { ChangePasswordPage } from './modules/myPage/pages';
+import { useBankAccountStore } from './modules/common/store/useBankAccountStore';
+import { LuckyDrawDetailPage } from './modules/pay/pages/LuckyDrawDetailPage';
 
 export interface Path {
   path: string;
@@ -65,6 +69,7 @@ export interface PathNames {
     PRIZE_HISTORY: Path;
     LUCKY_DRAW_ENTRY: Path;
     QR_PAY: Path;
+    LUCKY_DRAW_LIST: Path;
   };
   ACCOUNT_BOOK: {
     MAIN: Path;
@@ -78,11 +83,11 @@ export interface PathNames {
     CHANGE_USER_INFO: Path;
   };
   LOGIN: Path;
-  SIGHUP: Path;
-  FIND_PASSWORD: Path;
+  SIGNUP: Path;
+  CHANGE_PASSWORD: Path;
+  NOTICE_REQUIRE_ACCOUNT: Path;
 }
 
-// PathNames 구조화
 export const PathNames: PathNames = {
   HOME: {
     path: '/',
@@ -169,6 +174,10 @@ export const PathNames: PathNames = {
       path: '/pay/qr-pay',
       name: 'QR코드',
     },
+    LUCKY_DRAW_LIST: {
+      path: '/pay/lucky-draw/:id',
+      name: '응모 상품 목록',
+    },
   },
   ACCOUNT_BOOK: {
     MAIN: {
@@ -206,13 +215,17 @@ export const PathNames: PathNames = {
     path: '/login',
     name: '로그인',
   },
-  SIGHUP: {
+  SIGNUP: {
     path: '/signup',
     name: '로그인',
   },
-  FIND_PASSWORD: {
-    path: '/find-password',
+  CHANGE_PASSWORD: {
+    path: '/change-password',
     name: '로그인',
+  },
+  NOTICE_REQUIRE_ACCOUNT: {
+    path: '/account-book/require-account',
+    name: '계좌 연결 필요 안내',
   },
 };
 
@@ -291,6 +304,10 @@ const payRoutes: RouteObject[] = [
     path: PathNames.GGULPAY.QR_PAY.path,
     element: <QrPayPage />,
   },
+  {
+    path: PathNames.GGULPAY.LUCKY_DRAW_LIST.path,
+    element: <LuckyDrawDetailPage />,
+  },
 ];
 
 const loginRoutes: RouteObject[] = [
@@ -299,12 +316,15 @@ const loginRoutes: RouteObject[] = [
     element: <LoginPage />,
   },
   {
-    path: PathNames.SIGHUP.path,
+    path: PathNames.SIGNUP.path,
     element: <SignUpPage />,
   },
+];
+
+const noticeRoutes: RouteObject[] = [
   {
-    path: PathNames.FIND_PASSWORD.path,
-    element: <FindPasswordPage />,
+    path: PathNames.NOTICE_REQUIRE_ACCOUNT.path,
+    element: <NoticeRequireBankAccount />,
   },
 ];
 
@@ -312,6 +332,10 @@ const myPageRoutes: RouteObject[] = [
   {
     path: PathNames.MYPAGE.MAIN.path,
     element: <MyPage />,
+  },
+  {
+    path: PathNames.CHANGE_PASSWORD.path,
+    element: <ChangePasswordPage />,
   },
 ];
 
@@ -353,10 +377,10 @@ const gameRoutes: RouteObject[] = [
   },
 ];
 
-// 비인가 사용자도 접근 가능한 경로
+// 비인가 사용자가 접근 가능한 경로
 const publicRoutes: RouteObject[] = [...loginRoutes];
-
-// 인가된 사용자만 접근 가능한 경로
+const requiredRoutes: RouteObject[] = [...noticeRoutes];
+// 인가 된 사용자만 접근 가능한 경로
 const privateRoutes: RouteObject[] = [
   ...challengeRoutes,
   ...payRoutes,
@@ -372,10 +396,14 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <></>,
     children: [
-      // 비인가 사용자도 접근 가능한 경로
-      ...publicRoutes,
-
-      // 인가 된 사용자만 접근 가능한 경로
+      ...publicRoutes.map((route) => ({
+        ...route,
+        element: <PublicRoute element={route.element} />,
+      })),
+      ...requiredRoutes.map((route) => ({
+        ...route,
+        element: <RequiredRoute element={route.element} />,
+      })),
       ...privateRoutes.map((route) => ({
         ...route,
         element: <PrivateRoute element={route.element} />,
@@ -384,13 +412,63 @@ export const router = createBrowserRouter([
   },
 ]);
 
-// 인가된 사용자만 접근 가능한 경로로 설정
-function PrivateRoute({ element }: { element: ReactNode }) {
+function PublicRoute({ element }: { element: ReactNode }) {
   const { isLoggedIn } = useUserStore();
+  const { bankAccount } = useBankAccountStore();
+
+  if (isLoggedIn) {
+    return <Navigate replace to={PathNames.MYPAGE.MAIN.path} />;
+  }
+
+  if (isLoggedIn && bankAccount === null) {
+    return <Navigate replace to={PathNames.NOTICE_REQUIRE_ACCOUNT.path} />;
+  }
+
+  return <>{element}</>;
+}
+
+function RequiredRoute({ element }: { element: ReactNode }) {
+  const { isLoggedIn, isBankAccountPossessed } = useUserStore();
+
+  const currentPath = window.location.pathname;
 
   if (!isLoggedIn) {
-    return <Navigate replace to="/login" />;
-  } else {
-    return element;
+    return <Navigate replace to={PathNames.LOGIN.path} />;
   }
+
+  if (
+    isBankAccountPossessed &&
+    currentPath === PathNames.NOTICE_REQUIRE_ACCOUNT.path
+  ) {
+    return <Navigate replace to={PathNames.MYPAGE.MAIN.path} />;
+  }
+
+  return <>{element}</>;
+}
+
+function PrivateRoute({ element }: { element: ReactNode }) {
+  const { isLoggedIn, isBankAccountPossessed } = useUserStore();
+
+  // 허용할 경로 리스트
+  const allowedPaths = [
+    PathNames.NOTICE_REQUIRE_ACCOUNT.path,
+    PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path,
+  ];
+
+  const currentPath = window.location.pathname;
+
+  if (!isLoggedIn) {
+    return <Navigate replace to={PathNames.LOGIN.path} />;
+  }
+
+  // 계좌 연동이 안된 사용자는 특정 경로에 접근할 수 없음
+  if (
+    isLoggedIn &&
+    !isBankAccountPossessed &&
+    !allowedPaths.includes(currentPath)
+  ) {
+    return <Navigate replace to={PathNames.NOTICE_REQUIRE_ACCOUNT.path} />;
+  }
+
+  return <>{element}</>;
 }
