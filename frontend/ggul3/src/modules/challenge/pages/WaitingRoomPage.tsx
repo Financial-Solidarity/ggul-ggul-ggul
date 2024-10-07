@@ -111,7 +111,7 @@ export const WaitingRoomPage = () => {
         }
       />
       <PageContainer activePaddingX={false}>
-        <div className="relative flex h-full w-full flex-col">
+        <div className="relative flex h-full w-full flex-col overflow-y-auto">
           <ChallengeInfoAccordion challengeId={challengeId!} />
           <div
             ref={containerRef}

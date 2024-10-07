@@ -57,7 +57,7 @@ export const TotalChattingRoomPage = () => {
 
   const { data: previousChattingList } =
     usePreviousChattingList(totalChattingRoomId);
-  const { data: recentChattingList } =
+  const { data: recentChattingList, refetch: refetchRecentChattingList } =
     useRecentChattingList(totalChattingRoomId);
 
   const openDrawer = () => {
@@ -86,6 +86,13 @@ export const TotalChattingRoomPage = () => {
       bottomRef.current?.scrollIntoView();
     }
   }, [socketChattingList]);
+
+  useEffect(() => {
+    return () => {
+      if (!totalChattingRoomId) return;
+      refetchRecentChattingList();
+    };
+  }, []);
 
   return (
     <>

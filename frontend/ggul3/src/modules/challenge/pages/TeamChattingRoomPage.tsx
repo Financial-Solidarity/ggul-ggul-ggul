@@ -58,9 +58,8 @@ export const TeamChattingRoomPage = () => {
   const { data: previousChattingList } = usePreviousChattingList(
     myTeamChattingRoomId!,
   );
-  const { data: recentChattingList } = useRecentChattingList(
-    myTeamChattingRoomId!,
-  );
+  const { data: recentChattingList, refetch: refetchRecentChattingList } =
+    useRecentChattingList(myTeamChattingRoomId!);
 
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -88,6 +87,13 @@ export const TeamChattingRoomPage = () => {
       bottomRef.current?.scrollIntoView();
     }
   }, [socketChattingList]);
+
+  useEffect(() => {
+    return () => {
+      if (!myTeamChattingRoomId) return;
+      refetchRecentChattingList();
+    };
+  }, []);
 
   return (
     <>

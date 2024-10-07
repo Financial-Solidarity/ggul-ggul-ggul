@@ -46,14 +46,13 @@ export const ChallengeInfoAccordion = ({
 
   const handleStart = () => {
     startChallenge(challengeId)
-      .then(() => {})
+      .then(() => {
+        navigate(PathNames.CHALLENGE.CHATTING_ROOMS.path, { replace: true });
+      })
       .catch((error) => {
         toast.error(error.message, {
           position: 'bottom-center',
         });
-      })
-      .then(() => {
-        navigate(PathNames.CHALLENGE.CHATTING_ROOMS.path, { replace: true });
       });
   };
 
