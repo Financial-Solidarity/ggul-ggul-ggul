@@ -65,7 +65,7 @@ export const ConnectAccountPage = () => {
       const accountListResponse = await getAllBankAccounts();
       const currentMainAccount = await getMainBankAccount();
 
-      setAccountList(accountListResponse.REC || []); // REC 배열 고치면 수정
+      setAccountList(accountListResponse); // REC 배열 고치면 수정
       setCurrentAccount(currentMainAccount);
     };
 

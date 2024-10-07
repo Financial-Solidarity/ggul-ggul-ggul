@@ -1,4 +1,3 @@
-import { Payment } from '@types';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -23,14 +22,13 @@ export const AccountBookHistoryPage = () => {
   const endDate = searchParams.get('end-date') || currentDate;
 
   useEffect(() => {
-    getPaymentHistory({ startDate, endDate })
-      .then((res) => {
-        setPaymentList(res.content);
-      })
-      .catch((err) => {
-        console.error(err);
-        setPaymentList(tempPaymentList);
-      });
+    const getPaymentList = async () => {
+      const res = await getPaymentHistory({ startDate, endDate });
+
+      setPaymentList(res.content);
+    };
+
+    getPaymentList();
   }, [searchParams]);
 
   return (
@@ -41,6 +39,7 @@ export const AccountBookHistoryPage = () => {
         left={<BackButton />}
       />
       <AccountBookHistoryHeader
+        paymentList={paymentList}
         setSearchParams={setSearchParams}
         startDate={startDate}
       />
@@ -50,59 +49,3 @@ export const AccountBookHistoryPage = () => {
     </>
   );
 };
-
-const tempPaymentList: Payment[] = [
-  {
-    productName: '상품명',
-    spentAt: '2024-05-24 06:21:22',
-    money: -5000,
-    label: '온라인 쇼핑',
-    market: '농협 하나로 마트',
-  },
-  {
-    productName: '상품명',
-    spentAt: '2024-05-24 06:21:22',
-    money: 5000,
-    label: '온라인 쇼핑',
-    market: '농협 하나로 마트',
-  },
-  {
-    productName: '상품명',
-    spentAt: '2024-05-24 06:21:22',
-    money: -5000,
-    label: '온라인 쇼핑',
-    market: '농협 하나로 마트',
-    spendGgulToken: 103,
-  },
-  {
-    productName: '상품명',
-    spentAt: '2024-05-24 06:21:22',
-    money: 5000,
-    label: '온라인 쇼핑',
-    market: '농협 하나로 마트',
-  },
-  {
-    productName: '상품명',
-    spentAt: '2024-05-24 06:21:22',
-    money: -5000,
-    label: '온라인 쇼핑',
-    market: '농협 하나로 마트',
-    spendGgulToken: 100,
-  },
-  {
-    productName: '상품명',
-    spentAt: '2024-05-24 06:21:22',
-    money: 5000,
-    label: '온라인 쇼핑',
-    market: '농협 하나로 마트',
-    spendGgulToken: 100,
-  },
-  {
-    productName: '상품명',
-    spentAt: '2024-05-24 06:21:22',
-    money: -5000,
-    label: '온라인 쇼핑',
-    market: '농협 하나로 마트',
-    spendGgulToken: 100,
-  },
-];

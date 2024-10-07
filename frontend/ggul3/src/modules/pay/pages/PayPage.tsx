@@ -18,16 +18,11 @@ import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const PayPage = () => {
-  const { setIsDarkMode } = useBottomBarStore();
-
   const { getMyGgulToken } = useWalletStore();
 
   useEffect(() => {
-    setIsDarkMode(true);
-
     getMyGgulToken();
   }, []);
-  useSetBottomBar({ active: true, isDarkMode: false });
 
   return (
     <>
