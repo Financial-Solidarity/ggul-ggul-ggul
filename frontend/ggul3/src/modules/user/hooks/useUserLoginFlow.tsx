@@ -27,12 +27,11 @@ export const useUserLoginFlow = () => {
     const userData = await getUserData();
     const mainBankAccount = await getMainBankAccount();
 
-    console.log('mainBankAccount', mainBankAccount);
     // 유저 데이터 상태에 저장
     setUser(userData);
     setIsLoggedIn(true);
 
-    if (mainBankAccount === null) {
+    if (!mainBankAccount) {
       setBankAccount(null);
 
       // 은행 API 생성

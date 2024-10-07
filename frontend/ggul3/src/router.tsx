@@ -450,11 +450,7 @@ function PrivateRoute({ element }: { element: ReactNode }) {
   }
 
   // 계좌 연동이 안된 사용자는 특정 경로에 접근할 수 없음
-  if (
-    isLoggedIn &&
-    bankAccount === null &&
-    !allowedPaths.includes(currentPath)
-  ) {
+  if (isLoggedIn && !bankAccount && !allowedPaths.includes(currentPath)) {
     return <Navigate replace to={PathNames.NOTICE_REQUIRE_ACCOUNT.path} />;
   }
 
