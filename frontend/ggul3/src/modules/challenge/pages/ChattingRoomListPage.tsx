@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
+
 import { useGetChattingRoomList } from '../reactQueries/useChattingRoomQuery';
 import { ChattingRoomGroup } from '../components/chattingRoomList/ChattingRoomGroup';
+import { useSocketChattingRoomListStore } from '../store/socketChattingRoomListStore';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -10,7 +13,14 @@ import { NotificationButton } from '@/modules/common/components/NotificationButt
 
 export const ChattingRoomListPage = () => {
   useSetBottomBar({ active: true, isDarkMode: false });
+  const { chattingRoomList, setChattingRoomList } =
+    useSocketChattingRoomListStore();
   const { data } = useGetChattingRoomList();
+
+  useEffect(() => {
+    if (!data) return;
+    setChattingRoomList(data);
+  }, [data]);
 
   return (
     <>
@@ -21,7 +31,7 @@ export const ChattingRoomListPage = () => {
       />
       <PageContainer>
         <div className="mb-20 flex flex-col gap-4 py-4">
-          {data.map((chattingRoomGroup) => (
+          {chattingRoomList.map((chattingRoomGroup) => (
             <ChattingRoomGroup
               key={chattingRoomGroup.challenge.challengeId}
               {...chattingRoomGroup}
