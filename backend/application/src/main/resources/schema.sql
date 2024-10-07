@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS primary_account;
+DROP TABLE IF EXISTS challenge_log;
 DROP TABLE IF EXISTS consumption_log;
 DROP TABLE IF EXISTS ggul_log;
 DROP TABLE IF EXISTS application_history;
@@ -275,6 +276,17 @@ CREATE TABLE primary_account
     account_id BINARY(16) PRIMARY KEY NOT NULL,
     user_id    BINARY(16)             NOT NULL,
     account_no VARCHAR(40) NOT NULL
+);
+
+CREATE TABLE challenge_log (
+    challenge_log_id BINARY(16) PRIMARY KEY NOT NULL ,
+    challenge_participant_id BINARY(16) NOT NULL ,
+    challenge_id    BINARY(16) NOT NULL ,
+    is_success BOOL NOT NULL ,
+    is_lose BOOL NOT NULL ,
+    ggul_num INT NOT NULL,
+    FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant(challenge_participant_id),
+    FOREIGN KEY (challenge_id) REFERENCES challenge(challenge_id)
 );
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)

@@ -16,7 +16,8 @@ public enum ChallengeException implements ErrorCodeDefinition {
     CHALLENGE_PARTICIPANT_NOT_MATCH("챌린지 참가자 비율이 맞지 않습니다.", "CP001", HttpStatus.BAD_REQUEST),
     CHALLENGE_PARTICIPANT_NOT_EXIST("챌린지에 참석중이지 않습니다.", "CP002", HttpStatus.BAD_REQUEST),
     CHALLENGE_PARTICIPANT_EXIST("이미 챌린지에 참여중입니다.", "CP003", HttpStatus.BAD_REQUEST),
-    CHALLENGE_PARTICIPANT_LIMIT("챌린지 참여자가 가득 찼습니다", "CP004", HttpStatus.BAD_REQUEST),
+    CHALLENGE_PARTICIPANT_LIMIT("챌린지 참여자가 가득 찼습니다.", "CP004", HttpStatus.BAD_REQUEST),
+    CHALLENGE_IS_NOT_END("챌린지가 아직 끝나지 않았습니다.", "CP005", HttpStatus.BAD_REQUEST),
 
     ;
 
