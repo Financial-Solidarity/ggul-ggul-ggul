@@ -97,7 +97,7 @@ public class BankMasterService {
         try{
             return postRequest(url, body);
         } catch(Exception e){
-            return null;
+            return new HashMap<>();
         }
     }
 
