@@ -6,6 +6,7 @@ import com.ggul.application.wallet.application.dto.WalletHistoryInfo;
 import com.ggul.application.wallet.application.dto.WalletInfo;
 import com.ggul.application.wallet.application.dto.WalletTokenInfo;
 import com.ggul.application.wallet.domain.*;
+import com.ggul.application.wallet.exception.ContractInsufficientTokenException;
 import com.ggul.application.wallet.exception.WalletNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -89,5 +90,20 @@ public class WalletService {
     public void useToken(UUID userId, Long quantity){
         Wallet wallet = walletRepository.findByUserId(userId).orElseThrow(WalletNotFoundException::new);
         tokenService.useToken(wallet.getAddress(), BigInteger.valueOf(quantity));
+    }
+
+    /**
+     * 토큰 지급
+     * @param userId 지급받을 User Id
+     * @param quantity Token 지급량
+     */
+    @Transactional
+    public void grantTokens(UUID userId, Long quantity){
+        Wallet wallet = walletRepository.findByUserId(userId).orElseThrow(WalletNotFoundException::new);
+        try{
+            tokenService.grantTokens(wallet.getAddress(), BigInteger.valueOf(quantity));
+        } catch (ContractInsufficientTokenException e) {
+            tokenService.retryGrantToken(wallet.getAddress(), BigInteger.valueOf(quantity));
+        }
     }
 }

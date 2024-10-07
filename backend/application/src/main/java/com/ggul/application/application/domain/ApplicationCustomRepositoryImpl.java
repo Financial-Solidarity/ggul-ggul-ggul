@@ -3,6 +3,7 @@ package com.ggul.application.application.domain;
 import com.ggul.application.application.application.dto.ApplicationListElement;
 import com.ggul.application.application.application.dto.ApplicationSearchDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class ApplicationCustomRepositoryImpl implements ApplicationCustomReposit
         UUID userId = dto.getUserId();
         String order = dto.getOrder();
         Boolean asc = dto.getAsc();
+        Boolean success = dto.getSuccess();
         Status status = dto.getStatus();
         Boolean own = dto.getOwn();
         Pageable pageable = dto.getPageable();
@@ -43,12 +45,20 @@ public class ApplicationCustomRepositoryImpl implements ApplicationCustomReposit
                         application.createdAt)
         ).from(application);
 
-        if(own != null){
+        if(own != null || success != null){
             query.distinct().join(applicationHistory).on(application.id.eq(applicationHistory.application.id));
-            if(own)
-                query.where(applicationHistory.user.id.eq(userId));
-            else
-                query.where(applicationHistory.user.id.ne(userId));
+            if(own != null){
+                if(own)
+                    query.where(applicationHistory.user.id.eq(userId));
+                else
+                    query.where(applicationHistory.user.id.ne(userId));
+            }
+            if(success != null){
+                if(success)
+                    query.where(applicationHistory.isSuccess.eq(true));
+                else
+                    query.where(applicationHistory.isSuccess.eq(false));
+            }
         }
 
         if(status != null){
@@ -78,7 +88,6 @@ public class ApplicationCustomRepositoryImpl implements ApplicationCustomReposit
             else
                 query.orderBy(application.createdAt.desc());
         }
-
 
         query.offset(pageable.getOffset());
         query.limit(pageable.getPageSize());
