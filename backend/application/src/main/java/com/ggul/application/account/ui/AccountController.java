@@ -131,6 +131,8 @@ public class AccountController {
 
         Map<String, Object> userAccount = (Map<String, Object>) bankMasterService.getDemandDepositAccount(getUserKey(userLoginContext.getUserId()), primaryAccountDto.getAccountNo()).get("REC");
 
+        if(userAccount == null) return ResponseEntity.ok(null);
+
         PrimaryAccountView primaryAccountView = PrimaryAccountView
                 .builder()
                 .accountNo(primaryAccountDto.getAccountNo())
