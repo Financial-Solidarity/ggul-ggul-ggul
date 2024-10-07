@@ -94,7 +94,11 @@ public class BankMasterService {
         Map<String, Object> body = generatorBodyWithHeader(url, userKey);
         body.put("accountNo", accountNo);
 
-        return postRequest(url, body);
+        try{
+            return postRequest(url, body);
+        } catch(Exception e){
+            return null;
+        }
     }
 
 
@@ -127,9 +131,6 @@ public class BankMasterService {
 
         return postRequest(url, body);
     }
-
-
-
 
     private int generatorInstitutionTransactionUniqueNo(){
         int value = counter.getAndIncrement();

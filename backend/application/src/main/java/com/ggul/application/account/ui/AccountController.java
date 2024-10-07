@@ -88,7 +88,7 @@ public class AccountController {
     public ResponseEntity<?> getDemandDepositAccountListService(@AuthenticationPrincipal UserLoginContext userLoginContext){
         Map<String, Object> result = bankMasterService.getDemandDepositAccountList(getUserKey(userLoginContext.getUserId()));
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(result.get("REC"));
     }
 
     // 내가 등록한 계좌 조회(단건)
