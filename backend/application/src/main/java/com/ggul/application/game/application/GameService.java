@@ -69,13 +69,7 @@ public class GameService {
         if (receivableToken == 0)
             return;
 
-        Wallet wallet = walletRepository.findByUserId(userId).orElseThrow(WalletNotFoundException::new);
-
-        try{
-            tokenService.grantTokens(wallet.getAddress(), BigInteger.valueOf(receivableToken));
-        } catch (ContractInsufficientTokenException e) {
-            tokenService.retryGrantToken(wallet.getAddress(), BigInteger.valueOf(receivableToken));
-        }
+        walletService.grantTokens(userId, receivableToken);
 
         long leftTime = getSecondDuration(game) % gameConfig.getTerm();
         game.changeLastReceiveAt(LocalDateTime.now().minusSeconds(leftTime));

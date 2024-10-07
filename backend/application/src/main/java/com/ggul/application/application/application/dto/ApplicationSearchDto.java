@@ -17,6 +17,7 @@ public class ApplicationSearchDto {
     private UUID userId;
     private String order;
     private Boolean asc;
+    private Boolean success;
     private Status status;
     private Boolean own;
     private Pageable pageable;
