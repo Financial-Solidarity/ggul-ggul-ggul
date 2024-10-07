@@ -36,6 +36,7 @@ import { TotalChattingRoomPage } from './modules/challenge/pages/TotalChattingRo
 import { useUserStore } from './modules/common/store/userStore';
 import { ChangePasswordPage } from './modules/myPage/pages';
 import { useBankAccountStore } from './modules/common/store/useBankAccountStore';
+import { LuckyDrawDetailPage } from './modules/pay/pages/LuckyDrawDetailPage';
 
 export interface Path {
   path: string;
@@ -68,6 +69,7 @@ export interface PathNames {
     PRIZE_HISTORY: Path;
     LUCKY_DRAW_ENTRY: Path;
     QR_PAY: Path;
+    LUCKY_DRAW_LIST: Path;
   };
   ACCOUNT_BOOK: {
     MAIN: Path;
@@ -86,7 +88,6 @@ export interface PathNames {
   NOTICE_REQUIRE_ACCOUNT: Path;
 }
 
-// PathNames 구조화
 export const PathNames: PathNames = {
   HOME: {
     path: '/',
@@ -172,6 +173,10 @@ export const PathNames: PathNames = {
     QR_PAY: {
       path: '/pay/qr-pay',
       name: 'QR코드',
+    },
+    LUCKY_DRAW_LIST: {
+      path: '/pay/lucky-draw/:id',
+      name: '응모 상품 목록',
     },
   },
   ACCOUNT_BOOK: {
@@ -298,6 +303,10 @@ const payRoutes: RouteObject[] = [
   {
     path: PathNames.GGULPAY.QR_PAY.path,
     element: <QrPayPage />,
+  },
+  {
+    path: PathNames.GGULPAY.LUCKY_DRAW_LIST.path,
+    element: <LuckyDrawDetailPage />,
   },
 ];
 

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { WalletHeader } from '../components/WalletHeader';
 import { NftLinks, TokenPossession, TokenTradingHistory } from '../components';
+import { useWalletStore } from '../store/walletStore';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -10,6 +11,8 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { NavTitle } from '@/modules/common/components';
 
 export const WalletPage = () => {
+  const { getMyGgulToken } = useWalletStore();
+
   const pageContainerRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -20,6 +23,10 @@ export const WalletPage = () => {
       setIsScrolled(false);
     }
   };
+
+  useEffect(() => {
+    getMyGgulToken();
+  }, []);
 
   useEffect(() => {
     const container = pageContainerRef.current;

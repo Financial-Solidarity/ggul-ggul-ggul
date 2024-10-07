@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { GgulPoint } from '../components';
 import { getLuckyDrawList } from '../apis/luckyDraw';
 import { useLuckyDrawStore } from '../store/luckyDrawStore';
+import { useWalletStore } from '../store/walletStore';
 
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NavTitle } from '@/modules/common/components';
@@ -19,19 +20,29 @@ export const LuckyDrawEntryPage = () => {
   const navigate = useNavigate();
 
   const { luckDrawList, setLuckDrawList } = useLuckyDrawStore();
+  const { ggulToken, getMyGgulToken } = useWalletStore();
 
   useEffect(() => {
+    const getGgulToken = async () => {
+      if (!ggulToken) {
+        await getMyGgulToken();
+      }
+    };
+
     const fetchLuckyDrawList = async () => {
       const response = await getLuckyDrawList();
+
+      console.log(response);
 
       setLuckDrawList(response.content);
     };
 
     fetchLuckyDrawList();
+    getGgulToken();
   }, []);
 
   const handleClickDrawButton = (id: number) => {
-    navigate(`/lucky-draw/${id}`);
+    navigate(`/pay/lucky-draw/${id}`);
   };
 
   return (
@@ -50,8 +61,8 @@ export const LuckyDrawEntryPage = () => {
           <div>
             <p className="mb-1 text-xl font-bold">추첨 상품</p>
             <div className="flex flex-col gap-3">
-              {tempLuckDrawList.map((item) => (
-                <LuckyDrawItemProps
+              {luckDrawList.map((item) => (
+                <LuckyDrawItem
                   key={item.id}
                   luckyDrawItem={item}
                   onClickEvent={handleClickDrawButton}
@@ -70,10 +81,7 @@ interface LuckyDrawItemProps {
   onClickEvent: (id: number) => void;
 }
 
-const LuckyDrawItemProps = ({
-  luckyDrawItem,
-  onClickEvent,
-}: LuckyDrawItemProps) => {
+const LuckyDrawItem = ({ luckyDrawItem, onClickEvent }: LuckyDrawItemProps) => {
   return (
     <Card className="col-span-12 h-[240px] w-full sm:col-span-5">
       <CardHeader className="absolute top-1 z-10 flex-col items-start">

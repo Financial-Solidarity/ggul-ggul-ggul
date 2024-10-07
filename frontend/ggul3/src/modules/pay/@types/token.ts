@@ -15,4 +15,12 @@ declare module '@types' {
     category: string;
     createdAt: string;
   }
+
+  interface LuckyDrawDetailDTO extends LuckyDrawItemDTO {
+    maxWinnerCount: number;
+  }
+
+  export interface LuckyDrawDetailDTO extends PageableOptions {
+    content: LuckyDrawDetailDTO;
+  }
 }

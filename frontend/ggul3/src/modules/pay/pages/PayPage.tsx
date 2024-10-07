@@ -20,18 +20,12 @@ import { NavTitle } from '@/modules/common/components';
 export const PayPage = () => {
   const { setIsDarkMode } = useBottomBarStore();
 
-  const { ggulToken, getMyGgulToken } = useWalletStore();
+  const { getMyGgulToken } = useWalletStore();
 
   useEffect(() => {
     setIsDarkMode(true);
 
-    const getGgulToken = async () => {
-      if (!ggulToken) {
-        await getMyGgulToken();
-      }
-    };
-
-    getGgulToken();
+    getMyGgulToken();
   }, []);
 
   return (
