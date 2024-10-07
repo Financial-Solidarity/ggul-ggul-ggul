@@ -26,7 +26,7 @@ spring:
         default_batch_fetch_size: 1000
   sql:
     init:
-      mode: always
+      mode: never
   servlet:
     multipart:
       max-file-size: 50MB
@@ -35,3 +35,18 @@ spring:
 game:
   reward:
     term: 5
+
+
+challenge:
+  reward:
+    term: 60
+  team:
+    success:
+      winner: 3
+      looser: 2
+    failure:
+      default : 0.5
+  personal:
+    success: 2
+    failure : 0.5
+

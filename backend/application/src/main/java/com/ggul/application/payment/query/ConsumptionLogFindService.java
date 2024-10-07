@@ -32,7 +32,7 @@ public class ConsumptionLogFindService {
 
     @Transactional(readOnly = true)
     public List<ChallengeConsumptionView> findAllByChallengeId(UUID challengeId) {
-        List<ConsumptionLogRepository.ParticipantAndConsumptionLog> allByChallengeId = consumptionLogRepository.findAllByChallenge_Id(challengeId);
+        List<ConsumptionLogRepository.ParticipantAndConsumptionLog> allByChallengeId = consumptionLogRepository.findAllByChallenge_IdFetchAll(challengeId);
         return allByChallengeId.stream().map(participantAndConsumptionLog ->
                 ChallengeConsumptionView.builder()
                         .consumptionLog(participantAndConsumptionLog.getConsumptionLog())
@@ -41,5 +41,10 @@ public class ConsumptionLogFindService {
                         .challengeParticipant(participantAndConsumptionLog.getParticipant())
                         .build()
         ).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> findByChallengeId(UUID challengeId) {
+        return  consumptionLogRepository.findAllByChallenge_Id(challengeId);
     }
 }

@@ -38,6 +38,4 @@ public class ChallengeParticipantFindService {
     public List<ChallengeParticipantView> findAllByChallengeId(UUID challengeId, ChallengeParticipantType type) {
         return challengeParticipantRepository.findChallengeParticipantViewByChallenge_IdAndType(challengeId, type);
     }
-
-
 }

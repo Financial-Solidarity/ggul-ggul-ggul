@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -54,5 +55,24 @@ public class ChallengeParticipant extends SoftDeleteEntity {
             type = ChallengeParticipantType.BLUE;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
+        if(o instanceof ChallengeParticipant) {
+            ChallengeParticipant target = (ChallengeParticipant) o;
+            return Objects.equals(target.getId(), this.id);
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(Objects.requireNonNullElse(this.id, this));
+    }
+
 }
 
