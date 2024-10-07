@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { useEffect, useState } from 'react';
-import { BsCopy } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import { Snippet } from '@nextui-org/react';
 
 import { SmallText, ToggleBalanceVisibilityButton } from '../../components';
 
@@ -75,10 +75,14 @@ export const Balance = () => {
           </div>
         </CardBody>
         <CardFooter className="justify-center">
-          <SmallText>
-            {bankAccount.bankName} : {bankAccount.accountNo}
-          </SmallText>
-          <BsCopy className="ml-2 w-3" />
+          <Snippet
+            hideSymbol
+            className="flex bg-primary-500 leading-3 text-gray-300"
+          >
+            <span>
+              {bankAccount.bankName} : {bankAccount.accountNo}
+            </span>
+          </Snippet>
         </CardFooter>
       </Card>
     );

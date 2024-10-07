@@ -8,7 +8,6 @@ import { ConnectAccountModal, CurrentAccount } from '../components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 import {
   getAllBankAccounts,
@@ -63,7 +62,7 @@ export const ConnectAccountPage = () => {
       const accountListResponse = await getAllBankAccounts();
       const currentMainAccount = await getMainBankAccount();
 
-      setAccountList(accountListResponse.REC || []); // REC 배열 고치면 수정
+      setAccountList(accountListResponse);
       setCurrentAccount(currentMainAccount);
     };
 

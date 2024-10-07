@@ -42,8 +42,8 @@ export const useUserLoginFlow = () => {
       // 은행 API 생성
       await createBankApi();
       const bankAccounts = await getAllBankAccounts();
-
       // 조회되는 계좌가 없는 경우 계좌 생성
+
       if (!bankAccounts) {
         await createAllBankAccounts();
       }
