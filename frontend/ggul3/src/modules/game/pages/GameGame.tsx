@@ -85,13 +85,13 @@ export const GameGame = () => {
       );
 
       const step =
-        difference >= 1000000
+        difference >= 100000
           ? 10000
-          : difference >= 100000
+          : difference >= 10000
             ? 1000
-            : difference >= 10000
+            : difference >= 1000
               ? 100
-              : difference >= 1000
+              : difference >= 100
                 ? 10
                 : 1;
 
