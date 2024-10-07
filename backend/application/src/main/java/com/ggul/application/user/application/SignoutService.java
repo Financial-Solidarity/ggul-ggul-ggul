@@ -1,7 +1,7 @@
 package com.ggul.application.user.application;
 
 import com.ggul.application.challange.application.dto.ChallengeExitRequest;
-import com.ggul.application.challange.application.schedule.ChallengeExitService;
+import com.ggul.application.challange.application.ChallengeExitService;
 import com.ggul.application.challange.domain.Challenge;
 import com.ggul.application.challange.domain.repository.ChallengeRepository;
 import com.ggul.application.user.domain.User;

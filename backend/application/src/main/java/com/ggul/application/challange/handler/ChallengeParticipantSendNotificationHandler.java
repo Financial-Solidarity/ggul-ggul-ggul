@@ -30,6 +30,7 @@ public class ChallengeParticipantSendNotificationHandler {
     private final ChallengeParticipantRepository challengeParticipantRepository;
 
 
+
     @Async
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -101,7 +102,7 @@ public class ChallengeParticipantSendNotificationHandler {
         CHALLENGE_READY("챌린지 시작 준비 완료", "챌린지가 시작 준비 되었습니다!", NotificationType.CHALLENGE_READY),
         CHALLENGE_DESTROYED("챌린지 팀원 부족", "챌린지가 시작되지 못했습니다.", NotificationType.CHALLENGE_DESTROYED),
         CHALLENGE_START("챌린지 시작", "챌린지가 시작되었습니다!", NotificationType.CHALLENGE_START),
-        CHALLENGE_ENDED("챌린지 끝", "챌린지가 끝났습니다!", NotificationType.CHALLENGE_START),
+        CHALLENGE_ENDED("챌린지 끝", "챌린지가 끝났습니다!", NotificationType.CHALLENGE_END),
         ;
         private final String title;
         private final String body;

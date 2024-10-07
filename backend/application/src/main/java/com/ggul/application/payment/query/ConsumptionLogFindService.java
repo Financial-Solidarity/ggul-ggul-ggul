@@ -44,7 +44,7 @@ public class ConsumptionLogFindService {
     }
 
     @Transactional(readOnly = true)
-    public List<ConsumptionLogRepository.ParticipantAndConsumptionLog> findByChallengeId(UUID challengeId) {
-        return  consumptionLogRepository.findAllByChallenge_IdFetchAll(challengeId);
+    public List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> findByChallengeId(UUID challengeId) {
+        return  consumptionLogRepository.findAllByChallenge_Id(challengeId);
     }
 }

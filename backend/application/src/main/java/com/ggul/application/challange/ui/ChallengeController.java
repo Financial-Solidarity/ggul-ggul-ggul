@@ -5,7 +5,7 @@ import com.ggul.application.challange.application.ChallengeReadyService;
 import com.ggul.application.challange.application.ChallengeRegisterService;
 import com.ggul.application.challange.application.ChallengeTeamChangeService;
 import com.ggul.application.challange.application.dto.*;
-import com.ggul.application.challange.application.schedule.ChallengeExitService;
+import com.ggul.application.challange.application.ChallengeExitService;
 import com.ggul.application.challange.query.ChallengeFindService;
 import com.ggul.application.challange.query.ChallengeParticipantFindService;
 import com.ggul.application.challange.ui.dto.ChallengeParticipantView;
@@ -33,7 +33,6 @@ public class ChallengeController {
     private final ChallengeReadyService challengeReadyService;
     private final ChallengeExitService challengeExitService;
     private final ChallengeParticipantFindService challengeParticipantFindService;
-    private final ChattingRoomJoinService chattingRoomJoinService;
     private final ChallengeTeamChangeService challengeTeamChangeService;
     private final ConsumptionLogFindService consumptionLogFindService;
 
