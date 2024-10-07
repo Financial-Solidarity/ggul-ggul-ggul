@@ -18,6 +18,8 @@ export const GgulPoint = ({ isNarrow }: GgulPointProps) => {
 
       setTokenTradingHistories(content);
     };
+
+    getTokens();
   }, []);
 
   if (isNarrow) {

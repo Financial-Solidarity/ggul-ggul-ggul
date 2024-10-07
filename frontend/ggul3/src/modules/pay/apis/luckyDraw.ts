@@ -16,6 +16,9 @@ export const getLuckyDrawList = () => {
   return _axios<LuckyDrawList>({
     method: 'GET',
     url: `/applications`,
+    params: {
+      success: false,
+    },
   });
 };
 
@@ -40,5 +43,26 @@ export const luckyDraw = (applicationId: number) => {
   return _axios<LuckyDrawDTO>({
     method: 'POST',
     url: `/applications/${applicationId}/apply`,
+  });
+};
+
+export interface PrizeHistoryItem {
+  transactionHash: string;
+  transactionUrl: string;
+  isSuccess: boolean;
+  nonce: number;
+  createdAt: string;
+  application: LuckyDrawItemDTO;
+}
+
+export interface PrizeHistory extends PageableOptions {
+  content: PrizeHistoryItem[];
+  pageable: Pageable;
+}
+
+export const prizeHistory = () => {
+  return _axios<PrizeHistory>({
+    method: 'GET',
+    url: `/applications/histories`,
   });
 };

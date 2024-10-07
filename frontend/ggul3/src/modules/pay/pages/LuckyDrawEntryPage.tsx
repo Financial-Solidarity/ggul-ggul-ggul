@@ -20,25 +20,17 @@ export const LuckyDrawEntryPage = () => {
   const navigate = useNavigate();
 
   const { luckDrawList, setLuckDrawList } = useLuckyDrawStore();
-  const { ggulToken, getMyGgulToken } = useWalletStore();
+  const { getMyGgulToken } = useWalletStore();
 
   useEffect(() => {
-    const getGgulToken = async () => {
-      if (!ggulToken) {
-        await getMyGgulToken();
-      }
-    };
-
     const fetchLuckyDrawList = async () => {
       const response = await getLuckyDrawList();
-
-      console.log(response);
 
       setLuckDrawList(response.content);
     };
 
     fetchLuckyDrawList();
-    getGgulToken();
+    getMyGgulToken();
   }, []);
 
   const handleClickDrawButton = (id: number) => {
@@ -113,36 +105,3 @@ const LuckyDrawItem = ({ luckyDrawItem, onClickEvent }: LuckyDrawItemProps) => {
     </Card>
   );
 };
-
-const tempLuckDrawList = [
-  {
-    id: 3,
-    title: '신라면 5봉',
-    imageUrl:
-      'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/application%2F01925e74-2aea-7e43-bace-7d56049a515cpng',
-    probability: 0.5,
-    price: 500,
-    status: 'OPEN',
-    createdAt: '2024-10-06T05:52:05',
-  },
-  {
-    id: 2,
-    title: '야구르트 10세트',
-    imageUrl:
-      'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/application%2F01925e73-bb14-7965-8165-b3b8dc3e035dpng',
-    probability: 0.75,
-    price: 1000,
-    status: 'OPEN',
-    createdAt: '2024-10-06T05:51:37',
-  },
-  {
-    id: 1,
-    title: '건담',
-    imageUrl:
-      'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/application%2F01925e73-bb14-7965-8165-b3b8dc3e035dpng',
-    probability: 0.01,
-    price: 5000,
-    status: 'CLOSE',
-    createdAt: '2024-10-06T05:51:37',
-  },
-];
