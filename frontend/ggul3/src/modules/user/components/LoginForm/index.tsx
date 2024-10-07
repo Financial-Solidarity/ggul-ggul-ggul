@@ -43,7 +43,7 @@ export const LoginForm = ({
       await login({ email, password });
       await executeAfterLoginFlow();
     } catch (error) {
-      window.alert('[login] catch error.');
+      console.error(error);
     }
   };
 

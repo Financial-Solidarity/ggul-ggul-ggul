@@ -13,6 +13,13 @@ export const login = ({ email, password }: ILogin) => {
   });
 };
 
+export const fetchLogout = () => {
+  return _axios({
+    method: 'POST',
+    url: `/auth/logout`,
+  });
+};
+
 export const postFcmToken = (fcmToken: string | undefined) => {
   return _axios({
     method: 'POST',
