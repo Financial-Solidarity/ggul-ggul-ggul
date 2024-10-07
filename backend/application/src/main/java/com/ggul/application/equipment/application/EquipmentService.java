@@ -1,5 +1,6 @@
 package com.ggul.application.equipment.application;
 
+import com.ggul.application.ai.application.GenerationAdjectiveService;
 import com.ggul.application.common.util.ListUtils;
 import com.ggul.application.equipment.application.dto.EquipmentDrawResult;
 import com.ggul.application.equipment.application.dto.EquipmentInfo;
@@ -40,6 +41,7 @@ public class EquipmentService {
     private final EquipmentItemRepository equipmentItemRepository;
     private final TokenizedEquipmentRepository tokenizedEquipmentRepository;
     private final WalletService walletService;
+    private final GenerationAdjectiveService generationAdjectiveService;
 
     /**
      * Equipment 뽑기
@@ -50,12 +52,11 @@ public class EquipmentService {
     public EquipmentInfo drawEquipment(UUID userId) {
         Wallet wallet = walletRepository.findByUserId(userId).orElseThrow(WalletNotFoundException::new);
 
-        // TODO. AI로 Adjective 생성 로직 추가
-        String adjective = "비범한";
 
         EquipmentDrawResult result = equipmentDrawService.drawEquipment(wallet.getAddress());
-
         EquipmentItem equipmentItem = equipmentItemRepository.getReferenceById(result.getItem().longValue());
+
+        String adjective = generationAdjectiveService.makeAdjective(result.getPower().longValue());
         Equipment equipment = equipmentRepository.save(Equipment.builder()
                 .publisher(wallet.getAddress())
                 .adjective(adjective)
