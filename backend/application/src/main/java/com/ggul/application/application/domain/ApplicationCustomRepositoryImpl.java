@@ -46,7 +46,7 @@ public class ApplicationCustomRepositoryImpl implements ApplicationCustomReposit
         ).from(application);
 
         if(own != null || success != null){
-            query.distinct().join(applicationHistory).on(application.id.eq(applicationHistory.application.id));
+            query.distinct().leftJoin(applicationHistory).on(application.id.eq(applicationHistory.application.id));
             if(own != null){
                 if(own)
                     query.where(applicationHistory.user.id.eq(userId));
@@ -57,7 +57,8 @@ public class ApplicationCustomRepositoryImpl implements ApplicationCustomReposit
                 if(success)
                     query.where(applicationHistory.isSuccess.eq(true));
                 else
-                    query.where(applicationHistory.isSuccess.eq(false));
+                    query.where(applicationHistory.isSuccess.isNull()
+                            .or(applicationHistory.isSuccess.eq(false)));
             }
         }
 
