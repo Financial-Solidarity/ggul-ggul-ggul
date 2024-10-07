@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsCopy } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
@@ -7,9 +7,22 @@ import { SmallText, ToggleBalanceVisibilityButton } from '../../components';
 
 import { PathNames } from '@/router';
 import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
+import { getMainBankAccount } from '@/modules/common/apis/bankApis';
 
 export const Balance = () => {
-  const { bankAccount } = useBankAccountStore();
+  const { bankAccount, setBankAccount } = useBankAccountStore();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const bankAccountResponse = await getMainBankAccount();
+
+      setBankAccount(bankAccountResponse);
+    };
+
+    if (!bankAccount) {
+      fetchData();
+    }
+  }, []);
 
   const [isMoneyVisible, setIsMoneyVisible] = useState<boolean>(false);
 

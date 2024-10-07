@@ -14,11 +14,10 @@ export const TokenTradingHistory = () => {
       const { content } = await getTokenTradingHistories();
 
       setTokenTradingHistories(content);
+      console.log(content);
     };
 
-    if (!tokenTradingHistories.length) {
-      getTokens();
-    }
+    getTokens();
   }, []);
 
   return (

@@ -370,7 +370,7 @@ const gameRoutes: RouteObject[] = [
 
 // 비인가 사용자가 접근 가능한 경로
 const publicRoutes: RouteObject[] = [...loginRoutes];
-const requireRoutes: RouteObject[] = [...noticeRoutes];
+const requiredRoutes: RouteObject[] = [...noticeRoutes];
 // 인가 된 사용자만 접근 가능한 경로
 const privateRoutes: RouteObject[] = [
   ...challengeRoutes,
@@ -391,7 +391,7 @@ export const router = createBrowserRouter([
         ...route,
         element: <PublicRoute element={route.element} />,
       })),
-      ...requireRoutes.map((route) => ({
+      ...requiredRoutes.map((route) => ({
         ...route,
         element: <RequiredRoute element={route.element} />,
       })),
@@ -419,14 +419,18 @@ function PublicRoute({ element }: { element: ReactNode }) {
 }
 
 function RequiredRoute({ element }: { element: ReactNode }) {
-  const { isLoggedIn } = useUserStore();
-  const { bankAccount } = useBankAccountStore();
+  const { isLoggedIn, isBankAccountPossessed } = useUserStore();
+
+  const currentPath = window.location.pathname;
 
   if (!isLoggedIn) {
     return <Navigate replace to={PathNames.LOGIN.path} />;
   }
 
-  if (bankAccount) {
+  if (
+    isBankAccountPossessed &&
+    currentPath === PathNames.NOTICE_REQUIRE_ACCOUNT.path
+  ) {
     return <Navigate replace to={PathNames.MYPAGE.MAIN.path} />;
   }
 
@@ -434,8 +438,7 @@ function RequiredRoute({ element }: { element: ReactNode }) {
 }
 
 function PrivateRoute({ element }: { element: ReactNode }) {
-  const { isLoggedIn } = useUserStore();
-  const { bankAccount } = useBankAccountStore();
+  const { isLoggedIn, isBankAccountPossessed } = useUserStore();
 
   // 허용할 경로 리스트
   const allowedPaths = [
@@ -450,7 +453,11 @@ function PrivateRoute({ element }: { element: ReactNode }) {
   }
 
   // 계좌 연동이 안된 사용자는 특정 경로에 접근할 수 없음
-  if (isLoggedIn && !bankAccount && !allowedPaths.includes(currentPath)) {
+  if (
+    isLoggedIn &&
+    !isBankAccountPossessed &&
+    !allowedPaths.includes(currentPath)
+  ) {
     return <Navigate replace to={PathNames.NOTICE_REQUIRE_ACCOUNT.path} />;
   }
 

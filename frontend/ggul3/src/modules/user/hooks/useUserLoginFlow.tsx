@@ -20,7 +20,7 @@ import { useWalletStore } from '@/modules/pay/store/walletStore';
 export const useUserLoginFlow = () => {
   const navigate = useNavigate();
 
-  const { setUser, setIsLoggedIn } = useUserStore();
+  const { setUser, setIsLoggedIn, setIsBankAccountPossessed } = useUserStore();
   const { setBankAccount } = useBankAccountStore();
   const { getMyWallet, getMyGgulToken } = useWalletStore();
 
@@ -49,6 +49,7 @@ export const useUserLoginFlow = () => {
       }
     } else {
       setBankAccount(mainBankAccount);
+      setIsBankAccountPossessed(true);
     }
 
     // fcm 등록
