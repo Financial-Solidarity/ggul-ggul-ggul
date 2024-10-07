@@ -8,7 +8,6 @@ import { ConnectAccountModal, CurrentAccount } from '../components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 import {
   getAllBankAccounts,
@@ -17,6 +16,7 @@ import {
 } from '@/modules/common/apis/bankApis';
 import { NavTitle } from '@/modules/common/components';
 import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
+import { useUserStore } from '@/modules/common/store/userStore';
 
 export const ConnectAccountPage = () => {
   const {
@@ -36,6 +36,7 @@ export const ConnectAccountPage = () => {
 
   const { setActive } = useBottomBarStore();
   const { setBankAccount } = useBankAccountStore();
+  const { setIsBankAccountPossessed } = useUserStore();
 
   const handleClickConnectAccount = async () => {
     setModalStep('connecting');
@@ -49,6 +50,7 @@ export const ConnectAccountPage = () => {
       setModalStep('connected');
       setCurrentAccount(selectedAccount);
       setBankAccount(selectedAccount);
+      setIsBankAccountPossessed(true);
     } catch {
       setModalStep('failed');
     }
