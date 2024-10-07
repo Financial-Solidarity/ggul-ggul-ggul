@@ -83,23 +83,45 @@ self.addEventListener('fetch', (event) => {
 });
 
 // FCM 백그라운드 메시지 처리
-messaging.onBackgroundMessage((payload) => {
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.image,
-  };
+// messaging.onBackgroundMessage((payload) => {
+//   const notificationTitle = payload.notification.title;
+//   const notificationOptions = {
+//     body: payload.notification.body,
+//     icon: payload.notification.image,
+//   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
+//   self.registration.showNotification(notificationTitle, notificationOptions);
+// });
 
 // 푸시 알림 이벤트: 서버로부터 푸시 알림을 받아서 처리
 self.addEventListener('push', (event) => {
   const data = event.data ? JSON.parse(event.data.text()) : {};
 
-  const title = data.title || 'Ggul3 알림';
+  let title = data.title || '껄껄껄 알림';
+  let body = data.body || '새로운 알림이 있습니다.';
+
+  // type에 따른 분기 처리
+  switch (data.data?.type) {
+    case 'CHAT_COMMON':
+      title = `[ 채팅 알림 ] ${data.data.title}`;
+      body = data.data.body;
+      break;
+    case 'CHAT_JUSTIFICATION':
+      title = `[ 소명 메시지 ] ${data.data.title}`;
+      body = `${data.data.body}`;
+      break;
+    case 'CHAT_SPEND':
+      title = `[ 소비 ] ${data.data.title}`;
+      body = `${data.data.body}`;
+      break;
+    default:
+      title = data.title || '껄껄껄 알림';
+      body = data.body || '새로운 알림이 있습니다.';
+      break;
+  }
+
   const options = {
-    body: data.body || '새로운 알림이 있습니다.',
+    body: body,
     icon: '/pwa-192x192.png',
     badge: '/pwa-192x192.png',
     data: data.url || '/',
