@@ -1,5 +1,6 @@
 package com.ggul.application.account.ui.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Builder
@@ -7,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDepositAndWithdrawView {
     private String accountNo;
     private Long transactionBalance;
