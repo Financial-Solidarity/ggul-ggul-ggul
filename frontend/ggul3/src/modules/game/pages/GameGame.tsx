@@ -80,10 +80,10 @@ export const GameGame = () => {
     if (previousReceivableToken.current !== receivableToken) {
       setButtonHighlight(true);
 
+      // 변화량과 스텝 크기 계산 (한 번만 계산)
       const difference = Math.abs(
         receivableToken - previousReceivableToken.current,
       );
-
       const step =
         difference >= 100000
           ? 10000
