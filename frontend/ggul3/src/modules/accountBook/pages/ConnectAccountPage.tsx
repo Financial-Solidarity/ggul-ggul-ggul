@@ -79,7 +79,6 @@ export const ConnectAccountPage = () => {
       <TopBar
         center={<NavTitle title="계좌 연결하기" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         <div className="relative">

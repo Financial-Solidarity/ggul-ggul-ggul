@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
+import { useTokenBalanceQuery } from '../queries'; // 토큰 밸런스 쿼리 추가
 import { EquipmentDTO, EquipmentNFTDTO } from '../@types';
 import { drawEquipment, mintEquipment } from '../apis';
 
@@ -41,28 +42,40 @@ export const useLuckyDrawActions = ({
   onClickLuckyDrawButton: () => Promise<void>;
   onClickMintButton: (equipment: EquipmentDTO) => Promise<void>;
 } => {
+  const { refetch: refetchTokenBalance } = useTokenBalanceQuery();
+
   const onClickLuckyDrawButton = async () => {
     startDrawing();
 
-    const response = await drawEquipment();
+    try {
+      const response = await drawEquipment();
 
-    setTimeout(() => {
-      setEquipment(response);
-      stopDrawing(response.power);
-    }, 500);
+      setTimeout(() => {
+        setEquipment(response);
+        stopDrawing(response.power);
+
+        refetchTokenBalance();
+      }, 500);
+    } catch (error) {
+      stopDrawing(0); // 뽑기 실패 시 상태 초기화
+      throw new Error('Draw Equipment Error');
+    }
   };
 
-  const onClickMintButton = async (equipment: EquipmentDTO) => {
-    startMinting();
-
-    const response = await mintEquipment({
-      transactionHash: equipment.transactionHash,
+  const onClickMintButton = (equipment: EquipmentDTO): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      startMinting();
+      mintEquipment(equipment)
+        .then((response) => {
+          setNft(response); // 성공적으로 조리된 NFT 설정
+          stopMinting();
+          resolve(); // void 타입으로 resolve 처리
+        })
+        .catch((error) => {
+          stopMinting();
+          reject(error); // 에러 발생 시 reject 호출
+        });
     });
-
-    setTimeout(() => {
-      setNft(response);
-      stopMinting();
-    }, 1000);
   };
 
   return { onClickLuckyDrawButton, onClickMintButton };

@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { Input, Button } from '@nextui-org/react';
-import { useNavigate } from 'react-router-dom';
+import { Button, Tabs, Tab } from '@nextui-org/react';
 
 import { MiniTokenBalanceChip } from '../components/common/MiniTokenBalanceChip';
 import { NFTSellCardList } from '../components/GameMarket/NFTSellCardList';
@@ -11,17 +10,16 @@ import { NothingLottie } from '../components/common/Lotties/NothingLottie';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const GameMarket = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });
-  const navigate = useNavigate();
 
   const pageSize = 4;
   const pageContainerRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<HTMLDivElement | null>(null);
   const [isSheetOpen, setSheetOpen] = useState(false);
+  const [own, setOwn] = useState<'true' | 'false'>('false');
 
   const {
     sellNftList,
@@ -32,6 +30,10 @@ export const GameMarket = (): JSX.Element => {
     setPageNumber,
     hasError,
   } = useGameMarketData(pageSize);
+
+  useEffect(() => {
+    handleSearch({ status: 'PENDING' });
+  }, [own]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
@@ -49,26 +51,37 @@ export const GameMarket = (): JSX.Element => {
     pageContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // 검색 조건이 변경될 때에만 리스트를 비우고 새로운 검색 수행
   const handleSearch = (criteria: {
     name?: string;
     minPrice?: number;
     maxPrice?: number;
     minPower?: number;
     maxPower?: number;
-    own?: 'true' | 'false';
+    status?: 'PENDING' | 'COMPLETED';
   }) => {
-    setSearchCriteria(criteria);
-    setPageNumber(0);
-    setSellNftList([]);
+    setSearchCriteria((prevCriteria) => {
+      const newCriteria = { ...prevCriteria, ...criteria, own };
+
+      if (JSON.stringify(newCriteria) !== JSON.stringify(prevCriteria)) {
+        setPageNumber(0);
+        setSellNftList([]);
+      }
+
+      return newCriteria;
+    });
+  };
+
+  const handleTabChange = (key: 'true' | 'false') => {
+    if (own !== key) {
+      setOwn(key);
+      handleSearch({});
+    }
   };
 
   return (
     <>
-      <TopBar
-        bgColor="bg-black"
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
+      <TopBar bgColor="bg-black" left={<BackButton />} />
       <PageContainer
         bgColor="bg-black"
         containerRef={pageContainerRef}
@@ -79,13 +92,25 @@ export const GameMarket = (): JSX.Element => {
           </div>
         }
       >
+        {/* Tabs 추가 */}
+        <Tabs
+          fullWidth
+          color="primary"
+          selectedKey={own}
+          onSelectionChange={(key) => handleTabChange(key as 'true' | 'false')}
+        >
+          <Tab key="false" className="w-full" title="다른 사람들의 판매글" />
+          <Tab key="true" className="w-full" title="내 판매글" />
+        </Tabs>
+
         <div className="mt-4">
-          <Input
+          <Button
             fullWidth
-            className="bg-gray-800 text-white"
-            placeholder="검색"
-            onFocus={() => setSheetOpen(true)}
-          />
+            className="bg-default-100 font-semibold text-default-400"
+            onClick={() => setSheetOpen(true)}
+          >
+            검색
+          </Button>
         </div>
 
         {/* 결과가 없거나 에러인 경우에 대한 처리 */}
@@ -97,7 +122,7 @@ export const GameMarket = (): JSX.Element => {
         ) : sellNftList.length === 0 && !isFetching ? (
           <div className="mt-8 flex flex-col items-center text-white">
             <NothingLottie />
-            <p className="mt-4">텅 비어있어요.</p>
+            <p className="mt-4 text-2xl font-bold">텅 비어있어요.</p>
           </div>
         ) : (
           <NFTSellCardList nftList={sellNftList} />
@@ -108,13 +133,14 @@ export const GameMarket = (): JSX.Element => {
         </div>
 
         <Button
-          className="fixed bottom-20 right-8 bg-purple-600 text-white"
+          className="fixed bottom-20 right-8 z-30 bg-purple-600 text-white"
           onClick={scrollToTop}
         >
           맨 위로
         </Button>
 
         <SearchFilterSheet
+          isMyPost={own === 'true'}
           isOpen={isSheetOpen}
           onClose={() => setSheetOpen(false)}
           onSearch={handleSearch}

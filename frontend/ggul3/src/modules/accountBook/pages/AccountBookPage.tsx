@@ -3,20 +3,21 @@ import { Balance, StatisticsButton } from '../components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import burnMoney from '@/assets/images/burn-money.png';
 import financeChart from '@/assets/images/finance-chart.png';
 import { PathNames } from '@/router';
 import { NavTitle } from '@/modules/common/components';
 import { ChangeMainAccountLinkButton } from '@/modules/myPage/components';
+import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const AccountBookPage = () => {
+  useSetBottomBar({ active: true, isDarkMode: false });
+
   return (
     <>
       <TopBar
         center={<NavTitle title="가계부" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         <div className="mb-3">

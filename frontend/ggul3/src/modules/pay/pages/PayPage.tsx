@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import {
   GgulLinks,
   GgulPoint,
@@ -12,10 +10,9 @@ import { useWalletStore } from '../store/walletStore';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
-import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 import { QrButton } from '@/modules/accountBook/components';
 import { NavTitle } from '@/modules/common/components';
+import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 
 export const PayPage = () => {
   const { setIsDarkMode } = useBottomBarStore();
@@ -27,13 +24,13 @@ export const PayPage = () => {
 
     getMyGgulToken();
   }, []);
+  useSetBottomBar({ active: true, isDarkMode: false });
 
   return (
     <>
       <TopBar
         center={<NavTitle title="껄 페이" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         <div className="mb-3">

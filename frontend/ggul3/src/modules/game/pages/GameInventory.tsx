@@ -9,7 +9,6 @@ import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const GameInventory = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });
@@ -28,6 +27,8 @@ export const GameInventory = (): JSX.Element => {
     openSheet,
     handleEquip,
     handleUnequip,
+    isLoadingEquip,
+    isLoadingUnequip,
   } = useGameInventory();
 
   useEffect(() => {
@@ -37,11 +38,7 @@ export const GameInventory = (): JSX.Element => {
 
   return (
     <>
-      <TopBar
-        bgColor="bg-black"
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
+      <TopBar bgColor="bg-black" left={<BackButton />} />
       <PageContainer activePaddingX={false} bgColor="bg-black">
         <EquippedNftSection
           equippedNft={equippedNft}
@@ -60,6 +57,8 @@ export const GameInventory = (): JSX.Element => {
 
         <NftDetailSheet
           equippedNft={equippedNft}
+          isLoadingEquip={isLoadingEquip}
+          isLoadingUnequip={isLoadingUnequip}
           isOpen={isOpen}
           selectedEquipmentNft={selectedEquipmentNft}
           onClose={() => setOpen(false)}
