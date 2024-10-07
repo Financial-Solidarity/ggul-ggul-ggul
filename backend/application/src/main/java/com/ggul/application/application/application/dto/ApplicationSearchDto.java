@@ -19,6 +19,5 @@ public class ApplicationSearchDto {
     private Boolean asc;
     private Boolean success;
     private Status status;
-    private Boolean own;
     private Pageable pageable;
 }

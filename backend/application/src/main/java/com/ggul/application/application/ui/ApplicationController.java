@@ -31,7 +31,6 @@ public class ApplicationController {
                                              @RequestParam(required = false, defaultValue = "false") Boolean asc,
                                              @RequestParam(required = false) Boolean success,
                                              @RequestParam(required = false) String status,
-                                             @RequestParam(required = false) Boolean own,
                                              Pageable pageable){
         return ResponseEntity.ok().body(applicationService.getApplications(ApplicationSearchDto.builder()
                 .userId(context.getUserId())
@@ -39,7 +38,6 @@ public class ApplicationController {
                 .asc(asc)
                 .success(success)
                 .status(status != null ? Status.valueOf(status) : null)
-                .own(own)
                 .pageable(pageable)
                 .build()));
     }
