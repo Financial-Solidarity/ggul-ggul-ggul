@@ -3,6 +3,7 @@ import { ChevronRightIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
 import react from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 import {
   useGetChallengeDetail,
@@ -11,6 +12,7 @@ import {
 
 import { useCountdown } from '@/modules/common/hooks/useCountDown';
 import { formatCountdown, toYYMDhm_ko } from '@/modules/common/utils/dateUtils';
+import { PathNames } from '@/router';
 
 interface ChallengeInfoAccordionProps {
   challengeId: string;
@@ -35,13 +37,18 @@ export const ChallengeInfoAccordion = ({
   } = useGetChallengeDetail(challengeId);
   const { mutateAsync: startChallenge, isPending } = useStartChallenge();
   const countdown = useCountdown(startAt);
+
+  const navigate = useNavigate();
+
   const toggleIsOpen = () => {
     setIsOpen((prev) => !prev);
   };
 
   const handleStart = () => {
     startChallenge(challengeId)
-      .then(() => {})
+      .then(() => {
+        navigate(PathNames.CHALLENGE.CHATTING_ROOMS.path, { replace: true });
+      })
       .catch((error) => {
         toast.error(error.message, {
           position: 'bottom-center',

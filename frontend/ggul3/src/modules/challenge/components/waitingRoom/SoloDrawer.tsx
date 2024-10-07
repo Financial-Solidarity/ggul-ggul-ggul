@@ -1,4 +1,5 @@
 import { Button } from '@nextui-org/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import { useWaitingRoomStore } from '../../store/waitingRoomStore';
 import { useGetParticipantList } from '../../reactQueries/useChallengeQuery';
@@ -27,8 +28,11 @@ export const SoloDrawer = ({
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
       <div className="relative flex h-full flex-col">
-        <div className="px-4 py-4">
+        <div className="flex items-center justify-between px-4 py-4">
           <h5 className="text-lg font-bold">참가자</h5>
+          <button onClick={onClose}>
+            <XMarkIcon className="h-7 w-7 text-default-800" />
+          </button>
         </div>
         <div className="flex w-full flex-col items-start overflow-y-auto">
           {participantList.length === 0 && (

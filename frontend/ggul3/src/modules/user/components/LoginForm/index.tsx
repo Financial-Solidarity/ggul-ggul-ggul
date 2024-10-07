@@ -39,12 +39,8 @@ export const LoginForm = ({
   const handleSubmitLogin = async (e: FormEvent) => {
     e.preventDefault();
 
-    try {
-      await login({ email, password });
-      await executeAfterLoginFlow();
-    } catch (error) {
-      console.error(error);
-    }
+    await login({ email, password });
+    await executeAfterLoginFlow();
   };
 
   return (
