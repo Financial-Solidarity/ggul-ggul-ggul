@@ -11,7 +11,6 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { NothingLottie } from '@/modules/game/components/common/Lotties/NothingLottie';
 import { PathNames } from '@/router';
 
@@ -37,7 +36,6 @@ export const ChattingRoomListPage = () => {
       <TopBar
         center={<NavTitle title="채팅방" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         {isFetching ? (

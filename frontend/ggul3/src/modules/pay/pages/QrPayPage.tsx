@@ -8,10 +8,10 @@ import { PaymentSlideBar } from '../components/PaymentSlideBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { NavTitle } from '@/modules/common/components';
 import { useConnectStore } from '@/modules/accountBook/store/useConnectStore';
 import { CurrentAccount } from '@/modules/accountBook/components';
+import { getMainBankAccount } from '@/modules/common/apis/bankApis';
 
 export const QrPayPage = () => {
   const [slideValue, setSlideValue] = useState<number>(0);
@@ -35,11 +35,11 @@ export const QrPayPage = () => {
   const { currentAccount, setCurrentAccount } = useConnectStore();
 
   useEffect(() => {
-    setCurrentAccount({
-      id: 11,
-      name: '농협',
-      accountNo: '110-1851-4567',
-    });
+    const fetchMainBankAccount = async () => {
+      setCurrentAccount(await getMainBankAccount());
+    };
+
+    fetchMainBankAccount();
   }, []);
 
   return (
@@ -47,7 +47,6 @@ export const QrPayPage = () => {
       <TopBar
         center={<NavTitle title="상품 결제" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         <div className="w-full">

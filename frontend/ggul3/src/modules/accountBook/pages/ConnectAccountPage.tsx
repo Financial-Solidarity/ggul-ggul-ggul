@@ -5,17 +5,25 @@ import { AccountItem } from '../components/AccountItem';
 import { useConnectStore } from '../store/useConnectStore';
 import { ConnectAccountModal, CurrentAccount } from '../components';
 
-import * as components from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
+import {
+  getAllBankAccounts,
+  getMainBankAccount,
+  setMainBankAccount,
+} from '@/modules/common/apis/bankApis';
+import { NavTitle } from '@/modules/common/components';
+import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
+import { useUserStore } from '@/modules/common/store/userStore';
 
 export const ConnectAccountPage = () => {
   const {
     modalStep,
     isConnectModalOpen,
     isSelected,
+    accountList,
     selectedAccount,
     currentAccount,
     setModalStep,
@@ -26,22 +34,53 @@ export const ConnectAccountPage = () => {
     handleClickAccount,
   } = useConnectStore();
 
-  useEffect(() => {
-    setCurrentAccount({
-      id: 11,
-      name: '농협',
-      accountNo: '110-1851-4567',
-    });
+  const { setActive } = useBottomBarStore();
+  const { setBankAccount } = useBankAccountStore();
+  const { setIsBankAccountPossessed } = useUserStore();
 
-    setAccountList(accountList);
+  const handleClickConnectAccount = async () => {
+    setModalStep('connecting');
+    setConnectModalOpen(true);
+
+    // 3초 기다리기
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    try {
+      await setMainBankAccount(selectedAccount!.accountNo);
+      setModalStep('connected');
+      setCurrentAccount(selectedAccount);
+      setBankAccount(selectedAccount);
+      setIsBankAccountPossessed(true);
+    } catch {
+      setModalStep('failed');
+    }
+  };
+
+  useEffect(() => {
+    if (!currentAccount) {
+      setActive(false);
+    }
+
+    const getAccountList = async () => {
+      const accountListResponse = await getAllBankAccounts();
+      const currentMainAccount = await getMainBankAccount();
+
+      setAccountList(accountListResponse.REC || []); // REC 배열 고치면 수정
+      setCurrentAccount(currentMainAccount);
+    };
+
+    getAccountList();
+
+    return () => {
+      setActive(true);
+    };
   }, []);
 
   return (
     <>
       <TopBar
-        center={<components.NavTitle title="계좌 연결하기" />}
+        center={<NavTitle title="계좌 연결하기" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         <div className="relative">
@@ -51,10 +90,10 @@ export const ConnectAccountPage = () => {
           </div>
           <ul className="mb-24">
             {accountList
-              .filter((item) => item.accountNo !== currentAccount.accountNo)
+              .filter((item) => item.accountNo !== currentAccount?.accountNo)
               .map((item) => (
                 <AccountItem
-                  key={item.id}
+                  key={item.accountNo}
                   account={item}
                   handleClickAccount={handleClickAccount}
                   selectedAccount={selectedAccount}
@@ -62,12 +101,12 @@ export const ConnectAccountPage = () => {
               ))}
           </ul>
           {isSelected && (
-            <div className="fixed bottom-24 left-4 right-4">
+            <div className="fixed bottom-20 left-4 right-4">
               <Button
                 className="w-full"
                 color="primary"
                 size="lg"
-                onClick={() => setConnectModalOpen(true)}
+                onClick={handleClickConnectAccount}
               >
                 선택한 계좌 연결하기
               </Button>
@@ -87,96 +126,3 @@ export const ConnectAccountPage = () => {
     </>
   );
 };
-
-const accountList = [
-  {
-    id: 1,
-    name: '신한은행',
-    accountNo: '110-123-45689',
-  },
-  {
-    id: 2,
-    name: '국민은행',
-    accountNo: '110-123-56789',
-  },
-  {
-    id: 3,
-    name: '우리은행',
-    accountNo: '110-13-456789',
-  },
-  {
-    id: 4,
-    name: '하나은행',
-    accountNo: '10-123-456789',
-  },
-  {
-    id: 5,
-    name: '농협',
-    accountNo: '110-123-45678',
-  },
-  {
-    id: 6,
-    name: '기업은행',
-    accountNo: '110-123-4564789',
-  },
-  {
-    id: 7,
-    name: '신한은행',
-    accountNo: '1110-123-456789',
-  },
-  {
-    id: 8,
-    name: '국민은행',
-    accountNo: '110-1523-456789',
-  },
-  {
-    id: 9,
-    name: '우리은행',
-    accountNo: '110-123-4567789',
-  },
-  {
-    id: 10,
-    name: '하나은행',
-    accountNo: '110-1223-456789',
-  },
-  {
-    id: 11,
-    name: '농협',
-    accountNo: '110-123-4567089',
-  },
-  {
-    id: 12,
-    name: '기업은행',
-    accountNo: '110-123-4546789',
-  },
-  {
-    id: 13,
-    name: '하나은행',
-    accountNo: '110-1223-456789',
-  },
-  {
-    id: 14,
-    name: '농협',
-    accountNo: '110-123-4567089',
-  },
-  {
-    id: 15,
-    name: '기업은행',
-    accountNo: '110-123-4546789',
-  },
-  {
-    id: 16,
-    name: '하나은행',
-    accountNo: '110-1223-456789',
-  },
-  {
-    id: 17,
-    name: '농협',
-    accountNo: '110-123-4567089',
-  },
-  {
-    id: 18,
-    name: '기업은행',
-    accountNo: '110-123-4546789',
-  },
-];

@@ -121,6 +121,7 @@ export const SearchFilterSheet = ({
                 등급 선택
               </p>
               <Tabs
+                fullWidth
                 aria-label="NFT Grade Filter"
                 className="flex w-full overflow-x-auto whitespace-nowrap"
                 selectedKey={String(grade)}

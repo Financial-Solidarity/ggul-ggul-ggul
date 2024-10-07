@@ -10,16 +10,11 @@ interface WalletHeaderProps {
 }
 
 export const WalletHeader = ({ isScrolled }: WalletHeaderProps) => {
-  const { myWallet, ggulToken, getMyWallet, getMyGgulToken } = useWalletStore();
+  const { myWallet, ggulToken, getMyWallet } = useWalletStore();
   const { user } = useUserStore();
 
   useEffect(() => {
-    try {
-      getMyWallet();
-      getMyGgulToken();
-    } catch (error) {
-      console.error(error);
-    }
+    getMyWallet();
   }, []);
 
   return (

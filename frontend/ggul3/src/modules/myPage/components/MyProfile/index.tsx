@@ -33,7 +33,7 @@ export const MyProfile = () => {
   };
 
   return (
-    <Card className="py-2">
+    <Card className="py-2 duration-200 ease-linear hover:bg-gray-200">
       <CardBody>
         <div className="flex items-center justify-between">
           <div className="flex items-center">

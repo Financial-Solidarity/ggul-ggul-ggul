@@ -32,14 +32,14 @@ export const FailedAccount = ({
       </div>
       <div className="flex items-center text-xl">
         <UserBoldSpan>
-          {currentAccount.name}
+          {currentAccount.bankName}
           <SmallText>{currentAccount.accountNo}</SmallText>
         </UserBoldSpan>
         <div className="px-4">
           <ChevronRightIcon className="w-4" />
         </div>
         <UserBoldSpan>
-          {selectedAccount.name}
+          {selectedAccount.bankName}
           <SmallText>{currentAccount.accountNo}</SmallText>
         </UserBoldSpan>
       </div>

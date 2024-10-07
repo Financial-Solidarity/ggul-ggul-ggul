@@ -1,7 +1,6 @@
 import { Tabs, Tab } from '@nextui-org/react';
 import { useEffect } from 'react';
 
-import { SkeletonCards } from './SkeletonCard';
 import { NftMiniCard } from './NftMiniCard';
 
 import { EquipmentNFTDTO, Grades, GradeNames } from '@/modules/game/@types';
@@ -52,18 +51,14 @@ export const NftCardListSection = ({
         ))}
       </Tabs>
       <div className="CARD-LIST mt-4 grid min-h-36 grid-cols-3 gap-4 px-3 py-4">
-        {isLoading ? (
-          <SkeletonCards count={3} />
-        ) : (
-          equipmentList.map((equipmentNft) => (
-            <NftMiniCard
-              key={equipmentNft?.ipfsCID}
-              equipmentNft={equipmentNft}
-              isEquipped={equipmentNft.status === 'EQUIPPED'}
-              onCardClick={onCardClick}
-            />
-          ))
-        )}
+        {equipmentList.map((equipmentNft) => (
+          <NftMiniCard
+            key={equipmentNft?.ipfsCID}
+            equipmentNft={equipmentNft}
+            isEquipped={equipmentNft.status === 'EQUIPPED'}
+            onCardClick={onCardClick}
+          />
+        ))}
       </div>
     </div>
   );

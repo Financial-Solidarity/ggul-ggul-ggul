@@ -1,10 +1,10 @@
 import { Card, CardBody } from '@nextui-org/card';
-import { Account } from '@types';
+import { AccountItemDTO } from '@types';
 
 import { AccountItem } from '../AccountItem';
 
 interface AccountModalProps {
-  currentAccount: Account;
+  currentAccount: AccountItemDTO | null;
 }
 
 export const CurrentAccount = ({ currentAccount }: AccountModalProps) => {

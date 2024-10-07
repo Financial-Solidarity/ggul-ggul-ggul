@@ -6,12 +6,16 @@ export const requestPermission = async () => {
   const permission = await Notification.requestPermission();
 
   if (permission === 'granted') {
-    const token = await messaging.getToken({
-      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-    });
+    try {
+      const token = await messaging.getToken({
+        vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+      });
 
-    console.log('Token generated:', token);
-    postFcmToken(token);
+      console.log('Token generated:', token);
+      postFcmToken(token);
+    } catch {
+      (error) => window.alert(error);
+    }
   } else if (permission === 'denied') {
     alert('알림을 거절당했습니다.');
   }

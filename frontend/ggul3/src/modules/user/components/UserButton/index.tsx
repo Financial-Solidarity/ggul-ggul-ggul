@@ -1,11 +1,11 @@
 import { Button } from '@nextui-org/button';
+import { ButtonProps } from '@nextui-org/react';
 import { PropsWithChildren } from 'react';
-
-interface UserButtonProps {}
 
 export const UserButton = ({
   children,
-}: PropsWithChildren<UserButtonProps>) => {
+  ...props
+}: PropsWithChildren<ButtonProps>) => {
   return (
     <Button
       className="mb-3 w-full"
@@ -13,6 +13,7 @@ export const UserButton = ({
       radius="full"
       size="lg"
       type="submit"
+      {...props}
     >
       {children}
     </Button>

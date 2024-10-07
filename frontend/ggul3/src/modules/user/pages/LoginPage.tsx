@@ -1,6 +1,8 @@
 import { LoginForm } from '../components';
 import { useLoginStore } from '../store/loginStore';
 
+import { useHideAndRestoreBottomBar } from '@/modules/common/hooks/useHideAndRestoreBottomBar';
+
 export const LoginPage = () => {
   const {
     email,
@@ -10,6 +12,8 @@ export const LoginPage = () => {
     setPassword,
     validateEmail,
   } = useLoginStore();
+
+  useHideAndRestoreBottomBar();
 
   return (
     <LoginForm

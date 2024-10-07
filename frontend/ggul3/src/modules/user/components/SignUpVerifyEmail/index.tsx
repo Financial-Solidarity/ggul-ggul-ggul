@@ -1,4 +1,5 @@
 import { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { UserLogo } from '../UserLogo';
 import { UserBoldParagraph } from '../UserBoldParagraph';
@@ -12,9 +13,14 @@ import {
   UserFormStyleBox,
   UserInputBox,
 } from '../../components';
+import { login } from '../../apis/login';
 
 import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import {
+  createBankApi,
+  createAllBankAccounts,
+} from '@/modules/common/apis/bankApis';
 
 interface SignUpVerifyEmailProps {
   email: string;
@@ -30,9 +36,10 @@ export const SignUpVerifyEmail = ({
   emailValidation,
   nickname,
   password,
-  setStep,
   setEmailValidation,
 }: SignUpVerifyEmailProps) => {
+  const navigate = useNavigate();
+
   const handleSubmitVerify = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -41,10 +48,12 @@ export const SignUpVerifyEmail = ({
         return;
       }
 
-      // form 전달하고 회원가입 성공 시 success 페이지로 이동
       await signUp({ email, nickname, password });
+      await login({ email, password }); // 로그인 해야만 계좌 API 생성 가능함.
+      await createBankApi(); // 계정과 일치하는 은행 API 생성
+      await createAllBankAccounts(); // 모든 계좌 생성
 
-      setStep('success');
+      navigate(PathNames.NOTICE_REQUIRE_ACCOUNT.path);
     } catch (error) {
       window.alert('[verifyEmail] catch error.');
     }

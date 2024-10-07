@@ -16,7 +16,6 @@ import { EquipmentNftInfoRow } from '../components/common/EquipmentNftInfoRow';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import './GameGame.css';
 import Spoon from '@/assets/images/game_spoon.png';
@@ -80,15 +79,33 @@ export const GameGame = () => {
     if (previousReceivableToken.current !== receivableToken) {
       setButtonHighlight(true);
 
-      const step = receivableToken > previousReceivableToken.current ? 10 : -10;
+      // 변화량과 스텝 크기 계산 (한 번만 계산)
+      const difference = Math.abs(
+        receivableToken - previousReceivableToken.current,
+      );
+      const step =
+        difference >= 100000
+          ? 10000
+          : difference >= 10000
+            ? 1000
+            : difference >= 1000
+              ? 100
+              : difference >= 100
+                ? 10
+                : 1;
+
+      // 변화 방향 결정 (증가 or 감소)
+      const direction =
+        receivableToken > previousReceivableToken.current ? 1 : -1;
 
       const interval = setInterval(() => {
         setDisplayedReceivableToken((prev) => {
-          const newToken = prev + step;
+          const newToken = prev + step * direction;
 
+          // 목표 값에 도달하면 interval 정지
           if (
-            (step > 0 && newToken >= receivableToken) ||
-            (step < 0 && newToken <= receivableToken)
+            (direction > 0 && newToken >= receivableToken) ||
+            (direction < 0 && newToken <= receivableToken)
           ) {
             clearInterval(interval);
 
@@ -119,10 +136,37 @@ export const GameGame = () => {
       <PageContainer
         activePaddingX={false}
         bgColor="bg-black"
-        titleContent={<MiniTokenBalanceChip />}
+        titleContent={
+          <div className="w-full px-3">
+            <MiniTokenBalanceChip />
+          </div>
+        }
       >
-        <div className="flex h-full items-center justify-center text-center text-white">
-          장비를 장착하고 게임을 시작해보세요.
+        {/* 장비가 없을 때 화면 구성 */}
+        <div className="flex h-full flex-col items-center justify-center px-6 text-center text-white">
+          {/* 배경 이미지 */}
+          <Image
+            className="mb-8 opacity-50"
+            src={
+              'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/dogfood.png'
+            }
+            width={200}
+          />
+          {/* 안내 메시지 */}
+          <h1 className="mb-4 text-3xl font-bold">NFT를 장착해볼까요?</h1>
+          <p className="mb-8">
+            게임을 진행하려면 NFT 음식을 장착해야 해요.
+            <br />내 가방에서 음식을 확인하고 장착해보세요!
+          </p>
+          {/* 가방으로 이동하는 버튼 */}
+          <Button
+            className="h-12 w-48 font-semibold"
+            color="primary"
+            style={{ boxShadow: '0px 10px 15px rgba(192, 124, 255, 0.3)' }}
+            onClick={handleMoveToInventory}
+          >
+            내 가방 보러가기
+          </Button>
         </div>
       </PageContainer>
     );
@@ -130,11 +174,7 @@ export const GameGame = () => {
 
   return (
     <>
-      <TopBar
-        bgColor="bg-default-800"
-        left={<BackButton />}
-        right={<NotificationButton />}
-      />
+      <TopBar bgColor="bg-default-800" left={<BackButton />} />
       <PageContainer
         activePaddingX={false}
         bgColor="bg-default-800"
@@ -195,7 +235,9 @@ export const GameGame = () => {
             <Button
               className="h-12 self-end font-semibold"
               color="primary"
-              style={{ boxShadow: '0px 15px 20px rgba(192, 124, 255, 0.3)' }}
+              style={{
+                boxShadow: '0px 15px 20px rgba(192, 124, 255, 255, 0.3)',
+              }}
               onClick={handleMoveToInventory}
             >
               내 음식 가방 보러가기

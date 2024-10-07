@@ -74,18 +74,21 @@ export const SignUpForm = ({
     }
 
     try {
+      // 비밀번호 확인
       if ((await checkDuplicatedEmail(email)).isDuplicated) {
         window.alert(ERRORS.DUPLICATED_EMAIL);
 
         return;
       }
 
+      // 닉네임 확인
       if ((await checkDuplicatedNickname(nickname)).isDuplicated) {
         window.alert(ERRORS.DUPLICATED_NICKNAME);
 
         return;
       }
 
+      // 이메일 인증 요청
       await requestEmailVerification({ email });
 
       setStep('verify');

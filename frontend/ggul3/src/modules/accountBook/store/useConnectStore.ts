@@ -1,37 +1,27 @@
-import { Account } from '@types';
+import { AccountItemDTO } from '@types';
 import { create } from 'zustand';
 
 interface UseConnectAccountState {
   modalStep: 'connecting' | 'connected' | 'failed';
   isConnectModalOpen: boolean;
-  selectedAccount: Account;
+  selectedAccount: AccountItemDTO | null;
   isSelected: boolean;
-  accountList: Account[];
-  currentAccount: Account;
+  accountList: AccountItemDTO[];
+  currentAccount: AccountItemDTO | null;
   initializeModalStates: () => void;
   setModalStep: (step: 'connecting' | 'connected' | 'failed') => void;
   setConnectModalOpen: (isOpen: boolean) => void;
-  setAccountList: (accountList: Account[]) => void;
-  setCurrentAccount: (accountNo: Account) => void;
-  handleClickAccount: (account: Account) => void;
+  setAccountList: (accountList: AccountItemDTO[]) => void;
+  setCurrentAccount: (account: AccountItemDTO | null) => void;
+  handleClickAccount: (account: AccountItemDTO) => void;
 }
 
 export const useConnectStore = create<UseConnectAccountState>((set) => ({
   modalStep: 'failed', // 모달 상태: connecting, connected, failed
   isConnectModalOpen: false, // 모달 열기/닫기
-  selectedAccount: {
-    // 선택된 계좌 정보
-    id: -1,
-    name: '',
-    accountNo: '',
-  },
+  selectedAccount: null,
   isSelected: false, // 계좌 선택 여부
-  currentAccount: {
-    // 현재 선택된 계좌 정보
-    id: -1,
-    name: '',
-    accountNo: '',
-  },
+  currentAccount: null,
   accountList: [], // 계좌 목록
 
   // 모달 상태 초기화
@@ -40,11 +30,7 @@ export const useConnectStore = create<UseConnectAccountState>((set) => ({
       ...state,
       modalStep: 'connecting',
       isConnectModalOpen: false,
-      selectedAccount: {
-        id: -1,
-        name: '',
-        accountNo: '',
-      },
+      selectedAccount: null,
       isSelected: false,
     }));
   },
@@ -66,15 +52,15 @@ export const useConnectStore = create<UseConnectAccountState>((set) => ({
   },
 
   // 현재 선택된 계좌 변경
-  setCurrentAccount: (accountNo: Account) => {
+  setCurrentAccount: (account: AccountItemDTO | null) => {
     set((state) => ({
       ...state,
-      currentAccount: accountNo,
+      currentAccount: account,
     }));
   },
 
   // 계좌 목록 설정
-  setAccountList: (accountList: Account[]) => {
+  setAccountList: (accountList: AccountItemDTO[]) => {
     set((state) => ({
       ...state,
       accountList,
@@ -82,7 +68,7 @@ export const useConnectStore = create<UseConnectAccountState>((set) => ({
   },
 
   // 계좌 선택 클릭 이벤트
-  handleClickAccount: (account: Account) => {
+  handleClickAccount: (account: AccountItemDTO) => {
     set((state) => ({
       ...state,
       selectedAccount: account,

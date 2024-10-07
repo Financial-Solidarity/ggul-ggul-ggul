@@ -15,7 +15,6 @@ import { PathNames } from '@/router';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { NothingLottie } from '@/modules/game/components/common/Lotties/NothingLottie';
 
 export const ChallengeListPage = () => {
@@ -38,7 +37,6 @@ export const ChallengeListPage = () => {
       <TopBar
         center={<NavTitle title="챌린지" />}
         left={<BackButton color="black" />}
-        right={<NotificationButton color="black" />}
       />
       <PageContainer>
         <div className="mb-20 flex h-full flex-col gap-2">

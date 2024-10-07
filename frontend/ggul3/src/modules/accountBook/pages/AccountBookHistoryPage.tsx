@@ -10,7 +10,6 @@ import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
-import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const AccountBookHistoryPage = () => {
   const { paymentList, setPaymentList } = usePaymentHistoryStore();
@@ -40,7 +39,6 @@ export const AccountBookHistoryPage = () => {
         bgColor="bg-primary"
         center={<NavTitle color="white" title="거래 내역" />}
         left={<BackButton />}
-        right={<NotificationButton />}
       />
       <AccountBookHistoryHeader
         setSearchParams={setSearchParams}

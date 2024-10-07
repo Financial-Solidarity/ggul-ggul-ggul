@@ -1,8 +1,8 @@
-import { Account } from '@types';
+import { AccountItemDTO } from '@types';
 
 export interface AccountModalProps {
-  currentAccount: Account;
-  selectedAccount: Account;
+  currentAccount: AccountItemDTO;
+  selectedAccount: AccountItemDTO;
   setModalStep?: (step: 'connecting' | 'connected' | 'failed') => void;
   setConnectModalOpen?: (isOpen: boolean) => void;
   initializeModalStates?: () => void;
