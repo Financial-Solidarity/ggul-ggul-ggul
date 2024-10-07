@@ -24,7 +24,7 @@ export const Balance = () => {
     }
   }, []);
 
-  const [isMoneyVisible, setIsMoneyVisible] = useState<boolean>(false);
+  const [isMoneyVisible, setIsMoneyVisible] = useState<boolean>(true);
 
   if (!bankAccount) {
     return (

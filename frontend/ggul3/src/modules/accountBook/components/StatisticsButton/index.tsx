@@ -20,7 +20,9 @@ export const StatisticsButton = ({
   return (
     <div className="flex-1">
       <Link to={link}>
-        <Card className={`flex flex-1 bg-${color} text-black`}>
+        <Card
+          className={`flex flex-1 bg-${color} text-black duration-200 ease-linear hover:bg-opacity-75`}
+        >
           <CardBody className="flex flex-col items-center text-center">
             <Image height={84} src={buttonImageUrl} width={84} />
             <span className="font-bold">{displayValue}</span>

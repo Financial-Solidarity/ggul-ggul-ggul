@@ -13,7 +13,7 @@ export const ChangeMainAccountLinkButton =
     };
 
     return (
-      <Card className="hover:bg-gray-200">
+      <Card className="bg-slate-200 hover:bg-slate-300">
         <button onClick={handleClickChangeAccountButton}>
           <CardBody>
             <div className="flex justify-between py-2">

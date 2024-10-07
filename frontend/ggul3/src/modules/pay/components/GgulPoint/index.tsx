@@ -25,7 +25,7 @@ export const GgulPoint = ({ isNarrow }: GgulPointProps) => {
   if (isNarrow) {
     return (
       <Card
-        className="flex bg-primary py-1 text-white"
+        className="bfg flex bg-primary py-1 text-white duration-200 ease-linear hover:bg-opacity-70"
         radius="none"
         shadow="sm"
       >
@@ -47,7 +47,7 @@ export const GgulPoint = ({ isNarrow }: GgulPointProps) => {
   }
 
   return (
-    <Card className="flex min-h-40 bg-success py-1 text-white">
+    <Card className="flex min-h-40 bg-success py-1 text-white duration-200 ease-linear hover:bg-opacity-70">
       <CardHeader className="flex justify-between">
         <div>
           <SmallText>GGUL TOKEN</SmallText>

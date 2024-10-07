@@ -8,6 +8,7 @@ import burnMoney from '@/assets/images/burn-money.png';
 import financeChart from '@/assets/images/finance-chart.png';
 import { PathNames } from '@/router';
 import { NavTitle } from '@/modules/common/components';
+import { ChangeMainAccountLinkButton } from '@/modules/myPage/components';
 
 export const AccountBookPage = () => {
   return (
@@ -21,7 +22,6 @@ export const AccountBookPage = () => {
         <div className="mb-3">
           <Balance />
         </div>
-
         <div className="mb-3 flex gap-3">
           <StatisticsButton
             buttonImageUrl={burnMoney}
@@ -37,6 +37,9 @@ export const AccountBookPage = () => {
             displayValue={`커피 28 회`}
             link={PathNames.ACCOUNT_BOOK.STATISTICS.path}
           />
+        </div>
+        <div className="mb-3">
+          <ChangeMainAccountLinkButton />
         </div>
       </PageContainer>
       ;

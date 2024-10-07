@@ -9,7 +9,7 @@ export const QrButton = () => {
 
   return (
     <div onClick={() => navigate(PathNames.ACCOUNT_BOOK.QR_CODE.path)}>
-      <Card className="flex bg-slate-300 text-black">
+      <Card className="flex cursor-pointer bg-slate-300 text-black duration-200 ease-linear hover:bg-opacity-70">
         <CardBody>
           <div className="flex content-center items-center justify-between">
             <p className="flex flex-col text-xl">

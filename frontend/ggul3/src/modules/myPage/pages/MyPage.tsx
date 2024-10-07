@@ -1,9 +1,4 @@
-import {
-  Banner,
-  ChangeMainAccountLinkButton,
-  LogOutButton,
-  MyProfile,
-} from '../components';
+import { Banner, LogOutButton, MyProfile } from '../components';
 
 import {
   ChallengePaymentHistory,
@@ -33,7 +28,6 @@ export const MyPage = () => {
             <MyProfile />
           </div>
           <Banner nickname={user?.nickname} />
-          <ChangeMainAccountLinkButton />
           <LogOutButton />
         </div>
         <ChallengePaymentHistory />
