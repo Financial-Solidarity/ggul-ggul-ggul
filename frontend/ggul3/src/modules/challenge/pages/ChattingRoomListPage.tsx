@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button } from '@nextui-org/react';
+import { Button, Skeleton } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
 import { useGetChattingRoomList } from '../reactQueries/useChattingRoomQuery';
@@ -19,7 +19,7 @@ export const ChattingRoomListPage = () => {
   useSetBottomBar({ active: true, isDarkMode: false });
   const { chattingRoomList, setChattingRoomList } =
     useSocketChattingRoomListStore();
-  const { data } = useGetChattingRoomList();
+  const { data, isFetching } = useGetChattingRoomList();
 
   const navigate = useNavigate();
 
@@ -40,7 +40,17 @@ export const ChattingRoomListPage = () => {
         right={<NotificationButton color="black" />}
       />
       <PageContainer>
-        {chattingRoomList.length === 0 ? (
+        {isFetching ? (
+          <div className="flex flex-col gap-2">
+            {Array(5)
+              .fill(0)
+              .map((_, index) => (
+                <Skeleton key={index} className="rounded-2xl">
+                  <div className="h-36 w-full" />
+                </Skeleton>
+              ))}
+          </div>
+        ) : chattingRoomList.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-2">
             <NothingLottie />
             <p className="text-center text-default-500">채팅방이 없어요</p>
