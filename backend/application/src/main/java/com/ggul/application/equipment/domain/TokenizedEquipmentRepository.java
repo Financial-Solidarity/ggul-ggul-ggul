@@ -17,7 +17,7 @@ public interface TokenizedEquipmentRepository extends JpaRepository<TokenizedEqu
            JOIN FETCH e.item
            WHERE t.owner.id = :userId AND t.status = :status
            """)
-    Optional<TokenizedEquipment> findByUserIdAndStatusUsingFetchAll(@Param("userId") UUID userId, Status status);
+    Optional<TokenizedEquipment> findByUserIdAndStatusUsingFetchAll(@Param("userId") UUID userId, @Param("status") Status status);
 
     @Query("""
            SELECT t
@@ -26,7 +26,7 @@ public interface TokenizedEquipmentRepository extends JpaRepository<TokenizedEqu
            JOIN FETCH e.item
            WHERE t.owner.id = :userId AND t.equipment.power BETWEEN :minPower AND :maxPower
            """)
-    List<TokenizedEquipment> findByUserIdAndEquipmentPowerBetweenUsingFetchAll(@Param("userId")UUID userId, Long minPower, Long maxPower);
+    List<TokenizedEquipment> findByUserIdAndEquipmentPowerBetweenUsingFetchAll(@Param("userId")UUID userId, @Param("minPower")Long minPower, @Param("maxPower")Long maxPower);
 
     Optional<TokenizedEquipment> findByIpfsCID(String ipfsCID);
     @Query("""
@@ -34,5 +34,5 @@ public interface TokenizedEquipmentRepository extends JpaRepository<TokenizedEqu
            FROM TokenizedEquipment t
            WHERE t.owner.id = :userId AND t.status = :status
            """)
-    Optional<TokenizedEquipment> findByUserIdAndStatus(@Param("userId") UUID userId, Status status);
+    Optional<TokenizedEquipment> findByUserIdAndStatus(@Param("userId") UUID userId, @Param("status") Status status);
 }
