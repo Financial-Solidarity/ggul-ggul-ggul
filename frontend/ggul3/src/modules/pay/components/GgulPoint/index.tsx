@@ -2,12 +2,15 @@ import { Button } from '@nextui-org/button';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { PropsWithChildren } from 'react';
 
+import { useWalletStore } from '../../store/walletStore';
+
 interface GgulPointProps {
   isNarrow?: boolean;
-  remainGgulToken: number;
 }
 
-export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
+export const GgulPoint = ({ isNarrow }: GgulPointProps) => {
+  const { ggulToken } = useWalletStore();
+
   if (isNarrow) {
     return (
       <Card
@@ -21,7 +24,7 @@ export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
               <div>
                 <SmallText>GGUL TOKEN</SmallText>
               </div>
-              <p className="text-2xl">{remainGgulToken} P</p>
+              <p className="text-2xl">{ggulToken} P</p>
             </div>
             <div className="flex">
               <ToggleBalanceVisibilityButton />
@@ -43,7 +46,7 @@ export const GgulPoint = ({ isNarrow, remainGgulToken }: GgulPointProps) => {
         </div>
       </CardHeader>
       <CardBody className="py-0">
-        <p className="text-2xl">{`2,450`} P</p>
+        <p className="text-2xl">{ggulToken} P</p>
       </CardBody>
       <CardFooter className="flex flex-col items-start">
         <SmallText>껄을 이용하여 유니크한 장비를 뽑거나</SmallText>

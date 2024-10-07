@@ -1,5 +1,4 @@
 import { Snippet } from '@nextui-org/react';
-import { useEffect } from 'react';
 
 import { useWalletStore } from '../../store/walletStore';
 
@@ -10,17 +9,8 @@ interface WalletHeaderProps {
 }
 
 export const WalletHeader = ({ isScrolled }: WalletHeaderProps) => {
-  const { myWallet, ggulToken, getMyWallet, getMyGgulToken } = useWalletStore();
+  const { myWallet, ggulToken } = useWalletStore();
   const { user } = useUserStore();
-
-  useEffect(() => {
-    try {
-      getMyWallet();
-      getMyGgulToken();
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
 
   return (
     <div

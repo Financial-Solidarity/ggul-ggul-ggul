@@ -11,6 +11,7 @@ import {
   getAllBankAccounts,
   getMainBankAccount,
 } from '@/modules/common/apis/bankApis';
+import { useWalletStore } from '@/modules/pay/store/walletStore';
 
 /**
  * 로그인 후 실행되는 흐름을 정의한 커스텀 훅
@@ -21,11 +22,15 @@ export const useUserLoginFlow = () => {
 
   const { setUser, setIsLoggedIn } = useUserStore();
   const { setBankAccount } = useBankAccountStore();
+  const { getMyWallet, getMyGgulToken } = useWalletStore();
 
   const executeAfterLoginFlow = async () => {
     // 유저 데이터 가져오기
     const userData = await getUserData();
     const mainBankAccount = await getMainBankAccount();
+
+    await getMyGgulToken();
+    await getMyWallet();
 
     // 유저 데이터 상태에 저장
     setUser(userData);

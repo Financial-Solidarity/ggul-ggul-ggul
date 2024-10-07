@@ -43,7 +43,7 @@ export const LuckyDrawEntryPage = () => {
         right={<NotificationButton />}
       />
       <div className="z-50 shadow-md">
-        <GgulPoint isNarrow remainGgulToken={2250} />
+        <GgulPoint isNarrow />
       </div>
       <PageContainer>
         <div className="mb-12 pt-5">
