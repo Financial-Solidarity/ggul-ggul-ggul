@@ -61,8 +61,9 @@ public class SpendChattingSendEventListener {
 
         Chatting myTeamChatting = null;
         if (CompetitionType.TEAM.equals(target.getCompetitionType())) {
+            ChattingRoom myTeam = chattingRoomRepository.getReferenceById(chattingRoom.getMyTeamChattingRoomId());
             myTeamChatting = Chatting.builder()
-                    .chattingRoom(total)
+                    .chattingRoom(myTeam)
                     .type(Chatting.Type.SPEND)
                     .balance(event.getSpendMoney())
                     .categoryName(event.getCategoryName())
