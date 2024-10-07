@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class SpendChattingSendEventListener {
     @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sendChattingByPaymentEvent(PaymentCompletedEvent event) {
-        Optional<Challenge> firstByIsReadyTrueAndIsEndedFalse = challengeRepository.findFirstByIsReadyTrueAndIsEndedFalse();
+        Optional<Challenge> firstByIsReadyTrueAndIsEndedFalse = challengeRepository.findByIsReadyTrueAndIsEndedFalse(event.getUserId(), LocalDateTime.now());
         if (firstByIsReadyTrueAndIsEndedFalse.isEmpty()) {
             return;
         }

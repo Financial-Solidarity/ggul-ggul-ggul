@@ -223,6 +223,7 @@ CREATE TABLE chatting
     consumption_category_name VARCHAR(40),
     consumption_balance       INTEGER,
     created_at                DATETIME NOT NULL,
+    key created_at_idx    (created_at),
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id),
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room (chatting_room_id)
 );
