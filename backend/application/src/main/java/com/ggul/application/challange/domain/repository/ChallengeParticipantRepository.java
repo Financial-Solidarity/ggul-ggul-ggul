@@ -19,10 +19,10 @@ public interface ChallengeParticipantRepository extends JpaRepository<ChallengeP
     Optional<ChallengeParticipant> findByChallenge_IdAndUser_Id(UUID challengeId, UUID userId);
 
     List<ChallengeParticipant> findAllByChallenge_Id(UUID challengeId);
+    List<ChallengeParticipant> findAllByChallenge_IdOrderByCreatedAt(UUID challengeId);
 
     List<ChallengeParticipant> findChallengeParticipantByChallenge_IdAndType(UUID challengeId, ChallengeParticipantType type);
 
-    ChallengeParticipant findFirstByChallenge_IdOrderByCreatedAt(UUID challengeId);
 
     @Query("SELECT new com.ggul.application.challange.ui.dto.ChallengeParticipantView(cp.id, cp.nickname, cp.profile, cp.type) " +
             "FROM ChallengeParticipant cp " +

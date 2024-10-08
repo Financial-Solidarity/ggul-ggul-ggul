@@ -10,6 +10,7 @@ import com.ggul.application.challange.exception.ChallengeNotFoundException;
 import com.ggul.application.challange.exception.ChallengeParticipantNotExistException;
 import com.ggul.application.common.event.Events;
 import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
+import com.ggul.application.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,8 @@ public class ChallengeExitService {
             if (challengeParticipantRepository.countByChallenge_Id(challengeId) == 1) {
                 challenge.delete();
             } else {
-                ChallengeParticipant newOwner = challengeParticipantRepository.findFirstByChallenge_IdOrderByCreatedAt(challengeId);
+                List<ChallengeParticipant> participants = challengeParticipantRepository.findAllByChallenge_IdOrderByCreatedAt(challengeId);
+                ChallengeParticipant newOwner = participants.get(1);
                 challenge.changeOwner(newOwner.getUser());
                 Events.raise(new ChallengeParticipantChangedEvent(challengeId, newOwner.getId(), newOwner.getNickname(), newOwner.getProfile(), true, newOwner.getType(), false, false));
             }
