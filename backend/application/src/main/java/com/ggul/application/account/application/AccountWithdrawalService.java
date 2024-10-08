@@ -45,7 +45,7 @@ public class AccountWithdrawalService {
                 .transactionBalance(requiredMoney.longValue())
                 .build();
 
-        bankMasterService.demandDepositAccountWithdrawal(userKey, accountDepositAndWithdrawView);
+        if(requiredMoney.longValue() != 0) bankMasterService.demandDepositAccountWithdrawal(userKey, accountDepositAndWithdrawView);
 
     }
 
