@@ -62,7 +62,6 @@ public class ChallengeStateUpdateService {
             Challenge target = byId.get();
             if (!target.getIsReady()) {
                 challengeExitService.challengeExitAll(id);
-                target.changeOwner(null);
                 target.delete();
                 log.info("챌린지가 삭제되었습니다. : {} ", target.getId());
                 Events.raise(new ChallengeDestroyedEvent(id));

@@ -9,6 +9,7 @@ import com.ggul.application.challange.event.ChallengeParticipantChangedEvent;
 import com.ggul.application.challange.exception.ChallengeNotFoundException;
 import com.ggul.application.challange.exception.ChallengeParticipantNotExistException;
 import com.ggul.application.common.event.Events;
+import com.ggul.application.common.jpa.domain.SoftDeleteEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,6 @@ public class ChallengeExitService {
     @Transactional
     public void challengeExitAll(UUID challengeId) {
         List<ChallengeParticipant> allByChallengeId = challengeParticipantRepository.findAllByChallenge_Id(challengeId);
-        challengeParticipantRepository.deleteAll(allByChallengeId);
+        allByChallengeId.forEach(SoftDeleteEntity::delete);
     }
 }
