@@ -95,8 +95,8 @@ public class ChallengeController {
     }
 
     @GetMapping("/{challengeId}/consumptions")
-    public ResponseEntity<?> getConsumptionLog(@PathVariable("challengeId")UUID challengeId) {
-        return ResponseEntity.ok(consumptionLogFindService.findAllByChallengeId(challengeId));
+    public ResponseEntity<?> getConsumptionLog(@PathVariable("challengeId")UUID challengeId, @AuthenticationPrincipal UserLoginContext userLoginContext) {
+        return ResponseEntity.ok(consumptionLogFindService.findAllByChallengeId(challengeId, userLoginContext.getUserId()));
     }
 
     @GetMapping("/{challengeId}/result")

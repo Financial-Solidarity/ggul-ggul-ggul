@@ -8,21 +8,35 @@ import com.ggul.application.wallet.domain.WalletHistory;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
 @Setter
-@Getter
 @NoArgsConstructor
 public class ChallengeConsumptionView {
+    @Getter
     private String productName;
+    @Getter
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH-mm-ss")
     private LocalDateTime spentAt;
+    @Getter
     private Integer money;
+    @Getter
     private String label;
+    @Getter
     private String market;
+    @Getter
     private Long spendGgulToken;
+    @Getter
     private String nickname;
+    @Getter
     private String team;
+    @Getter
     private String profileImg;
+    @Getter
+    private Boolean isMine;
+
+    private UUID challengeParticipantId;
 
     @Builder
     public ChallengeConsumptionView(ConsumptionLog consumptionLog, ChallengeParticipant challengeParticipant, ProductCategory category, WalletHistory walletHistory) {
@@ -35,5 +49,10 @@ public class ChallengeConsumptionView {
         this.nickname = challengeParticipant.getNickname();
         this.profileImg = challengeParticipant.getProfile();
         this.team = challengeParticipant.getType().getType().name();
+        this.challengeParticipantId = challengeParticipant.getId();
+    }
+
+    public void setIsMine(UUID challengeParticipantId) {
+        this.isMine = Objects.equals(challengeParticipantId, this.challengeParticipantId);
     }
 }
