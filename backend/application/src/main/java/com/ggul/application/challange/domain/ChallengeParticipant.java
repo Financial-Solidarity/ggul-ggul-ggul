@@ -71,6 +71,11 @@ public class ChallengeParticipant extends SoftDeleteEntity {
         }
     }
 
+    public void setBlindNickname(String nickname) {
+        this.nickname = nickname;
+        this.profile = null;
+    }
+
     public ChallengeLog isWin(Boolean isWin, Long ggul, Boolean isSuccess) {
         return ChallengeLog.builder()
                 .participant(this)

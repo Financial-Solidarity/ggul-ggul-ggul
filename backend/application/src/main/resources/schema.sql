@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS account;
 DROP TABLE IF EXISTS bank_book;
+DROP TABLE IF EXISTS blind_nickname;
 
 CREATE TABLE user
 (
@@ -57,11 +58,11 @@ CREATE TABLE fcm_token
 
 CREATE TABLE challenge
 (
-    challenge_id                BINARY(16)  NOT NULL PRIMARY KEY,
+    challenge_id                BINARY(16)   NOT NULL PRIMARY KEY,
     challenge_title             VARCHAR(120) NOT NULL,
     challenge_password_exist    BOOL         NOT NULL,
     challenge_password          BINARY(60),
-    challenge_owner_id          BINARY(16)  NOT NULL,
+    challenge_owner_id          BINARY(16)   NOT NULL,
     challenge_is_blindness      BOOL         NOT NULL,
     challenge_limit_participant TINYINT      NOT NULL,
     challenge_competition_type  CHAR(1)      NOT NULL,
@@ -81,7 +82,7 @@ CREATE TABLE challenge_participant
     challenge_participant_id   BINARY(16)  NOT NULL PRIMARY KEY,
     challenge_id               BINARY(16)  NOT NULL,
     user_id                    BINARY(16)  NOT NULL,
-    nickname                   VARCHAR(20) NOT NULL,
+    nickname                   VARCHAR(60) NOT NULL,
     profile                    VARCHAR(200),
     challenge_participant_type CHAR(1)     NOT NULL,
     participated_at            DATETIME    NOT NULL,
@@ -94,8 +95,8 @@ CREATE TABLE chatting_room
 (
     chatting_room_id   BINARY(16) NOT NULL PRIMARY KEY,
     challenge_id       BINARY(16) NOT NULL,
-    chatting_room_type CHAR(1)  NOT NULL,
-    created_at         DATETIME NOT NULL,
+    chatting_room_type CHAR(1)    NOT NULL,
+    created_at         DATETIME   NOT NULL,
     FOREIGN KEY (challenge_id) REFERENCES challenge (challenge_id)
 );
 
@@ -104,8 +105,8 @@ CREATE TABLE chatting_room_participant
     chatting_room_participant_id BINARY(16) NOT NULL PRIMARY KEY,
     chatting_room_id             BINARY(16) NOT NULL,
     challenge_participant_id     BINARY(16) NOT NULL,
-    last_connected_at            DATETIME NOT NULL,
-    created_at                   DATETIME NOT NULL,
+    last_connected_at            DATETIME   NOT NULL,
+    created_at                   DATETIME   NOT NULL,
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room (chatting_room_id),
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id)
 );
@@ -138,40 +139,40 @@ CREATE TABLE equipment_item
 
 CREATE TABLE equipment
 (
-    equipment_id     BINARY(16) NOT NULL PRIMARY KEY,
+    equipment_id     BINARY(16)  NOT NULL PRIMARY KEY,
     power            VARCHAR(40) NOT NULL,
     item_id          BIGINT      NOT NULL,
-    publisher        BINARY(20) NOT NULL,
+    publisher        BINARY(20)  NOT NULL,
     adjective        VARCHAR(40) NOT NULL,
-    transaction_hash BINARY(32) NOT NULL,
+    transaction_hash BINARY(32)  NOT NULL,
     minted           BOOL        NOT NULL,
     FOREIGN KEY (item_id) REFERENCES equipment_item (equipment_item_id)
 );
 
 CREATE TABLE tokenized_equipment
 (
-    tokenized_equipment_id BINARY(16) NOT NULL PRIMARY KEY,
+    tokenized_equipment_id BINARY(16)   NOT NULL PRIMARY KEY,
     ipfs_cid               VARCHAR(60)  NOT NULL,
     nft_url                VARCHAR(200) NOT NULL,
     status                 VARCHAR(16)  NOT NULL,
-    owner_id               BINARY(16) NOT NULL,
-    equipment_id           BINARY(16) NOT NULL,
+    owner_id               BINARY(16)   NOT NULL,
+    equipment_id           BINARY(16)   NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES user (user_id),
     FOREIGN KEY (equipment_id) REFERENCES equipment (equipment_id)
 );
 
 CREATE TABLE market
 (
-    market_id              BINARY(16) NOT NULL PRIMARY KEY,
-    tokenized_equipment_id BINARY(16) NOT NULL,
-    seller_id              BINARY(16) NOT NULL,
-    buyer_id               BINARY(16) NULL,
-    title                  VARCHAR(40) NOT NULL,
+    market_id              BINARY(16)   NOT NULL PRIMARY KEY,
+    tokenized_equipment_id BINARY(16)   NOT NULL,
+    seller_id              BINARY(16)   NOT NULL,
+    buyer_id               BINARY(16)   NULL,
+    title                  VARCHAR(40)  NOT NULL,
     description            VARCHAR(200) NULL,
-    price                  BIGINT      NOT NULL,
-    created_at             DATETIME    NOT NULL,
-    completed_at           DATETIME NULL,
-    status                 VARCHAR(16) NOT NULL,
+    price                  BIGINT       NOT NULL,
+    created_at             DATETIME     NOT NULL,
+    completed_at           DATETIME     NULL,
+    status                 VARCHAR(16)  NOT NULL,
 
     FOREIGN KEY (tokenized_equipment_id) REFERENCES tokenized_equipment (tokenized_equipment_id),
     FOREIGN KEY (seller_id) REFERENCES user (user_id),
@@ -182,7 +183,7 @@ CREATE TABLE market_deal
 (
     market_deal_id BINARY(16) NOT NULL PRIMARY KEY,
     market_id      BINARY(16) NOT NULL,
-    deal_no        BIGINT NOT NULL,
+    deal_no        BIGINT     NOT NULL,
 
     FOREIGN KEY (market_id) REFERENCES market (market_id)
 );
@@ -190,7 +191,7 @@ CREATE TABLE market_deal
 CREATE TABLE wallet_history
 (
     wallet_history_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id           BINARY(16) NOT NULL,
+    user_id           BINARY(16)  NOT NULL,
     quantity          BIGINT      NOT NULL,
     category          VARCHAR(32) NOT NULL,
     created_at        DATETIME    NOT NULL,
@@ -218,11 +219,11 @@ CREATE TABLE chatting
     chatting_id               BINARY(16) PRIMARY KEY NOT NULL,
     challenge_participant_id  BINARY(16)             NOT NULL,
     chatting_room_id          BINARY(16)             NOT NULL,
-    type                      TINYINT  NOT NULL,
+    type                      TINYINT                NOT NULL,
     chatting_content          TEXT,
     consumption_category_name VARCHAR(40),
     consumption_balance       INTEGER,
-    created_at                DATETIME NOT NULL,
+    created_at                DATETIME               NOT NULL,
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id),
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room (chatting_room_id)
 );
@@ -231,20 +232,20 @@ CREATE TABLE account
 (
     account_id       BINARY(16) PRIMARY KEY NOT NULL,
     user_id          BINARY(16)             NOT NULL,
-    account_user_key VARCHAR(40) NOT NULL
+    account_user_key VARCHAR(40)            NOT NULL
 );
 
 CREATE TABLE bank_book
 (
     bank_book_id   BINARY(16) PRIMARY KEY NOT NULL,
     user_id        BINARY(16)             NOT NULL,
-    account_number VARCHAR(40) NOT NULL
+    account_number VARCHAR(40)            NOT NULL
 );
 
 CREATE TABLE game
 (
     user_id          BINARY(16) PRIMARY KEY NOT NULL,
-    last_received_at DATETIME NOT NULL
+    last_received_at DATETIME               NOT NULL
 );
 
 CREATE TABLE application
@@ -252,7 +253,7 @@ CREATE TABLE application
     application_id   BIGINT PRIMARY KEY NOT NULL,
     title            VARCHAR(40),
     image_url        VARCHAR(200),
-    probability DOUBLE,
+    probability      DOUBLE,
     price            BIGINT,
     max_winner_count BIGINT,
     status           VARCHAR(16),
@@ -275,21 +276,59 @@ CREATE TABLE primary_account
 (
     account_id BINARY(16) PRIMARY KEY NOT NULL,
     user_id    BINARY(16)             NOT NULL,
-    account_no VARCHAR(40) NOT NULL
+    account_no VARCHAR(40)            NOT NULL
 );
 
 CREATE TABLE challenge_log
 (
     challenge_log_id         BINARY(16) PRIMARY KEY NOT NULL,
-    challenge_participant_id BINARY(16) NOT NULL,
-    challenge_id             BINARY(16) NOT NULL,
-    is_success               BOOL     NOT NULL,
+    challenge_participant_id BINARY(16)             NOT NULL,
+    challenge_id             BINARY(16)             NOT NULL,
+    is_success               BOOL                   NOT NULL,
     is_lose                  BOOL,
-    ggul_num                 INT      NOT NULL,
-    created_at               DATETIME NOT NULL,
+    ggul_num                 INT                    NOT NULL,
+    created_at               DATETIME               NOT NULL,
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id),
     FOREIGN KEY (challenge_id) REFERENCES challenge (challenge_id)
 );
+
+CREATE TABLE blind_nickname
+(
+    blind_nickname_id TINYINT     NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    blind_nickname    VARCHAR(60) NOT NULL
+);
+
+INSERT INTO blind_nickname (blind_nickname)
+VALUES ('통장 바닥남'),
+       ('잔고없지'),
+       ('거지왕 김거지'),
+       ('땅파서 돈나옴?'),
+       ('라면빌런'),
+       ('구멍난 주머니'),
+       ('희망없는 통장요정'),
+       ('알바만렙'),
+       ('돈없지'),
+       ('동전줍는 마법사'),
+       ('오늘도 거지런'),
+       ('흙수저킹'),
+       ('구독자 0원'),
+       ('월세파이터'),
+       ('식비탐험가'),
+       ('신용카드 전설'),
+       ('월급은 신기루'),
+       ('구멍난 양말맨'),
+       ('현금없는 인생'),
+       ('짠돌이 마스터'),
+       ('통장에 눈물'),
+       ('파산만큼은'),
+       ('월급 루팡'),
+       ('희망없는 잔고'),
+       ('빚쟁이왕'),
+       ('사라진 월급날'),
+       ('닫힌 지갑'),
+       ('적자왕'),
+       ('알바력 만렙'),
+       ('희망회로 오작동');
 
 
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
