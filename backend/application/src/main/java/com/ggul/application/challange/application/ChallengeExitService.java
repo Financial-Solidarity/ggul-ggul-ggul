@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -39,5 +40,11 @@ public class ChallengeExitService {
         }
         challengeParticipant.delete();
         Events.raise(new ChallengeParticipantChangedEvent(challengeId, challengeParticipant.getId(), challengeParticipant.getNickname(), challengeParticipant.getProfile(), false, challengeParticipant.getType(), false, false));
+    }
+
+    @Transactional
+    public void challengeExitAll(UUID challengeId) {
+        List<ChallengeParticipant> allByChallengeId = challengeParticipantRepository.findAllByChallenge_Id(challengeId);
+        challengeParticipantRepository.deleteAll(allByChallengeId);
     }
 }
