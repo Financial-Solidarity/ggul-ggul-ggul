@@ -7,6 +7,7 @@ import com.ggul.application.challange.domain.repository.ChallengeRepository;
 import com.ggul.application.challange.event.ChallengeDestroyedEvent;
 import com.ggul.application.challange.event.ChallengeEndedEvent;
 import com.ggul.application.challange.event.ChallengeStartedEvent;
+import com.ggul.application.challange.ui.dto.ChallengeParticipantView;
 import com.ggul.application.common.event.Events;
 import com.ggul.application.payment.domain.ConsumptionLog;
 import com.ggul.application.payment.domain.repository.ConsumptionLogRepository;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -74,7 +76,7 @@ public class ChallengeStateUpdateService {
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void challengeEndUpdate(UUID id) {
-        Optional<Challenge> byIsEndedFalse = challengeRepository.findByIdAndIsEndedFalse(id);
+        Optional<Challenge> byIsEndedFalse = challengeRepository.findById(id);
 
         if (byIsEndedFalse.isEmpty()) {
             return;
@@ -82,31 +84,33 @@ public class ChallengeStateUpdateService {
 
         Challenge target = byIsEndedFalse.get();
 
-        if(target.getIsEnded()) {
+        if (target.getIsEnded()) {
             return;
         }
 
         long minutesTerm = Duration.between(target.getStartedAt(), target.getEndedAt()).toMinutes();
 
-        List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> byChallengeId = consumptionLogFindService.findByChallengeId(target.getId());
-
+        List<ConsumptionLogRepository.ParticipantAndConsumptionLogs> byChallengeId = consumptionLogFindService.findByChallengeId(target.getId());
+        for(ConsumptionLogRepository.ParticipantAndConsumptionLogs logs : byChallengeId) {
+            log.info("challenge participant : {}",new ChallengeParticipantView(logs.getParticipant()));
+        }
         if (CompetitionType.TEAM.equals(target.getCompetitionType())) {
-            List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> redTeam = byChallengeId.stream().filter(consumptionInfo -> consumptionInfo.getParticipant().getType().equals(ChallengeParticipantType.RED)).toList();
-            List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> blueTeam = byChallengeId.stream().filter(consumptionInfo -> consumptionInfo.getParticipant().getType().equals(ChallengeParticipantType.BLUE)).toList();
+            List<ConsumptionLogRepository.ParticipantAndConsumptionLogs> redTeam = byChallengeId.stream().filter(consumptionInfo -> consumptionInfo.getParticipant().getType().equals(ChallengeParticipantType.RED)).toList();
+            List<ConsumptionLogRepository.ParticipantAndConsumptionLogs> blueTeam = byChallengeId.stream().filter(consumptionInfo -> consumptionInfo.getParticipant().getType().equals(ChallengeParticipantType.BLUE)).toList();
 
             int redSum = 0;
             int blueSum = 0;
 
-            for (ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet participantAndConsumptionLogAndWallet : redTeam) {
-                ConsumptionLog consumptionLog = participantAndConsumptionLogAndWallet.getConsumptionLog();
+            for (ConsumptionLogRepository.ParticipantAndConsumptionLogs participantAndConsumptionLogs : redTeam) {
+                ConsumptionLog consumptionLog = participantAndConsumptionLogs.getConsumptionLog();
                 if (consumptionLog == null) {
                     continue;
                 }
                 redSum += consumptionLog.getBalance();
             }
 
-            for (ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet participantAndConsumptionLogAndWallet : blueTeam) {
-                ConsumptionLog consumptionLog = participantAndConsumptionLogAndWallet.getConsumptionLog();
+            for (ConsumptionLogRepository.ParticipantAndConsumptionLogs participantAndConsumptionLogs : blueTeam) {
+                ConsumptionLog consumptionLog = participantAndConsumptionLogs.getConsumptionLog();
                 if (consumptionLog == null) {
                     continue;
                 }
@@ -147,9 +151,9 @@ public class ChallengeStateUpdateService {
             }
 
             long finalRedGgul = redGgul;
-            List<ChallengeLog> redLogs = redTeam.stream().map(member -> member.getParticipant().isWin(isRedWinner, finalRedGgul, isRedOverBudget | isBlueOverBudget)).toList();
+            Set<ChallengeLog> redLogs = redTeam.stream().map(member -> member.getParticipant().isWin(isRedWinner, finalRedGgul, isRedOverBudget || isBlueOverBudget)).collect(Collectors.toSet());
             long finalBlueGgul = blueGgul;
-            List<ChallengeLog> blueLogs = blueTeam.stream().map(member -> member.getParticipant().isWin(isBlueWinner, finalBlueGgul, isBlueOverBudget | isBlueOverBudget)).toList();
+            Set<ChallengeLog> blueLogs = blueTeam.stream().map(member -> member.getParticipant().isWin(isBlueWinner, finalBlueGgul, isRedOverBudget || isBlueOverBudget)).collect(Collectors.toSet());
             challengeLogRepository.saveAll(redLogs);
             challengeLogRepository.saveAll(blueLogs);
 
@@ -157,8 +161,8 @@ public class ChallengeStateUpdateService {
             target.end();
             Events.raise(new ChallengeEndedEvent(target.getId()));
 
-            sendGgul(redTeam, redGgul);
-            sendGgul(blueTeam, blueGgul);
+            sendGgul(redLogs);
+            sendGgul(blueLogs);
 
         } else {
             Map<ChallengeParticipant, Integer> prefixs = new HashMap<>();
@@ -168,44 +172,40 @@ public class ChallengeStateUpdateService {
                     }
             );
 
+            Boolean isSuccess = false;
+            for(Map.Entry<ChallengeParticipant, Integer> entry : prefixs.entrySet()) {
+                if(entry.getValue() < target.getBudgetCap()) {
+                    isSuccess = true;
+                    break;
+                }
+            }
+
+
             long successGgul = (long) (minutesTerm * term * personalSuccess);
             long failureGgul = (long) (minutesTerm * term * personalFailure);
-            Boolean isSuccess = false;
-            List<Long> gguls = new ArrayList<>();
-            for(Map.Entry<ChallengeParticipant, Integer> entry : prefixs.entrySet()) {
-//                ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet userInfo = byChallengeId.stream().filter(info -> Objects.equals(entry.getKey(), info.getParticipant())).findFirst().get();
 
-                long ggul = 0;
-                if(entry.getValue() > target.getBudgetCap()) {
-                    ggul = successGgul;
-                    isSuccess = true;
-                }else {
-                    ggul = failureGgul;
-                }
-                gguls.add(ggul);
-            }
+
             List<ChallengeLog> logs = new ArrayList<>();
-            for(int i = 0 ; i < gguls.size(); i++) {
-                ChallengeParticipant participant = byChallengeId.get(i).getParticipant();
-                ChallengeLog win = participant.isWin(isSuccess, gguls.get(i), isSuccess);
-                logs.add(win);
+            for (Map.Entry<ChallengeParticipant, Integer> entry : prefixs.entrySet()) {
+                long ggul = entry.getValue() <= target.getBudgetCap() ? successGgul : failureGgul;
+                ChallengeLog log = entry.getKey().isWin(true, ggul, isSuccess);
+                logs.add(log);
             }
 
+            challengeLogRepository.saveAll(logs);
             target.end();
             Events.raise(new ChallengeEndedEvent(target.getId()));
-            for(int i = 0 ; i < gguls.size(); i++) {
-                sendGgul(byChallengeId.get(i).getWallet(), gguls.get(i));
-            }
+            sendGgul(logs);
 
         }
 
     }
 
-    private void sendGgul(List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> list, Long num) {
-        list.forEach(info -> {
-            Wallet participantWallet = info.getWallet();
-            sendGgul(participantWallet, num);
-        });
+    private void sendGgul(Collection<ChallengeLog> logs) {
+        for(ChallengeLog clog : logs) {
+            log.info("challenge log info : {}", clog);
+            walletService.grantTokens(clog.getParticipant().getUser().getId(), clog.getGgulNum().longValue());
+        }
     }
 
     private void sendGgul(Wallet wallet, Long ggul) {

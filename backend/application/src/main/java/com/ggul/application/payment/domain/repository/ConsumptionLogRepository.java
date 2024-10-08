@@ -5,7 +5,6 @@ import com.ggul.application.payment.domain.ProductCategory;
 import com.ggul.application.payment.ui.dto.ConsumptionChartView;
 import com.ggul.application.payment.domain.ConsumptionLog;
 import com.ggul.application.payment.ui.dto.ConsumptionLogView;
-import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletHistory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -36,7 +35,7 @@ public interface ConsumptionLogRepository extends JpaRepository<ConsumptionLog, 
             "GROUP BY cl.productCategory.name")
     List<ConsumptionChartView> findByUserAndCreatedAtBetweenGroupByProductCategoryName(@Param("userId") UUID userId, @Param("startedAt") LocalDateTime startedAt, @Param("endedAt") LocalDateTime endedAt);
 
-    interface ParticipantAndConsumptionLog {
+    interface ParticipantAndConsumptionLogFetchAll {
         ChallengeParticipant getParticipant();
         ConsumptionLog getConsumptionLog();
         ProductCategory getProductCategory();
@@ -52,21 +51,19 @@ public interface ConsumptionLogRepository extends JpaRepository<ConsumptionLog, 
             "WHERE cp.challenge.id = :challengeId " +
                 "AND cl.createdAt BETWEEN cp.challenge.startedAt AND cp.challenge.endedAt " +
             "ORDER BY cl.createdAt DESC")
-    List<ParticipantAndConsumptionLog> findAllByChallenge_IdFetchAll(@Param("challengeId")UUID challengeId);
+    List<ParticipantAndConsumptionLogFetchAll> findAllByChallenge_IdFetchAll(@Param("challengeId")UUID challengeId);
 
-    interface ParticipantAndConsumptionLogAndWallet {
+    interface ParticipantAndConsumptionLogs {
         ChallengeParticipant getParticipant();
         ConsumptionLog getConsumptionLog();
-        Wallet getWallet();
     }
 
-    @Query("SELECT cl as consumptionLog, cp as challengeParticipant, w as wallet " +
+    @Query("SELECT cl as consumptionLog, cp as participant " +
             "FROM ChallengeParticipant cp " +
+                "JOIN Challenge c ON cp.challenge = c " +
                 "JOIN User u ON cp.user = u " +
-                "JOIN Wallet w ON w.user = u " +
                 "LEFT JOIN ConsumptionLog cl ON cl.user = u " +
-            "WHERE cp.challenge.id = :challengeId " +
-            "AND cl.createdAt BETWEEN cp.challenge.startedAt AND cp.challenge.endedAt " +
-            "ORDER BY cl.createdAt DESC")
-    List<ParticipantAndConsumptionLogAndWallet> findAllByChallenge_Id(UUID challengeId);
+            "WHERE c.id = :challengeId " +
+            "AND (cl.createdAt is null OR  cl.createdAt BETWEEN c.startedAt AND c.endedAt )" )
+    List<ParticipantAndConsumptionLogs> findAllByChallenge_Id(UUID challengeId);
 }

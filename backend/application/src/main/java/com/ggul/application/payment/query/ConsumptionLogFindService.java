@@ -36,14 +36,14 @@ public class ConsumptionLogFindService {
 
     @Transactional(readOnly = true)
     public List<ChallengeConsumptionView> findAllByChallengeId(UUID challengeId, UUID userId) {
-        List<ConsumptionLogRepository.ParticipantAndConsumptionLog> allByChallengeId = consumptionLogRepository.findAllByChallenge_IdFetchAll(challengeId);
+        List<ConsumptionLogRepository.ParticipantAndConsumptionLogFetchAll> allByChallengeId = consumptionLogRepository.findAllByChallenge_IdFetchAll(challengeId);
         ChallengeParticipant me = challengeParticipantRepository.findByChallenge_IdAndUser_Id(challengeId, userId).orElseThrow(ChallengeParticipantNotExistException::new);
-        List<ChallengeConsumptionView> list = allByChallengeId.stream().map(participantAndConsumptionLog ->
+        List<ChallengeConsumptionView> list = allByChallengeId.stream().map(participantAndConsumptionLogsFetchAll ->
                 ChallengeConsumptionView.builder()
-                        .consumptionLog(participantAndConsumptionLog.getConsumptionLog())
-                        .category(participantAndConsumptionLog.getProductCategory())
-                        .walletHistory(participantAndConsumptionLog.getWalletHistory())
-                        .challengeParticipant(participantAndConsumptionLog.getParticipant())
+                        .consumptionLog(participantAndConsumptionLogsFetchAll.getConsumptionLog())
+                        .category(participantAndConsumptionLogsFetchAll.getProductCategory())
+                        .walletHistory(participantAndConsumptionLogsFetchAll.getWalletHistory())
+                        .challengeParticipant(participantAndConsumptionLogsFetchAll.getParticipant())
                         .build()
         ).toList();
 
@@ -52,7 +52,7 @@ public class ConsumptionLogFindService {
     }
 
     @Transactional(readOnly = true)
-    public List<ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet> findByChallengeId(UUID challengeId) {
+    public List<ConsumptionLogRepository.ParticipantAndConsumptionLogs> findByChallengeId(UUID challengeId) {
         return  consumptionLogRepository.findAllByChallenge_Id(challengeId);
     }
 }

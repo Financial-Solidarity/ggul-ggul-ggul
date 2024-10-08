@@ -2,10 +2,7 @@ package com.ggul.application.challange.ui.dto;
 
 import com.ggul.application.challange.domain.ChallengeParticipant;
 import com.ggul.application.challange.domain.ChallengeParticipantType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChallengeParticipantView {
     private UUID participantId;
     private String nickname;

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Table(name = "challenge_log")
 @Entity
 @DynamicUpdate
+@ToString
 public class ChallengeLog extends BaseEntity {
     @Id
     @GeneratedValue

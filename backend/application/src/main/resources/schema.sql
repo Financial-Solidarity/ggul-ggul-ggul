@@ -284,7 +284,7 @@ CREATE TABLE challenge_log
     challenge_participant_id BINARY(16) NOT NULL,
     challenge_id             BINARY(16) NOT NULL,
     is_success               BOOL     NOT NULL,
-    is_lose                  BOOL     NOT NULL,
+    is_lose                  BOOL,
     ggul_num                 INT      NOT NULL,
     created_at               DATETIME NOT NULL,
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id),
@@ -322,7 +322,7 @@ INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, 
                        challenge_is_ended, challenge_started_at, challenge_ended_at, challenge_competition_type,
                        created_at)
 VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3,
-        false, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (2) MINUTE, 'T', NOW());
+        true, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (15) SECOND, 'T', NOW());
 
 INSERT INTO challenge_participant(challenge_participant_id, challenge_id, user_id, nickname, profile,
                                   challenge_participant_type, participated_at, is_deleted)
