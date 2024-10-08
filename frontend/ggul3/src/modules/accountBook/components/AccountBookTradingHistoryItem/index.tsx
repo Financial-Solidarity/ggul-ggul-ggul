@@ -1,6 +1,6 @@
 import { Payment } from '@types';
 
-import { transformMoneyUnit } from '@/modules/common/utils/transformMoneyUnit';
+import { transformSpendMoney } from '@/modules/common/utils/transformMoneyUnit';
 
 interface AccountBookTradingHistoryItemProps extends Payment {
   profileImg?: string;
@@ -11,9 +11,9 @@ export const AccountBookTradingHistoryItem = ({
   market,
   money,
   productName,
-  spendGgulToken,
   spentAt,
   nickname,
+  spendGgulToken,
 }: AccountBookTradingHistoryItemProps) => {
   const isPositive = money >= 0;
 
@@ -36,10 +36,8 @@ export const AccountBookTradingHistoryItem = ({
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <div
-            className={`text-gray font-bold text-${isPositive ? 'primary' : ''}`}
-          >
-            {transformMoneyUnit({ money })}원
+          <div className={`text-gray font-bold text-primary`}>
+            {transformSpendMoney(money)}원
           </div>
           {Number(spendGgulToken) > 0 && (
             <CoinIcon discountValue={spendGgulToken} />

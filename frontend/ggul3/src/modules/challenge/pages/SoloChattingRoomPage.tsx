@@ -16,12 +16,16 @@ import {
   useRecentChattingList,
 } from '../reactQueries/useChattingRoomQuery';
 import { useSocketChattingStore } from '../store/socketChattingStore';
+import { useConsumptionModalStore } from '../store/consumptionModalStore';
+import { ChallengeResultAccordion } from '../components/chat/ChallengeResultAccordion';
 
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSocket } from '@/modules/common/hooks/useSocket';
+import { beforeNow, formatCountdown } from '@/modules/common/utils/dateUtils';
+import { useCountdown } from '@/modules/common/hooks/useCountDown';
 
 export const SoloChattingRoomPage = () => {
   useSetBottomBar({ active: false });
@@ -34,6 +38,10 @@ export const SoloChattingRoomPage = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
+  const { setChallengeId, setIsOpen, setIsTotalChattingRoom } =
+    useConsumptionModalStore();
+
+  const [isEndChallenge, setIsEndChallenge] = useState(false);
 
   // 스크롤이 수동으로 이동될 때 자동 스크롤 비활성화
   const handleScroll = () => {
@@ -49,7 +57,7 @@ export const SoloChattingRoomPage = () => {
   const { sendChat } = useSocket();
 
   const {
-    data: { competitionType },
+    data: { competitionType, endAt },
   } = useGetChallengeDetail(challengeId!);
   const {
     data: { totalChattingRoomId },
@@ -59,6 +67,8 @@ export const SoloChattingRoomPage = () => {
     usePreviousChattingList(totalChattingRoomId);
   const { data: recentChattingList, refetch: refetchRecentChattingList } =
     useRecentChattingList(totalChattingRoomId);
+
+  const countdown = useCountdown(endAt);
 
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -74,6 +84,12 @@ export const SoloChattingRoomPage = () => {
       chattingRoomId: totalChattingRoomId,
       content: message,
     });
+  };
+
+  const openConsumptionModal = () => {
+    setIsTotalChattingRoom(false);
+    setChallengeId(challengeId!);
+    setIsOpen(true);
   };
 
   useEffect(() => {
@@ -94,16 +110,38 @@ export const SoloChattingRoomPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setIsEndChallenge(beforeNow(endAt));
+  }, [endAt]);
+
   return (
     <>
       <TopBar
         left={<BackButton color="black" />}
         right={
-          <Bars3Icon className="h-6 w-6 text-gray-500" onClick={openDrawer} />
+          <Bars3Icon
+            className="h-6 w-6 cursor-pointer text-gray-500"
+            onClick={openDrawer}
+          />
         }
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
+          {isEndChallenge && (
+            <ChallengeResultAccordion challengeId={challengeId!} />
+          )}
+          <div
+            className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
+            onClick={openConsumptionModal}
+          >
+            {endAt && (
+              <>
+                <span>종료까지</span>
+                <span>{formatCountdown(countdown)}</span>
+                <span>남음</span>
+              </>
+            )}
+          </div>
           <div
             ref={containerRef}
             className="z-0 overflow-y-auto px-4 py-16"

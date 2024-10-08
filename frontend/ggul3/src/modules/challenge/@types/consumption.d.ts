@@ -8,7 +8,8 @@ declare module '@types' {
     market: string;
     spendGgulToken: number;
     nickname: string;
-    team: string; // "BLUE", "PERSONAL"
+    team: string;
     profileImg: string;
+    isMine: boolean;
   }
 }

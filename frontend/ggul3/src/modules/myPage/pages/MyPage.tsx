@@ -1,10 +1,5 @@
 import { Banner, LogOutButton, MyProfile } from '../components';
 
-import {
-  ChallengePaymentHistory,
-  ChallengePaymentStatistics,
-  ChallengeTeamSpentMoney,
-} from '@/modules/challenge/components';
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
@@ -31,9 +26,6 @@ export const MyPage = () => {
           <Banner nickname={user?.nickname} />
           <LogOutButton />
         </div>
-        <ChallengePaymentHistory />
-        <ChallengePaymentStatistics />
-        <ChallengeTeamSpentMoney />
       </PageContainer>
     </>
   );

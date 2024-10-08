@@ -4,7 +4,7 @@ interface CreateChallengeState {
   step: number;
   competitionType: 'S' | 'T';
   limitParticipant: number;
-  isCustomLimit: boolean; // 참가자수 직접 입력 여부
+  isCustomLimit: boolean;
   isBlindness: boolean;
   password: string | null;
   title: string;
@@ -40,6 +40,7 @@ interface CreateChallengeState {
   setBudgetCap: (budgetCap: number) => void;
   toNextStep: () => void;
   toPrevStep: () => void;
+  resetState: () => void;
 }
 
 export const LAST_STEP = 5;
@@ -91,7 +92,6 @@ export const useCreateChallengeStore = create<CreateChallengeState>(
     setEndTime: (time) => {
       set({ endTime: time });
     },
-
     toNextStep: () => {
       if (get().step >= LAST_STEP) return;
       set((state) => ({ step: state.step + 1 }));
@@ -99,6 +99,22 @@ export const useCreateChallengeStore = create<CreateChallengeState>(
     toPrevStep: () => {
       if (get().step <= 1) return;
       set((state) => ({ step: state.step - 1 }));
+    },
+    resetState: () => {
+      set({
+        step: 1,
+        competitionType: 'S',
+        limitParticipant: 2,
+        isCustomLimit: false,
+        isBlindness: false,
+        password: null,
+        title: '',
+        budgetCap: 0,
+        startDate: null,
+        startTime: null,
+        endDate: null,
+        endTime: null,
+      });
     },
   }),
 );

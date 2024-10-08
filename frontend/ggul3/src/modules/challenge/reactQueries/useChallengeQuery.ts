@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ChallengeJoinRequestBody,
   ChallengeJoinResponse,
@@ -18,6 +18,7 @@ import {
 import { createChallenge } from '../apis/createChallenge';
 import {
   getChallengeDetail,
+  getChallengeResult,
   getChattingRooomIds,
   getParticipantList,
   getParticipatingChallenge,
@@ -30,6 +31,7 @@ import {
   startChallenge,
 } from '../apis/waitingroom';
 import { justify } from '../apis/chattingroom';
+import { ParticipantData } from '../@types/challengeResult';
 
 import { QUERY_KEYS } from '@/modules/common/constants';
 
@@ -121,15 +123,8 @@ export const useExitChallenge = () => {
 };
 
 export const useChangeTeam = () => {
-  const client = useQueryClient();
-
   return useMutation<ChangeTeamResponse, ErrorDTO, string>({
     mutationFn: (participantId) => changeTeam(participantId),
-    onSuccess: () => {
-      client.invalidateQueries({
-        queryKey: [QUERY_KEYS.PARTICIPANT],
-      });
-    },
   });
 };
 
@@ -144,5 +139,14 @@ export const useGetParticipatingChallenge = () => {
 export const useJustify = () => {
   return useMutation<void, ErrorDTO, JustifyRequestBody>({
     mutationFn: (data) => justify(data),
+  });
+};
+
+export const useGetChallengeResult = (challengeId: string) => {
+  return useQuery<ParticipantData[], ErrorDTO>({
+    queryKey: [QUERY_KEYS.CHALLENGE_RESULT, challengeId],
+    queryFn: () => getChallengeResult(challengeId),
+    enabled: !!challengeId,
+    initialData: [],
   });
 };

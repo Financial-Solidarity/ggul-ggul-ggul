@@ -4,6 +4,7 @@ import { ArrowLongLeftIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { ErrorDTO } from '@types';
+import toast from 'react-hot-toast';
 
 import { useCreateChallenge } from '../reactQueries/useChallengeQuery';
 
@@ -18,6 +19,7 @@ import {
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 
 const STEPS: Record<number, JSX.Element> = {
   1: <CompetitionTypeStep />,
@@ -42,64 +44,109 @@ export const CretaeChallengePage = () => {
     startTime,
     endTime,
     budgetCap,
+    resetState,
   } = useCreateChallengeStore();
   const { mutateAsync: createChallenge, isPending } = useCreateChallenge();
   const navigate = useNavigate();
 
   useSetBottomBar({ active: false });
 
-  const isInvalid =
-    title === '' ||
-    startDate === null ||
-    endDate === null ||
-    startTime === null ||
-    endTime === null ||
-    budgetCap <= 0;
+  const isCompetitionTypeValid =
+    competitionType === 'S' || competitionType === 'T';
+
+  let isLimitParticipantValid = limitParticipant >= 2 && limitParticipant <= 30;
+
+  if (competitionType === 'T') {
+    isLimitParticipantValid =
+      isLimitParticipantValid && limitParticipant % 2 === 0;
+  }
+
+  const isPasswordValid = password === null || password.length > 0;
+
+  const startAt =
+    startDate && startTime
+      ? dayjs()
+          .year(startDate.year)
+          .month(startDate.month - 1)
+          .date(startDate.day)
+          .hour(startTime.hour)
+          .minute(startTime.minute)
+      : null;
+
+  const endAt =
+    endDate && endTime
+      ? dayjs()
+          .year(endDate.year)
+          .month(endDate.month - 1)
+          .date(endDate.day)
+          .hour(endTime.hour)
+          .minute(endTime.minute)
+      : null;
+
+  const now = dayjs();
+
+  const isStartTimeValid = startAt ? startAt.isAfter(now) : false;
+  const isEndTimeValid = startAt && endAt ? endAt.isAfter(startAt) : false;
+  const isBudgetValid = budgetCap > 0;
+  const isTitleValid = title.trim().length > 0;
+
+  const isDetailValid =
+    isStartTimeValid && isEndTimeValid && isBudgetValid && isTitleValid;
+
+  const isInvalid = !isDetailValid;
+
+  let isStepValid = true;
+
+  switch (step) {
+    case 1:
+      isStepValid = isCompetitionTypeValid;
+      break;
+    case 2:
+      isStepValid = isLimitParticipantValid;
+      break;
+    case 3:
+      isStepValid = true;
+      break;
+    case 4:
+      isStepValid = isPasswordValid;
+      break;
+    case 5:
+      isStepValid = isDetailValid;
+      break;
+    default:
+      isStepValid = true;
+  }
 
   const handleCreateChallenge = () => {
-    if (
-      startDate === null ||
-      endDate === null ||
-      startTime === null ||
-      endTime === null
-    )
-      return;
+    if (!startAt || !endAt) return;
+
     createChallenge({
       title,
       competitionType,
       limitParticipant,
       isBlindness,
       password,
-      startAt: dayjs()
-        .year(startDate.year)
-        .month(startDate.month - 1)
-        .date(startDate.day)
-        .hour(startTime.hour)
-        .minute(startTime.minute)
-        .format('YYYY-MM-DD HH:mm:00'),
-      endAt: dayjs()
-        .year(endDate.year)
-        .month(endDate.month - 1)
-        .date(endDate.day)
-        .hour(endTime.hour)
-        .minute(endTime.minute)
-        .format('YYYY-MM-DD HH:mm:00'),
+      startAt: startAt.format('YYYY-MM-DD HH:mm:00'),
+      endAt: endAt.format('YYYY-MM-DD HH:mm:00'),
       budgetCap,
     })
       .then((res) => {
         navigate(`/challenge/waiting-room/${res.challengeId}`, {
           replace: true,
         });
+        resetState();
       })
-      .catch((err: ErrorDTO) => {});
+      .catch((err: ErrorDTO) => {
+        toast.error(err.message);
+      });
   };
 
   return (
     <>
-      <TopBar />
+      <TopBar left={<BackButton color="black" />} />
       <PageContainer>
         <div className="flex h-full w-full flex-col">
-          <Progress value={(step / LAST_STEP) * 100} />
+          <Progress value={(step / (LAST_STEP + 1)) * 100} />
           <div className="flex w-full flex-1 flex-col items-center justify-center py-4">
             {STEPS[step]}
           </div>
@@ -127,7 +174,7 @@ export const CretaeChallengePage = () => {
               <Button
                 className="w-full"
                 color="primary"
-                isDisabled={step === LAST_STEP}
+                isDisabled={!isStepValid}
                 onClick={toNextStep}
               >
                 다음

@@ -107,7 +107,10 @@ export const WaitingRoomPage = () => {
       <TopBar
         left={<BackButton color="black" />}
         right={
-          <Bars3Icon className="h-6 w-6 text-gray-500" onClick={openDrawer} />
+          <Bars3Icon
+            className="h-6 w-6 cursor-pointer text-gray-500"
+            onClick={openDrawer}
+          />
         }
       />
       <PageContainer activePaddingX={false}>
