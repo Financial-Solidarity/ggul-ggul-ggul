@@ -1,5 +1,6 @@
 package com.ggul.application.payment.application;
 
+import com.ggul.application.account.application.AccountWithdrawalService;
 import com.ggul.application.common.event.Events;
 import com.ggul.application.payment.application.dto.PaymentRequest;
 import com.ggul.application.payment.domain.ConsumptionLog;
@@ -26,12 +27,14 @@ public class PaymentService {
     private final ProductCategoryRepository productCategoryRepository;
     private final UserRepository userRepository;
     private final WalletService walletService;
+    private final AccountWithdrawalService accountWithdrawalService;
 
     @Transactional
     public PaymentRequestResponseView payment(PaymentRequest paymentRequest, UUID sessionId) {
         //TODO : Account를 가져오고, Account의 금액 조회하고 Account 결제하기.
         walletService.useToken(sessionId, paymentRequest.getSpendGgulToken().longValue());
         Integer newRequiredMoney = paymentRequest.getRequiredMoney() - paymentRequest.getSpendGgulToken();
+        accountWithdrawalService.accountWithdraw(newRequiredMoney, sessionId);
         User user = userRepository.getReferenceById(sessionId);
         ProductCategory productCategory = productCategoryRepository.getReferenceById(paymentRequest.getCategoryId());
 
