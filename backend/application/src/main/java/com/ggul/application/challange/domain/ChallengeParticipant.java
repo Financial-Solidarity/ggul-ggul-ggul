@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Objects;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Table(name = "challenge_participant")
 @Entity
 @SQLRestriction("is_deleted = false")
+@SQLDelete(sql = "UPDATE challenge_participant SET is_deleted = true WHERE challenge_participant_id = ? ")
 public class ChallengeParticipant extends SoftDeleteEntity {
     @Id
     @GeneratedValue
