@@ -286,6 +286,7 @@ CREATE TABLE challenge_log (
     is_success BOOL NOT NULL ,
     is_lose BOOL NOT NULL ,
     ggul_num INT NOT NULL,
+    created_at DATETIME NOT NULL,
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant(challenge_participant_id),
     FOREIGN KEY (challenge_id) REFERENCES challenge(challenge_id)
 );
