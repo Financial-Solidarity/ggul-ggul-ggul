@@ -46,13 +46,13 @@ public class ApplicationCustomRepositoryImpl implements ApplicationCustomReposit
         if(success != null){
             if(success){
                 query.join(applicationHistory).on(application.id.eq(applicationHistory.id))
-                        .where(applicationHistory.isSuccess.eq(success)
+                        .where(applicationHistory.isSuccess.eq(true)
                                 .and(applicationHistory.user.id.eq(userId)));
             } else {
                 query.where(application.id.notIn(
                         jpaQueryFactory.select(applicationHistory.application.id)
                                 .from(applicationHistory)
-                                .where(applicationHistory.user.id.eq(userId).and(applicationHistory.isSuccess.eq(success)))
+                                .where(applicationHistory.user.id.eq(userId).and(applicationHistory.isSuccess.eq(true)))
                 ));
             }
         }
