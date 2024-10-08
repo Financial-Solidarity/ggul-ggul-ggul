@@ -35,21 +35,16 @@ export const AccountBookStatisticsPage = () => {
   const endDate = searchParams.get('end-date') || currentDate;
 
   useEffect(() => {
-    getPaymentStatistics({ startDate, endDate })
-      .then((res) => {
-        setStatisticsList(res);
-        setFormedStatisticsList(res);
-      })
-      .catch((err) => {
-        console.error(err);
-        setStatisticsList(data);
-        setFormedStatisticsList(data);
-      });
+    getPaymentStatistics({ startDate, endDate }).then((res) => {
+      setStatisticsList(res);
+      setFormedStatisticsList(res);
+    });
 
     const getPaymentList = async () => {
       const res = await getPaymentHistory({ startDate, endDate });
+      const filteredContent = res.content.filter((item) => item.money > 0);
 
-      setPaymentList(res.content);
+      setPaymentList(filteredContent);
     };
 
     getPaymentList();
@@ -68,8 +63,7 @@ export const AccountBookStatisticsPage = () => {
         setSearchParams={setSearchParams}
         startDate={startDate}
       />
-
-      <div className="h-[40%] w-full">
+      <div className={`${statisticsList.length && 'h-[40%]'} w-full`}>
         <AccountBookPieChart
           data={formedStatisticsList}
           pieChartColors={pieChartColors}
@@ -81,26 +75,3 @@ export const AccountBookStatisticsPage = () => {
     </>
   );
 };
-
-const data = [
-  {
-    label: '껄 절약 비용',
-    money: 80900,
-  },
-  {
-    label: '자동차',
-    money: 70200,
-  },
-  {
-    label: '교육/학습',
-    money: 50100,
-  },
-  {
-    label: '주거/통신',
-    money: 30500,
-  },
-  {
-    label: '카페/간식',
-    money: 20800,
-  },
-];

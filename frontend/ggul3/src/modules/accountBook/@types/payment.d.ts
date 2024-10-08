@@ -6,6 +6,7 @@ declare module '@types' {
     label: string;
     market: string;
     spendGgulToken: number;
+    isMine: boolean;
   }
 
   export interface Pageable extends PageableOptions {

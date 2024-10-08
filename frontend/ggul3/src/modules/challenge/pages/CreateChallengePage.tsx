@@ -19,6 +19,7 @@ import {
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
+import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 
 const STEPS: Record<number, JSX.Element> = {
   1: <CompetitionTypeStep />,
@@ -142,7 +143,7 @@ export const CretaeChallengePage = () => {
 
   return (
     <>
-      <TopBar />
+      <TopBar left={<BackButton color="black" />} />
       <PageContainer>
         <div className="flex h-full w-full flex-col">
           <Progress value={(step / (LAST_STEP + 1)) * 100} />

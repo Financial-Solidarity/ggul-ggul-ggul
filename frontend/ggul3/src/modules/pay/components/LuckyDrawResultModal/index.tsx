@@ -13,6 +13,7 @@ import { LuckyDrawDTO } from '../../apis/luckyDraw';
 import { PathNames } from '@/router';
 
 interface ResultModalProps {
+  chance: number;
   result: LuckyDrawDTO | null;
   isOpen: boolean;
   onClose: () => void;
@@ -21,6 +22,7 @@ interface ResultModalProps {
 }
 
 export const ResultModal = ({
+  chance,
   result,
   isOpen,
   onClose,
@@ -28,6 +30,8 @@ export const ResultModal = ({
   drawEvent,
 }: ResultModalProps) => {
   const navigate = useNavigate();
+
+  console.log(result);
 
   const handleClickRetry = () => {
     onClose();
@@ -65,9 +69,9 @@ export const ResultModal = ({
                     >
                       응모 내역 보러가기
                     </Button>
-                    <Link to={result.transactionUrl}>
+                    <Link target="_blank" to={result.transactionUrl}>
                       <Button className="w-full" color="default">
-                        블록체인 기록 보러가기
+                        블록체인 기록 보기
                       </Button>
                     </Link>
                   </div>
@@ -93,6 +97,24 @@ export const ResultModal = ({
                 <ModalBody>
                   {result && (
                     <div className="flex w-full flex-col gap-3">
+                      <div className="text-sm text-gray-500">
+                        <p className="mb-1">
+                          <span className="font-bold text-primary">
+                            {result.target + ' '}
+                          </span>
+                          보다 낮은 숫자가 나왔을 경우 당첨입니다.{' '}
+                        </p>
+                        <p className="leading-4">
+                          숫자 범위 : 0 ~{' '}
+                          {10 ** (chance.toString().slice(0, 2).length + 1) - 1}
+                        </p>
+                        <p className="leading-4">
+                          내가 뽑은 숫자 :{' '}
+                          <span className="font-bold text-primary">
+                            {result.nonce}
+                          </span>
+                        </p>
+                      </div>
                       <p>남은 당첨자 수: {result.remainingWinnerCount}명</p>
                       <Button
                         className="w-full"
@@ -101,19 +123,25 @@ export const ResultModal = ({
                       >
                         다시 응모하기
                       </Button>
-                      <div className="flex gap-3">
-                        <Link to={result.transactionUrl}>
+                      <div className="flex w-full gap-3">
+                        <Link
+                          className="flex-1"
+                          target="_blank"
+                          to={result.transactionUrl}
+                        >
                           <Button className="w-full" color="default">
-                            블록체인 기록 보러가기
+                            블록체인 기록 보기
                           </Button>
                         </Link>
-                        <Button
-                          className="w-full"
-                          color="default"
-                          onClick={onClose}
-                        >
-                          그만 할래요.
-                        </Button>
+                        <div className="flex-1">
+                          <Button
+                            className="w-full"
+                            color="default"
+                            onClick={onClose}
+                          >
+                            그만 할래요.
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   )}

@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+// eslint-disable-next-line import/order
 import { RouterProvider } from 'react-router-dom';
 
 import '@/styles/globals.css';
+import { QueryClient } from '@tanstack/react-query';
+
 import { router } from './router.tsx';
+export const queryClient = new QueryClient();
 
 // Mocking을 활성화하는 함수
 async function enableMocking() {

@@ -40,7 +40,7 @@ export const AccountItem = ({
           </p>
         </div>
         {handleClickAccount &&
-          (selectedAccount?.bankName === account.bankName ? (
+          (selectedAccount?.accountNo === account.accountNo ? (
             <div>
               <BsCheckCircle className="h-6 w-6 text-primary-700" />
             </div>

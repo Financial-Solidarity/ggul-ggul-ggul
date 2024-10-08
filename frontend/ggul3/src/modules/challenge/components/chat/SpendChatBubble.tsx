@@ -21,7 +21,7 @@ export const SpendChatBubble = ({ chat }: SpendChatBubbleProps) => {
 };
 
 const MySpendChatBubble = ({ chat }: SpendChatBubbleProps) => {
-  const openModal = useJustifyModalStore((state) => state.close);
+  const openModal = useJustifyModalStore((state) => state.open);
   const setSpendChat = useJustifyModalStore((state) => state.setSpendChat);
 
   const {

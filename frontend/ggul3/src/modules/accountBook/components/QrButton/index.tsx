@@ -12,7 +12,7 @@ export const QrButton = () => {
       <Card className="flex cursor-pointer bg-slate-300 text-black duration-200 ease-linear hover:bg-opacity-70">
         <CardBody>
           <div className="flex content-center items-center justify-between">
-            <p className="flex flex-col text-xl">
+            <p className="flex flex-col text-lg leading-6">
               <span>QR 코드로</span>
               <span>결제하기</span>
             </p>

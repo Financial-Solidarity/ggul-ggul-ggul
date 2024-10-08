@@ -13,6 +13,7 @@ import { CretaeChallengePage } from './modules/challenge/pages/CreateChallengePa
 import { ChallengeListPage } from './modules/challenge/pages/ChallengeListPage';
 import {
   LuckyDrawEntryPage,
+  PaymentSuccessPage,
   PayPage,
   PrizeHistoryPage,
   QrCodePage,
@@ -38,6 +39,7 @@ import { ChattingRoomPage } from './modules/challenge/pages/ChattingRoomPage';
 import { ChangePasswordPage } from './modules/myPage/pages';
 import { useBankAccountStore } from './modules/common/store/useBankAccountStore';
 import { LuckyDrawDetailPage } from './modules/pay/pages/LuckyDrawDetailPage';
+import { Provider } from './provider';
 
 export interface Path {
   path: string;
@@ -79,6 +81,7 @@ export interface PathNames {
     STATISTICS: Path;
     QR_CODE: Path;
     CONNECT_ACCOUNT: Path;
+    PAYMENT_SUCCESS: Path;
   };
   MYPAGE: {
     MAIN: Path;
@@ -206,6 +209,10 @@ export const PathNames: PathNames = {
       path: '/account-book/connect-account',
       name: '계좌 연동',
     },
+    PAYMENT_SUCCESS: {
+      path: '/account-book/payment-success',
+      name: '결제 성공',
+    },
   },
   MYPAGE: {
     MAIN: {
@@ -290,6 +297,10 @@ const accountBook: RouteObject[] = [
   {
     path: PathNames.ACCOUNT_BOOK.CONNECT_ACCOUNT.path,
     element: <ConnectAccountPage />,
+  },
+  {
+    path: PathNames.ACCOUNT_BOOK.PAYMENT_SUCCESS.path,
+    element: <PaymentSuccessPage />,
   },
 ];
 
@@ -403,7 +414,11 @@ const privateRoutes: RouteObject[] = [
 export const router = createBrowserRouter([
   {
     path: PathNames.HOME.path,
-    element: <App />,
+    element: (
+      <Provider>
+        <App />
+      </Provider>
+    ),
     errorElement: <></>,
     children: [
       ...publicRoutes.map((route) => ({

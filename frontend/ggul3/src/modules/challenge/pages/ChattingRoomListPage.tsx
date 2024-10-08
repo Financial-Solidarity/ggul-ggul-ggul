@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Button, Skeleton } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
+import { UserGroupIcon } from '@heroicons/react/24/outline';
 
 import { useGetChattingRoomList } from '../reactQueries/useChattingRoomQuery';
 import { ChattingRoomGroup } from '../components/chattingRoomList/ChattingRoomGroup';
@@ -23,7 +24,7 @@ export const ChattingRoomListPage = () => {
   const navigate = useNavigate();
 
   const toChallengeList = () => {
-    navigate(PathNames.CHALLENGE.MAIN.path);
+    navigate(PathNames.CHALLENGE.MAIN.path, { replace: true });
   };
 
   useEffect(() => {
@@ -36,6 +37,11 @@ export const ChattingRoomListPage = () => {
       <TopBar
         center={<NavTitle title="채팅방" />}
         left={<BackButton color="black" />}
+        right={
+          <button onClick={toChallengeList}>
+            <UserGroupIcon className="h-7 w-7 text-default-800" />
+          </button>
+        }
       />
       <PageContainer>
         {isFetching ? (

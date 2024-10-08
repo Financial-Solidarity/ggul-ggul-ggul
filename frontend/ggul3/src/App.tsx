@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import { BottomBar } from './modules/common/components/Layouts/BottomBar';
-import { Provider } from './provider';
 import { useSocket } from './modules/common/hooks/useSocket';
 import { useUserStore } from './modules/common/store/userStore';
 import { JustifyModal } from './modules/challenge/components/chat/JustifyModal';
@@ -33,7 +32,7 @@ function App() {
   }, []);
 
   return (
-    <Provider>
+    <>
       <div className="flex h-screen w-full flex-col">
         <Outlet />
         <BottomBar />
@@ -41,7 +40,7 @@ function App() {
       <Toaster />
       <JustifyModal />
       <ConsumptionModal />
-    </Provider>
+    </>
   );
 }
 

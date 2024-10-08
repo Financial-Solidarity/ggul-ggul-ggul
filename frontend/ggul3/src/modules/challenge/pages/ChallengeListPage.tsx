@@ -1,4 +1,7 @@
-import { PlusIcon } from '@heroicons/react/24/outline';
+import {
+  ChatBubbleLeftEllipsisIcon,
+  PlusIcon,
+} from '@heroicons/react/24/outline';
 import { Button, Skeleton } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,11 +35,20 @@ export const ChallengeListPage = () => {
     navigate(PathNames.CHALLENGE.CREATE.path);
   };
 
+  const toChattingRooms = () => {
+    navigate(PathNames.CHALLENGE.CHATTING_ROOMS.path, { replace: true });
+  };
+
   return (
     <>
       <TopBar
         center={<NavTitle title="챌린지" />}
         left={<BackButton color="black" />}
+        right={
+          <button onClick={toChattingRooms}>
+            <ChatBubbleLeftEllipsisIcon className="h-7 w-7 text-default-800" />
+          </button>
+        }
       />
       <PageContainer>
         <div className="mb-20 flex h-full flex-col gap-2">
