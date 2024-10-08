@@ -54,7 +54,7 @@ const OtherChatBubble = ({ chat }: TextChatBubbleProps) => {
       </div>
       <div className="flex max-w-[50%] flex-col gap-1">
         <p className="text-sm text-default-600">{nickname}</p>
-        <div className="whitespace-pre-wrap rounded-xl bg-default-200 px-2 py-1 text-xs text-default-600">
+        <div className="whitespace-pre-wrap rounded-xl bg-default-200 px-2 py-1 text-sm text-default-600">
           {content}
         </div>
       </div>
