@@ -1,10 +1,13 @@
 import { Button } from '@nextui-org/react';
 import { useEffect } from 'react';
 import { TokenTradingHistoryItemDTO } from '@types';
+import Lottie from 'lottie-react';
 
 import { SubTitle } from '../SubTitle';
 import { useWalletStore } from '../../store/walletStore';
 import { getTokenTradingHistories } from '../../apis/wallet';
+
+import no_items from '@/assets/lotties/no_items.json';
 
 export const TokenTradingHistory = () => {
   const { tokenTradingHistories, setTokenTradingHistories } = useWalletStore();
@@ -25,11 +28,24 @@ export const TokenTradingHistory = () => {
       <SubTitle title="최근 거래내역" />
       <div className="flex flex-col gap-1 py-2">
         {tokenTradingHistories.length ? (
-          tokenTradingHistories.map((item) => (
-            <TradingHistoryItem key={item.createdAt} ggulTradingItem={item} />
-          ))
+          tokenTradingHistories
+            .filter((item) => item.quantity !== 0)
+            .map((item) => (
+              <TradingHistoryItem key={item.createdAt} ggulTradingItem={item} />
+            ))
         ) : (
-          <p>거래내역이 없습니다.</p>
+          <div className="flex w-full flex-col">
+            <p>거래내역이 없습니다.</p>
+            <Lottie
+              animationData={no_items}
+              className="w-full self-center"
+              loop={true}
+              style={{
+                width: '160px',
+                height: '160px',
+              }}
+            />
+          </div>
         )}
       </div>
     </div>

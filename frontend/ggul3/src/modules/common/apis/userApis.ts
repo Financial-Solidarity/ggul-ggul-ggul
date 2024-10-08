@@ -37,7 +37,7 @@ export const editUserNickname = ({
     formData.append(
       'profileImg',
       new Blob([profileImg], { type: 'image/jpeg' }),
-    ); // 적절한 MIME 타입으로 변경
+    );
   }
 
   return _axios({

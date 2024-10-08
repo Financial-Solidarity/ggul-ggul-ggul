@@ -16,6 +16,7 @@ import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import no_items from '@/assets/lotties/no_items.json';
+import { PathNames } from '@/router';
 
 export const LuckyDrawEntryPage = () => {
   const navigate = useNavigate();
@@ -35,8 +36,10 @@ export const LuckyDrawEntryPage = () => {
   }, []);
 
   const handleClickDrawButton = (id: number) => {
-    navigate(`/pay/lucky-draw/${id}`);
+    navigate(`${PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path}/${id}`);
   };
+
+  console.log(luckDrawList);
 
   return (
     <>
@@ -53,7 +56,7 @@ export const LuckyDrawEntryPage = () => {
           <div>
             <p className="mb-1 text-xl font-bold">추첨 상품</p>
             <div className="flex flex-col gap-3">
-              {luckDrawList ? (
+              {luckDrawList.length ? (
                 luckDrawList.map((item) => (
                   <LuckyDrawItem
                     key={item.id}
@@ -62,18 +65,15 @@ export const LuckyDrawEntryPage = () => {
                   />
                 ))
               ) : (
-                <div>
+                <div className="flex flex-col">
                   <p>현재 응모 중인 상품이 없습니다.</p>
                   <Lottie
                     animationData={no_items}
-                    className="absolute right-0"
+                    className="w-full self-center"
                     loop={true}
                     style={{
                       width: '200px',
                       height: '200px',
-                      top: '40%',
-                      left: '50%',
-                      transform: 'translateX(-50%) translateY(-50%)',
                     }}
                   />
                 </div>

@@ -43,12 +43,16 @@ export const LuckyDrawDetailPage = () => {
   }, []);
 
   const handleClickDrawButton = async () => {
-    const result = await luckyDraw(applicationId);
+    try {
+      const response = await luckyDraw(applicationId);
 
-    onOpen();
-    console.log(result);
-    await getMyGgulToken();
-    setResult(result);
+      onOpen();
+      setResult(response);
+      await getMyGgulToken();
+    } catch (error) {
+      // @ts-ignore
+      window.alert(error.message);
+    }
   };
 
   return (
@@ -106,6 +110,7 @@ export const LuckyDrawDetailPage = () => {
         </div>
 
         <ResultModal
+          chance={item?.probability as number}
           drawEvent={handleClickDrawButton}
           isOpen={isOpen}
           result={result}

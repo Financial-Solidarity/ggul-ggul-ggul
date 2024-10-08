@@ -22,7 +22,6 @@ const TokenItem = ({ value }: { value: number }) => {
       <p className="font-medium">{value}</p>
       <p className="text-gray flex items-center font-light">
         {value} GGUL TOKEN
-        {/* <ChevronRightIcon className="w-4 pl-1" /> */}
       </p>
     </Button>
   );

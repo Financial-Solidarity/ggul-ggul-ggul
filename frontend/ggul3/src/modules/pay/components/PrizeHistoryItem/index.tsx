@@ -1,27 +1,26 @@
 import { Card } from '@nextui-org/card';
 import { Image } from '@nextui-org/react';
 
-import shin from '@/assets/images/shin.png';
+import { PrizeHistoryItem as PrizeHistoryItemDTO } from '../../apis/luckyDraw';
 
 interface PrizeHistoryItemProps {
-  name: string;
+  item: PrizeHistoryItemDTO;
 }
 
-export const PrizeHistoryItem = ({ name }: PrizeHistoryItemProps) => {
+export const PrizeHistoryItem = ({ item }: PrizeHistoryItemProps) => {
   return (
-    <div className="flex min-w-28 content-center items-center justify-center">
+    <div className="flex min-w-32 content-center items-center justify-center">
       <Card
         isFooterBlurred
-        className="border-none p-2 hover:bg-slate-200"
+        className="border-none p-1 hover:bg-slate-200"
         radius="lg"
       >
         <Image
           alt="Woman listing to music"
-          className="object-cover p-2 pb-0"
-          sizes="84"
-          src={shin}
+          className="mb-1 object-cover pb-0"
+          src={item.application.imageUrl}
         />
-        <p className="text-center text-xs font-bold">{name}</p>
+        <p className="text-center text-xs">{item.application.title}</p>
       </Card>
     </div>
   );

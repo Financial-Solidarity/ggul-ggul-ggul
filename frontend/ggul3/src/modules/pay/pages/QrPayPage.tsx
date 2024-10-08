@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { ItemInfo } from '../components';
 import { PaymentSlideBar } from '../components/PaymentSlideBar';
+import { useWalletStore } from '../store/walletStore';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -14,8 +15,12 @@ import { CurrentAccount } from '@/modules/accountBook/components';
 import { getMainBankAccount } from '@/modules/common/apis/bankApis';
 
 export const QrPayPage = () => {
-  const [slideValue, setSlideValue] = useState<number>(0);
-  const [spendGgulToken, setSpendGgulToken] = useState<string>('1');
+  const { currentAccount, setCurrentAccount } = useConnectStore();
+  const { ggulToken, getMyGgulToken } = useWalletStore();
+
+  const [slideValue, setSlideValue] = useState<number | ''>('');
+
+  const [spendGgulToken, setSpendGgulToken] = useState<string>('');
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -32,7 +37,41 @@ export const QrPayPage = () => {
     market: market as string,
   };
 
-  const { currentAccount, setCurrentAccount } = useConnectStore();
+  const handleChangeGgulTokenInput = (value: string) => {
+    if (value[value.length - 1] === '-' || value[0] === '0') {
+      return;
+    }
+
+    if (value === '') {
+      setSpendGgulToken('');
+
+      return;
+    }
+
+    const numericValue = Number(value);
+
+    if (numericValue < 0) {
+      setSpendGgulToken('0');
+
+      return;
+    }
+
+    // 사용할 수 있는 토큰 값보다 큰 경우 처리
+    if (numericValue > Number(ggulToken)) {
+      setSpendGgulToken(String(ggulToken));
+
+      return;
+    }
+
+    // 최종 결제 금액보다 큰 경우 처리
+    if (numericValue > itemInfo.requiredMoney) {
+      setSpendGgulToken(String(itemInfo.requiredMoney - 1));
+
+      return;
+    }
+
+    setSpendGgulToken(value);
+  };
 
   useEffect(() => {
     const fetchMainBankAccount = async () => {
@@ -40,6 +79,7 @@ export const QrPayPage = () => {
     };
 
     fetchMainBankAccount();
+    getMyGgulToken();
   }, []);
 
   return (
@@ -62,11 +102,13 @@ export const QrPayPage = () => {
                 placeholder="사용할 껄 토큰"
                 type="number"
                 value={spendGgulToken}
-                onValueChange={setSpendGgulToken}
+                onValueChange={handleChangeGgulTokenInput}
               />
               <p className="flex justify-between text-sm">
                 <span>사용 가능한 껄 토큰</span>
-                <span className="font-bold text-primary">1,723 P</span>
+                <span className="font-bold text-primary">
+                  {Number(ggulToken) - Number(spendGgulToken)} P
+                </span>
               </p>
             </div>
           </div>
@@ -84,7 +126,7 @@ export const QrPayPage = () => {
           <div className="rounded bg-primary-500/5 p-4">
             <PaymentSlideBar
               itemInfo={itemInfo}
-              slideValue={slideValue}
+              slideValue={Number(slideValue)}
               spendGgulToken={spendGgulToken}
               // @ts-ignore
               setSlideValue={setSlideValue}

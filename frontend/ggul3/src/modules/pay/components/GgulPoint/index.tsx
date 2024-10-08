@@ -1,9 +1,12 @@
 import { Button } from '@nextui-org/button';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { PropsWithChildren, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useWalletStore } from '../../store/walletStore';
 import { getTokenTradingHistories } from '../../apis/wallet';
+
+import { PathNames } from '@/router';
 
 interface GgulPointProps {
   isNarrow?: boolean;
@@ -81,7 +84,7 @@ const ToggleBalanceVisibilityButton =
         radius="full"
         size="sm"
       >
-        내역
+        <Link to={PathNames.GGULPAY.WALLET.path}>내역</Link>
       </Button>
     );
   };
