@@ -2,7 +2,7 @@ import React from 'react';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
 import { FaCrown, FaGift } from 'react-icons/fa';
-import { Image } from '@nextui-org/react';
+import { Button, Image } from '@nextui-org/react';
 
 import { ParticipantData, ProfileType } from '../../@types/challengeResult';
 import {
@@ -12,10 +12,12 @@ import {
 
 interface ChallengeResultAccordionProps {
   challengeId: string;
+  openDetail: () => void;
 }
 
 export const ChallengeResultAccordion = ({
   challengeId,
+  openDetail,
 }: ChallengeResultAccordionProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -289,6 +291,9 @@ export const ChallengeResultAccordion = ({
               </div>
             ),
           )}
+          <Button color="primary" onClick={openDetail}>
+            기록 상세 보기
+          </Button>
         </div>
       </div>
     </div>
