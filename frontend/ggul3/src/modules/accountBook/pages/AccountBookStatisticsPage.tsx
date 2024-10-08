@@ -56,7 +56,7 @@ export const AccountBookStatisticsPage = () => {
         bgColor="bg-primary"
         center={<NavTitle color="white" title="소비 통계" />}
         left={<BackButton />}
-        right={<NotificationButton />}
+        right={<NotificationButton color="white" />}
       />
       <AccountBookHistoryHeader
         paymentList={paymentList}

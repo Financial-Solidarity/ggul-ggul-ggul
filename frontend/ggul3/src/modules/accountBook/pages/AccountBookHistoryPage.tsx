@@ -38,7 +38,7 @@ export const AccountBookHistoryPage = () => {
         bgColor="bg-primary"
         center={<NavTitle color="white" title="거래 내역" />}
         left={<BackButton />}
-        right={<NotificationButton />}
+        right={<NotificationButton color="white" />}
       />
       <AccountBookHistoryHeader
         paymentList={paymentList}
