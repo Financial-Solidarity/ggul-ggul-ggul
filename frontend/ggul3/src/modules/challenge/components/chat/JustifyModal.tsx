@@ -4,6 +4,7 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   Textarea,
 } from '@nextui-org/react';
 import { useEffect, useRef, useState } from 'react';
@@ -47,17 +48,24 @@ export const JustifyModal = () => {
   }, [isOpen]);
 
   return (
-    <Modal className="p-0" isOpen={isOpen} size="full" onOpenChange={setIsOpen}>
+    <Modal
+      className="p-0"
+      isOpen={isOpen}
+      scrollBehavior="inside"
+      size="full"
+      onOpenChange={setIsOpen}
+    >
       <ModalContent>
         {(onClose) => (
           <>
+            <ModalHeader>소명</ModalHeader>
             <ModalBody className="p-0">
-              <div className="flex h-full flex-col items-center justify-center">
+              <div className="flex flex-1 flex-col items-center justify-center">
                 <Textarea
                   ref={inputRef}
                   className="w-full p-4"
                   maxLength={1000}
-                  minRows={50}
+                  minRows={20}
                   placeholder="소명 내용을 입력해주세요."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
