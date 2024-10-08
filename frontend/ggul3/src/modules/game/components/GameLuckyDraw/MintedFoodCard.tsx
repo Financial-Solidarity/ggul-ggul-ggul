@@ -1,4 +1,5 @@
 import { Button, Image } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 import { EquipmentDTO, EquipmentNFTDTO, HexCodesByGrade } from '../../@types';
 
@@ -20,7 +21,11 @@ export const MintedEquipmentCard = ({
   equipment,
 }: MintedEquipmentCardProps): JSX.Element => {
   const equip = isNFT(equipment) ? equipment.equipment : equipment;
+  const navigate = useNavigate();
 
+  const toInventory = () => {
+    navigate(PathNames.GAME.INVENTORY.path, { replace: true });
+  };
   const hexCode = HexCodesByGrade[equip.grade];
 
   return (
@@ -56,10 +61,7 @@ export const MintedEquipmentCard = ({
       <Button
         fullWidth
         className="bg-primary-400 py-3 text-white"
-        onClick={(e) => {
-          e.stopPropagation();
-          window.location.href = PathNames.GAME.INVENTORY.path;
-        }}
+        onClick={toInventory}
       >
         NFT 음식 보러가기
       </Button>

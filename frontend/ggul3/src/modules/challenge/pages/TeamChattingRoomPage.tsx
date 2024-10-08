@@ -1,6 +1,7 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
@@ -128,21 +129,35 @@ export const TeamChattingRoomPage = () => {
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
-          {isEndChallenge && (
-            <ChallengeResultAccordion challengeId={challengeId!} />
+          {isEndChallenge ? (
+            <ChallengeResultAccordion
+              challengeId={challengeId!}
+              openDetail={openConsumptionModal}
+            />
+          ) : (
+            <div
+              className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
+              onClick={openConsumptionModal}
+            >
+              <p
+                className={twMerge([
+                  'flex justify-center gap-1 py-2 text-sm font-semibold text-default-500',
+                  countdown.days === 0 &&
+                    countdown.hours === 0 &&
+                    countdown.minutes < 10 &&
+                    'text-danger',
+                ])}
+              >
+                {endAt && (
+                  <>
+                    <span>종료까지</span>
+                    <span>{formatCountdown(countdown)}</span>
+                    <span>남음</span>
+                  </>
+                )}
+              </p>
+            </div>
           )}
-          <div
-            className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
-            onClick={openConsumptionModal}
-          >
-            {endAt && (
-              <>
-                <span>종료까지</span>
-                <span>{formatCountdown(countdown)}</span>
-                <span>남음</span>
-              </>
-            )}
-          </div>
           <div
             ref={containerRef}
             className="z-0 overflow-y-auto px-4 py-16"

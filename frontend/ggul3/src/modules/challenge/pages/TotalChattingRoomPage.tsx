@@ -128,31 +128,35 @@ export const TotalChattingRoomPage = () => {
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
-          {isEndChallenge && (
-            <ChallengeResultAccordion challengeId={challengeId!} />
-          )}
-          <div
-            className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white py-2"
-            onClick={openConsumptionModal}
-          >
-            <p
-              className={twMerge([
-                'flex justify-center gap-1 text-sm font-semibold text-default-500',
-                countdown.days === 0 &&
-                  countdown.hours === 0 &&
-                  countdown.minutes < 10 &&
-                  'text-danger',
-              ])}
+          {isEndChallenge ? (
+            <ChallengeResultAccordion
+              challengeId={challengeId!}
+              openDetail={openConsumptionModal}
+            />
+          ) : (
+            <div
+              className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
+              onClick={openConsumptionModal}
             >
-              {endAt && (
-                <>
-                  <span>종료까지</span>
-                  <span>{formatCountdown(countdown)}</span>
-                  <span>남음</span>
-                </>
-              )}
-            </p>
-          </div>
+              <p
+                className={twMerge([
+                  'flex justify-center gap-1 py-2 text-sm font-semibold text-default-500',
+                  countdown.days === 0 &&
+                    countdown.hours === 0 &&
+                    countdown.minutes < 10 &&
+                    'text-danger',
+                ])}
+              >
+                {endAt && (
+                  <>
+                    <span>종료까지</span>
+                    <span>{formatCountdown(countdown)}</span>
+                    <span>남음</span>
+                  </>
+                )}
+              </p>
+            </div>
+          )}
           <div
             ref={containerRef}
             className="z-0 overflow-y-auto px-4 py-16"
