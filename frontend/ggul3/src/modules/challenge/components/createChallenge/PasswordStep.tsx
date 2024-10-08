@@ -8,6 +8,8 @@ import Lock from '@/assets/images/lock.png';
 export const PasswordStep = () => {
   const { password, setPassword } = useCreateChallengeStore();
 
+  const isPasswordValid = password === null || password.length > 0;
+
   return (
     <div className="flex w-full flex-col gap-4">
       <CardButton
@@ -26,9 +28,10 @@ export const PasswordStep = () => {
       />
       {password !== null && (
         <Input
-          className=""
-          errorMessage="Please enter a valid email"
+          isRequired
+          errorMessage={!isPasswordValid ? '비밀번호를 입력해 주세요.' : ''}
           label="비밀번호"
+          type="password"
           value={password}
           variant="bordered"
           onChange={(e) => setPassword(e.target.value)}
