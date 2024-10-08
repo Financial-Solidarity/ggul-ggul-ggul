@@ -94,11 +94,11 @@ export const GameMarketSellCreate = () => {
   };
 
   const handleGoBack = () => {
-    navigate(-2);
+    navigate('game/inventory', { replace: true });
   };
 
   const handleGoToMarket = () => {
-    navigate('/game/market');
+    navigate('/game/market', { replace: true });
   };
 
   return (
