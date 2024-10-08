@@ -13,6 +13,7 @@ export const LimitParticipantStep = () => {
     isCustomLimit,
     setLimitParticipant,
     setIsCustomLimit,
+    competitionType,
   } = useCreateChallengeStore();
 
   const limit2 = () => {
@@ -33,6 +34,11 @@ export const LimitParticipantStep = () => {
   const limitCustom = () => {
     setIsCustomLimit(true);
   };
+
+  const isLimitValid =
+    limitParticipant >= 2 &&
+    limitParticipant <= 30 &&
+    (!competitionType || competitionType !== 'T' || limitParticipant % 2 === 0);
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -72,8 +78,14 @@ export const LimitParticipantStep = () => {
       </div>
       {isCustomLimit && (
         <Input
-          className=""
-          errorMessage="Please enter a valid email"
+          isRequired
+          errorMessage={
+            !isLimitValid
+              ? competitionType === 'T' && limitParticipant % 2 !== 0
+                ? '팀전의 경우 인원은 짝수여야 합니다.'
+                : '인원은 2명 이상 30명 이하여야 합니다.'
+              : ''
+          }
           label="최대인원"
           type="number"
           value={limitParticipant + ''}
