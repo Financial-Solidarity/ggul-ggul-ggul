@@ -309,8 +309,17 @@ INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, 
                        challenge_is_blindness, challenge_limit_participant, challenge_budget_cap, challenge_is_ready,
                        challenge_is_ended, challenge_started_at, challenge_ended_at, challenge_competition_type,
                        created_at)
-VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3,
-        false, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (2) MINUTE, 'T', NOW());
+VALUES (1, '테스트1', false, null, 6, false, 2, 3,
+        true, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (5) MINUTE, 'T', NOW());
+
+INSERT INTO challenge_participant(challenge_participant_id, challenge_id, user_id, nickname, profile, challenge_participant_type, participated_at, is_deleted)
+VALUES (1, 1, 6, '흑염룡6', null, 'R', NOW(), 0), (2, 1, 7, '흑염룡7', null, 'B', NOW(), 0);
+
+INSERT INTO chatting_room(chatting_room_id, challenge_id, chatting_room_type, created_at)
+VALUES (1, 1, 'L', NOW()), (2, 1, 'R', NOW()), (3, 1,'B', NOW());
+
+INSERT INTO chatting_room_participant(chatting_room_participant_id, chatting_room_id, challenge_participant_id, last_connected_at, created_at)
+VALUES (1, 1, 1, NOW(), NOW()), (2, 1, 2, NOW(), NOW()), (3, 2, 1, NOW(), NOW()), (4, 3, 2, NOW(), NOW());
 
 INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
 VALUES
