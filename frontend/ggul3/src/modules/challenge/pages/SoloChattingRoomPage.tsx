@@ -16,6 +16,7 @@ import {
   useRecentChattingList,
 } from '../reactQueries/useChattingRoomQuery';
 import { useSocketChattingStore } from '../store/socketChattingStore';
+import { useConsumptionModalStore } from '../store/consumptionModalStore';
 
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -34,6 +35,7 @@ export const SoloChattingRoomPage = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
+  const { setChallengeId, setIsOpen } = useConsumptionModalStore();
 
   // 스크롤이 수동으로 이동될 때 자동 스크롤 비활성화
   const handleScroll = () => {
@@ -76,6 +78,11 @@ export const SoloChattingRoomPage = () => {
     });
   };
 
+  const openConsumptionModal = () => {
+    setChallengeId(challengeId!);
+    setIsOpen(true);
+  };
+
   useEffect(() => {
     clearSocketChattingList();
   }, [previousChattingList, recentChattingList]);
@@ -107,6 +114,12 @@ export const SoloChattingRoomPage = () => {
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
+          <div
+            className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
+            onClick={openConsumptionModal}
+          >
+            남은 시간과 잔액표시
+          </div>
           <div
             ref={containerRef}
             className="z-0 overflow-y-auto px-4 py-16"
