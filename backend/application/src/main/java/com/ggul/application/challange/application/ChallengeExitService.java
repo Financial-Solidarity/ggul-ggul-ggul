@@ -32,7 +32,6 @@ public class ChallengeExitService {
 
         if (challenge.isOwner(challengeParticipant.getUser())) {
             if (challengeParticipantRepository.countByChallenge_Id(challengeId) == 1) {
-                challenge.changeOwner(null);
                 challenge.delete();
             } else {
                 ChallengeParticipant newOwner = challengeParticipantRepository.findFirstByChallenge_IdOrderByCreatedAt(challengeId);
