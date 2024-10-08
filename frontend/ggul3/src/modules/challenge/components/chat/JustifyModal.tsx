@@ -30,6 +30,7 @@ export const JustifyModal = () => {
     }
     justify({ chattingId: spendChat.chattingId, content: input })
       .then(() => {
+        setInput('');
         setIsOpen(false);
       })
       .catch((error) => {
@@ -72,6 +73,7 @@ export const JustifyModal = () => {
               <Button
                 className="w-full"
                 color="primary"
+                isDisabled={input.length === 0}
                 isLoading={isPending}
                 radius="none"
                 size="lg"
