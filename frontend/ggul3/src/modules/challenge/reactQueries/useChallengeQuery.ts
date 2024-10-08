@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ChallengeJoinRequestBody,
   ChallengeJoinResponse,
@@ -123,15 +123,8 @@ export const useExitChallenge = () => {
 };
 
 export const useChangeTeam = () => {
-  const client = useQueryClient();
-
   return useMutation<ChangeTeamResponse, ErrorDTO, string>({
     mutationFn: (participantId) => changeTeam(participantId),
-    onSuccess: () => {
-      client.invalidateQueries({
-        queryKey: [QUERY_KEYS.PARTICIPANT],
-      });
-    },
   });
 };
 

@@ -12,37 +12,52 @@ const colors = [
   'text-danger',
 ];
 
-export const ChallengeTeamSpentMoney = ({}) => {
-  const teamInfo = { teamName: 'A팀', isMyTeam: true, goalMoney: 1000000 };
+interface ChallengeTeamSpentMoneyProps {
+  consumptionList: {
+    label: string;
+    money: number;
+  }[];
+  teamName: string;
+  isMyTeam: boolean;
+  budget: number;
+}
 
-  const categoryList = [
-    { label: '식비', money: 50000 },
-    { label: '교통비', money: 30000 },
-    { label: '문화생활', money: 120000 },
-    { label: '기타', money: 90000 },
-  ];
-
-  const totalSpentMoney = categoryList.reduce((acc, cur) => acc + cur.money, 0);
+export const ChallengeTeamSpentMoney = ({
+  consumptionList,
+  teamName,
+  isMyTeam,
+  budget,
+}: ChallengeTeamSpentMoneyProps) => {
+  const totalSpentMoney = consumptionList.reduce(
+    (acc, cur) => acc + cur.money,
+    0,
+  );
 
   return (
     <div className="flex flex-col gap-2 py-4">
       <div className="flex items-center font-bold">
-        <p className="mr-2">{teamInfo.teamName}</p>
-        <p className="text-xs">{teamInfo.isMyTeam && '우리팀'}!</p>
+        <p className="mr-2">{teamName}</p>
+        <p className="text-xs">{isMyTeam && '우리팀!'}</p>
       </div>
       <Progress
         aria-label="Loading..."
-        color={teamInfo.isMyTeam ? 'primary' : 'danger'}
-        value={Math.floor((totalSpentMoney / teamInfo.goalMoney) * 100)}
+        color={isMyTeam ? 'primary' : 'danger'}
+        value={((budget - totalSpentMoney) / budget) * 100}
       />
-      <p className="text-center text-sm font-bold">
-        {transformMoneyUnit({
-          money: teamInfo.goalMoney - totalSpentMoney,
-          disableSign: true,
-        })}
-        원 남음
-      </p>
-      {categoryList.map((item, index) => (
+      {totalSpentMoney > budget ? (
+        <p className="text-center text-sm font-bold text-danger">
+          {totalSpentMoney - budget} 원 초과
+        </p>
+      ) : (
+        <p className="text-center text-sm font-bold">
+          {transformMoneyUnit({
+            money: budget - totalSpentMoney,
+            disableSign: true,
+          })}
+          원 남음
+        </p>
+      )}
+      {consumptionList.map((item, index) => (
         <AccountBookStatisticsCategoryItem
           key={index}
           color={colors[index % colors.length]}

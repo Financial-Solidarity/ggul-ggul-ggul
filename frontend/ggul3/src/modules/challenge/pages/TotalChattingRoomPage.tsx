@@ -1,6 +1,7 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { ExitConfirmModal } from '../components/waitingRoom/ExitConfirmModal';
 import { TeamDrawer } from '../components/waitingRoom/TeamDrawer';
@@ -24,7 +25,8 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSocket } from '@/modules/common/hooks/useSocket';
-import { beforeNow } from '@/modules/common/utils/dateUtils';
+import { beforeNow, formatCountdown } from '@/modules/common/utils/dateUtils';
+import { useCountdown } from '@/modules/common/hooks/useCountDown';
 
 export const TotalChattingRoomPage = () => {
   useSetBottomBar({ active: false });
@@ -37,7 +39,8 @@ export const TotalChattingRoomPage = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
-  const { setChallengeId, setIsOpen } = useConsumptionModalStore();
+  const { setChallengeId, setIsOpen, setIsTotalChattingRoom } =
+    useConsumptionModalStore();
 
   const [isEndChallenge, setIsEndChallenge] = useState(false);
 
@@ -66,6 +69,8 @@ export const TotalChattingRoomPage = () => {
   const { data: recentChattingList, refetch: refetchRecentChattingList } =
     useRecentChattingList(totalChattingRoomId);
 
+  const countdown = useCountdown(endAt);
+
   const openDrawer = () => {
     setIsDrawerOpen(true);
   };
@@ -83,6 +88,7 @@ export const TotalChattingRoomPage = () => {
   };
 
   const openConsumptionModal = () => {
+    setIsTotalChattingRoom(true);
     setChallengeId(challengeId!);
     setIsOpen(true);
   };
@@ -114,7 +120,10 @@ export const TotalChattingRoomPage = () => {
       <TopBar
         left={<BackButton color="black" />}
         right={
-          <Bars3Icon className="h-6 w-6 text-gray-500" onClick={openDrawer} />
+          <Bars3Icon
+            className="h-6 w-6 cursor-pointer text-gray-500"
+            onClick={openDrawer}
+          />
         }
       />
       <PageContainer activePaddingX={false}>
@@ -123,10 +132,26 @@ export const TotalChattingRoomPage = () => {
             <ChallengeResultAccordion challengeId={challengeId!} />
           )}
           <div
-            className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
+            className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white py-2"
             onClick={openConsumptionModal}
           >
-            남은 시간과 잔액표시
+            <p
+              className={twMerge([
+                'flex justify-center gap-1 text-sm font-semibold text-default-500',
+                countdown.days === 0 &&
+                  countdown.hours === 0 &&
+                  countdown.minutes < 10 &&
+                  'text-danger',
+              ])}
+            >
+              {endAt && (
+                <>
+                  <span>종료까지</span>
+                  <span>{formatCountdown(countdown)}</span>
+                  <span>남음</span>
+                </>
+              )}
+            </p>
           </div>
           <div
             ref={containerRef}

@@ -19,3 +19,10 @@ export const transformMoneyUnit = ({
 
   return `${sign}${formattedMoney}`;
 };
+
+export const transformSpendMoney = (money: number): string => {
+  // 세 자리마다 콤마 찍기
+  const formattedMoney = money.toLocaleString();
+
+  return `-${formattedMoney}`;
+};
