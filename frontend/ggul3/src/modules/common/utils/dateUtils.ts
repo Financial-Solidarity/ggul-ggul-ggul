@@ -39,8 +39,6 @@ dayjs.extend(timezone);
 export const formatToRelativeTime = (dateString: string | undefined) => {
   const date = dayjs(dateString).tz('Asia/Seoul');
   const now = dayjs().tz('Asia/Seoul');
-  // console.log('now:', now);
-  // console.log('dateString:', dateString);
 
   const diffSeconds = now.diff(date, 'second');
   const diffMinutes = now.diff(date, 'minute');
@@ -56,4 +54,8 @@ export const formatToRelativeTime = (dateString: string | undefined) => {
   if (diffMonths < 12) return `${diffMonths}달 전`;
 
   return `${diffYears}년 전`;
+};
+
+export const beforeNow = (date: string) => {
+  return dayjs(date).isBefore(dayjs());
 };

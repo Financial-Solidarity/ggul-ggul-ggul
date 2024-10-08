@@ -17,12 +17,14 @@ import {
 } from '../reactQueries/useChattingRoomQuery';
 import { useSocketChattingStore } from '../store/socketChattingStore';
 import { useConsumptionModalStore } from '../store/consumptionModalStore';
+import { ChallengeResultAccordion } from '../components/chat/ChallengeResultAccordion';
 
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSocket } from '@/modules/common/hooks/useSocket';
+import { beforeNow } from '@/modules/common/utils/dateUtils';
 
 export const TeamChattingRoomPage = () => {
   useSetBottomBar({ active: false });
@@ -36,6 +38,8 @@ export const TeamChattingRoomPage = () => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
   const { setChallengeId, setIsOpen } = useConsumptionModalStore();
+
+  const [isEndChallenge, setIsEndChallenge] = useState(false);
 
   // 스크롤이 수동으로 이동될 때 자동 스크롤 비활성화
   const handleScroll = () => {
@@ -51,7 +55,7 @@ export const TeamChattingRoomPage = () => {
   const { sendChat } = useSocket();
 
   const {
-    data: { competitionType },
+    data: { competitionType, endAt },
   } = useGetChallengeDetail(challengeId!);
   const {
     data: { myTeamChattingRoomId },
@@ -102,6 +106,10 @@ export const TeamChattingRoomPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setIsEndChallenge(beforeNow(endAt));
+  }, [endAt]);
+
   return (
     <>
       <TopBar
@@ -115,6 +123,9 @@ export const TeamChattingRoomPage = () => {
       />
       <PageContainer activePaddingX={false}>
         <div className="relative flex h-full w-full flex-col">
+          {isEndChallenge && (
+            <ChallengeResultAccordion challengeId={challengeId!} />
+          )}
           <div
             className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
             onClick={openConsumptionModal}

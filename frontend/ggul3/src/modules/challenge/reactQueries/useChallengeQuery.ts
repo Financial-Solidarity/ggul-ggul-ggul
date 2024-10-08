@@ -18,6 +18,7 @@ import {
 import { createChallenge } from '../apis/createChallenge';
 import {
   getChallengeDetail,
+  getChallengeResult,
   getChattingRooomIds,
   getParticipantList,
   getParticipatingChallenge,
@@ -30,6 +31,7 @@ import {
   startChallenge,
 } from '../apis/waitingroom';
 import { justify } from '../apis/chattingroom';
+import { ParticipantData } from '../@types/challengeResult';
 
 import { QUERY_KEYS } from '@/modules/common/constants';
 
@@ -144,5 +146,14 @@ export const useGetParticipatingChallenge = () => {
 export const useJustify = () => {
   return useMutation<void, ErrorDTO, JustifyRequestBody>({
     mutationFn: (data) => justify(data),
+  });
+};
+
+export const useGetChallengeResult = (challengeId: string) => {
+  return useQuery<ParticipantData[], ErrorDTO>({
+    queryKey: [QUERY_KEYS.CHALLENGE_RESULT, challengeId],
+    queryFn: () => getChallengeResult(challengeId),
+    enabled: !!challengeId,
+    initialData: [],
   });
 };
