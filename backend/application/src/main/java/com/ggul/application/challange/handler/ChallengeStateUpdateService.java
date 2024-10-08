@@ -70,7 +70,7 @@ public class ChallengeStateUpdateService {
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void challengeEndUpdate(UUID id) {
-        Optional<Challenge> byIsEndedFalse = challengeRepository.findByIsEndedFalse(id);
+        Optional<Challenge> byIsEndedFalse = challengeRepository.findByIdAndIsEndedFalse(id);
 
         if (byIsEndedFalse.isEmpty()) {
             return;
