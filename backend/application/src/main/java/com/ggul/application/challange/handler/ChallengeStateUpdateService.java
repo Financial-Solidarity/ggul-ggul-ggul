@@ -62,7 +62,9 @@ public class ChallengeStateUpdateService {
             Challenge target = byId.get();
             if (!target.getIsReady()) {
                 challengeExitService.challengeExitAll(id);
+                target.changeOwner(null);
                 target.delete();
+                log.info("챌린지가 삭제되었습니다. : {} ", target.getId());
                 Events.raise(new ChallengeDestroyedEvent(id));
             } else {
                 Events.raise(new ChallengeStartedEvent(id, target.getEndedAt()));
@@ -172,7 +174,7 @@ public class ChallengeStateUpdateService {
             Boolean isSuccess = false;
             List<Long> gguls = new ArrayList<>();
             for(Map.Entry<ChallengeParticipant, Integer> entry : prefixs.entrySet()) {
-                ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet userInfo = byChallengeId.stream().filter(info -> Objects.equals(entry.getKey(), info.getParticipant())).findFirst().get();
+//                ConsumptionLogRepository.ParticipantAndConsumptionLogAndWallet userInfo = byChallengeId.stream().filter(info -> Objects.equals(entry.getKey(), info.getParticipant())).findFirst().get();
 
                 long ggul = 0;
                 if(entry.getValue() > target.getBudgetCap()) {
