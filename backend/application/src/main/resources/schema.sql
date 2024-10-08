@@ -278,16 +278,17 @@ CREATE TABLE primary_account
     account_no VARCHAR(40) NOT NULL
 );
 
-CREATE TABLE challenge_log (
-     challenge_log_id BINARY(16) PRIMARY KEY NOT NULL ,
-     challenge_participant_id BINARY(16) NOT NULL ,
-     challenge_id    BINARY(16) NOT NULL ,
-     is_success BOOL NOT NULL ,
-     is_lose BOOL NOT NULL ,
-     ggul_num INT NOT NULL,
-     created_at DATETIME NOT NULL,
-     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant(challenge_participant_id),
-     FOREIGN KEY (challenge_id) REFERENCES challenge(challenge_id)
+CREATE TABLE challenge_log
+(
+    challenge_log_id         BINARY(16) PRIMARY KEY NOT NULL,
+    challenge_participant_id BINARY(16) NOT NULL,
+    challenge_id             BINARY(16) NOT NULL,
+    is_success               BOOL     NOT NULL,
+    is_lose                  BOOL     NOT NULL,
+    ggul_num                 INT      NOT NULL,
+    created_at               DATETIME NOT NULL,
+    FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id),
+    FOREIGN KEY (challenge_id) REFERENCES challenge (challenge_id)
 );
 
 
@@ -302,25 +303,20 @@ VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvF
         null, now()),
        (5, 'test4@test.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡5',
         null, now()),
-        (6, "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+       (6, "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
         '흑염룡6', null, now()),
-        (7, "tester998@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+       (7, "tester998@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
         '흑염룡7', null, now()),
-        (8, "tester997@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+       (8, "tester997@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
         '흑염룡8', null, now()),
-        (9, "tester996@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+       (9, "tester996@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
         'ggul996', null, now()),
-        (10, "tester995@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+       (10, "tester995@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
         'ggul995', null, now()),
-        (11, "tester994@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+       (11, "tester994@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
         'ggul994', null, now())
-        ;
+;
 
-INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
-VALUES (1,
-        1,
-        UNHEX('0dd888d6fde82d0aeea7b26f304df411d751e7b1'),
-        UNHEX('fc12a1c6a64113dd9c762b59982bfe01244c63552e3374d668e5854bb7f437ae'));
 INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, challenge_password, challenge_owner_id,
                        challenge_is_blindness, challenge_limit_participant, challenge_budget_cap, challenge_is_ready,
                        challenge_is_ended, challenge_started_at, challenge_ended_at, challenge_competition_type,
@@ -328,28 +324,46 @@ INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, 
 VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3,
         false, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (2) MINUTE, 'T', NOW());
 
-INSERT INTO challenge_participant(challenge_participant_id, challenge_id, user_id, nickname, profile, challenge_participant_type, participated_at, is_deleted)
-VALUES (1, 1, 6, '흑염룡6', null, 'R', NOW(), 0), (2, 1, 7, '흑염룡7', null, 'B', NOW(), 0);
+INSERT INTO challenge_participant(challenge_participant_id, challenge_id, user_id, nickname, profile,
+                                  challenge_participant_type, participated_at, is_deleted)
+VALUES (1, 1, 6, '흑염룡6', null, 'R', NOW(), 0),
+       (2, 1, 7, '흑염룡7', null, 'B', NOW(), 0);
 
 INSERT INTO chatting_room(chatting_room_id, challenge_id, chatting_room_type, created_at)
-VALUES (1, 1, 'L', NOW()), (2, 1, 'R', NOW()), (3, 1,'B', NOW());
+VALUES (1, 1, 'L', NOW()),
+       (2, 1, 'R', NOW()),
+       (3, 1, 'B', NOW());
 
-INSERT INTO chatting_room_participant(chatting_room_participant_id, chatting_room_id, challenge_participant_id, last_connected_at, created_at)
-VALUES (1, 1, 1, NOW(), NOW()), (2, 1, 2, NOW(), NOW()), (3, 2, 1, NOW(), NOW()), (4, 3, 2, NOW(), NOW());
+INSERT INTO chatting_room_participant(chatting_room_participant_id, chatting_room_id, challenge_participant_id,
+                                      last_connected_at, created_at)
+VALUES (1, 1, 1, NOW(), NOW()),
+       (2, 1, 2, NOW(), NOW()),
+       (3, 2, 1, NOW(), NOW()),
+       (4, 3, 2, NOW(), NOW());
 
 INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
-VALUES
-    (1,1,UNHEX('0dd888d6fde82d0aeea7b26f304df411d751e7b1'),UNHEX('fc12a1c6a64113dd9c762b59982bfe01244c63552e3374d668e5854bb7f437ae')),
-    (2,2,UNHEX('def2d27fe78B9723Af7378a5f190893A8a86878d'),UNHEX('22f58e78aefd7b57ead64b9e206279eb8d19e7bd3198a96f4f4c26e6f58f8ae7')),
-    (3,3,UNHEX('54AA43dD565B534c9952372871332E41830a8Fbc'),UNHEX('f133db6b508a6e8a76cf2ac3cb3556df24be4e91f17d3803cedafa23ac6a0a72')),
-    (4,4,UNHEX('AF2d34A747823716662fBF31778eC82B3db2CD43'),UNHEX('60710f8d624666d905577e17e7d66c4fce0c9f732be22982b1669e70467fda9c')),
-    (5,5,UNHEX('E881422ff52a70eeCff60e0b8326dfA2c91eB6d4'),UNHEX('54aabd91d8061a671364d7ce7fa350253550a8e97cd39c1a42b8cf3ac22aa494')),
-    (6,6,UNHEX('445405085629c13c4d160ef067C82c5d2361d34a'),UNHEX('f2f6da67bd25974e8315c57e7f1e536dada711aa3e7ccead9658d34045f5cc8e')),
-    (7, 7,UNHEX('f4BE70e403A272c60A03428C3C5af94214765A58'),UNHEX('94e85d3a3cc24698cdd82220a7d500de480dad57d224495c9f714335efab413b')),
-    (8, 8,UNHEX('08Be144B4085c2b5a129BD2BD7D36a5C01eEEEC5'),UNHEX('83de8dd28f55a351a5aaf7b9ed673be44bb7908a424cffc35440a5ce546f37d6')),
-    (9, 9,UNHEX('DDEa5932a9e1868348eF65bAfF02359bB07Cd1B5'),UNHEX('9184740247669d119441a9a70ac085e5889ea037b1c28eb22ea60cb55beb7d9f')),
-    (10, 10,UNHEX('c43373Ed0b30C169659C118B46ac71Cb777a072B'),UNHEX('0d183b52768047f2de41fbdb23e85edf4a130fa0e1a3ea90282d40c910fbc327')),
-    (11, 11,UNHEX('E7Fc869fBBa9b12AC09090E51533a2E828CAE351'),UNHEX('b857408d5d3a71572e8e2e49737fbbff64b468ee882c8da11447d9b8ff5b5958'));
+VALUES (1, 1, UNHEX('0dd888d6fde82d0aeea7b26f304df411d751e7b1'),
+        UNHEX('fc12a1c6a64113dd9c762b59982bfe01244c63552e3374d668e5854bb7f437ae')),
+       (2, 2, UNHEX('def2d27fe78B9723Af7378a5f190893A8a86878d'),
+        UNHEX('22f58e78aefd7b57ead64b9e206279eb8d19e7bd3198a96f4f4c26e6f58f8ae7')),
+       (3, 3, UNHEX('54AA43dD565B534c9952372871332E41830a8Fbc'),
+        UNHEX('f133db6b508a6e8a76cf2ac3cb3556df24be4e91f17d3803cedafa23ac6a0a72')),
+       (4, 4, UNHEX('AF2d34A747823716662fBF31778eC82B3db2CD43'),
+        UNHEX('60710f8d624666d905577e17e7d66c4fce0c9f732be22982b1669e70467fda9c')),
+       (5, 5, UNHEX('E881422ff52a70eeCff60e0b8326dfA2c91eB6d4'),
+        UNHEX('54aabd91d8061a671364d7ce7fa350253550a8e97cd39c1a42b8cf3ac22aa494')),
+       (6, 6, UNHEX('445405085629c13c4d160ef067C82c5d2361d34a'),
+        UNHEX('f2f6da67bd25974e8315c57e7f1e536dada711aa3e7ccead9658d34045f5cc8e')),
+       (7, 7, UNHEX('f4BE70e403A272c60A03428C3C5af94214765A58'),
+        UNHEX('94e85d3a3cc24698cdd82220a7d500de480dad57d224495c9f714335efab413b')),
+       (8, 8, UNHEX('08Be144B4085c2b5a129BD2BD7D36a5C01eEEEC5'),
+        UNHEX('83de8dd28f55a351a5aaf7b9ed673be44bb7908a424cffc35440a5ce546f37d6')),
+       (9, 9, UNHEX('DDEa5932a9e1868348eF65bAfF02359bB07Cd1B5'),
+        UNHEX('9184740247669d119441a9a70ac085e5889ea037b1c28eb22ea60cb55beb7d9f')),
+       (10, 10, UNHEX('c43373Ed0b30C169659C118B46ac71Cb777a072B'),
+        UNHEX('0d183b52768047f2de41fbdb23e85edf4a130fa0e1a3ea90282d40c910fbc327')),
+       (11, 11, UNHEX('E7Fc869fBBa9b12AC09090E51533a2E828CAE351'),
+        UNHEX('b857408d5d3a71572e8e2e49737fbbff64b468ee882c8da11447d9b8ff5b5958'));
 
 
 insert into account(account_id, user_id, account_user_key)
