@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS primary_account;
-DROP TABLE IF EXISTS challenge_log;
 DROP TABLE IF EXISTS consumption_log;
 DROP TABLE IF EXISTS ggul_log;
 DROP TABLE IF EXISTS application_history;
@@ -223,7 +222,6 @@ CREATE TABLE chatting
     consumption_category_name VARCHAR(40),
     consumption_balance       INTEGER,
     created_at                DATETIME NOT NULL,
-    key created_at_idx    (created_at),
     FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant (challenge_participant_id),
     FOREIGN KEY (chatting_room_id) REFERENCES chatting_room (chatting_room_id)
 );
@@ -279,18 +277,6 @@ CREATE TABLE primary_account
     account_no VARCHAR(40) NOT NULL
 );
 
-CREATE TABLE challenge_log (
-    challenge_log_id BINARY(16) PRIMARY KEY NOT NULL ,
-    challenge_participant_id BINARY(16) NOT NULL ,
-    challenge_id    BINARY(16) NOT NULL ,
-    is_success BOOL NOT NULL ,
-    is_lose BOOL NOT NULL ,
-    ggul_num INT NOT NULL,
-    created_at DATETIME NOT NULL,
-    FOREIGN KEY (challenge_participant_id) REFERENCES challenge_participant(challenge_participant_id),
-    FOREIGN KEY (challenge_id) REFERENCES challenge(challenge_id)
-);
-
 INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
 VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
         '흑염룡1', null, now()),
@@ -302,15 +288,31 @@ VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvF
         null, now()),
        (5, 'test4@test.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡5',
         null, now()),
-       (6, 'tester999@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡6',
-        null, now());
+        (6, "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+        '흑염룡6', null, now()),
+        (7, "tester998@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+        '흑염룡7', null, now()),
+        (8, "tester997@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+        '흑염룡8', null, now()),
+        (9, "tester996@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+        'ggul996', null, now()),
+        (10, "tester995@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+        'ggul995', null, now()),
+        (11, "tester994@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
+        'ggul994', null, now())
+        ;
 
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
+VALUES (1,
+        1,
+        UNHEX('0dd888d6fde82d0aeea7b26f304df411d751e7b1'),
+        UNHEX('fc12a1c6a64113dd9c762b59982bfe01244c63552e3374d668e5854bb7f437ae'));
 INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, challenge_password, challenge_owner_id,
                        challenge_is_blindness, challenge_limit_participant, challenge_budget_cap, challenge_is_ready,
                        challenge_is_ended, challenge_started_at, challenge_ended_at, challenge_competition_type,
                        created_at)
-VALUES (1, '테스트1', false, null, 6, false, 2, 3,
-        true, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (5) MINUTE, 'T', NOW());
+VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3,
+        false, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (2) MINUTE, 'T', NOW());
 
 INSERT INTO challenge_participant(challenge_participant_id, challenge_id, user_id, nickname, profile, challenge_participant_type, participated_at, is_deleted)
 VALUES (1, 1, 6, '흑염룡6', null, 'R', NOW(), 0), (2, 1, 7, '흑염룡7', null, 'B', NOW(), 0);
@@ -322,16 +324,18 @@ INSERT INTO chatting_room_participant(chatting_room_participant_id, chatting_roo
 VALUES (1, 1, 1, NOW(), NOW()), (2, 1, 2, NOW(), NOW()), (3, 2, 1, NOW(), NOW()), (4, 3, 2, NOW(), NOW());
 
 INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
-VALUES
-    (1,1,UNHEX('0dd888d6fde82d0aeea7b26f304df411d751e7b1'),UNHEX('fc12a1c6a64113dd9c762b59982bfe01244c63552e3374d668e5854bb7f437ae')),
-    (2,2,UNHEX('def2d27fe78B9723Af7378a5f190893A8a86878d'),UNHEX('22f58e78aefd7b57ead64b9e206279eb8d19e7bd3198a96f4f4c26e6f58f8ae7')),
-    (3,3,UNHEX('54AA43dD565B534c9952372871332E41830a8Fbc'),UNHEX('f133db6b508a6e8a76cf2ac3cb3556df24be4e91f17d3803cedafa23ac6a0a72')),
-    (4,4,UNHEX('AF2d34A747823716662fBF31778eC82B3db2CD43'),UNHEX('60710f8d624666d905577e17e7d66c4fce0c9f732be22982b1669e70467fda9c')),
-    (5,5,UNHEX('E881422ff52a70eeCff60e0b8326dfA2c91eB6d4'),UNHEX('54aabd91d8061a671364d7ce7fa350253550a8e97cd39c1a42b8cf3ac22aa494')),
-    (6,6,UNHEX('445405085629c13c4d160ef067C82c5d2361d34a'),UNHEX('f2f6da67bd25974e8315c57e7f1e536dada711aa3e7ccead9658d34045f5cc8e'));
+VALUES (2,
+        6,
+        UNHEX('d0a443f0212f1a529911199c1b46f6af9864b846'),
+        UNHEX('8e80be688dba0dc84903604386c6c2f5f81e7e39198fe11ef5c30d2f443ef5f0'));
 
 insert into account(account_id, user_id, account_user_key)
-values (1, 6, 'ff883feb-b587-40f7-b41e-394743b1e435');
+values (1, 6, 'ff883feb-b587-40f7-b41e-394743b1e435'),
+       (2, 7, '88aa6007-a3f3-4858-9bfe-7c836002b744'),
+       (3, 8, '51ac880b-f01e-41aa-9d4d-640bb197de7a'),
+       (4, 9, '29ba45ce-ca35-4372-bc03-f0e3c9c15708'),
+       (5, 10, '57bfe0b7-7003-46f8-a300-61ab8c5d7617'),
+       (6, 11, '0589c79d-c5de-4cf1-96da-d87d57417962');
 
 INSERT INTO equipment_item (equipment_item_id, name, url)
 VALUES (1, "컵케익", "https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/cupcake.png"),
