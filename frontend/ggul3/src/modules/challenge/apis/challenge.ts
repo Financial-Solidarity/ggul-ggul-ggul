@@ -5,6 +5,8 @@ import {
   ParticipantDTO,
 } from '@types';
 
+import { ParticipantData } from '../@types/challengeResult';
+
 import { _axios } from '@/modules/common/utils/axios';
 
 export const getChallengeDetail = (challengeId: string) => {
@@ -31,6 +33,13 @@ export const getChattingRooomIds = (challengeId: string) => {
 export const getParticipatingChallenge = () => {
   return _axios<GetParticipatingChallengeResponse>({
     url: 'challenges/now',
+    method: 'get',
+  });
+};
+
+export const getChallengeResult = (challengeId: string) => {
+  return _axios<ParticipantData[]>({
+    url: `/challenges/${challengeId}/result`,
     method: 'get',
   });
 };
