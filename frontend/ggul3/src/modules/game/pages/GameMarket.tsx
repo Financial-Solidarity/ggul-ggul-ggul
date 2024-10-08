@@ -11,6 +11,7 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const GameMarket = (): JSX.Element => {
   useSetBottomBar({ active: true, isDarkMode: true });
@@ -81,7 +82,11 @@ export const GameMarket = (): JSX.Element => {
 
   return (
     <>
-      <TopBar bgColor="bg-black" left={<BackButton />} />
+      <TopBar
+        bgColor="bg-black"
+        left={<BackButton />}
+        right={<NotificationButton color="white" />}
+      />
       <PageContainer
         bgColor="bg-black"
         containerRef={pageContainerRef}

@@ -14,6 +14,7 @@ import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const AccountBookStatisticsPage = () => {
   const {
@@ -60,6 +61,7 @@ export const AccountBookStatisticsPage = () => {
         bgColor="bg-primary"
         center={<NavTitle color="white" title="소비 통계" />}
         left={<BackButton />}
+        right={<NotificationButton />}
       />
       <AccountBookHistoryHeader
         paymentList={paymentList}

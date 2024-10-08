@@ -17,6 +17,7 @@ import {
 import { NavTitle } from '@/modules/common/components';
 import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
 import { useUserStore } from '@/modules/common/store/userStore';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const ConnectAccountPage = () => {
   const {
@@ -81,6 +82,7 @@ export const ConnectAccountPage = () => {
       <TopBar
         center={<NavTitle title="계좌 연결하기" />}
         left={<BackButton color="black" />}
+        right={<NotificationButton />}
       />
       <PageContainer>
         <div className="relative">

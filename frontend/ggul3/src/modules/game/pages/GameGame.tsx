@@ -21,6 +21,7 @@ import './GameGame.css';
 import Spoon from '@/assets/images/game_spoon.png';
 import { formatToRelativeTime } from '@/modules/common/utils/dateUtils';
 import { PathNames } from '@/router';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const GameGame = () => {
   useSetBottomBar({ active: true, isDarkMode: true });
@@ -174,7 +175,11 @@ export const GameGame = () => {
 
   return (
     <>
-      <TopBar bgColor="bg-default-800" left={<BackButton />} />
+      <TopBar
+        bgColor="bg-default-800"
+        left={<BackButton />}
+        right={<NotificationButton color="white" />}
+      />
       <PageContainer
         activePaddingX={false}
         bgColor="bg-default-800"

@@ -12,6 +12,7 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { PathNames } from '@/router';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const GameMain = () => {
   const navigate = useNavigate();
@@ -20,7 +21,11 @@ export const GameMain = () => {
 
   return (
     <>
-      <TopBar bgColor="bg-black" left={<BackButton />} />
+      <TopBar
+        bgColor="bg-black"
+        left={<BackButton />}
+        right={<NotificationButton color="white" />}
+      />
       <PageContainer
         bgColor="bg-black"
         titleContent={

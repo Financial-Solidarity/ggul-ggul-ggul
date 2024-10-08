@@ -12,6 +12,7 @@ import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { EquipmentNFTDTO, RegisterSellNFTRequest } from '@/modules/game/@types';
 import { useRegisterSellNFTMutation } from '@/modules/game/queries';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const GameMarketSellCreate = () => {
   useSetBottomBar({ active: true, isDarkMode: true });
@@ -103,7 +104,11 @@ export const GameMarketSellCreate = () => {
 
   return (
     <>
-      <TopBar bgColor="bg-black" left={<BackButton />} />
+      <TopBar
+        bgColor="bg-black"
+        left={<BackButton />}
+        right={<NotificationButton color="white" />}
+      />
       <PageContainer
         bgColor="bg-black"
         titleContent={

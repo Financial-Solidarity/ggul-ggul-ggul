@@ -14,6 +14,7 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { QrButton } from '@/modules/accountBook/components';
 import { NavTitle } from '@/modules/common/components';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const PayPage = () => {
   const { getMyGgulToken } = useWalletStore();
@@ -27,6 +28,7 @@ export const PayPage = () => {
       <TopBar
         center={<NavTitle title="껄 페이" />}
         left={<BackButton color="black" />}
+        right={<NotificationButton />}
       />
       <PageContainer>
         <div className="mb-3">

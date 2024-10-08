@@ -9,6 +9,7 @@ import { PathNames } from '@/router';
 import { NavTitle } from '@/modules/common/components';
 import { ChangeMainAccountLinkButton } from '@/modules/myPage/components';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
+import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 
 export const AccountBookPage = () => {
   useSetBottomBar({ active: true, isDarkMode: false });
@@ -18,6 +19,7 @@ export const AccountBookPage = () => {
       <TopBar
         center={<NavTitle title="가계부" />}
         left={<BackButton color="black" />}
+        right={<NotificationButton />}
       />
       <PageContainer>
         <div className="mb-3">
