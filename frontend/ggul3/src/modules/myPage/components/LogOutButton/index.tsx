@@ -1,12 +1,14 @@
 import { Card, CardBody } from '@nextui-org/card';
 
 import { useUserStore } from '@/modules/common/store/userStore';
+import { fetchLogout } from '@/modules/user/apis/login';
 
 export const LogOutButton = () => {
   const { logout } = useUserStore();
 
   const handleClickLogOutButton = async () => {
     logout();
+    await fetchLogout();
   };
 
   return (

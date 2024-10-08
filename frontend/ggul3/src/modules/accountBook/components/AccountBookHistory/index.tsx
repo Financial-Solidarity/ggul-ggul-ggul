@@ -14,7 +14,6 @@ export const AccountBookHistory = ({
       {paymentList.map((payment, index) => (
         <AccountBookTradingHistoryItem
           key={index}
-          imgUrl="https://via.placeholder.com/36"
           label={payment.label}
           market={payment.market}
           money={payment.money}

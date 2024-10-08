@@ -13,3 +13,4 @@ export * from './ItemInfo';
 export * from './PaymentSlideBar';
 export * from './PrizeSubject';
 export * from './LuckyDrawResultModal';
+export * from './PrizeItem';

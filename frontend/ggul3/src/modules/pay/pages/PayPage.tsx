@@ -14,20 +14,13 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { QrButton } from '@/modules/accountBook/components';
 import { NavTitle } from '@/modules/common/components';
-import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
-import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const PayPage = () => {
-  const { setIsDarkMode } = useBottomBarStore();
-
   const { getMyGgulToken } = useWalletStore();
 
   useEffect(() => {
-    setIsDarkMode(true);
-
     getMyGgulToken();
   }, []);
-  useSetBottomBar({ active: true, isDarkMode: false });
 
   return (
     <>

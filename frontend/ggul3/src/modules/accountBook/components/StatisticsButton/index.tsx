@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 interface StatisticsButtonProps {
   color: string;
   buttonImageUrl: string;
-  displayValue: string;
   description: string;
   link: string;
 }
@@ -13,7 +12,6 @@ interface StatisticsButtonProps {
 export const StatisticsButton = ({
   color,
   buttonImageUrl,
-  displayValue,
   description,
   link,
 }: StatisticsButtonProps) => {
@@ -25,8 +23,7 @@ export const StatisticsButton = ({
         >
           <CardBody className="flex flex-col items-center text-center">
             <Image height={84} src={buttonImageUrl} width={84} />
-            <span className="font-bold">{displayValue}</span>
-            <span className="text-gray text-sm">{description}</span>
+            <span className="text-gray text-sm font-medium">{description}</span>
           </CardBody>
         </Card>
       </Link>

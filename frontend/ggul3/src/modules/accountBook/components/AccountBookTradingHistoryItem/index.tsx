@@ -1,24 +1,18 @@
-import { Image } from '@nextui-org/react';
 import { Payment } from '@types';
-
-import { getYYMMDD } from '../../utils/getYYMMDD';
 
 import { transformMoneyUnit } from '@/modules/common/utils/transformMoneyUnit';
 
 interface AccountBookTradingHistoryItemProps extends Payment {
-  imgUrl?: string;
   profileImg?: string;
   nickname?: string;
 }
 
 export const AccountBookTradingHistoryItem = ({
-  imgUrl,
   market,
   money,
   productName,
   spendGgulToken,
   spentAt,
-  profileImg,
   nickname,
 }: AccountBookTradingHistoryItemProps) => {
   const isPositive = money >= 0;
@@ -28,10 +22,6 @@ export const AccountBookTradingHistoryItem = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="flex flex-col items-center">
-            <Image
-              sizes="36px"
-              src={profileImg || imgUrl || 'https://via.placeholder.com/36'}
-            />
             {nickname && <p className="text-xs text-gray-500">{nickname}</p>}
           </div>
           <div className="ml-2">
@@ -41,7 +31,7 @@ export const AccountBookTradingHistoryItem = ({
               {productName}
             </div>
             <div className="text-gray text-xs">
-              {market} {getYYMMDD(spentAt)}
+              {market} {spentAt.slice(0, 10).replace(/-/g, '.')}
             </div>
           </div>
         </div>
@@ -51,7 +41,9 @@ export const AccountBookTradingHistoryItem = ({
           >
             {transformMoneyUnit({ money })}원
           </div>
-          {spendGgulToken && <CoinIcon discountValue={spendGgulToken} />}
+          {Number(spendGgulToken) > 0 && (
+            <CoinIcon discountValue={spendGgulToken} />
+          )}
         </div>
       </div>
     </div>

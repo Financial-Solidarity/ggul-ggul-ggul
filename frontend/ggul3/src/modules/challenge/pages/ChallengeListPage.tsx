@@ -15,6 +15,7 @@ import { PathNames } from '@/router';
 import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
+import { NothingLottie } from '@/modules/game/components/common/Lotties/NothingLottie';
 
 export const ChallengeListPage = () => {
   const navigate = useNavigate();
@@ -75,8 +76,9 @@ export const ChallengeListPage = () => {
               ))
           ) : content?.length === 0 ? (
             <div className="flex w-full flex-1 flex-col items-center justify-center gap-2">
-              <p className="text-default-400">진행중인 챌린지가 없습니다</p>
-              <Button className="w-max" onClick={toCreateChallenge}>
+              <NothingLottie />
+              <p className="text-center text-default-500">챌린지가 없어요</p>
+              <Button color="primary" onClick={toCreateChallenge}>
                 챌린지 만들기
               </Button>
             </div>

@@ -7,7 +7,8 @@ import {
   AccountBookStatisticsCategoryList,
 } from '../components';
 import { usePaymentStatisticsStore } from '../store/usePaymentStatisticsStore';
-import { getPaymentStatistics } from '../apis/payment';
+import { getPaymentHistory, getPaymentStatistics } from '../apis/payment';
+import { usePaymentHistoryStore } from '../store/usePaymentHistoryStore';
 
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -26,6 +27,7 @@ export const AccountBookStatisticsPage = () => {
   const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const { paymentList, setPaymentList } = usePaymentHistoryStore();
 
   // 쿼리 파라미터 읽기
   const startDate = searchParams.get('start-date') || currentDate;
@@ -42,6 +44,14 @@ export const AccountBookStatisticsPage = () => {
         setStatisticsList(data);
         setFormedStatisticsList(data);
       });
+
+    const getPaymentList = async () => {
+      const res = await getPaymentHistory({ startDate, endDate });
+
+      setPaymentList(res.content);
+    };
+
+    getPaymentList();
   }, [searchParams]);
 
   return (
@@ -52,9 +62,11 @@ export const AccountBookStatisticsPage = () => {
         left={<BackButton />}
       />
       <AccountBookHistoryHeader
+        paymentList={paymentList}
         setSearchParams={setSearchParams}
         startDate={startDate}
       />
+
       <div className="h-[40%] w-full">
         <AccountBookPieChart
           data={formedStatisticsList}

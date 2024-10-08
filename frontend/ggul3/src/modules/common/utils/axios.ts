@@ -54,8 +54,9 @@ instance.interceptors.response.use(
       console.error(error);
       console.groupEnd();
     }
-
-    if (error.status === 401) {
+    if (error.config.url === '/auth/login' && error.response.status === 401) {
+      window.alert('이메일 또는 비밀번호가 일치하지 않습니다.');
+    } else if (error.status === 401) {
       useUserStore.getState().setUser({
         userId: '',
         username: '',
@@ -64,8 +65,8 @@ instance.interceptors.response.use(
       });
 
       useUserStore.getState().setIsLoggedIn(false);
-
       window.alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+
       window.location.href = '/login';
     }
 

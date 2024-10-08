@@ -1,12 +1,14 @@
 import React from 'react';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
+import { FaCrown, FaGift } from 'react-icons/fa';
+import { Image } from '@nextui-org/react';
 
+import { ParticipantData, ProfileType } from '../../@types/challengeResult';
 import {
   useGetChallengeResult,
   useGetChallengeDetail,
 } from '../../reactQueries/useChallengeQuery';
-import { ParticipantData, ProfileType } from '../../@types/challengeResult';
 
 interface ChallengeResultAccordionProps {
   challengeId: string;
@@ -17,48 +19,224 @@ export const ChallengeResultAccordion = ({
 }: ChallengeResultAccordionProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  // 챌린지 상세 정보 가져오기 (예: 제목, competitionType)
-  const { data: challengeDetail } = useGetChallengeDetail(challengeId);
+  const useMockData = true;
 
-  // 참가자 결과 정보 가져오기
-  const { data: participants } = useGetChallengeResult(challengeId);
+  let challengeDetail: {
+    title: string;
+    competitionType: string;
+  };
+  let participants: ParticipantData[] = [];
+
+  //   if (useMockData) {
+  //     const teamChallengeDetail = {
+  //       title: '모킹 팀전 챌린지',
+  //       competitionType: 'T',
+  //     };
+
+  //     const teamParticipants: ParticipantData[] = [
+  //       {
+  //         profile: {
+  //           participantId: 'uuid-4',
+  //           nickname: '레드팀원 1',
+  //           profileImg: 'https://via.placeholder.com/40x40',
+  //           type: ProfileType.RED,
+  //           isMine: false,
+  //         },
+  //         isSuccess: 'false',
+  //         isLose: 'true',
+  //         ggulNum: 120,
+  //       },
+  //       {
+  //         profile: {
+  //           participantId: 'uuid-5',
+  //           nickname: '레드팀원 2',
+  //           profileImg: 'https://via.placeholder.com/40x40',
+  //           type: ProfileType.RED,
+  //           isMine: false,
+  //         },
+  //         isSuccess: 'false',
+  //         isLose: 'false',
+  //         ggulNum: 80,
+  //       },
+  //       {
+  //         profile: {
+  //           participantId: 'uuid-6',
+  //           nickname: '블루팀원 1',
+  //           profileImg: 'https://via.placeholder.com/40x40',
+  //           type: ProfileType.BLUE,
+  //           isMine: true,
+  //         },
+  //         isSuccess: 'true',
+  //         isLose: 'true',
+  //         ggulNum: 150,
+  //       },
+  //       {
+  //         profile: {
+  //           participantId: 'uuid-7',
+  //           nickname: '블루팀원 2',
+  //           profileImg: 'https://via.placeholder.com/40x40',
+  //           type: ProfileType.BLUE,
+  //           isMine: false,
+  //         },
+  //         isSuccess: 'true',
+  //         isLose: 'false',
+  //         ggulNum: 100,
+  //       },
+  //     ];
+
+  //     const individualChallengeDetail = {
+  //       title: '모킹 개인전 챌린지',
+  //       competitionType: 'S',
+  //     };
+
+  //     const individualParticipants: ParticipantData[] = [
+  //       {
+  //         profile: {
+  //           participantId: 'uuid-1',
+  //           nickname: '참가자 1',
+  //           profileImg: 'https://via.placeholder.com/40x40',
+  //           type: ProfileType.PERSONAL,
+  //           isMine: false,
+  //         },
+  //         isSuccess: 'true',
+  //         isLose: null,
+  //         ggulNum: 150,
+  //       },
+  //       {
+  //         profile: {
+  //           participantId: 'uuid-2',
+  //           nickname: '참가자 2',
+  //           profileImg: 'https://via.placeholder.com/40x40',
+  //           type: ProfileType.PERSONAL,
+  //           isMine: true,
+  //         },
+  //         isSuccess: 'false',
+  //         isLose: null,
+  //         ggulNum: 80,
+  //       },
+  //       {
+  //         profile: {
+  //           participantId: 'uuid-3',
+  //           nickname: '참가자 3',
+  //           profileImg: 'https://via.placeholder.com/40x40',
+  //           type: ProfileType.PERSONAL,
+  //           isMine: false,
+  //         },
+  //         isSuccess: 'true',
+  //         isLose: null,
+  //         ggulNum: 120,
+  //       },
+  //     ];
+
+  //     challengeDetail = teamChallengeDetail;
+  //     participants = teamParticipants;
+
+  //     // challengeDetail = individualChallengeDetail;
+  //     // participants = individualParticipants;
+  //   } else {
+  // 실제 데이터 가져오기
+  const { data: fetchedChallengeDetail, isLoading: isChallengeDetailLoading } =
+    useGetChallengeDetail(challengeId);
+  const { data: fetchedParticipants, isLoading: isParticipantsLoading } =
+    useGetChallengeResult(challengeId);
+
+  if (isChallengeDetailLoading || isParticipantsLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (!fetchedChallengeDetail || !fetchedParticipants) {
+    return <div>데이터를 가져올 수 없습니다.</div>;
+  }
+
+  challengeDetail = {
+    title: fetchedChallengeDetail.title,
+    competitionType: fetchedChallengeDetail.competitionType,
+  };
+
+  participants = fetchedParticipants;
+  //   }
 
   const toggleIsOpen = () => {
     setIsOpen((prev) => !prev);
   };
 
-  // 챌린지 타입이 팀전인지 확인
-  const isTeamChallenge = challengeDetail.competitionType === 'T'; // 'T'는 팀전을 의미
+  const isTeamChallenge = challengeDetail.competitionType === 'T';
 
-  // 팀전인 경우 참가자를 팀별로 그룹화
+  // 참가자 데이터를 그룹화 (팀전의 경우 팀별로 그룹화)
   let groupedParticipants: { [key in ProfileType]?: ParticipantData[] } = {};
 
-  if (isTeamChallenge && participants) {
-    groupedParticipants = participants.reduce(
-      (acc, participant) => {
-        const team = participant.profile.type;
+  if (participants) {
+    if (isTeamChallenge) {
+      groupedParticipants = participants.reduce(
+        (acc, participant) => {
+          const team = participant.profile.type;
 
-        if (team === ProfileType.RED || team === ProfileType.BLUE) {
-          if (!acc[team]) {
-            acc[team] = [];
+          if (team === ProfileType.RED || team === ProfileType.BLUE) {
+            if (!acc[team]) acc[team] = [];
+            acc[team]!.push(participant);
           }
-          acc[team]!.push(participant);
-        }
 
-        return acc;
-      },
-      {} as { [key in ProfileType]?: ParticipantData[] },
-    );
+          return acc;
+        },
+        {} as { [key in ProfileType]?: ParticipantData[] },
+      );
+    } else {
+      groupedParticipants[ProfileType.PERSONAL] = participants;
+    }
   }
 
+  // 참가자 카드 컴포넌트 (공통)
+  const ParticipantCard = ({
+    participant,
+  }: {
+    participant: ParticipantData;
+  }) => (
+    <div
+      key={participant.profile.participantId}
+      className="relative flex w-max flex-col items-center rounded-lg p-2"
+    >
+      {/* 성공 여부에 따른 아이콘 표시 */}
+      {participant.isLose === 'true' && isTeamChallenge && (
+        <div>
+          <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
+          <div className="absolute right-1 top-10 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-yellow-500 text-sm font-semibold text-white">
+            <p>1등</p>
+          </div>
+        </div>
+      )}
+      {participant.isSuccess === 'true' && !isTeamChallenge && (
+        <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
+      )}
+      <Image
+        alt="Profile"
+        className="mb-2 h-14 w-14 rounded-full"
+        src={participant.profile.profileImg}
+      />
+      <div className="flex flex-col items-center">
+        <span className="text-sm font-semibold">
+          {participant.profile.nickname}
+          {participant.profile.isMine && (
+            <div className="absolute left-1 top-10 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-primary-300 text-sm font-semibold text-white">
+              <p>나</p>
+            </div>
+          )}
+        </span>
+        <div className="mt-1 flex items-center justify-center rounded-full bg-primary px-2 py-1 text-sm">
+          <FaGift className="mr-1 text-white" />
+          <span className="text-white">{participant.ggulNum} 껄</span>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="fixed z-10 flex w-full flex-col border-b bg-white">
+    <div className="fixed z-10 flex w-full flex-col border-b bg-gray-100 px-4">
       <div
-        className="flex cursor-pointer items-center justify-between px-4 py-2"
+        className="flex cursor-pointer items-center justify-between py-2"
         onClick={toggleIsOpen}
       >
         <h4 className="text-sm font-bold text-default-600">
-          {challengeDetail.title}
+          {'챌린지 결과 보기'}
         </h4>
         <div className={twMerge([isOpen && 'rotate-90'])}>
           <ChevronRightIcon className="w-5 text-default-400" />
@@ -70,88 +248,46 @@ export const ChallengeResultAccordion = ({
           isOpen ? 'max-h-[1000px]' : 'max-h-0',
         ])}
       >
-        <div className="flex flex-col p-4">
-          <h5 className="mb-4 text-lg font-bold">챌린지 결과</h5>
-          {isTeamChallenge ? (
-            // 팀전 결과
-            <>
-              {Object.entries(groupedParticipants).map(
-                ([teamType, teamMembers]) => (
-                  <div key={teamType}>
-                    <h6 className="text-md mb-2 font-semibold">
-                      {teamType === ProfileType.RED ? '레드팀' : '블루팀'}{' '}
-                      {teamMembers[0].isSuccess === 'true' ? '승리' : '패배'}
-                    </h6>
-                    <div className="mb-4 flex flex-col gap-4">
-                      {teamMembers.map((participant) => (
-                        <div
-                          key={participant.profile.participantId}
-                          className="flex items-center gap-4 rounded border p-2"
-                        >
-                          <img
-                            alt="Profile"
-                            className="h-10 w-10 rounded-full"
-                            src={participant.profile.profileImg}
-                          />
-                          <div className="flex flex-col">
-                            <span className="font-semibold">
-                              {participant.profile.nickname}
-                              {participant.profile.isMine && ' (나)'}
-                            </span>
-                            {participant.isLose === 'true' && (
-                              <span className="text-sm text-yellow-500">
-                                팀 내 1등
-                              </span>
-                            )}
-                          </div>
-                          <div className="ml-auto flex flex-col text-right">
-                            <span className="text-sm">
-                              획득 꿀: {participant.ggulNum}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ),
-              )}
-            </>
-          ) : (
-            // 개인전 결과
-            <div className="flex flex-col gap-4">
-              {participants?.map((participant) => (
+        <div className="flex flex-col px-1 py-4">
+          {Object.entries(groupedParticipants).map(
+            ([groupType, groupMembers]) => (
+              <div key={groupType} className="mb-6">
+                {isTeamChallenge ? (
+                  <h6
+                    className={`mb-2 text-lg font-semibold ${
+                      groupType === ProfileType.RED
+                        ? 'text-red-500'
+                        : 'text-blue-500'
+                    }`}
+                  >
+                    {groupType === ProfileType.RED ? '팀 레드' : '팀 블루'}{' '}
+                    <span className="text-black">
+                      {groupMembers[0].isSuccess === 'true' ? '성공' : '실패'}
+                    </span>
+                  </h6>
+                ) : (
+                  <></>
+                )}
                 <div
-                  key={participant.profile.participantId}
-                  className="flex items-center gap-4 rounded border p-2"
+                  className={`rounded-2xl p-4 ${
+                    isTeamChallenge
+                      ? groupType === ProfileType.RED
+                        ? 'bg-red-100'
+                        : 'bg-blue-100'
+                      : 'bg-gray-200'
+                  }`}
                 >
-                  <img
-                    alt="Profile"
-                    className="h-10 w-10 rounded-full"
-                    src={participant.profile.profileImg}
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-semibold">
-                      {participant.profile.nickname}
-                      {participant.profile.isMine && ' (나)'}
-                    </span>
-                  </div>
-                  <div className="ml-auto flex flex-col text-right">
-                    <span
-                      className={`text-sm ${
-                        participant.isSuccess === 'true'
-                          ? 'text-green-500'
-                          : 'text-red-500'
-                      }`}
-                    >
-                      {participant.isSuccess === 'true' ? '성공' : '실패'}
-                    </span>
-                    <span className="text-sm">
-                      획득 꿀: {participant.ggulNum}
-                    </span>
+                  <div className="flex gap-4 overflow-x-auto">
+                    {groupMembers.map((participant) => (
+                      <ParticipantCard
+                        key={participant.profile.participantId}
+                        participant={participant}
+                      />
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ),
           )}
         </div>
       </div>
