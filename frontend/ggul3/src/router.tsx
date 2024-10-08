@@ -38,6 +38,7 @@ import { ChattingRoomPage } from './modules/challenge/pages/ChattingRoomPage';
 import { ChangePasswordPage } from './modules/myPage/pages';
 import { useBankAccountStore } from './modules/common/store/useBankAccountStore';
 import { LuckyDrawDetailPage } from './modules/pay/pages/LuckyDrawDetailPage';
+import { Provider } from './provider';
 
 export interface Path {
   path: string;
@@ -403,7 +404,11 @@ const privateRoutes: RouteObject[] = [
 export const router = createBrowserRouter([
   {
     path: PathNames.HOME.path,
-    element: <App />,
+    element: (
+      <Provider>
+        <App />
+      </Provider>
+    ),
     errorElement: <></>,
     children: [
       ...publicRoutes.map((route) => ({

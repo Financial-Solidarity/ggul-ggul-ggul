@@ -1,8 +1,10 @@
 import toast from 'react-hot-toast';
 import { SocketChat } from '@types';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useSocketStore } from '../store/useSocketStore';
 import { useUserStore } from '../store/userStore';
+import { QUERY_KEYS } from '../constants';
 
 import { useSocketChattingStore } from '@/modules/challenge/store/socketChattingStore';
 import { useSocketChattingRoomListStore } from '@/modules/challenge/store/socketChattingRoomListStore';
@@ -22,6 +24,7 @@ export const useSocket = () => {
   const user = useUserStore((state) => state.user);
   const { addChat } = useSocketChattingStore();
   const { updateChattingRoom } = useSocketChattingRoomListStore();
+  const client = useQueryClient();
   const connect = () => {
     socket.onConnect = () => {
       if (!user) return;
@@ -47,6 +50,17 @@ export const useSocket = () => {
               });
             }
 
+            break;
+          }
+          case 'CHALLENGE_JOIN':
+          case 'CHALLENGE_EXIT':
+          case 'CHALLENGE_CHANGE': {
+            client.invalidateQueries({
+              queryKey: [QUERY_KEYS.CHALLENGE],
+            });
+            client.invalidateQueries({
+              queryKey: [QUERY_KEYS.PARTICIPANT],
+            });
             break;
           }
         }

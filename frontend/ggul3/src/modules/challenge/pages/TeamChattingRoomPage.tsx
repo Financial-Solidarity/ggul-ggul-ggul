@@ -24,7 +24,8 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { useSocket } from '@/modules/common/hooks/useSocket';
-import { beforeNow } from '@/modules/common/utils/dateUtils';
+import { beforeNow, formatCountdown } from '@/modules/common/utils/dateUtils';
+import { useCountdown } from '@/modules/common/hooks/useCountDown';
 
 export const TeamChattingRoomPage = () => {
   useSetBottomBar({ active: false });
@@ -37,7 +38,8 @@ export const TeamChattingRoomPage = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
-  const { setChallengeId, setIsOpen } = useConsumptionModalStore();
+  const { setChallengeId, setIsOpen, setIsTotalChattingRoom } =
+    useConsumptionModalStore();
 
   const [isEndChallenge, setIsEndChallenge] = useState(false);
 
@@ -67,6 +69,8 @@ export const TeamChattingRoomPage = () => {
   const { data: recentChattingList, refetch: refetchRecentChattingList } =
     useRecentChattingList(myTeamChattingRoomId!);
 
+  const countdown = useCountdown(endAt);
+
   const openDrawer = () => {
     setIsDrawerOpen(true);
   };
@@ -84,6 +88,7 @@ export const TeamChattingRoomPage = () => {
   };
 
   const openConsumptionModal = () => {
+    setIsTotalChattingRoom(false);
     setChallengeId(challengeId!);
     setIsOpen(true);
   };
@@ -130,7 +135,13 @@ export const TeamChattingRoomPage = () => {
             className="fixed z-10 flex w-full cursor-pointer flex-col border-b bg-white"
             onClick={openConsumptionModal}
           >
-            남은 시간과 잔액표시
+            {endAt && (
+              <>
+                <span>종료까지</span>
+                <span>{formatCountdown(countdown)}</span>
+                <span>남음</span>
+              </>
+            )}
           </div>
           <div
             ref={containerRef}
