@@ -338,10 +338,14 @@ INSERT INTO chatting_room_participant(chatting_room_participant_id, chatting_roo
 VALUES (1, 1, 1, NOW(), NOW()), (2, 1, 2, NOW(), NOW()), (3, 2, 1, NOW(), NOW()), (4, 3, 2, NOW(), NOW());
 
 INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
-VALUES (2,
-        6,
-        UNHEX('d0a443f0212f1a529911199c1b46f6af9864b846'),
-        UNHEX('8e80be688dba0dc84903604386c6c2f5f81e7e39198fe11ef5c30d2f443ef5f0'));
+VALUES
+    (1,1,UNHEX('0dd888d6fde82d0aeea7b26f304df411d751e7b1'),UNHEX('fc12a1c6a64113dd9c762b59982bfe01244c63552e3374d668e5854bb7f437ae')),
+    (2,2,UNHEX('def2d27fe78B9723Af7378a5f190893A8a86878d'),UNHEX('22f58e78aefd7b57ead64b9e206279eb8d19e7bd3198a96f4f4c26e6f58f8ae7')),
+    (3,3,UNHEX('54AA43dD565B534c9952372871332E41830a8Fbc'),UNHEX('f133db6b508a6e8a76cf2ac3cb3556df24be4e91f17d3803cedafa23ac6a0a72')),
+    (4,4,UNHEX('AF2d34A747823716662fBF31778eC82B3db2CD43'),UNHEX('60710f8d624666d905577e17e7d66c4fce0c9f732be22982b1669e70467fda9c')),
+    (5,5,UNHEX('E881422ff52a70eeCff60e0b8326dfA2c91eB6d4'),UNHEX('54aabd91d8061a671364d7ce7fa350253550a8e97cd39c1a42b8cf3ac22aa494')),
+    (6,6,UNHEX('445405085629c13c4d160ef067C82c5d2361d34a'),UNHEX('f2f6da67bd25974e8315c57e7f1e536dada711aa3e7ccead9658d34045f5cc8e'));
+
 
 insert into account(account_id, user_id, account_user_key)
 values (1, 6, 'ff883feb-b587-40f7-b41e-394743b1e435'),
