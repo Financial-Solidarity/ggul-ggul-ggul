@@ -51,7 +51,7 @@ public class ChallengeParticipantSendNotificationHandler {
         Map<String, String> notificationBody = new HashMap<>();
         setChallengeId(notificationBody, event.getChallengeId());
 
-        List<Notification> notifications = participants.stream().map(participant -> notificationBuilder(participant.getUser(), NotificationDataSet.CHALLENGE_START, notificationBody)).toList();
+        List<Notification> notifications = participants.stream().map(participant -> notificationBuilder(participant.getUser(), NotificationDataSet.CHALLENGE_ENDED, notificationBody)).toList();
         notificationSendService.sendAllAndPersist(notifications);
     }
 
