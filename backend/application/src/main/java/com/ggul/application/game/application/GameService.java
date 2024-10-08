@@ -12,15 +12,11 @@ import com.ggul.application.game.exception.GameNotFoundException;
 import com.ggul.application.wallet.application.TokenService;
 import com.ggul.application.wallet.application.WalletService;
 import com.ggul.application.wallet.domain.Category;
-import com.ggul.application.wallet.domain.Wallet;
 import com.ggul.application.wallet.domain.WalletRepository;
-import com.ggul.application.wallet.exception.ContractInsufficientTokenException;
-import com.ggul.application.wallet.exception.WalletNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,9 +27,6 @@ public class GameService {
 
     private final GameConfig gameConfig;
 
-    private final TokenService tokenService;
-
-    private final WalletRepository walletRepository;
     private final GameRepository gameRepository;
     private final TokenizedEquipmentRepository tokenizedEquipmentRepository;
     private final WalletService walletService;

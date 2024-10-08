@@ -59,6 +59,7 @@ public class WalletService {
      */
     @Transactional
     public WalletHistory registerWalletHistory(UUID userId, Boolean isPositive, Long quantity, Category category) {
+        if(quantity == 0) return null;
         return walletHistoryRepository.save(WalletHistory.builder()
                 .user(userRepository.getReferenceById(userId))
                 .quantity(quantity)
@@ -88,6 +89,7 @@ public class WalletService {
      */
     @Transactional
     public void useToken(UUID userId, Long quantity){
+        if(quantity == 0) return;
         Wallet wallet = walletRepository.findByUserId(userId).orElseThrow(WalletNotFoundException::new);
         tokenService.useToken(wallet.getAddress(), BigInteger.valueOf(quantity));
     }
@@ -99,6 +101,7 @@ public class WalletService {
      */
     @Transactional
     public void grantTokens(UUID userId, Long quantity){
+        if(quantity == 0) return;
         Wallet wallet = walletRepository.findByUserId(userId).orElseThrow(WalletNotFoundException::new);
         try{
             tokenService.grantTokens(wallet.getAddress(), BigInteger.valueOf(quantity));
@@ -114,6 +117,7 @@ public class WalletService {
      */
     @Transactional
     public void grantTokens(Wallet wallet, Long quantity){
+        if(quantity == 0) return;
         try{
             tokenService.grantTokens(wallet.getAddress(), BigInteger.valueOf(quantity));
         } catch (ContractInsufficientTokenException e) {
