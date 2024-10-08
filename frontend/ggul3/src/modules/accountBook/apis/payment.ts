@@ -14,6 +14,7 @@ export const getPaymentHistory = ({ startDate, endDate }: HistoryRange) => {
     params: {
       'start-date': startDate,
       'end-date': endDate,
+      page: 0,
     },
   });
 };

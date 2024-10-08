@@ -3,6 +3,8 @@ import { Payment } from '@types';
 
 import { getArrayYYMMDD } from '../../utils/getYYMMDD';
 
+import { transformMoneyUnit } from '@/modules/common/utils/transformMoneyUnit';
+
 interface AccountBookHistoryHeaderProps {
   paymentList: Payment[];
   startDate: string;
@@ -14,7 +16,6 @@ export const AccountBookHistoryHeader = ({
   startDate,
   setSearchParams,
 }: AccountBookHistoryHeaderProps) => {
-  console.log(paymentList);
   const totalPayment = paymentList.reduce(
     (acc, payment) => acc + payment.money,
     0,
@@ -24,8 +25,6 @@ export const AccountBookHistoryHeader = ({
     (acc, payment) => acc + payment.spendGgulToken!,
     0,
   );
-
-  console.log(spendGgul);
 
   const { currentYear, currentMonth, transformedYears, transformedMonths } =
     getArrayYYMMDD();
@@ -108,7 +107,9 @@ export const AccountBookHistoryHeader = ({
       <div className="flex">
         <div className="flex-1">
           <p className="flex text-sm">이용 내역</p>
-          <p className="text-2xl font-bold">{totalPayment}원</p>
+          <p className="text-2xl font-bold">
+            {transformMoneyUnit({ money: Number(totalPayment) })}원
+          </p>
         </div>
         <div className="flex-1">
           <p className="flex text-sm">껄 페이로 절약한 비용</p>

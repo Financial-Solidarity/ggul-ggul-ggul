@@ -43,23 +43,20 @@ export const PrizeHistoryPage = () => {
         <div className="mb-12 pt-5">
           <div>
             <div className="flex flex-col gap-3">
-              {luckDrawHistory ? (
+              {luckDrawHistory.length ? (
                 luckDrawHistory.map((item, index) => (
                   <PrizeItem key={index} item={item} />
                 ))
               ) : (
-                <div>
-                  <p>현재 응모한 상품이 없습니다.</p>
+                <div className="flex flex-col">
+                  <p>현재 응모한 상품 기록이 없습니다.</p>
                   <Lottie
                     animationData={no_items}
-                    className="absolute right-0"
+                    className="w-full self-center"
                     loop={true}
                     style={{
                       width: '200px',
                       height: '200px',
-                      top: '40%',
-                      left: '50%',
-                      transform: 'translateX(-50%) translateY(-50%)',
                     }}
                   />
                 </div>

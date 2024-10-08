@@ -1,11 +1,12 @@
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { Card, CardBody } from '@nextui-org/card';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Image, Input } from '@nextui-org/react';
 
 import { useEditUserStore } from '../../store/editUserStore';
 
 import { useUserStore } from '@/modules/common/store/userStore';
 import { editUserNickname } from '@/modules/common/apis/userApis';
+import ggul3_logo_none_bg from '@/assets/images/ggul3-logo-none-bg.png';
 
 export const MyProfile = () => {
   const { isEditing, nicknameInput, setIsEditing, setNicknameInput } =
@@ -13,9 +14,13 @@ export const MyProfile = () => {
 
   const { user, setUser } = useUserStore();
 
+  const handleClickOpenEditNicknameButton = () => {
+    setIsEditing(true);
+    setNicknameInput(user.nickname);
+  };
+
   const handleClickCancelEditNicknameButton = () => {
     setIsEditing(false);
-    setNicknameInput(user.nickname);
   };
 
   const handleClickEditNicknameConfirmButton = async () => {
@@ -37,14 +42,23 @@ export const MyProfile = () => {
       <CardBody>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {/* <div className="mr-2">
-              <Image
-                className="rounded-full"
-                height={64}
-                src={profileImg}
-                width={64}
-              />
-            </div> */}
+            <div className="mr-2">
+              {user.profileImg ? (
+                <Image
+                  className="rounded-full"
+                  height={64}
+                  src={user.profileImg}
+                  width={64}
+                />
+              ) : (
+                <Image
+                  className="rounded-full object-contain p-1"
+                  height={64}
+                  src={ggul3_logo_none_bg}
+                  width={64}
+                />
+              )}
+            </div>
             <div>
               {isEditing ? (
                 <div className="flex items-center gap-1">
@@ -77,7 +91,7 @@ export const MyProfile = () => {
                     // @ts-ignore
                     color="none"
                     size="sm"
-                    onClick={() => setIsEditing(true)}
+                    onClick={handleClickOpenEditNicknameButton}
                   >
                     <PencilIcon className="w-4 cursor-pointer text-gray-500" />
                   </Button>

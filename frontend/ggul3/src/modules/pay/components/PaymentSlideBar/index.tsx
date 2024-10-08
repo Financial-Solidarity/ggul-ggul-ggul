@@ -1,6 +1,9 @@
 import { Slider } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 import { buyItem } from '../../apis/qrScanner';
+
+import { PathNames } from '@/router';
 
 interface SlideBarProps {
   slideValue: number;
@@ -20,6 +23,8 @@ export const PaymentSlideBar = ({
   setSlideValue,
   itemInfo,
 }: SlideBarProps) => {
+  const navigate = useNavigate();
+
   const { categoryId, productName, requiredMoney, market } = itemInfo;
 
   const handleSlideEnd = async () => {
@@ -34,23 +39,29 @@ export const PaymentSlideBar = ({
         clearInterval(interval);
       }, 300);
     } else {
-      console.log({
-        categoryId,
-        spendGgulToken,
-        requiredMoney,
-        productName,
-        market,
-      });
+      try {
+        await buyItem({
+          categoryId,
+          spendGgulToken: Number(spendGgulToken),
+          requiredMoney,
+          productName,
+          market,
+        });
 
-      const response = await buyItem({
-        categoryId,
-        spendGgulToken: 0,
-        requiredMoney,
-        productName,
-        market,
-      });
-
-      console.log(response);
+        navigate(
+          {
+            pathname: PathNames.ACCOUNT_BOOK.PAYMENT_SUCCESS.path,
+            search: `?product-name=${productName}&market=${market}`,
+          },
+          {
+            replace: true,
+          },
+        );
+      } catch (e) {
+        // @ts-ignore
+        window.alert(e.message);
+        setSlideValue(0);
+      }
     }
   };
 
