@@ -1,5 +1,6 @@
 package com.ggul.application.challange.handler;
 
+import com.ggul.application.challange.application.ChallengeExitService;
 import com.ggul.application.challange.domain.*;
 import com.ggul.application.challange.domain.repository.ChallengeLogRepository;
 import com.ggul.application.challange.domain.repository.ChallengeRepository;
@@ -30,6 +31,7 @@ public class ChallengeStateUpdateService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeLogRepository challengeLogRepository;
     private final ConsumptionLogFindService consumptionLogFindService;
+    private final ChallengeExitService challengeExitService;
     private final WalletService walletService;
 
     @Value("${challenge.reward.term}")
@@ -59,6 +61,7 @@ public class ChallengeStateUpdateService {
             //시작 준비가 안된 경우 => isReady
             Challenge target = byId.get();
             if (!target.getIsReady()) {
+                challengeExitService.challengeExitAll(id);
                 target.delete();
                 Events.raise(new ChallengeDestroyedEvent(id));
             } else {
