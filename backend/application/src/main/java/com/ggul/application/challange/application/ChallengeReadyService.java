@@ -1,10 +1,8 @@
 package com.ggul.application.challange.application;
 
 import com.ggul.application.challange.application.dto.ChallengeReadyRequest;
-import com.ggul.application.challange.domain.Challenge;
-import com.ggul.application.challange.domain.ChallengeParticipant;
-import com.ggul.application.challange.domain.ChallengeParticipantType;
-import com.ggul.application.challange.domain.CompetitionType;
+import com.ggul.application.challange.domain.*;
+import com.ggul.application.challange.domain.repository.BlindNicknameRepository;
 import com.ggul.application.challange.domain.repository.ChallengeParticipantRepository;
 import com.ggul.application.challange.domain.repository.ChallengeRepository;
 import com.ggul.application.challange.event.ChallengeReadiedEvent;
@@ -32,23 +30,25 @@ public class ChallengeReadyService {
     private final ChallengeParticipantRepository challengeParticipantRepository;
     private final ChattingRoomGenerateService chattingRoomGenerateService;
     private final ChattingRoomJoinService chattingRoomJoinService;
+    private final BlindNicknameRepository blindNicknameRepository;
 
     @Transactional
     public void ready(ChallengeReadyRequest request, UUID ownerId) {
         Challenge target = challengeRepository.findById(request.getChallengeId()).orElseThrow(ChallengeNotFoundException::new);
         User owner = userRepository.getReferenceById(ownerId);
 
-        if(!target.isOwner(owner)) {
+        if (!target.isOwner(owner)) {
             throw new ChallengeNotAuthorizedException();
         }
+        List<ChallengeParticipant> participants = challengeParticipantRepository.findAllByChallenge_Id(request.getChallengeId());
 
         List<ChattingRoom> chattingRooms = chattingRoomGenerateService.generateAll(target);
         ChallengeReadiedEvent build = null;
-        if(target.getCompetitionType().equals(CompetitionType.TEAM)) {
-            List<ChallengeParticipant> redTeam = challengeParticipantRepository.findChallengeParticipantByChallenge_IdAndType(request.getChallengeId(), ChallengeParticipantType.RED);
-            List<ChallengeParticipant> blueTeam = challengeParticipantRepository.findChallengeParticipantByChallenge_IdAndType(request.getChallengeId(), ChallengeParticipantType.BLUE);
+        if (target.getCompetitionType().equals(CompetitionType.TEAM)) {
+            List<ChallengeParticipant> redTeam = participants.stream().filter(challengeParticipant -> challengeParticipant.getType().equals(ChallengeParticipantType.RED)).toList();
+            List<ChallengeParticipant> blueTeam = participants.stream().filter(challengeParticipant -> challengeParticipant.getType().equals(ChallengeParticipantType.BLUE)).toList();
 
-            if(redTeam.size() != blueTeam.size()) {
+            if (redTeam.size() != blueTeam.size()) {
                 throw new ChallengeParticipantNotMatchException();
             }
 
@@ -64,10 +64,10 @@ public class ChallengeReadyService {
                     .totalChattingRoomId(chattingRooms.get(2).getId())
                     .build();
 
-        }else {
-            List<ChallengeParticipant> solo = challengeParticipantRepository.findChallengeParticipantByChallenge_IdAndType(request.getChallengeId(), ChallengeParticipantType.PERSONAL);
+        } else {
+            List<ChallengeParticipant> solo = participants;
 
-            if(solo.size() < 2) {
+            if (solo.size() < 2) {
                 throw new ChallengeParticipantNotMatchException();
             }
             chattingRoomJoinService.joinAll(chattingRooms.get(0), solo);
@@ -79,9 +79,14 @@ public class ChallengeReadyService {
         }
 
 
-
         target.ready();
-
+        if (target.getIsBlindness()) {
+            List<BlindNickname> all = blindNicknameRepository.findAll();
+            for (int i = 0; i < participants.size(); i++) {
+                ChallengeParticipant participant = participants.get(i);
+                participant.setBlindNickname(all.get(i).getNickname());
+            }
+        }
 
         Events.raise(build);
     }
