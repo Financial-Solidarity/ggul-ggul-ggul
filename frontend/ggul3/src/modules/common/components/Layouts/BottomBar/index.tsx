@@ -24,7 +24,7 @@ export const BottomBar = () => {
   const isCurrentPath = (path: string) => currentPathname.includes(path);
 
   const handleNavigation = (path: string) => {
-    navigate(path, { state: { type: 'parent' } });
+    navigate(path, { replace: true });
   };
 
   if (!active) return null;
