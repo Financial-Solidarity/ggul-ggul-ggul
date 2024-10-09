@@ -12,8 +12,8 @@ export const useSocketStore = create<SocketState>((set) => ({
       new SockJS(import.meta.env.VITE_SOCKET_CONNECT_ENDPOINT, null, {
         transports: ['websocket'],
       }),
-    reconnectDelay: 5000,
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
+    reconnectDelay: 1000,
+    heartbeatIncoming: 2000,
+    heartbeatOutgoing: 2000,
   }),
 }));
