@@ -76,13 +76,12 @@ export const JustifyModal = () => {
                 </p>
               </div>
             </ModalBody>
-            <ModalFooter className="p-0">
+            <ModalFooter className="px-4">
               <Button
                 className="w-full"
                 color="primary"
                 isDisabled={input.length === 0}
                 isLoading={isPending}
-                radius="none"
                 size="lg"
                 onClick={onClickJustify}
               >
