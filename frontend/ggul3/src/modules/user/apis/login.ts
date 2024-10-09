@@ -1,11 +1,8 @@
+import { LoginForm } from '@types';
+
 import { _axios } from '@/modules/common/utils/axios';
 
-interface ILogin {
-  email: string;
-  password: string;
-}
-
-export const login = ({ email, password }: ILogin) => {
+export const login = ({ email, password }: LoginForm) => {
   return _axios({
     method: 'POST',
     url: `/auth/login`,
