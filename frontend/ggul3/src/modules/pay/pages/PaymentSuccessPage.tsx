@@ -36,8 +36,8 @@ export const PaymentSuccessPage = () => {
             </div>
           </div>
           <Button className="flex items-center" color="primary" size="lg">
-            <BsChevronLeft />{' '}
-            <Link to={PathNames.ACCOUNT_BOOK.HISTORY.path}>
+            <BsChevronLeft />
+            <Link replace to={PathNames.ACCOUNT_BOOK.HISTORY.path}>
               결제 내역으로 돌아가기
             </Link>
           </Button>
