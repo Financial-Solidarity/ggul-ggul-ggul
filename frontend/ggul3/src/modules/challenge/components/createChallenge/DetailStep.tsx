@@ -28,8 +28,8 @@ export const DetailStep = () => {
   }, []);
 
   useEffect(() => {
-    const defaultStart = dayjs().add(5, 'minute');
-    const defaultEnd = dayjs().add(1, 'day').add(5, 'minute');
+    const defaultStart = dayjs().add(1, 'minute');
+    const defaultEnd = dayjs().add(3, 'minute');
 
     if (!startDate) {
       setStartDate({
