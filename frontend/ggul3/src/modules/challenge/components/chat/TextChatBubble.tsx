@@ -23,7 +23,7 @@ const MyChatBubble = ({ chat }: TextChatBubbleProps) => {
     <div className="flex w-full items-end justify-end gap-2">
       <p className="text-xs text-default-500">{toAMPM_ko(sentAt)}</p>
 
-      <div className="max-w-[50%] whitespace-pre-wrap rounded-xl bg-primary px-2 py-1 text-xs text-white">
+      <div className="max-w-[50%] whitespace-pre-wrap rounded-xl bg-primary px-2 py-1 text-sm text-white">
         {content}
       </div>
     </div>
