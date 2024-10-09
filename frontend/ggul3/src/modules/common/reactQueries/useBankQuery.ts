@@ -24,6 +24,7 @@ export const useGetAllBankAccountsMutation = () => {
   return useQuery({
     queryKey: ['allBankAccounts'],
     queryFn: () => getAllBankAccounts(),
+    initialData: [],
   });
 };
 
@@ -31,6 +32,7 @@ export const useGetMainBankAccountMutation = () => {
   return useQuery({
     queryKey: ['mainBankAccount'],
     queryFn: () => getMainBankAccount(),
+    initialData: null,
   });
 };
 
