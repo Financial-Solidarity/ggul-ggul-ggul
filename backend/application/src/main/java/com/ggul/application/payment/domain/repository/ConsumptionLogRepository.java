@@ -20,8 +20,8 @@ public interface ConsumptionLogRepository extends JpaRepository<ConsumptionLog, 
 
     @Query("SELECT new com.ggul.application.payment.ui.dto.ConsumptionLogView(cl.productName, cl.createdAt, cl.balance, pc.name, cl.market, wh.quantity) " +
             "FROM ConsumptionLog cl " +
-                "JOIN WalletHistory wh ON cl.walletHistory = wh " +
                 "JOIN ProductCategory pc ON cl.productCategory = pc " +
+                "LEFT JOIN WalletHistory wh ON cl.walletHistory = wh " +
             "WHERE cl.user.id = :userId " +
                 "AND cl.createdAt BETWEEN :startedAt AND :endedAt " +
             "ORDER BY cl.createdAt DESC ")

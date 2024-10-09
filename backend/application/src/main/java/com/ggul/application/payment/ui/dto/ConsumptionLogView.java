@@ -5,11 +5,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ConsumptionLogView {
     private String productName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -18,4 +16,17 @@ public class ConsumptionLogView {
     private String label;
     private String market;
     private Long spendGgulToken;
+
+    @Builder
+    public ConsumptionLogView(String productName, LocalDateTime spentAt, Integer money, String labe, String market, Long spendGgulToken) {
+        this.productName = productName;
+        this.spentAt = spentAt;
+        this.money = money;
+        this.label = labe;
+        this.market = market;
+        this.spendGgulToken = spendGgulToken;
+        if(this.spendGgulToken == null) {
+            this.spendGgulToken = 0L;
+        }
+    }
 }
