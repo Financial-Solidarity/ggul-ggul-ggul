@@ -39,8 +39,6 @@ export const LuckyDrawEntryPage = () => {
     navigate(`${PathNames.GGULPAY.LUCKY_DRAW_ENTRY.path}/${id}`);
   };
 
-  console.log(luckDrawList);
-
   return (
     <>
       <TopBar
