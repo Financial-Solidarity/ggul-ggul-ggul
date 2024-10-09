@@ -52,7 +52,6 @@ export const JustifyModal = () => {
       className="p-0"
       isOpen={isOpen}
       scrollBehavior="inside"
-      size="full"
       onOpenChange={setIsOpen}
     >
       <ModalContent>
