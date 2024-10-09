@@ -168,7 +168,7 @@ public class ChallengeStateUpdateService {
             Map<ChallengeParticipant, Integer> prefixs = new HashMap<>();
             byChallengeId.forEach(
                     challengeInfo -> {
-                        prefixs.put(challengeInfo.getParticipant(), prefixs.getOrDefault(challengeInfo.getParticipant(), 0) + challengeInfo.getConsumptionLog().getBalance());
+                        prefixs.put(challengeInfo.getParticipant(), prefixs.getOrDefault(challengeInfo.getParticipant(), 0) + (challengeInfo.getConsumptionLog() == null ? 0 : challengeInfo.getConsumptionLog().getBalance()));
                     }
             );
 
