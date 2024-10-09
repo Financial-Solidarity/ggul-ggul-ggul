@@ -9,7 +9,6 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
-import { setMainBankAccount } from '@/modules/common/apis/bankApis';
 import { NavTitle } from '@/modules/common/components';
 import { useBankAccountStore } from '@/modules/common/store/useBankAccountStore';
 import { useUserStore } from '@/modules/common/store/userStore';
@@ -17,6 +16,7 @@ import { NotificationButton } from '@/modules/common/components/NotificationButt
 import {
   useGetAllBankAccountsMutation,
   useGetMainBankAccountMutation,
+  useSetMainBankAccountMutation,
 } from '@/modules/common/reactQueries/useBankQuery';
 
 export const ConnectAccountPage = () => {
@@ -41,6 +41,7 @@ export const ConnectAccountPage = () => {
 
   const { data: allAccounts } = useGetAllBankAccountsMutation();
   const { data: mainBankAccount } = useGetMainBankAccountMutation();
+  const { mutate: setMainBankAccount } = useSetMainBankAccountMutation();
 
   const handleClickConnectAccount = async () => {
     setModalStep('connecting');
@@ -51,16 +52,18 @@ export const ConnectAccountPage = () => {
 
     try {
       await setMainBankAccount(selectedAccount!.accountNo);
-      setModalStep('connected');
       setCurrentAccount(selectedAccount);
       setBankAccount(selectedAccount);
       setIsBankAccountPossessed(true);
+      setModalStep('connected');
     } catch {
       setModalStep('failed');
     }
   };
 
   useEffect(() => {
+    if (!mainBankAccount || !allAccounts) return;
+
     setCurrentAccount(mainBankAccount);
     setAccountList(allAccounts);
 
