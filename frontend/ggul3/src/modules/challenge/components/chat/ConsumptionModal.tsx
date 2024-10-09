@@ -34,7 +34,13 @@ export const ConsumptionModal = () => {
   useEffect(() => {
     if (!participantList || !consumptionList || !challengeDetail) return;
 
-    const newStatistics: PaymentHistoryItem[] = participantList.map(
+    const myTeam = participantList.find((p) => p.isMine)?.type;
+    const filteredParticipants =
+      challengeDetail.competitionType === 'S'
+        ? participantList
+        : participantList.filter((p) => p.type === myTeam);
+
+    const newStatistics: PaymentHistoryItem[] = filteredParticipants.map(
       (participant) => ({
         nickname: participant.nickname,
         budget: challengeDetail.budgetCap,
