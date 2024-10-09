@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon, UserIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
 import { FaCrown, FaGift } from 'react-icons/fa';
 import { Button, Image } from '@nextui-org/react';
@@ -209,11 +209,24 @@ export const ChallengeResultAccordion = ({
       {participant.isSuccess === 'true' && !isTeamChallenge && (
         <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
       )}
-      <Image
+      <div className="mb-2 h-10 w-10 overflow-hidden rounded-full">
+        {participant.profile.profileImg ? (
+          <Image
+            alt="profileImg"
+            className="h-full w-full object-cover"
+            src={participant.profile.profileImg}
+          />
+        ) : (
+          <div className="h-full w-full bg-primary p-2 text-white">
+            <UserIcon />
+          </div>
+        )}
+      </div>
+      {/* <Image
         alt="Profile"
         className="mb-2 h-14 w-14 rounded-full"
         src={participant.profile.profileImg}
-      />
+      /> */}
       <div className="flex flex-col items-center">
         <span className="text-sm font-semibold">
           {participant.profile.nickname}
