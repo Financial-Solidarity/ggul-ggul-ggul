@@ -90,11 +90,11 @@ define(['./workbox-b5f7729d'], function (workbox) {
     [
       {
         url: 'registerSW.js',
-        revision: '3ca0b8505b4bec776b69afdba2768812',
+        revision: '04999b2800562d1c3440446ea53f8ce8',
       },
       {
         url: 'index.html',
-        revision: '0.p69utg2a8c8',
+        revision: '0.spsuv631d3g',
       },
     ],
     {},
