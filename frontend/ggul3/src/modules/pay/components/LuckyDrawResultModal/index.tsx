@@ -48,7 +48,7 @@ export const ResultModal = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
     >
-      <ModalContent>
+      <ModalContent className="pb-20 pt-2">
         {(onClose) => (
           <>
             {result?.isSuccess ? (
@@ -57,7 +57,7 @@ export const ResultModal = ({
                   <p className="text-xl font-bold">당첨 되었습니다!</p>
                 </ModalHeader>
                 <ModalBody>
-                  <div className="flex w-full flex-col gap-3">
+                  <div className="flex w-full flex-col gap-1">
                     <PrizeInfo chance={chance} result={result} />
                     <Button
                       className="w-full"
@@ -94,7 +94,7 @@ export const ResultModal = ({
                       >
                         다시 응모하기
                       </Button>
-                      <div className="flex w-full gap-3">
+                      <div className="flex w-full gap-2">
                         <Link
                           className="flex-1"
                           target="_blank"
