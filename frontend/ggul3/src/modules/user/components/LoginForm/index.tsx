@@ -36,12 +36,12 @@ export const LoginForm = ({
   validateEmail,
 }: LoginFormProps) => {
   const { executeAfterLoginFlow } = useUserLoginFlow();
-  const { mutate: login, isPending } = useLoginMutation();
+  const { mutateAsync: login, isPending } = useLoginMutation();
 
   const handleSubmitLogin = async (e: FormEvent) => {
     e.preventDefault();
 
-    login({ email, password });
+    await login({ email, password });
     await executeAfterLoginFlow();
   };
 
