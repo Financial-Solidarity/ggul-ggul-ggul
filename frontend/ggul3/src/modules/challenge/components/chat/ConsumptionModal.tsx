@@ -31,6 +31,12 @@ export const ConsumptionModal = () => {
   const { data: participantList } = useGetParticipantList(challengeId);
   const { data: consumptionList } = useGetConsumptionList(challengeId);
 
+  const myTeam = participantList?.find((p) => p.isMine)?.type;
+  // const myTeamConsumptionList = consumptionList?.filter(
+  //   (consumption) => consumption.team === myTeam,
+  // );
+  const myTeamConsumptionList = consumptionList;
+
   useEffect(() => {
     if (!participantList || !consumptionList || !challengeDetail) return;
 
@@ -123,7 +129,9 @@ export const ConsumptionModal = () => {
               ) : (
                 <div className="flex flex-col gap-8">
                   <ChallengePaymentStatistics statistics={personalStatistics} />
-                  <ChallengePaymentHistory paymentHistory={consumptionList} />
+                  <ChallengePaymentHistory
+                    paymentHistory={myTeamConsumptionList}
+                  />
                 </div>
               )}
             </ModalBody>

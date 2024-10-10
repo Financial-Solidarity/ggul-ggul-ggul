@@ -4,7 +4,7 @@ import { transformSpendMoney } from '@/modules/common/utils/transformMoneyUnit';
 
 interface AccountBookTradingHistoryItemProps extends Payment {
   profileImg?: string;
-  nickname?: string;
+  nickname: string;
 }
 
 export const AccountBookTradingHistoryItem = ({
@@ -21,9 +21,6 @@ export const AccountBookTradingHistoryItem = ({
     <div>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <div className="flex flex-col items-center">
-            {nickname && <p className="text-xs text-gray-500">{nickname}</p>}
-          </div>
           <div className="ml-2">
             <div
               className={`font-bold leading-5 text-${isPositive ? 'black' : 'gray-500'}`}
@@ -33,6 +30,7 @@ export const AccountBookTradingHistoryItem = ({
             <div className="text-gray text-xs">
               {market} {spentAt.slice(0, 10).replace(/-/g, '.')}
             </div>
+            <p className="text-xs font-semibold text-gray-800">{nickname}</p>
           </div>
         </div>
         <div className="flex flex-col items-end">
