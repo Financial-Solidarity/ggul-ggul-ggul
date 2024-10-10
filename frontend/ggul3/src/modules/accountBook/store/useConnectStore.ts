@@ -17,7 +17,7 @@ interface UseConnectAccountState {
 }
 
 export const useConnectStore = create<UseConnectAccountState>((set) => ({
-  modalStep: 'failed', // 모달 상태: connecting, connected, failed
+  modalStep: 'connecting', // 모달 상태: connecting, connected, failed
   isConnectModalOpen: false, // 모달 열기/닫기
   selectedAccount: null,
   isSelected: false, // 계좌 선택 여부

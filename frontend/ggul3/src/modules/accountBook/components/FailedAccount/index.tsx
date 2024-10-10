@@ -1,5 +1,4 @@
 import { Button, ModalBody } from '@nextui-org/react';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
 
 import { AccountModalProps } from '../../@types/accountModal';
 import { SmallText } from '../SmallText';
@@ -8,14 +7,10 @@ import { UserBoldSpan } from '@/modules/user/components';
 
 type FailedAccountProps = Pick<
   AccountModalProps,
-  | 'currentAccount'
-  | 'selectedAccount'
-  | 'setConnectModalOpen'
-  | 'initializeModalStates'
+  'selectedAccount' | 'setConnectModalOpen' | 'initializeModalStates'
 >;
 
 export const FailedAccount = ({
-  currentAccount,
   selectedAccount,
   setConnectModalOpen,
   initializeModalStates,
@@ -32,15 +27,8 @@ export const FailedAccount = ({
       </div>
       <div className="flex items-center text-xl">
         <UserBoldSpan>
-          {currentAccount.bankName}
-          <SmallText>{currentAccount.accountNo}</SmallText>
-        </UserBoldSpan>
-        <div className="px-4">
-          <ChevronRightIcon className="w-4" />
-        </div>
-        <UserBoldSpan>
           {selectedAccount.bankName}
-          <SmallText>{currentAccount.accountNo}</SmallText>
+          <SmallText>{selectedAccount.accountNo}</SmallText>
         </UserBoldSpan>
       </div>
       <Button
