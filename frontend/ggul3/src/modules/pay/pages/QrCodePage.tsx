@@ -28,6 +28,7 @@ export const QrCodePage = () => {
           // 결제페이지로 이동
           navigate(
             `/pay/qr-pay?categoryId=${parsedData.categoryId}&productName=${parsedData.productName}&requiredMoney=${parsedData.requiredMoney}&market=${parsedData.market}`,
+            { replace: true },
           );
         },
         // @ts-ignore
