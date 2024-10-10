@@ -1,5 +1,6 @@
 import { Button, Card, Skeleton } from '@nextui-org/react';
 import { useEffect } from 'react';
+import { AccountItemDTO } from '@types';
 
 import { AccountItem } from '../components/AccountItem';
 import { useConnectStore } from '../store/useConnectStore';
@@ -65,7 +66,21 @@ export const ConnectAccountPage = () => {
     if (!mainBankAccount || !allAccounts) return;
 
     setCurrentAccount(mainBankAccount);
-    setAccountList(allAccounts);
+
+    const filteredAccounts: AccountItemDTO[] = [];
+
+    for (let i = 0; i < allAccounts.length; i++) {
+      if (
+        filteredAccounts.find(
+          (item) => item.bankName === allAccounts[i].bankName,
+        )
+      ) {
+        continue;
+      }
+      filteredAccounts.push(allAccounts[i]);
+    }
+
+    setAccountList(filteredAccounts);
 
     if (currentAccount) {
       setActive(false);
