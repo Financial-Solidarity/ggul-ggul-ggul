@@ -98,7 +98,7 @@ export const ConsumptionModal = () => {
                     isMyTeam={
                       participantList.find((p) => p.isMine)?.type === 'RED'
                     }
-                    teamName="A팀"
+                    teamName="RED팀"
                   />
                   <div className="flex w-full items-center gap-2 px-4">
                     <Divider className="flex-1" />
@@ -123,7 +123,7 @@ export const ConsumptionModal = () => {
                     isMyTeam={
                       participantList.find((p) => p.isMine)?.type === 'BLUE'
                     }
-                    teamName="B팀"
+                    teamName="BLUE팀"
                   />
                 </div>
               ) : (
