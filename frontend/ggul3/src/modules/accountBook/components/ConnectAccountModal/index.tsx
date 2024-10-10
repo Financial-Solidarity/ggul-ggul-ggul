@@ -26,7 +26,7 @@ export const ConnectAccountModal = ({
   setModalStep,
   initializeModalStates,
 }: ConnectAccountModalProps) => {
-  if (!currentAccount || !selectedAccount) {
+  if (!selectedAccount) {
     return null;
   }
 
@@ -45,14 +45,12 @@ export const ConnectAccountModal = ({
           />
         ) : modalStep === 'connected' ? (
           <ConnectedAccount
-            currentAccount={currentAccount}
             initializeModalStates={initializeModalStates}
             selectedAccount={selectedAccount}
             setModalStep={setModalStep}
           />
         ) : (
           <FailedAccount
-            currentAccount={currentAccount}
             initializeModalStates={initializeModalStates}
             selectedAccount={selectedAccount}
             setConnectModalOpen={setConnectModalOpen}

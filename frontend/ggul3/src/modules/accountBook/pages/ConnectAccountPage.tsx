@@ -52,7 +52,7 @@ export const ConnectAccountPage = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
-      setMainBankAccount(selectedAccount!.accountNo);
+      await setMainBankAccount(selectedAccount!.accountNo);
       setCurrentAccount(selectedAccount);
       setBankAccount(selectedAccount);
       setIsBankAccountPossessed(true);

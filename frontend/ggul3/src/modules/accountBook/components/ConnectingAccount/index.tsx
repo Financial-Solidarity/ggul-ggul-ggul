@@ -1,6 +1,7 @@
 import { ModalBody } from '@nextui-org/react';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import Lottie from 'lottie-react';
+import { AccountItemDTO } from '@types';
 
 import { AccountModalProps } from '../../@types/accountModal';
 import { SmallText } from '../SmallText';
@@ -10,15 +11,18 @@ import loading_dots from '@/assets/lotties/loading_dots.json';
 
 type ConnectingAccountProps = Pick<
   AccountModalProps,
-  'currentAccount' | 'selectedAccount' | 'setModalStep'
->;
+  'selectedAccount' | 'setModalStep'
+> & {
+  currentAccount: AccountItemDTO | null; // YourCurrentAccountType은 currentAccount의 실제 타입으로 교체하세요.
+};
 
 export const ConnectingAccount = ({
   currentAccount,
   selectedAccount,
 }: ConnectingAccountProps) => {
   return (
-    <ModalBody className="flex flex-col items-center py-8">
+    <ModalBody className="relative flex flex-col items-center py-8">
+      <div className="absolute right-3 top-3 h-4 w-4 bg-white"> </div>
       <div className="relative flex">
         <span>계좌를 연동 중입니다</span>
         <Lottie
@@ -34,16 +38,20 @@ export const ConnectingAccount = ({
         />
       </div>
       <div className="flex items-center text-xl">
-        <UserBoldSpan>
-          {currentAccount.bankName}
-          <SmallText>{currentAccount.accountNo}</SmallText>
-        </UserBoldSpan>
-        <div className="px-4">
-          <ChevronRightIcon className="w-4" />
-        </div>
+        {currentAccount && (
+          <>
+            <UserBoldSpan>
+              {currentAccount?.bankName}
+              <SmallText>{currentAccount?.accountNo}</SmallText>
+            </UserBoldSpan>
+            <div className="px-4">
+              <ChevronRightIcon className="w-4" />
+            </div>
+          </>
+        )}
         <UserBoldSpan>
           {selectedAccount.bankName}
-          <SmallText>{currentAccount.accountNo}</SmallText>
+          <SmallText>{selectedAccount?.accountNo}</SmallText>
         </UserBoldSpan>
       </div>
     </ModalBody>

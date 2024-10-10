@@ -9,10 +9,7 @@ import { PathNames } from '@/router';
 
 type ConnectedAccountProps = Pick<
   AccountModalProps,
-  | 'currentAccount'
-  | 'selectedAccount'
-  | 'initializeModalStates'
-  | 'setModalStep'
+  'selectedAccount' | 'initializeModalStates' | 'setModalStep'
 >;
 
 export const ConnectedAccount = ({
