@@ -27,8 +27,6 @@ interface TokenTradingHistoryDTO extends PageableOptions {
 }
 
 export const getTokenTradingHistories = () => {
-  console.log('실행됨');
-
   return _axios<TokenTradingHistoryDTO>({
     method: 'GET',
     url: `/wallet/token/histories`,

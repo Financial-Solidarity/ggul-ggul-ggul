@@ -16,7 +16,6 @@ type ConnectedAccountProps = Pick<
 >;
 
 export const ConnectedAccount = ({
-  currentAccount,
   selectedAccount,
   setModalStep,
   initializeModalStates,
@@ -27,14 +26,15 @@ export const ConnectedAccount = ({
   };
 
   return (
-    <ModalBody className="flex flex-col items-center py-8">
+    <ModalBody className="relative flex flex-col items-center py-8">
+      <div className="absolute right-3 top-3 h-4 w-4 bg-white"> </div>
       <div className="relative flex">
         <span>계좌가 성공적으로 연동되었습니다!</span>
       </div>
       <div className="flex items-center text-center text-xl">
         <UserBoldSpan>
-          {currentAccount.bankName}
-          <SmallText>{currentAccount.accountNo}</SmallText>
+          {selectedAccount.bankName}
+          <SmallText>{selectedAccount.accountNo}</SmallText>
         </UserBoldSpan>
       </div>
       <Button

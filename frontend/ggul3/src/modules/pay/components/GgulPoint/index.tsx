@@ -79,12 +79,14 @@ interface ToggleBalanceVisibilityButtonProps {}
 const ToggleBalanceVisibilityButton =
   ({}: ToggleBalanceVisibilityButtonProps) => {
     return (
-      <Button
-        className="bg-black bg-opacity-20 text-white"
-        radius="full"
-        size="sm"
-      >
-        <Link to={PathNames.GGULPAY.WALLET.path}>내역</Link>
-      </Button>
+      <Link to={PathNames.GGULPAY.WALLET.path}>
+        <Button
+          className="bg-black bg-opacity-20 text-white"
+          radius="full"
+          size="sm"
+        >
+          내역
+        </Button>
+      </Link>
     );
   };

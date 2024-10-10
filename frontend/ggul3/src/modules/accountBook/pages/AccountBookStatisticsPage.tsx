@@ -30,6 +30,10 @@ export const AccountBookStatisticsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { paymentList, setPaymentList } = usePaymentHistoryStore();
 
+  const updateSearchParams = (params: string) => {
+    return setSearchParams(params, { replace: true });
+  };
+
   // 쿼리 파라미터 읽기
   const startDate = searchParams.get('start-date') || currentDate;
   const endDate = searchParams.get('end-date') || currentDate;
@@ -60,7 +64,7 @@ export const AccountBookStatisticsPage = () => {
       />
       <AccountBookHistoryHeader
         paymentList={paymentList}
-        setSearchParams={setSearchParams}
+        setSearchParams={updateSearchParams}
         startDate={startDate}
       />
       <div className={`${statisticsList.length && 'h-[40%]'} w-full`}>

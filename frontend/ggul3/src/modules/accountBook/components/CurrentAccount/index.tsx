@@ -11,7 +11,7 @@ export const CurrentAccount = ({ currentAccount }: AccountModalProps) => {
   return (
     <Card className="mb-2">
       <CardBody>
-        <p>현재 연결된 계좌</p>
+        <p className="mb-1">현재 연결된 계좌</p>
         <AccountItem account={currentAccount} />
       </CardBody>
     </Card>

@@ -3,7 +3,6 @@ import { Button } from '@nextui-org/react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { NavTitle } from '@/modules/common/components';
-import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PathNames } from '@/router';
@@ -13,14 +12,9 @@ export const PaymentSuccessPage = () => {
   const productName = searchParams.get('product-name');
   const market = searchParams.get('market');
 
-  console.log(productName, market, 'productName, market');
-
   return (
     <>
-      <TopBar
-        center={<NavTitle title="껄 페이" />}
-        left={<BackButton color="black" />}
-      />
+      <TopBar center={<NavTitle title="껄 페이" />} />
       <PageContainer>
         <div className="flex h-full flex-col items-center justify-center">
           <BsCheckCircleFill className="mb-8 h-40 w-40 text-green-500" />

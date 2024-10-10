@@ -23,7 +23,6 @@ const colors = [
 export const AccountBookStatisticsCategoryList = ({
   categoryList,
 }: AccountBookStatisticsCategoryListProps) => {
-  console.log(categoryList, 'console.assert(expression, object)');
   const totalMoney = categoryList.reduce((acc, cur) => acc + cur.money, 0);
 
   return (

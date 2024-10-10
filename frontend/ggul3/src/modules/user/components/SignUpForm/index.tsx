@@ -10,10 +10,10 @@ import {
   UserLogo,
 } from '../../components';
 import {
-  checkDuplicatedEmail,
-  checkDuplicatedNickname,
-  requestEmailVerification,
-} from '../../apis/signUp';
+  useCheckDuplicatedEmailMutation,
+  useCheckDuplicatedNicknameMutation,
+  useRequestEmailVerificationMutation,
+} from '../../queries/useUserQuery';
 
 import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
@@ -60,6 +60,15 @@ export const SignUpForm = ({
   validateEmail,
   validatePasswordCheck,
 }: SignUpFormProps) => {
+  const { mutate: checkDuplicatedEmail, isPending: isCheckingEmail } =
+    useCheckDuplicatedEmailMutation();
+  const { mutate: checkDuplicatedNickname, isPending: isCheckingNickname } =
+    useCheckDuplicatedNicknameMutation();
+  const {
+    mutate: requestEmailVerification,
+    isPending: isRequestingVerification,
+  } = useRequestEmailVerificationMutation();
+
   const handleSubmitSignUp = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -75,21 +84,47 @@ export const SignUpForm = ({
 
     try {
       // 비밀번호 확인
-      if ((await checkDuplicatedEmail(email)).isDuplicated) {
+      const emailCheckResult = await new Promise<{ isDuplicated: boolean }>(
+        (resolve, reject) => {
+          checkDuplicatedEmail(email, {
+            onSuccess: resolve,
+            onError: reject,
+          });
+        },
+      );
+
+      if (emailCheckResult.isDuplicated) {
         window.alert(ERRORS.DUPLICATED_EMAIL);
 
         return;
       }
 
       // 닉네임 확인
-      if ((await checkDuplicatedNickname(nickname)).isDuplicated) {
+      const nicknameCheckResult = await new Promise<{ isDuplicated: boolean }>(
+        (resolve, reject) => {
+          checkDuplicatedNickname(nickname, {
+            onSuccess: resolve,
+            onError: reject,
+          });
+        },
+      );
+
+      if (nicknameCheckResult.isDuplicated) {
         window.alert(ERRORS.DUPLICATED_NICKNAME);
 
         return;
       }
 
       // 이메일 인증 요청
-      await requestEmailVerification({ email });
+      await new Promise<{ isValid: boolean }>((resolve, reject) => {
+        requestEmailVerification(
+          { email },
+          {
+            onSuccess: resolve,
+            onError: reject,
+          },
+        );
+      });
 
       setStep('verify');
     } catch (error) {
@@ -128,7 +163,13 @@ export const SignUpForm = ({
             value={passwordCheck}
           />
         </UserInputBox>
-        <UserButton>회원가입</UserButton>
+        <UserButton
+          isLoading={
+            isCheckingEmail || isCheckingNickname || isRequestingVerification
+          }
+        >
+          회원가입
+        </UserButton>
         <UserLink to={PathNames.LOGIN.path} type="bold">
           <UserBoldSpan>껄껄껄</UserBoldSpan>로그인
         </UserLink>
