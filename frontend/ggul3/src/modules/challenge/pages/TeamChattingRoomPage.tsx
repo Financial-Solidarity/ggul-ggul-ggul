@@ -130,7 +130,7 @@ export const TeamChattingRoomPage = () => {
         />
       </div>
       <PageContainer activePaddingX={false}>
-        <div className="relative flex h-full w-full flex-col">
+        <div className="relative flex h-full w-full flex-col pt-12">
           {isEndChallenge ? (
             <ChallengeResultAccordion
               challengeId={challengeId!}
