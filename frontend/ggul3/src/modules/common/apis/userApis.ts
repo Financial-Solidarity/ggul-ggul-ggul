@@ -10,7 +10,7 @@ export const getUserData = () => {
 };
 
 interface EditUser {
-  nickname: string;
+  nickname?: string;
   nowPassword?: string;
   newPassword?: string;
   isProfileImgRemove?: boolean;
