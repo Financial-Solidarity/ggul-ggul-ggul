@@ -26,6 +26,7 @@ public class ChallengeView {
     private Integer limitParticipant;
     private Integer currentParticipant;
     private Integer budgetCap;
+    private Boolean isEnd;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime startAt;
@@ -34,7 +35,7 @@ public class ChallengeView {
     private Boolean isOwner;
 
     @Builder
-    public ChallengeView(UUID challengeId, String title, Boolean isEncrypted, CompetitionType competitionType, Boolean isBlindness, Integer limitParticipant, Integer currentParticipant, Integer budgetCap, LocalDateTime startedAt, LocalDateTime endedAt, Boolean isOwner) {
+    public ChallengeView(UUID challengeId, String title, Boolean isEncrypted, CompetitionType competitionType, Boolean isBlindness, Integer limitParticipant, Integer currentParticipant, Integer budgetCap, LocalDateTime startedAt, LocalDateTime endedAt, Boolean isOwner, Boolean isEnd) {
         this.challengeId = challengeId;
         this.title = title;
         this.isEncrypted = isEncrypted;
@@ -46,9 +47,10 @@ public class ChallengeView {
         this.startAt = startedAt;
         this.endAt = endedAt;
         this.isOwner = isOwner;
+        this.isEnd = isEnd;
     }
 
-    public ChallengeView(UUID challengeId, String title, Boolean isEncrypted, CompetitionType competitionType, Boolean isBlindness, Integer limitParticipant, Long currentParticipant, Integer budgetCap, LocalDateTime startedAt, LocalDateTime endedAt, UUID challengeOwnerId, UUID sessionId) {
+    public ChallengeView(UUID challengeId, String title, Boolean isEncrypted, CompetitionType competitionType, Boolean isBlindness, Integer limitParticipant, Long currentParticipant, Integer budgetCap, LocalDateTime startedAt, LocalDateTime endedAt, UUID challengeOwnerId, UUID sessionId, Boolean isEnded) {
         this.challengeId = challengeId;
         this.title = title;
         this.isEncrypted = isEncrypted;
@@ -60,6 +62,7 @@ public class ChallengeView {
         this.startAt = startedAt;
         this.endAt = endedAt;
         this.isOwner = Objects.equals(challengeOwnerId, sessionId);
+        this.isEnd = isEnded;
     }
 
 
@@ -76,6 +79,7 @@ public class ChallengeView {
                 .startedAt(challenge.getStartedAt())
                 .endedAt(challenge.getEndedAt())
                 .isOwner(isOwner)
+                .isEnd(challenge.getIsEnded())
                 .build();
     }
 }
