@@ -198,7 +198,7 @@ export const ChallengeResultAccordion = ({
       className="relative flex w-max flex-col items-center rounded-lg p-2"
     >
       {/* 성공 여부에 따른 아이콘 표시 */}
-      {participant.isLose === 'true' && isTeamChallenge && (
+      {participant.isLose && isTeamChallenge && (
         <div>
           <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
           <div className="absolute right-1 top-10 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-yellow-500 text-sm font-semibold text-white">
@@ -206,7 +206,7 @@ export const ChallengeResultAccordion = ({
           </div>
         </div>
       )}
-      {participant.isSuccess === 'true' && !isTeamChallenge && (
+      {participant.isSuccess && !isTeamChallenge && (
         <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
       )}
       <div className="mb-2 h-10 w-10 overflow-hidden rounded-full">
@@ -277,7 +277,7 @@ export const ChallengeResultAccordion = ({
                   >
                     {groupType === ProfileType.RED ? '팀 레드' : '팀 블루'}
                     <span className="text-black">
-                      {groupMembers[0].isLose === 'true' ? '실패' : '성공'}
+                      {groupMembers[0].isLose ? '실패' : '성공'}
                     </span>
                   </h6>
                 ) : (
