@@ -117,17 +117,19 @@ export const TotalChattingRoomPage = () => {
 
   return (
     <>
-      <TopBar
-        left={<BackButton color="black" />}
-        right={
-          <Bars3Icon
-            className="h-6 w-6 cursor-pointer text-gray-500"
-            onClick={openDrawer}
-          />
-        }
-      />
+      <div className="fixed z-10 w-full">
+        <TopBar
+          left={<BackButton color="black" />}
+          right={
+            <Bars3Icon
+              className="h-6 w-6 cursor-pointer text-gray-500"
+              onClick={openDrawer}
+            />
+          }
+        />
+      </div>
       <PageContainer activePaddingX={false}>
-        <div className="relative flex h-full w-full flex-col">
+        <div className="relative flex h-full w-full flex-col pt-12">
           {isEndChallenge ? (
             <ChallengeResultAccordion
               challengeId={challengeId!}
