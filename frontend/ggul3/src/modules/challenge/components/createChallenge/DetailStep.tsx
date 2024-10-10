@@ -60,16 +60,22 @@ export const DetailStep = () => {
         minute: defaultEnd.minute(),
       });
     }
+
+    if (!title) {
+      setTitle('함께 아껴봅시다');
+    }
   }, [
     budgetCap,
     startDate,
     startTime,
     endDate,
     endTime,
+    title,
     setStartDate,
     setStartTime,
     setEndDate,
     setEndTime,
+    setTitle,
   ]);
 
   const handleStartDate = (date: DateValue) => {
