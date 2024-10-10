@@ -275,9 +275,9 @@ export const ChallengeResultAccordion = ({
                         : 'text-blue-500'
                     }`}
                   >
-                    {groupType === ProfileType.RED ? '팀 레드' : '팀 블루'}{' '}
+                    {groupType === ProfileType.RED ? '팀 레드' : '팀 블루'}
                     <span className="text-black">
-                      {groupMembers[0].isSuccess === 'true' ? '성공' : '실패'}
+                      {groupMembers[0].isLose === 'true' ? '실패' : '성공'}
                     </span>
                   </h6>
                 ) : (
