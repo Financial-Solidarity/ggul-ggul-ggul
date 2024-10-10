@@ -10,9 +10,11 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const AccountBookHistoryPage = () => {
   const { paymentList, setPaymentList } = usePaymentHistoryStore();
+  const { setActive } = useBottomBarStore();
 
   const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
 
@@ -27,6 +29,8 @@ export const AccountBookHistoryPage = () => {
   const endDate = searchParams.get('end-date') || currentDate;
 
   useEffect(() => {
+    setActive(true);
+
     const getPaymentList = async () => {
       const res = await getPaymentHistory({ startDate, endDate });
 
@@ -34,6 +38,8 @@ export const AccountBookHistoryPage = () => {
     };
 
     getPaymentList();
+
+    return () => setActive(true);
   }, [searchParams]);
 
   return (

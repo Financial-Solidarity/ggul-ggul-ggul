@@ -15,12 +15,18 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { QrButton } from '@/modules/accountBook/components';
 import { NavTitle } from '@/modules/common/components';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const PayPage = () => {
+  const { setActive } = useBottomBarStore();
+
   const { getMyGgulToken } = useWalletStore();
 
   useEffect(() => {
+    setActive(true);
     getMyGgulToken();
+
+    return () => setActive(true);
   }, []);
 
   return (

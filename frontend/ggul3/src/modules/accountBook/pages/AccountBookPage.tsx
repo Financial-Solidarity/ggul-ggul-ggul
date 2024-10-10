@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { Balance, StatisticsButton } from '../components';
 
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -8,11 +10,17 @@ import financeChart from '@/assets/images/finance-chart.png';
 import { PathNames } from '@/router';
 import { NavTitle } from '@/modules/common/components';
 import { ChangeMainAccountLinkButton } from '@/modules/myPage/components';
-import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const AccountBookPage = () => {
-  useSetBottomBar({ active: true, isDarkMode: false });
+  const { setActive } = useBottomBarStore();
+
+  useEffect(() => {
+    setActive(true);
+
+    return () => setActive(true);
+  }, []);
 
   return (
     <>

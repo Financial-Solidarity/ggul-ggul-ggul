@@ -12,8 +12,11 @@ import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import no_items from '@/assets/lotties/no_items.json';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const PrizeHistoryPage = () => {
+  const { setActive } = useBottomBarStore();
+
   const { getMyGgulToken } = useWalletStore();
   const { luckDrawHistory, setLuckDrawHistory } = useLuckyDrawStore();
 
@@ -25,7 +28,10 @@ export const PrizeHistoryPage = () => {
     };
 
     fetchPrizeHistory();
+    setActive(true);
     getMyGgulToken();
+
+    return () => setActive(true);
   }, []);
 
   return (

@@ -8,8 +8,11 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { NavTitle } from '@/modules/common/components';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const WalletPage = () => {
+  const { setActive } = useBottomBarStore();
+
   const { getMyGgulToken } = useWalletStore();
 
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -24,7 +27,10 @@ export const WalletPage = () => {
   };
 
   useEffect(() => {
+    setActive(true);
     getMyGgulToken();
+
+    return () => setActive(true);
   }, []);
 
   useEffect(() => {

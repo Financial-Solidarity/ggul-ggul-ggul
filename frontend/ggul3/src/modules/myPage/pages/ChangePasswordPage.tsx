@@ -1,9 +1,13 @@
+import { useEffect } from 'react';
+
 import {
   FindPasswordVerification,
   FindPasswordWithEmail,
   SetNewPassword,
 } from '../../user/components';
 import { useFindPasswordStore } from '../../user/store/findPasswordStore';
+
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const ChangePasswordPage = () => {
   const {
@@ -21,6 +25,13 @@ export const ChangePasswordPage = () => {
     validatePasswordCheck,
     validateEmail,
   } = useFindPasswordStore();
+  const { setActive } = useBottomBarStore();
+
+  useEffect(() => {
+    setActive(true);
+
+    return () => setActive(true);
+  }, []);
 
   if (step === 'email') {
     return (

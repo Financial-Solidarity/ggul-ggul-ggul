@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { Banner, LogOutButton, MyProfile } from '../components';
 
 import { NavTitle } from '@/modules/common/components';
@@ -5,13 +7,19 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
-import { useSetBottomBar } from '@/modules/common/hooks/useSetBottomBar';
 import { useUserStore } from '@/modules/common/store/userStore';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const MyPage = () => {
   const { user } = useUserStore();
 
-  useSetBottomBar({ active: true, isDarkMode: false });
+  const { setActive } = useBottomBarStore();
+
+  useEffect(() => {
+    setActive(true);
+
+    return () => setActive(true);
+  }, []);
 
   return (
     <>

@@ -15,6 +15,7 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const AccountBookStatisticsPage = () => {
   const {
@@ -26,6 +27,7 @@ export const AccountBookStatisticsPage = () => {
   } = usePaymentStatisticsStore();
 
   const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
+  const { setActive } = useBottomBarStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const { paymentList, setPaymentList } = usePaymentHistoryStore();
@@ -39,6 +41,8 @@ export const AccountBookStatisticsPage = () => {
   const endDate = searchParams.get('end-date') || currentDate;
 
   useEffect(() => {
+    setActive(true);
+
     getPaymentStatistics({ startDate, endDate }).then((res) => {
       setStatisticsList(res);
       setFormedStatisticsList(res);
@@ -52,6 +56,8 @@ export const AccountBookStatisticsPage = () => {
     };
 
     getPaymentList();
+
+    return () => setActive(true);
   }, [searchParams]);
 
   return (

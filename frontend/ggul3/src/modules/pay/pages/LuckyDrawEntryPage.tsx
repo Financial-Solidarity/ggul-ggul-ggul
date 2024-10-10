@@ -17,14 +17,19 @@ import { BackButton } from '@/modules/common/components/BackButton/BackButton';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import no_items from '@/assets/lotties/no_items.json';
 import { PathNames } from '@/router';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const LuckyDrawEntryPage = () => {
+  const { setActive } = useBottomBarStore();
+
   const navigate = useNavigate();
 
   const { luckDrawList, setLuckDrawList } = useLuckyDrawStore();
   const { getMyGgulToken } = useWalletStore();
 
   useEffect(() => {
+    setActive(true);
+
     const fetchLuckyDrawList = async () => {
       const response = await getLuckyDrawList();
 
@@ -33,6 +38,8 @@ export const LuckyDrawEntryPage = () => {
 
     fetchLuckyDrawList();
     getMyGgulToken();
+
+    return () => setActive(true);
   }, []);
 
   const handleClickDrawButton = (id: number) => {
