@@ -58,6 +58,13 @@ export const QrPayPage = () => {
     }
 
     // 사용할 수 있는 토큰 값보다 큰 경우 처리
+    if (numericValue > itemInfo.requiredMoney) {
+      setSpendGgulToken(String(itemInfo.requiredMoney - 1));
+
+      return;
+    }
+
+    // 사용할 수 있는 토큰 값보다 큰 경우 처리
     if (numericValue > Number(ggulToken)) {
       setSpendGgulToken(String(ggulToken));
 
