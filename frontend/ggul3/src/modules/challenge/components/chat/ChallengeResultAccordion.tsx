@@ -201,7 +201,7 @@ export const ChallengeResultAccordion = ({
       {!participant.isLose && !isTeamChallenge && (
         <div>
           <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
-          <div className="absolute right-1 top-10 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-yellow-500 text-sm font-semibold text-white">
+          <div className="absolute right-1 top-6 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-yellow-500 text-sm font-semibold text-white">
             <p>성공</p>
           </div>
         </div>
@@ -231,7 +231,7 @@ export const ChallengeResultAccordion = ({
         <span className="text-sm font-semibold">
           {participant.profile.nickname}
           {participant.profile.isMine && (
-            <div className="absolute left-1 top-10 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-primary-300 text-sm font-semibold text-white">
+            <div className="absolute left-1 top-6 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-primary-300 text-sm font-semibold text-white">
               <p>나</p>
             </div>
           )}
