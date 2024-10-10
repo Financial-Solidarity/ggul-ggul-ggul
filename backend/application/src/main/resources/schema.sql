@@ -330,88 +330,39 @@ VALUES ('통장 바닥남'),
        ('알바력 만렙'),
        ('희망회로 오작동');
 
-
-INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at)
-VALUES (1, 'khj745700@naver.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
-        '흑염룡1', null, now()),
-       (2, 'test1@test.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡2',
-        null, now()),
-       (3, 'test2@test.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡3',
-        null, now()),
-       (4, 'test3@test.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡4',
-        null, now()),
-       (5, 'test4@test.com', CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), '흑염룡5',
-        null, now()),
-       (6, "tester999@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
-        '흑염룡6', null, now()),
-       (7, "tester998@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
-        '흑염룡7', null, now()),
-       (8, "tester997@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
-        '흑염룡8', null, now()),
-       (9, "tester996@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
-        'ggul996', null, now()),
-       (10, "tester995@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
-        'ggul995', null, now()),
-       (11, "tester994@naver.com", CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY),
-        'ggul994', null, now())
-;
-
-INSERT INTO challenge (challenge_id, challenge_title, challenge_password_exist, challenge_password, challenge_owner_id,
-                       challenge_is_blindness, challenge_limit_participant, challenge_budget_cap, challenge_is_ready,
-                       challenge_is_ended, challenge_started_at, challenge_ended_at, challenge_competition_type,
-                       created_at)
-VALUES (1, '테스트1', true, CAST('$2a$10$yTQYJz8F/gkR2sEPQkmrT.6CKZXRI1ZvFUa1BtRuQa7cArWyn77T2' AS BINARY), 1, false, 3, 3,
-        true, false, NOW() + INTERVAL (30) SECOND, NOW() + INTERVAL (15) SECOND, 'T', NOW());
-
-INSERT INTO challenge_participant(challenge_participant_id, challenge_id, user_id, nickname, profile,
-                                  challenge_participant_type, participated_at, is_deleted)
-VALUES (1, 1, 6, '흑염룡6', null, 'R', NOW(), 0),
-       (2, 1, 7, '흑염룡7', null, 'B', NOW(), 0);
-
-INSERT INTO chatting_room(chatting_room_id, challenge_id, chatting_room_type, created_at)
-VALUES (1, 1, 'L', NOW()),
-       (2, 1, 'R', NOW()),
-       (3, 1, 'B', NOW());
-
-INSERT INTO chatting_room_participant(chatting_room_participant_id, chatting_room_id, challenge_participant_id,
-                                      last_connected_at, created_at)
-VALUES (1, 1, 1, NOW(), NOW()),
-       (2, 1, 2, NOW(), NOW()),
-       (3, 2, 1, NOW(), NOW()),
-       (4, 3, 2, NOW(), NOW());
-
-INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key)
-VALUES (1, 1, UNHEX('0dd888d6fde82d0aeea7b26f304df411d751e7b1'),
-        UNHEX('fc12a1c6a64113dd9c762b59982bfe01244c63552e3374d668e5854bb7f437ae')),
-       (2, 2, UNHEX('def2d27fe78B9723Af7378a5f190893A8a86878d'),
-        UNHEX('22f58e78aefd7b57ead64b9e206279eb8d19e7bd3198a96f4f4c26e6f58f8ae7')),
-       (3, 3, UNHEX('54AA43dD565B534c9952372871332E41830a8Fbc'),
-        UNHEX('f133db6b508a6e8a76cf2ac3cb3556df24be4e91f17d3803cedafa23ac6a0a72')),
-       (4, 4, UNHEX('AF2d34A747823716662fBF31778eC82B3db2CD43'),
-        UNHEX('60710f8d624666d905577e17e7d66c4fce0c9f732be22982b1669e70467fda9c')),
-       (5, 5, UNHEX('E881422ff52a70eeCff60e0b8326dfA2c91eB6d4'),
-        UNHEX('54aabd91d8061a671364d7ce7fa350253550a8e97cd39c1a42b8cf3ac22aa494')),
-       (6, 6, UNHEX('445405085629c13c4d160ef067C82c5d2361d34a'),
-        UNHEX('f2f6da67bd25974e8315c57e7f1e536dada711aa3e7ccead9658d34045f5cc8e')),
-       (7, 7, UNHEX('f4BE70e403A272c60A03428C3C5af94214765A58'),
-        UNHEX('94e85d3a3cc24698cdd82220a7d500de480dad57d224495c9f714335efab413b')),
-       (8, 8, UNHEX('08Be144B4085c2b5a129BD2BD7D36a5C01eEEEC5'),
-        UNHEX('83de8dd28f55a351a5aaf7b9ed673be44bb7908a424cffc35440a5ce546f37d6')),
-       (9, 9, UNHEX('DDEa5932a9e1868348eF65bAfF02359bB07Cd1B5'),
-        UNHEX('9184740247669d119441a9a70ac085e5889ea037b1c28eb22ea60cb55beb7d9f')),
-       (10, 10, UNHEX('c43373Ed0b30C169659C118B46ac71Cb777a072B'),
-        UNHEX('0d183b52768047f2de41fbdb23e85edf4a130fa0e1a3ea90282d40c910fbc327')),
-       (11, 11, UNHEX('E7Fc869fBBa9b12AC09090E51533a2E828CAE351'),
-        UNHEX('b857408d5d3a71572e8e2e49737fbbff64b468ee882c8da11447d9b8ff5b5958'));
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x01926FEBEF557714A773EBA3163C5078, 'kehegi6775@adambra.com', 0x243261243130244174306C61557862357A4162304435723269706E764F5765444779556B754144514C58456D6E6B756D764F7846416F4A3134654453, 'rrrggg', null, '2024-10-09 15:16:26', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x019271802EF071C18DE9953A5E2EDECA, 'ggul987654321@gmail.com', 0x243261243130246F78664F536D6953476E4F56765A4C3366714E492F2E6E377956327848514A712E614B77645049626864752E4434484D764C6E3547, 'test1tes', 'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/user%2Fprofile%2F01927474-6e4a-76c6-b7c8-7b3b6da406f6blob', '2024-10-09 22:37:59', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x0192726FF2ED7D3291EFF7F40DE1AC7A, 'gentry_@naver.com', 0x243261243130246452376868585074624565386C796861675275795975394D736465744C376272374B726C424958656B35777667733737396F415875, 'test1test', null, '2024-10-10 02:59:52', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x31000000000000000000000000000000, 'khj745700@naver.com', 0x24326124313024795451594A7A38462F676B5232734550516B6D72542E36434B5A585249315A76465561314274527551613763417257796E37375432, '흑염룡1', null, '2024-10-09 02:22:30', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x31300000000000000000000000000000, 'tester995@naver.com', 0x24326124313024795451594A7A38462F676B5232734550516B6D72542E36434B5A585249315A76465561314274527551613763417257796E37375432, 'ggul995', 'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/user%2Fprofile%2F0192743d-cfce-78a5-ab50-cbe8ded18816svg', '2024-10-09 02:22:30', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x31310000000000000000000000000000, 'tester994@naver.com', 0x24326124313024795451594A7A38462F676B5232734550516B6D72542E36434B5A585249315A76465561314274527551613763417257796E37375432, 'ggul994', null, '2024-10-09 02:22:30', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x31320000000000000000000000000000, 'tester990@naver.com', 0x24326124313024795451594A7A38462F676B5232734550516B6D72542E36434B5A585249315A76465561314274527551613763417257796E37375432, '시연자', 'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/user%2Fprofile%2F0192743c-b7cc-764d-b9ff-89e9ebadce2ejfif', '2024-10-09 21:06:46', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x31340000000000000000000000000000, 'tester9999@naver.com', 0x24326124313024795451594A7A38462F676B5232734550516B6D72542E36434B5A585249315A76465561314274527551613763417257796E37375432, '시연자 테스트', null, '2024-10-09 21:23:13', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x31350000000000000000000000000000, 'tester99999@naver.com', 0x24326124313024795451594A7A38462F676B5232734550516B6D72542E36434B5A585249315A76465561314274527551613763417257796E37375432, '찐 시연자', 'https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/user%2Fprofile%2F0192743d-0e2d-7363-8b9f-0250e4895be7png', '2024-10-09 22:13:06', 0);
+INSERT INTO user (user_id, username, user_password, user_nickname, user_profile, created_at, is_deleted) VALUES (0x32000000000000000000000000000000, 'test1@test.com', 0x24326124313024795451594A7A38462F676B5232734550516B6D72542E36434B5A585249315A76465561314274527551613763417257796E37375432, '흑염룡2', null, '2024-10-09 02:22:30', 0);
 
 
-insert into account(account_id, user_id, account_user_key)
-values (1, 6, 'ff883feb-b587-40f7-b41e-394743b1e435'),
-       (2, 7, '88aa6007-a3f3-4858-9bfe-7c836002b744'),
-       (3, 8, '51ac880b-f01e-41aa-9d4d-640bb197de7a'),
-       (4, 9, '29ba45ce-ca35-4372-bc03-f0e3c9c15708'),
-       (5, 10, '57bfe0b7-7003-46f8-a300-61ab8c5d7617'),
-       (6, 11, '0589c79d-c5de-4cf1-96da-d87d57417962');
+
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x01926FEBF02E7F2EA985447F00D013D5, 0x01926FEBEF557714A773EBA3163C5078, 0x5BE639B041E7FB28C1A21C762546CB1EBE7ED200, 0xDEB3AED293C8E15D7549FD7A5AD3CC02706E4E96740AB26EC371F0A272E89A00);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x019271802FC57F1DA3F95ED009D523AD, 0x019271802EF071C18DE9953A5E2EDECA, 0x62D5CC2B13EC9F8AC6D65FC25162D678F8737D00, 0x69304AD104C414792A6CE0508E067FB9538100564D6292EB11EF64189A43D200);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x0192726FF3BE791E8ADFE100DCD6BC63, 0x0192726FF2ED7D3291EFF7F40DE1AC7A, 0xE6DD67D83A876EE3B8F6A50B653140C899137F00, 0x46A071F7BEA183DEFE874D25DF43A5BE6810BE47F27A842ECF5B33D75C97BE00);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x31000000000000000000000000000000, 0x31000000000000000000000000000000, 0x0DD888D6FDE82D0AEEA7B26F304DF411D751E7B1, 0xFC12A1C6A64113DD9C762B59982BFE01244C63552E3374D668E5854BB7F437AE);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x31300000000000000000000000000000, 0x31300000000000000000000000000000, 0xC43373ED0B30C169659C118B46AC71CB777A072B, 0x0D183B52768047F2DE41FBDB23E85EDF4A130FA0E1A3EA90282D40C910FBC327);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x31310000000000000000000000000000, 0x31310000000000000000000000000000, 0xE7FC869FBBA9B12AC09090E51533A2E828CAE351, 0xB857408D5D3A71572E8E2E49737FBBFF64B468EE882C8DA11447D9B8FF5B5958);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x31320000000000000000000000000000, 0x31320000000000000000000000000000, 0x742846872E106B0304843ED0205C4E2617A0CED9, 0x32BD32227444B9DD93B9ABD7E62B2979E4D159CA78A5A5CA3BD23149989820E9);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x31330000000000000000000000000000, 0x31340000000000000000000000000000, 0x2B9EAB8862D7F8C9908E657C6DC60A783189CD88, 0x3908C13FC92DA67E40E76C5BF788013274692ABE169EA44830801FDD5924D575);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x31340000000000000000000000000000, 0x31350000000000000000000000000000, 0x27367FB2A495E30B45C0F8742EAF4CDE7A07215C, 0x4DEBA8938B115499203D82701A6E044AE3A4E5AC216BF9362647EBA09432DD89);
+INSERT INTO wallet (wallet_id, user_id, wallet_address, wallet_private_key) VALUES (0x32000000000000000000000000000000, 0x32000000000000000000000000000000, 0xDEF2D27FE78B9723AF7378A5F190893A8A86878D, 0x22F58E78AEFD7B57EAD64B9E206279EB8D19E7BD3198A96F4F4C26E6F58F8AE7);
+
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x01926FEBF1727DE087A3FCD4B9733630, 0x01926FEBEF557714A773EBA3163C5078, '76aab457-a12c-4e2a-b119-364016c9ac76');
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x019271306C1D7E6B8C1EFC4CC8E97D6D, 0x31320000000000000000000000000000, '4b87036c-2af7-4bc8-ae92-95c369e1c093');
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x0192713C8D92793EB1A1187CDFE6AF89, 0x31340000000000000000000000000000, 'd57ee315-b545-4650-ad1c-0d6c3a9945d6');
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x0192716C508D74C4A7BB252B6D5A8C7C, 0x31350000000000000000000000000000, 'a40907a5-24ac-4a43-adf8-e2323ecfbb0d');
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x01927180312C7A53BAF0960D9038AEB0, 0x019271802EF071C18DE9953A5E2EDECA, 'b3aaf951-2732-45f6-a7dc-f5caad823812');
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x0192726FF6E572CE94CF995EB40BDA50, 0x0192726FF2ED7D3291EFF7F40DE1AC7A, '3b765ca5-41e4-4d25-b66f-7daa282828b1');
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x31000000000000000000000000000000, 0x36000000000000000000000000000000, 'ff883feb-b587-40f7-b41e-394743b1e435');
+INSERT INTO account (account_id, user_id, account_user_key) VALUES (0x32000000000000000000000000000000, 0x37000000000000000000000000000000, '88aa6007-a3f3-4858-9bfe-7c836002b744');
+
 
 INSERT INTO equipment_item (equipment_item_id, name, url)
 VALUES (1, "컵케익", "https://solsolhighasset.s3.ap-northeast-2.amazonaws.com/images/foods/cupcake.png"),
@@ -437,4 +388,12 @@ VALUES (1, "컵케익", "https://solsolhighasset.s3.ap-northeast-2.amazonaws.com
 
 
 INSERT INTO category (product_category_id, category_name)
-VALUES (1, '배달 음식');
+VALUES
+    (1, '배달'),
+    (2, '카페/디저트'),
+    (3, '술/유흥'),
+    (4, '문화/여가'),
+    (5, '교통'),
+    (6, '패션/쇼핑'),
+    (7, '뷰티'),
+    (8, '마트');

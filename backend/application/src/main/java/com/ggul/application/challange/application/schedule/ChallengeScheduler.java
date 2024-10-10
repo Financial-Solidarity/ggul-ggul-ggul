@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ import java.util.concurrent.ScheduledFuture;
 @Slf4j
 public class ChallengeScheduler {
     private final ChallengeStateUpdateService challengeStateUpdateService;
+    private final ConcurrentHashMap<UUID, ScheduledFuture<?>> schedulerQueue = new ConcurrentHashMap<>();
     private final TaskScheduler taskScheduler;
 
     public void startRegister(Challenge challenge) {
@@ -25,6 +28,7 @@ public class ChallengeScheduler {
           challengeStateUpdateService.challengeStateUpdateToStartOrDestroyed(challenge.getId());
         }, challenge.getStartedAt().atZone(ZoneId.systemDefault()).toInstant());
         log.info("challenge start Register Check Handler Add : {}, time : {} ",challenge.getId(), challenge.getStartedAt().atZone(ZoneId.systemDefault()).toInstant());
+        schedulerQueue.put(challenge.getId(), task);
     }
 
     @Async
@@ -34,6 +38,7 @@ public class ChallengeScheduler {
             challengeStateUpdateService.challengeEndUpdate(event.getChallengeId());
         }, event.getEndTime().atZone(ZoneId.systemDefault()).toInstant());
         log.info("challenge end Register Check Handler Add : {}, time : {}",event.getChallengeId(), event.getEndTime().atZone(ZoneId.systemDefault()).toInstant());
+        schedulerQueue.put(event.getChallengeId(), task);
     }
 
 }
