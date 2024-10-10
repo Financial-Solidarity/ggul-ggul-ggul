@@ -94,7 +94,7 @@ define(['./workbox-b5f7729d'], function (workbox) {
       },
       {
         url: 'index.html',
-        revision: '0.rbe06jqdjp8',
+        revision: '0.fib81179fk8',
       },
     ],
     {},

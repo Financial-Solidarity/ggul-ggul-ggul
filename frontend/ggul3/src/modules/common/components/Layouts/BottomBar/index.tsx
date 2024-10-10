@@ -37,25 +37,21 @@ export const BottomBar = () => {
     >
       <ul className="flex w-full flex-row items-center justify-between px-4">
         {/* 좌측 버튼 */}
-        <ul className="flex flex-row gap-7">
-          <BottomBarButton
-            icon={
-              <ChatBubbleOvalLeftEllipsisIcon className="mb-[2px] h-7 w-7" />
-            }
-            isActive={isCurrentPath(PathNames.CHALLENGE.MAIN.path)}
-            isDarkMode={isDarkMode}
-            label="챌린지"
-            onClick={() => handleNavigation(PathNames.CHALLENGE.MAIN.path)}
-          />
-          <BottomBarButton
-            icon={<RocketLaunchIcon className="mb-[2px] h-7 w-7" />}
-            isActive={isCurrentPath(PathNames.GAME.MAIN.path)}
-            isDarkMode={isDarkMode}
-            label="껄키우기"
-            onClick={() => handleNavigation(PathNames.GAME.MAIN.path)}
-          />
-        </ul>
-
+        <BottomBarButton
+          icon={<ChatBubbleOvalLeftEllipsisIcon className="mb-[2px] h-7 w-7" />}
+          isActive={isCurrentPath(PathNames.CHALLENGE.MAIN.path)}
+          isDarkMode={isDarkMode}
+          label="챌린지"
+          onClick={() => handleNavigation(PathNames.CHALLENGE.MAIN.path)}
+        />
+        <BottomBarButton
+          icon={<RocketLaunchIcon className="mb-[2px] h-7 w-7" />}
+          isActive={isCurrentPath(PathNames.GAME.MAIN.path)}
+          isDarkMode={isDarkMode}
+          label="껄키우기"
+          onClick={() => handleNavigation(PathNames.GAME.MAIN.path)}
+        />
+        <div className="w-16" />
         {/* 중앙 버튼 */}
         <div
           className="absolute bottom-2 left-1/2 -translate-x-1/2 transform cursor-pointer"
@@ -76,22 +72,20 @@ export const BottomBar = () => {
         </div>
 
         {/* 우측 버튼 */}
-        <ul className="flex flex-row gap-7">
-          <BottomBarButton
-            icon={<CalendarIcon className="mb-[2px] h-7 w-7" />}
-            isActive={isCurrentPath(PathNames.ACCOUNT_BOOK.MAIN.path)}
-            isDarkMode={isDarkMode}
-            label="가계부"
-            onClick={() => handleNavigation(PathNames.ACCOUNT_BOOK.MAIN.path)}
-          />
-          <BottomBarButton
-            icon={<UserCircleIcon className="mb-[2px] h-7 w-7" />}
-            isActive={isCurrentPath(PathNames.MYPAGE.MAIN.path)}
-            isDarkMode={isDarkMode}
-            label="마이페이지"
-            onClick={() => handleNavigation(PathNames.MYPAGE.MAIN.path)}
-          />
-        </ul>
+        <BottomBarButton
+          icon={<CalendarIcon className="mb-[2px] h-7 w-7" />}
+          isActive={isCurrentPath(PathNames.ACCOUNT_BOOK.MAIN.path)}
+          isDarkMode={isDarkMode}
+          label="가계부"
+          onClick={() => handleNavigation(PathNames.ACCOUNT_BOOK.MAIN.path)}
+        />
+        <BottomBarButton
+          icon={<UserCircleIcon className="mb-[2px] h-7 w-7" />}
+          isActive={isCurrentPath(PathNames.MYPAGE.MAIN.path)}
+          isDarkMode={isDarkMode}
+          label="마이페이지"
+          onClick={() => handleNavigation(PathNames.MYPAGE.MAIN.path)}
+        />
       </ul>
     </div>
   );
