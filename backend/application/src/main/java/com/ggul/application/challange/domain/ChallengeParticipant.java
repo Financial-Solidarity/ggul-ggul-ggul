@@ -80,7 +80,7 @@ public class ChallengeParticipant extends SoftDeleteEntity {
         return ChallengeLog.builder()
                 .participant(this)
                 .challenge(challenge)
-                .isLose(!isSuccess || Objects.equals(ChallengeParticipantType.PERSONAL, this.type) ? null : isWin)
+                .isLose(!isWin)
                 .isSuccess(isSuccess)
                 .ggulNum(ggul.intValue())
                 .build();

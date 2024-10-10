@@ -188,7 +188,7 @@ public class ChallengeStateUpdateService {
             List<ChallengeLog> logs = new ArrayList<>();
             for (Map.Entry<ChallengeParticipant, Integer> entry : prefixs.entrySet()) {
                 long ggul = entry.getValue() <= target.getBudgetCap() ? successGgul : failureGgul;
-                ChallengeLog log = entry.getKey().isWin(true, ggul, isSuccess);
+                ChallengeLog log = entry.getKey().isWin(entry.getValue() <= target.getBudgetCap(), ggul, isSuccess);
                 logs.add(log);
             }
 
