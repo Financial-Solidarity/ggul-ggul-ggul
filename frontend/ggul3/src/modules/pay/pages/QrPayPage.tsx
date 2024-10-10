@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ItemInfo } from '../components';
 import { PaymentSlideBar } from '../components/PaymentSlideBar';
 import { useWalletStore } from '../store/walletStore';
+import { useBuyItemMutation } from '../queries/usePaymentQuery';
 
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
@@ -17,6 +18,8 @@ import { getMainBankAccount } from '@/modules/common/apis/bankApis';
 export const QrPayPage = () => {
   const { currentAccount, setCurrentAccount } = useConnectStore();
   const { ggulToken, getMyGgulToken } = useWalletStore();
+  const { mutateAsync: buyItem, isPending: isBuyingItem } =
+    useBuyItemMutation();
 
   const [slideValue, setSlideValue] = useState<number | ''>('');
 
@@ -108,7 +111,7 @@ export const QrPayPage = () => {
         left={<BackButton color="black" onClickEvent={handleClickBackButton} />}
       />
       <PageContainer>
-        <div className="w-full">
+        <div className="relative w-full">
           <div className="mb-20 mt-10">
             <ItemInfo itemInfo={itemInfo} />
           </div>
@@ -144,11 +147,13 @@ export const QrPayPage = () => {
 
           <div className="rounded bg-primary-500/5 p-4">
             <PaymentSlideBar
+              buyItem={buyItem}
+              isPending={isBuyingItem}
               itemInfo={itemInfo}
-              slideValue={Number(slideValue)}
-              spendGgulToken={spendGgulToken}
               // @ts-ignore
               setSlideValue={setSlideValue}
+              slideValue={Number(slideValue)}
+              spendGgulToken={spendGgulToken}
             />
             <p className="text-sm text-primary">
               상품을 결제하려면 슬라이드를 끝까지 밀어주세요.
