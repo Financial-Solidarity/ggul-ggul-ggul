@@ -17,7 +17,7 @@ export const requestPermission = async () => {
       (error) => window.alert(error);
     }
   } else if (permission === 'denied') {
-    alert('알림을 거절당했습니다.');
+    // alert('알림을 거절당했습니다.');
   }
 };
 

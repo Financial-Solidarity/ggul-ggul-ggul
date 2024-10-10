@@ -6,7 +6,7 @@ import { Button } from '@nextui-org/button';
 
 import { GgulPoint, PrizeSubject, ResultModal } from '../components';
 import { useWalletStore } from '../store/walletStore';
-import { LuckyDrawDTO, getLuckyDrawDetail, luckyDraw } from '../apis/luckyDraw';
+import { LuckyDrawDTO, getLuckyDrawDetail } from '../apis/luckyDraw';
 
 import { NavTitle } from '@/modules/common/components';
 import { BackButton } from '@/modules/common/components/BackButton/BackButton';
@@ -14,10 +14,14 @@ import { PageContainer } from '@/modules/common/components/Layouts/PageContainer
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { NotificationButton } from '@/modules/common/components/NotificationButton/NotificationButton';
 import { toYYMDhm } from '@/modules/common/utils/dateUtils';
+import { useLuckDrawMutation } from '@/modules/myPage/queries/useLuckyDrawQuery';
+import { executeMutationAsAsync } from '@/modules/common/utils/executeMutationAsAsync';
 
 export const LuckyDrawDetailPage = () => {
   const params = useParams();
   const applicationId = Number(params.id);
+
+  const { mutate: luckyDraw, isPending } = useLuckDrawMutation();
 
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
@@ -44,11 +48,14 @@ export const LuckyDrawDetailPage = () => {
 
   const handleClickDrawButton = async () => {
     try {
-      const response = await luckyDraw(applicationId);
+      const response = await executeMutationAsAsync<number, LuckyDrawDTO>(
+        luckyDraw,
+        applicationId,
+      );
 
       onOpen();
       setResult(response);
-      await getMyGgulToken();
+      getMyGgulToken();
     } catch (error) {
       // @ts-ignore
       window.alert(error.message);
@@ -97,6 +104,7 @@ export const LuckyDrawDetailPage = () => {
             <Button
               className="w-full"
               color={`${item?.status ? 'primary' : 'default'}`}
+              isLoading={isPending}
               onClick={handleClickDrawButton}
             >
               응모하기

@@ -1,6 +1,6 @@
 import { Input } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ItemInfo } from '../components';
 import { PaymentSlideBar } from '../components/PaymentSlideBar';
@@ -22,6 +22,7 @@ export const QrPayPage = () => {
 
   const [spendGgulToken, setSpendGgulToken] = useState<string>('');
 
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -73,6 +74,17 @@ export const QrPayPage = () => {
     setSpendGgulToken(value);
   };
 
+  const handleClickBackButton = () => {
+    const confirm = window.confirm(
+      '결제를 취소하고 페이지를 벗어나시겠습니까?',
+    );
+
+    if (confirm) {
+      // @ts-ignore
+      navigate(-1, { replace: true });
+    }
+  };
+
   useEffect(() => {
     const fetchMainBankAccount = async () => {
       setCurrentAccount(await getMainBankAccount());
@@ -86,7 +98,7 @@ export const QrPayPage = () => {
     <>
       <TopBar
         center={<NavTitle title="상품 결제" />}
-        left={<BackButton color="black" />}
+        left={<BackButton color="black" onClickEvent={handleClickBackButton} />}
       />
       <PageContainer>
         <div className="w-full">

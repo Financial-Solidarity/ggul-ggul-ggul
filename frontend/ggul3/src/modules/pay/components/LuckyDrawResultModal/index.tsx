@@ -3,7 +3,6 @@ import {
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -31,8 +30,6 @@ export const ResultModal = ({
 }: ResultModalProps) => {
   const navigate = useNavigate();
 
-  console.log(result);
-
   const handleClickRetry = () => {
     onClose();
     onOpenChange();
@@ -51,7 +48,7 @@ export const ResultModal = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
     >
-      <ModalContent>
+      <ModalContent className="pb-20 pt-2">
         {(onClose) => (
           <>
             {result?.isSuccess ? (
@@ -60,8 +57,8 @@ export const ResultModal = ({
                   <p className="text-xl font-bold">당첨 되었습니다!</p>
                 </ModalHeader>
                 <ModalBody>
-                  <div className="flex w-full flex-col gap-3">
-                    <p>남은 당첨자 수: {result.remainingWinnerCount}명</p>
+                  <div className="flex w-full flex-col gap-1">
+                    <PrizeInfo chance={chance} result={result} />
                     <Button
                       className="w-full"
                       color="primary"
@@ -76,14 +73,6 @@ export const ResultModal = ({
                     </Link>
                   </div>
                 </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Action
-                  </Button>
-                </ModalFooter>
               </>
             ) : (
               <>
@@ -97,25 +86,7 @@ export const ResultModal = ({
                 <ModalBody>
                   {result && (
                     <div className="flex w-full flex-col gap-3">
-                      <div className="text-sm text-gray-500">
-                        <p className="mb-1">
-                          <span className="font-bold text-primary">
-                            {result.target + ' '}
-                          </span>
-                          보다 낮은 숫자가 나왔을 경우 당첨입니다.{' '}
-                        </p>
-                        <p className="leading-4">
-                          숫자 범위 : 0 ~{' '}
-                          {10 ** (chance.toString().slice(0, 2).length + 1) - 1}
-                        </p>
-                        <p className="leading-4">
-                          내가 뽑은 숫자 :{' '}
-                          <span className="font-bold text-primary">
-                            {result.nonce}
-                          </span>
-                        </p>
-                      </div>
-                      <p>남은 당첨자 수: {result.remainingWinnerCount}명</p>
+                      <PrizeInfo chance={chance} result={result} />
                       <Button
                         className="w-full"
                         color="primary"
@@ -123,7 +94,7 @@ export const ResultModal = ({
                       >
                         다시 응모하기
                       </Button>
-                      <div className="flex w-full gap-3">
+                      <div className="flex w-full gap-2">
                         <Link
                           className="flex-1"
                           target="_blank"
@@ -146,19 +117,39 @@ export const ResultModal = ({
                     </div>
                   )}
                 </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Action
-                  </Button>
-                </ModalFooter>
               </>
             )}
           </>
         )}
       </ModalContent>
     </Modal>
+  );
+};
+
+const PrizeInfo = ({
+  result,
+  chance,
+}: {
+  result: LuckyDrawDTO | null;
+  chance: number;
+}) => {
+  return (
+    <>
+      <div className="text-sm text-gray-500">
+        <p className="mb-1">
+          <span className="font-bold text-primary">{result?.target + ' '}</span>
+          보다 낮은 숫자가 나왔을 경우 당첨입니다.{' '}
+        </p>
+        <p className="leading-4">
+          숫자 범위 : 0 ~{' '}
+          {chance === 1 ? 0 : 10 ** chance.toString().split('.')[1].length - 1}
+        </p>
+        <p className="leading-4">
+          내가 뽑은 숫자 :{' '}
+          <span className="font-bold text-primary">{result?.nonce}</span>
+        </p>
+      </div>
+      <p>남은 당첨자 수: {result?.remainingWinnerCount}명</p>
+    </>
   );
 };

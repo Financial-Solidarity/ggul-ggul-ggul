@@ -1,3 +1,5 @@
+import { SignUp } from '@types';
+
 import { _axios } from '@/modules/common/utils/axios';
 
 export const checkDuplicatedEmail = (email: string) => {
@@ -42,12 +44,6 @@ export const verifyEmail = ({ email, number }: VerifyEmail) => {
     data: { email, number },
   });
 };
-
-interface SignUp {
-  email: string;
-  nickname: string;
-  password: string;
-}
 
 export const signUp = ({ email, nickname, password }: SignUp) => {
   return _axios<{ isValid: boolean }>({

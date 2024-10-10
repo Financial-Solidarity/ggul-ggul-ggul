@@ -9,7 +9,7 @@ interface PrizeHistoryItemProps {
 
 export const PrizeHistoryItem = ({ item }: PrizeHistoryItemProps) => {
   return (
-    <div className="flex min-w-32 content-center items-center justify-center">
+    <div className="flex min-w-32 max-w-32 content-center items-center justify-center">
       <Card
         isFooterBlurred
         className="border-none p-1 hover:bg-slate-200"

@@ -59,7 +59,6 @@ export const SignUpPage = () => {
         nickname={nickname}
         password={password}
         setEmailValidation={setEmailValidation}
-        setStep={setStep}
       />
     );
   }

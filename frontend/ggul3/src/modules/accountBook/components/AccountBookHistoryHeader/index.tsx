@@ -108,12 +108,18 @@ export const AccountBookHistoryHeader = ({
         <div className="flex-1">
           <p className="flex text-sm">이용 내역</p>
           <p className="text-2xl font-bold">
-            {transformMoneyUnit({ money: Number(totalPayment) })}원
+            {transformMoneyUnit({
+              money: Number(totalPayment),
+              disableSign: true,
+            })}
+            원
           </p>
         </div>
         <div className="flex-1">
           <p className="flex text-sm">껄 페이로 절약한 비용</p>
-          <p className="text-2xl font-bold">+{spendGgul}원</p>
+          <p className="text-2xl font-bold">
+            {transformMoneyUnit({ money: spendGgul })}원
+          </p>
         </div>
       </div>
     </div>

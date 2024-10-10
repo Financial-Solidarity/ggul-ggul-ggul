@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 
-import { login } from '../../apis/login';
+// import { login } from '../../apis/login';
 import {
   UserBoldSpan,
   UserButton,
@@ -11,6 +11,7 @@ import {
   UserLogo,
 } from '../../components';
 import { useUserLoginFlow } from '../../hooks/useUserLoginFlow';
+import { useLoginMutation } from '../../queries/useUserQuery';
 
 import { PathNames } from '@/router';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
@@ -35,11 +36,12 @@ export const LoginForm = ({
   validateEmail,
 }: LoginFormProps) => {
   const { executeAfterLoginFlow } = useUserLoginFlow();
+  const { mutate: login, isPending } = useLoginMutation();
 
   const handleSubmitLogin = async (e: FormEvent) => {
     e.preventDefault();
 
-    await login({ email, password });
+    login({ email, password });
     await executeAfterLoginFlow();
   };
 
@@ -64,7 +66,7 @@ export const LoginForm = ({
           />
         </UserInputBox>
 
-        <UserButton>로그인</UserButton>
+        <UserButton isLoading={isPending}>로그인</UserButton>
         <UserLink to={PathNames.SIGNUP.path} type="bold">
           <UserBoldSpan>껄껄껄</UserBoldSpan>
           회원가입

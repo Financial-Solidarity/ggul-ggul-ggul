@@ -15,8 +15,8 @@ interface LoginState {
 }
 
 export const useLoginStore = create<LoginState>((set, get) => ({
-  email: 'khj745700@naver.com',
-  password: 'test1test1',
+  email: '',
+  password: '',
   displayErrorMessage: {
     email: '',
   },
