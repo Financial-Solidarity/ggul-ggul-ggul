@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronRightIcon, UserIcon } from '@heroicons/react/24/outline';
 import { twMerge } from 'tailwind-merge';
-import { FaGift } from 'react-icons/fa';
+import { FaCrown, FaGift } from 'react-icons/fa';
 import { Button, Image } from '@nextui-org/react';
 
 import { ParticipantData, ProfileType } from '../../@types/challengeResult';
@@ -198,15 +198,15 @@ export const ChallengeResultAccordion = ({
       className="relative flex w-max flex-col items-center rounded-lg p-2"
     >
       {/* 성공 여부에 따른 아이콘 표시 */}
-      {/* {participant.isLose && isTeamChallenge && (
+      {!participant.isLose && !isTeamChallenge && (
         <div>
           <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
           <div className="absolute right-1 top-10 z-20 flex h-7 w-7 flex-col items-center justify-center rounded-full bg-yellow-500 text-sm font-semibold text-white">
-            <p>1등</p>
+            <p>성공</p>
           </div>
         </div>
       )}
-      {participant.isSuccess && !isTeamChallenge && (
+      {/* {participant.isSuccess && !isTeamChallenge && (
         <FaCrown className="absolute -top-1 left-1/2 z-20 -translate-x-1/2 transform text-2xl text-yellow-500" />
       )} */}
       <div className="mb-2 h-10 w-10 overflow-hidden rounded-full">
