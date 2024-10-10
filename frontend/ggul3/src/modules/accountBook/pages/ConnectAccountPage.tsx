@@ -52,7 +52,7 @@ export const ConnectAccountPage = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
-      await setMainBankAccount(selectedAccount!.accountNo);
+      setMainBankAccount(selectedAccount!.accountNo);
       setCurrentAccount(selectedAccount);
       setBankAccount(selectedAccount);
       setIsBankAccountPossessed(true);
@@ -63,7 +63,7 @@ export const ConnectAccountPage = () => {
   };
 
   useEffect(() => {
-    if (!mainBankAccount || !allAccounts) return;
+    if (!allAccounts) return;
 
     setCurrentAccount(mainBankAccount);
 
@@ -107,7 +107,7 @@ export const ConnectAccountPage = () => {
             <CurrentAccount currentAccount={currentAccount} />
           </div>
           <ul className="mb-24">
-            {allAccounts && mainBankAccount
+            {allAccounts
               ? accountList
                   .filter(
                     (item) => item.accountNo !== currentAccount?.accountNo,
