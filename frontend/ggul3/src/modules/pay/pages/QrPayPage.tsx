@@ -14,8 +14,11 @@ import { NavTitle } from '@/modules/common/components';
 import { useConnectStore } from '@/modules/accountBook/store/useConnectStore';
 import { CurrentAccount } from '@/modules/accountBook/components';
 import { getMainBankAccount } from '@/modules/common/apis/bankApis';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const QrPayPage = () => {
+  const { setActive } = useBottomBarStore();
+
   const { currentAccount, setCurrentAccount } = useConnectStore();
   const { ggulToken, getMyGgulToken } = useWalletStore();
   const { mutateAsync: buyItem, isPending: isBuyingItem } =
@@ -102,6 +105,8 @@ export const QrPayPage = () => {
 
     fetchMainBankAccount();
     getMyGgulToken();
+
+    return () => setActive(true);
   }, []);
 
   return (

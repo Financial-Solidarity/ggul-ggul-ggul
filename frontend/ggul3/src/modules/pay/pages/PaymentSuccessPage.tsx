@@ -1,16 +1,26 @@
 import { BsCheckCircleFill, BsChevronLeft } from 'react-icons/bs';
 import { Button } from '@nextui-org/react';
+import { useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { NavTitle } from '@/modules/common/components';
 import { PageContainer } from '@/modules/common/components/Layouts/PageContainer';
 import { TopBar } from '@/modules/common/components/Layouts/TopBar';
 import { PathNames } from '@/router';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const PaymentSuccessPage = () => {
+  const { setActive } = useBottomBarStore();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const productName = searchParams.get('product-name');
   const market = searchParams.get('market');
+
+  useEffect(() => {
+    setActive(true);
+
+    return () => setActive(true);
+  }, []);
 
   return (
     <>

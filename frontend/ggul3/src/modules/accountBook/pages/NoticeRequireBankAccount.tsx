@@ -36,6 +36,8 @@ export const NoticeRequireBankAccount = () => {
   };
 
   useEffect(() => {
+    setActive(true);
+
     const fetchMainBankAccount = async () => {
       const mainBankAccount = await getMainBankAccount();
 
@@ -45,6 +47,8 @@ export const NoticeRequireBankAccount = () => {
     };
 
     fetchMainBankAccount();
+
+    return () => setActive(true);
   }, []);
 
   return (

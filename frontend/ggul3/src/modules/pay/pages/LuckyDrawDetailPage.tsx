@@ -16,8 +16,11 @@ import { NotificationButton } from '@/modules/common/components/NotificationButt
 import { toYYMDhm } from '@/modules/common/utils/dateUtils';
 import { useLuckDrawMutation } from '@/modules/myPage/queries/useLuckyDrawQuery';
 import { executeMutationAsAsync } from '@/modules/common/utils/executeMutationAsAsync';
+import { useBottomBarStore } from '@/modules/common/store/useBottomBarStore';
 
 export const LuckyDrawDetailPage = () => {
+  const { setActive } = useBottomBarStore();
+
   const params = useParams();
   const applicationId = Number(params.id);
 
@@ -31,6 +34,8 @@ export const LuckyDrawDetailPage = () => {
   const [result, setResult] = useState<LuckyDrawDTO | null>(null);
 
   useEffect(() => {
+    setActive(true);
+
     const getGgulToken = async () => {
       if (!ggulToken) {
         getMyGgulToken();
@@ -44,6 +49,8 @@ export const LuckyDrawDetailPage = () => {
 
     getGgulToken();
     fetchLuckyDrawDetail();
+
+    return () => setActive(true);
   }, []);
 
   const handleClickDrawButton = async () => {
