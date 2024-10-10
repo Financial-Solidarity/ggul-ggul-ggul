@@ -32,10 +32,9 @@ export const ConsumptionModal = () => {
   const { data: consumptionList } = useGetConsumptionList(challengeId);
 
   const myTeam = participantList?.find((p) => p.isMine)?.type;
-  // const myTeamConsumptionList = consumptionList?.filter(
-  //   (consumption) => consumption.team === myTeam,
-  // );
-  const myTeamConsumptionList = consumptionList;
+  const myTeamConsumptionList = consumptionList?.filter(
+    (consumption) => consumption.team === myTeam,
+  );
 
   useEffect(() => {
     if (!participantList || !consumptionList || !challengeDetail) return;
@@ -49,7 +48,13 @@ export const ConsumptionModal = () => {
     const newStatistics: PaymentHistoryItem[] = filteredParticipants.map(
       (participant) => ({
         nickname: participant.nickname,
-        budget: challengeDetail.budgetCap,
+        budget:
+          challengeDetail.competitionType === 'S'
+            ? challengeDetail.budgetCap
+            : consumptionList
+                .filter((item) => item.team === myTeam)
+                .reduce((acc, curr) => acc + curr.money, 0),
+
         spend: consumptionList.reduce((acc, consumption) => {
           if (consumption.nickname === participant.nickname) {
             return acc + consumption.money;
@@ -128,7 +133,10 @@ export const ConsumptionModal = () => {
                 </div>
               ) : (
                 <div className="flex flex-col gap-8">
-                  <ChallengePaymentStatistics statistics={personalStatistics} />
+                  <ChallengePaymentStatistics
+                    competitionType={challengeDetail.competitionType}
+                    statistics={personalStatistics}
+                  />
                   <ChallengePaymentHistory
                     paymentHistory={myTeamConsumptionList}
                   />
