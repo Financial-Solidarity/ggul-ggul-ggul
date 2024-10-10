@@ -1,6 +1,6 @@
 import { _axios } from '@/modules/common/utils/axios';
 
-interface PaymentInformation {
+export interface PaymentInformation {
   categoryId: number;
   spendGgulToken: number;
   requiredMoney: number;
@@ -15,8 +15,6 @@ export const buyItem = ({
   productName,
   market,
 }: PaymentInformation) => {
-  console.log(categoryId, spendGgulToken, requiredMoney, productName, market);
-
   return _axios<{ spendMoney: number }>({
     method: 'POST',
     url: `/payment`,
