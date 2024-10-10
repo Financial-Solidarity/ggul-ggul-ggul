@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LuckyDrawDetailDTO } from '@types';
 import { useParams } from 'react-router-dom';
-import { Image, useDisclosure } from '@nextui-org/react';
+import { Card, Image, Skeleton, useDisclosure } from '@nextui-org/react';
 import { Button } from '@nextui-org/button';
 
 import { GgulPoint, PrizeSubject, ResultModal } from '../components';
@@ -62,6 +62,8 @@ export const LuckyDrawDetailPage = () => {
     }
   };
 
+  console.log(item, 'item');
+
   return (
     <>
       <TopBar
@@ -76,44 +78,65 @@ export const LuckyDrawDetailPage = () => {
       <PageContainer>
         <div className="mt-4">
           <div className="flex flex-col items-center justify-center gap-3 text-center">
-            <Image
-              removeWrapper
-              alt="Card image background"
-              className="z-0 mb-3 h-full w-full object-contain"
-              src={item?.imageUrl}
-            />
-            <p className="mb-1 text-xl font-bold">{item?.title}</p>
+            {item ? (
+              <>
+                <Image
+                  removeWrapper
+                  alt="Card image background"
+                  className="z-0 mb-3 h-full w-full object-contain"
+                  src={item?.imageUrl}
+                />
+                <p className="mb-1 text-xl font-bold">{item?.title}</p>
+                <div className="flex w-full gap-3">
+                  <PrizeSubject
+                    color="primary"
+                    subject="당첨 확률"
+                    value={`${(item?.probability as number) * 100}%`}
+                  />
+                  <PrizeSubject
+                    color="primary"
+                    subject="응모 가격"
+                    value={`${item?.price}P`}
+                  />
+                  <PrizeSubject
+                    color="primary"
+                    subject="당첨 수량"
+                    value={`${item?.maxWinnerCount}`}
+                  />
+                </div>
+                <Button
+                  className="w-full"
+                  color={`${item?.status ? 'primary' : 'default'}`}
+                  isLoading={isPending}
+                  onClick={handleClickDrawButton}
+                >
+                  응모하기
+                </Button>
 
-            <div className="flex w-full gap-3">
-              <PrizeSubject
-                color="primary"
-                subject="당첨 확률"
-                value={`${(item?.probability as number) * 100}%`}
-              />
-              <PrizeSubject
-                color="primary"
-                subject="응모 가격"
-                value={`${item?.price}P`}
-              />
-              <PrizeSubject
-                color="primary"
-                subject="당첨 수량"
-                value={`${item?.maxWinnerCount}`}
-              />
-            </div>
-            <Button
-              className="w-full"
-              color={`${item?.status ? 'primary' : 'default'}`}
-              isLoading={isPending}
-              onClick={handleClickDrawButton}
-            >
-              응모하기
-            </Button>
-
-            <p className="mb-10 flex flex-col text-sm text-gray-500">
-              응모 시작 시간
-              <span>{toYYMDhm(item?.createdAt as string)}</span>
-            </p>
+                <p className="mb-10 flex flex-col text-sm text-gray-500">
+                  응모 시작 시간
+                  <span>{toYYMDhm(item?.createdAt as string)}</span>
+                </p>
+              </>
+            ) : (
+              <>
+                <Card className="w-full space-y-5 p-4" radius="lg">
+                  <Skeleton className="rounded-lg">
+                    <div className="h-48 rounded-lg bg-default-300" />
+                  </Skeleton>
+                </Card>
+                <Card className="w-full space-y-5 p-4" radius="lg">
+                  <Skeleton className="rounded-lg">
+                    <div className="h-48 rounded-lg bg-default-300" />
+                  </Skeleton>
+                </Card>
+                <Card className="w-full space-y-5 p-4" radius="lg">
+                  <Skeleton className="rounded-lg">
+                    <div className="h-48 rounded-lg bg-default-300" />
+                  </Skeleton>
+                </Card>
+              </>
+            )}
           </div>
         </div>
 
